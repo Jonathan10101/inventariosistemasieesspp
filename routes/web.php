@@ -8,6 +8,7 @@ use App\Http\Controllers\ResguardanteController;
 use App\Http\Controllers\PuestoController;
 use App\Http\Controllers\UbicacionFisicaController;
 
+
 use App\Http\Controllers\CocinaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MunicipioController;
@@ -80,11 +81,12 @@ return QrCode::size(300)->generate("https://diarioprogramador.com/limpiando-la-c
 
 
 Route::apiResource("inventario",AlumnosController::class)->middleware(['auth:sanctum','can:alumnos.index']);
-Route::apiResource("marca",MarcaController::class)->middleware(['auth:sanctum','can:alumnos.index']);
+Route::resource("marcas",MarcaController::class)->middleware(['auth:sanctum','can:alumnos.index']);
 Route::apiResource("modelo",ModeloController::class)->middleware(['auth:sanctum','can:alumnos.index']);
 Route::apiResource("estadouso",EstadoDeUsoController::class)->middleware(['auth:sanctum','can:alumnos.index']);
-Route::apiResource("resguardante",ResguardanteController::class)->middleware(['auth:sanctum','can:alumnos.index']);
-Route::apiResource("resguardante",PuestoController::class)->middleware(['auth:sanctum','can:alumnos.index']);
+Route::resource('resguardante', ResguardanteController::class)->middleware(['auth:sanctum','can:alumnos.index']);
+Route::resource('puestos', PuestoController::class)->middleware(['auth:sanctum','can:alumnos.index']);
+
 Route::apiResource("ubicacionfisica",UbicacionFisicaController::class)->middleware(['auth:sanctum','can:alumnos.index']);
 
  

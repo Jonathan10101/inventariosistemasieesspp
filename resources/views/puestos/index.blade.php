@@ -20,7 +20,7 @@
      <div class="row">
         <div class=""></div>
         <div class="col">
-            <h1 class="text-center mt-1 ml-5">Marcas</h1>
+            <h1 class="text-center mt-1 ml-5">Puestos</h1>
         </div>
         <div class=""></div>
     </div>        
@@ -32,10 +32,10 @@
     <div class="row justify-content-center">
         <div class="col"></div>
         <div class="col-md-6">                        
-            <form action="{{ route('marcas.store') }}" method="POST">
+            <form action="{{ route('puestos.store') }}" method="POST">
                 @csrf
-                <label for="namemarcalabel">Escribe el nombre de la marca y da click en el botón Registrar</label>
-                <input type="text" name="nombre" id="namemarcalabel" class="form-control">
+                <label for="descripcionlabel">Escribe el nombre del puesto y da click en el botón Registrar</label>
+                <input type="text" name="nombre" id="descripcionlabel" class="form-control">
                 <div class="col d-flex justify-content-end">
                     <input type="submit" value="Registrar" class="btn btn-primary mt-4">
                 </div>

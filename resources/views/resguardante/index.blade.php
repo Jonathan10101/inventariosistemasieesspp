@@ -4,13 +4,18 @@
 
 @section('content_header')
     @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+        <div class="alert alert-primary alert-dismissible fade show mt-3" role="alert">
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
         </div>
     @endif
-
-    @error('nombre')
+    @error('nombre1')
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+            {{ $message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+    @enderror
+    @error('apellido1')
         <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
             {{ $message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
@@ -20,7 +25,7 @@
      <div class="row">
         <div class=""></div>
         <div class="col">
-            <h1 class="text-center mt-1 ml-5">Marcas</h1>
+            <h1 class="text-center mt-1 ml-5">Resguardante</h1>
         </div>
         <div class=""></div>
     </div>        
@@ -32,10 +37,24 @@
     <div class="row justify-content-center">
         <div class="col"></div>
         <div class="col-md-6">                        
-            <form action="{{ route('marcas.store') }}" method="POST">
+            <form action="{{ route('resguardante.store') }}" method="POST">
                 @csrf
-                <label for="namemarcalabel">Escribe el nombre de la marca y da click en el botón Registrar</label>
-                <input type="text" name="nombre" id="namemarcalabel" class="form-control">
+                <label for="namemarcalabel">Escribe el nombre de la persona y da click en el botón Registrar</label>
+                
+    <div class="row">
+        <div class="col-md-12 mt-3">
+            <input type="text" name="nombre1" class="form-control" placeholder="Primer nombre" value="{{ old('nombre1') }}">
+        </div>
+        <div class="col-md-12 mt-3">
+            <input type="text" name="nombre2" class="form-control" placeholder="Segundo nombre (opcional)" value="{{ old('nombre2') }}">
+        </div>
+        <div class="col-md-12 mt-3">
+            <input type="text" name="apellido1" class="form-control" placeholder="Primer apellido" value="{{ old('apellido1') }}">
+        </div>
+        <div class="col-md-12 mt-3">
+            <input type="text" name="apellido2" class="form-control" placeholder="Segundo apellido (opcional)" value="{{ old('apellido2') }}">
+        </div>
+    </div>
                 <div class="col d-flex justify-content-end">
                     <input type="submit" value="Registrar" class="btn btn-primary mt-4">
                 </div>

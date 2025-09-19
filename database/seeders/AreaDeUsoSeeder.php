@@ -7,17 +7,17 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-
-class UbicacionFisicaSeeder extends Seeder
+class AreaDeUsoSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        DB::table('ubicacion_fisicas')->insert([
+         DB::table('area_de_uso')->insert([
             [                
-                'descripcion' => 'SALA DE COMPUTO',                                
+                'nombre' => 'SALA DE COMPUTO',                
+                
             ],
            
         ]);

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('puestos', function (Blueprint $table) {
+        Schema::create('area_de_uso', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 100)->unique(); // Campo único
             $table->timestamps();
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('puestos');
+        Schema::dropIfExists('area_de_usos');
     }
 };

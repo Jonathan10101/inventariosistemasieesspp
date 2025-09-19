@@ -5,10 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Puesto extends Model
+class EstadoUso extends Model
 {
     use HasFactory;
-    protected $table = "puestos";
-    protected $fillable = ['nombre'];
-
+    protected $table  = "estado_uso";
+    protected $fillable = ['estado'];
 }

@@ -383,9 +383,10 @@ return [
             'submenu' => [                
                 [
                     'text' => 'Marca',
-                    'url' => 'marca',
+                    'url' => 'marcas',
                     'icon' => 'fas fa-fw fa-boxsw',
                 ],
+                /*
                 [
                     'text' => 'Modelo',
                     'url' => 'modelo',
@@ -396,6 +397,7 @@ return [
                     'url' => 'estadouso',
                     'icon' => 'fas fa-fw fa-boxsw',
                 ],
+                */
             ],
         ],
         [
@@ -409,18 +411,31 @@ return [
                     'text' => 'Nombre usuario',
                     'url' => 'resguardante',
                     'icon' => 'fas fa-fw',
-                ],
+                ],                
                 [
                     'text' => 'Puesto',
-                    'url' => 'puesto',
+                    'url' => 'puestos',
                     'icon' => 'fas fa-fw fa-boxsw',
-                ],
+                ],                
             ],
         ],
         [
-            'text' => 'Ubicaciones fisicas',
+            'text' => 'Ubicaciones',
             'url' => 'ubicacionfisica',            
             'icon' => 'fas fa-fw fa-map',
+                
+            'submenu' => [                
+                [
+                    'text' => 'Ubicación fisica',
+                    'url' => 'ubicacionfisica',
+                    'icon' => 'fas fa-fw',
+                ],                
+                [
+                    'text' => 'Area de asignación',
+                    'url' => 'areadeasignacion',
+                    'icon' => 'fas fa-fw fa-boxsw',
+                ],                
+            ],
             //'can' => 'cursos.update'
             //'icon' => 'fas fa-fw fa-user',
         ],
@@ -465,7 +480,7 @@ return [
         ],
         */
         [
-            'text' => 'By Jonathan (IEESSPP)',
+            'text' => 'By Jonathan V. 1.0.0 Alpha',
             'url' => '',            
             'icon' => 'fas',
         ],
@@ -476,7 +491,7 @@ return [
         [
             'text' => 'Cursos',
             'url' => 'cursos',            
-            'icon' => 'fas fa-fw fa-table',
+            'icon' => 'fas fa-fw fa-table',     
             'can' => 'requisicionesCocina.index'            
         ],
         [

@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Resguardante extends Model
 {
     use HasFactory;
+    protected $table  = "resguardantes";
+    protected $fillable = ['nombre1','nombre2','apellido1','apellido2'];
+
 }

@@ -8,18 +8,18 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 
-class UbicacionFisicaSeeder extends Seeder
+class EstadoUsoSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        DB::table('ubicacion_fisicas')->insert([
+        DB::table('estado_uso')->insert([
             [                
-                'descripcion' => 'SALA DE COMPUTO',                                
+                'estado' => 'Regular',                
             ],
-           
+            
         ]);
     }
 }

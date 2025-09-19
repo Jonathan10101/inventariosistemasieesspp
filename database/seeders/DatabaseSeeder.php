@@ -4,6 +4,10 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Database\Seeders\EstadoUsoSeeder;
+use Database\Seeders\AreaDeUsoSeeder;
+use Database\Seeders\UbicacionFisicaSeeder;
+
 use Database\Seeders\MunicipiosSeeder;
 use Database\Seeders\AdscripcionesSeeder;
 use Database\Seeders\SedesSeeder;
@@ -30,6 +34,10 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         //$this->call(CategorySeeder::class);
+        $this->call(EstadoUsoSeeder::class);
+        $this->call(AreaDeUsoSeeder::class);
+        $this->call(UbicacionFisicaSeeder::class);
+
 
         $this->call(EstadosSeeder::class);
         $this->call(MunicipiosSeeder::class);

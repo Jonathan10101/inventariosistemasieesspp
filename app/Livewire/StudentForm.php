@@ -454,23 +454,23 @@ class StudentForm extends Component
     
     #[On('saveFromComponentNewStudent')] 
     public function saveNewStudent($data){ 
+        
+
      
         $datafinal = [
-            'nombre1' => $data['nombre1'],
-            'nombre2' => $data['nombre2'],
-            'apellido1' => $data['apellido1'],
-            'apellido2' => $data['apellido2'],
-            'matricula_cuip' => $data['matricula_cuip'],
-            'municipio_id' => $this->municipio_procedencia,            
-            'curp' => $data['curp'],
-            'fecha_nacimiento' => $data['fecha_nacimiento'],
-            'escolaridad_id' => $data['escolaridad_id'],                
-            'genero' => $data['genero'],
-            'correo_electronico' => $data['correo_electronico'],
-            'celular' => $data['celular'],
-            'cuip' => $data['cuip']
+            'descripcion' => $data['descripcion'],
+            'marca' => $data['marca'],
+            'modelo' => $data['modelo'],
+            'numerodeserie' => $data['numerodeserie'],
+            'numeroderesguardo' => $data['numeroderesguardo'],            
+            'estadodeuso' => $data['estadodeuso'],            
+            'areadeasignacion' => $data['areadeasignacion'],  
+            'ubicacionfisica' => $data['ubicacionfisica'],  
+            'resguardante' => $data['resguardante'],  
+            'puestodelresguardanteqq' => $data['puestodelresguardante'],  
         ];
 
+        dd($dataFinal);
         
         //$this->sudentCreate->validate();
         //dd($this->studentCreate);

@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('puestos', function (Blueprint $table) {
+        Schema::create('estado_uso', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 100)->unique(); // Campo único
+            $table->string('estado', 100);
             $table->timestamps();
         });
     }
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('puestos');
+        Schema::dropIfExists('estado_usos');
     }
 };
