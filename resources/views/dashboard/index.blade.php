@@ -6,9 +6,9 @@
     <!-- Encabezado de la página -->
     
             
-            
+            {{--
             <livewire:student-stats />
-
+            --}}
 
     
 @stop

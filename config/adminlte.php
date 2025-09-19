@@ -383,17 +383,17 @@ return [
             'submenu' => [                
                 [
                     'text' => 'Marca',
-                    'url' => 'alumnos',
+                    'url' => 'marca',
                     'icon' => 'fas fa-fw fa-boxsw',
                 ],
                 [
                     'text' => 'Modelo',
-                    'url' => 'alumnos',
+                    'url' => 'modelo',
                     'icon' => 'fas fa-fw fa-boxsw',
                 ],
                 [
                     'text' => 'Estado de uso',
-                    'url' => 'alumnos',
+                    'url' => 'estadouso',
                     'icon' => 'fas fa-fw fa-boxsw',
                 ],
             ],
@@ -407,19 +407,19 @@ return [
             'submenu' => [                
                 [
                     'text' => 'Nombre usuario',
-                    'url' => 'alumnos',
+                    'url' => 'resguardante',
                     'icon' => 'fas fa-fw',
                 ],
                 [
                     'text' => 'Puesto',
-                    'url' => 'alumnos',
+                    'url' => 'puesto',
                     'icon' => 'fas fa-fw fa-boxsw',
                 ],
             ],
         ],
         [
             'text' => 'Ubicaciones fisicas',
-            'url' => 'cursos',            
+            'url' => 'ubicacionfisica',            
             'icon' => 'fas fa-fw fa-map',
             //'can' => 'cursos.update'
             //'icon' => 'fas fa-fw fa-user',
