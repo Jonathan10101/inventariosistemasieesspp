@@ -25,7 +25,7 @@
      <div class="row">
         <div class=""></div>
         <div class="col">
-            <h1 class="text-center mt-1 ml-5">Resguardante</h1>
+            <h1 class="text-center mt-1">Resguardante</h1>
         </div>
         <div class=""></div>
     </div>        

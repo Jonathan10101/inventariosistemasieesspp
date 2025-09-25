@@ -10,17 +10,18 @@
         </div>
     @endif
 
-    @error('nombre')
+    @error('ubicacion')
         <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
             {{ $message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
         </div>
     @enderror
+
     <!-- Encabezado de la página -->
      <div class="row">
         <div class=""></div>
         <div class="col">
-            <h1 class="text-center mt-1">Puestos</h1>
+            <h1 class="text-center mt-1">Ubicación fisica</h1>
         </div>
         <div class=""></div>
     </div>        
@@ -32,10 +33,10 @@
     <div class="row justify-content-center">
         <div class="col"></div>
         <div class="col-md-6">                        
-            <form action="{{ route('puestos.store') }}" method="POST">
+            <form action="{{ route('ubicacionfisica.store') }}" method="POST">
                 @csrf
-                <label for="descripcionlabel">Escribe el nombre del puesto y da click en el botón Registrar</label>
-                <input type="text" name="nombre" id="descripcionlabel" class="form-control">
+                <label for="namemarcalabel">Escribe el nombre de la ubicación y da click en el botón Registrar</label>
+                <input type="text" name="ubicacion" id="namemarcalabel" class="form-control">
                 <div class="col d-flex justify-content-end">
                     <input type="submit" value="Registrar" class="btn btn-primary mt-4">
                 </div>

@@ -20,22 +20,21 @@
      <div class="row">
         <div class=""></div>
         <div class="col">
-            <h1 class="text-center mt-1">Puestos</h1>
+            <h1 class="text-center mt-1">Áreas de asignación</h1>
         </div>
         <div class=""></div>
     </div>        
 @stop
 
 @section('content')
-    
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col"></div>
         <div class="col-md-6">                        
-            <form action="{{ route('puestos.store') }}" method="POST">
+            <form action="{{ route('areadeasignacion.store') }}" method="POST">
                 @csrf
-                <label for="descripcionlabel">Escribe el nombre del puesto y da click en el botón Registrar</label>
-                <input type="text" name="nombre" id="descripcionlabel" class="form-control">
+                <label for="areadeusoid">Escribe el nombre de la asignación y da click en el botón Registrar</label>
+                <input type="text" name="nombre" id="areadeusoid" class="form-control">
                 <div class="col d-flex justify-content-end">
                     <input type="submit" value="Registrar" class="btn btn-primary mt-4">
                 </div>

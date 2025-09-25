@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'Inventario Sistemas',
+    'title' => 'Inventario IEESSPP',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -65,7 +65,7 @@ return [
     
 
 
-    'logo' => '<b>Inventario Sistemas</b>',
+    'logo' => '<b>Inventario IEESSPP</b>',
     //'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',        
     'logo_img' => 'vendor/adminlte/dist/img/logocircularieesspp.png',    
     //'logo_img_class' => 'brand-image img-circle elevation-3',
@@ -348,9 +348,9 @@ return [
 
 
         [
-            'text' => 'Panel de Inicio',
+            'text' => 'Buscar',
             'url' => 'dashboard',            
-            'icon' => 'fas fa-fw fa-home',
+            'icon' => 'fas fa-fw fa-search',
             //'icon' => 'fas fa-fw fa-user',
         ],
         [

@@ -7,7 +7,7 @@ use App\Http\Controllers\EstadoDeUsoController;
 use App\Http\Controllers\ResguardanteController;
 use App\Http\Controllers\PuestoController;
 use App\Http\Controllers\UbicacionFisicaController;
-
+use App\Http\Controllers\AreaDeAsignacionController;
 
 use App\Http\Controllers\CocinaController;
 use App\Http\Controllers\HomeController;
@@ -89,7 +89,7 @@ Route::resource('puestos', PuestoController::class)->middleware(['auth:sanctum',
 
 Route::apiResource("ubicacionfisica",UbicacionFisicaController::class)->middleware(['auth:sanctum','can:alumnos.index']);
 
- 
+ Route::apiResource("areadeasignacion",AreaDeAsignacionController::class)->middleware(['auth:sanctum','can:alumnos.index']);
 
 
 
