@@ -356,23 +356,8 @@ return [
         [
             'text' => 'Inventario',
             //'icon' => 'fas fa-fw fa-share',
-            //'url' => 'alumnos',
+            'url' => 'inventario',
             'icon' => 'fas fa-fw fa-box',
-    
-            'submenu' => [                
-                [
-                    'text' => 'Sistemas',
-                    'url' => 'inventario',
-                    'icon' => 'fas fa-fw fa-boxsw',
-                ],
-                /*
-                [
-                    'text' => 'Instructores',
-                    'url' => 'instructores',
-                    'icon' => 'fas fa-fw fa-scree-users',
-                ],
-                */
-            ],
         ],
         [
             'text' => 'Productos',
