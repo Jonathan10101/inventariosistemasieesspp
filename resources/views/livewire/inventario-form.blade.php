@@ -124,15 +124,15 @@
                 @forelse ($resguardos as $resguardo)
                     <tr>
                         <td>{{ $resguardo->descripcion }}</td>
-                        <td>{{ $resguardo->marca_id }}</td>
+                        <td>{{ $resguardo->marca->nombre }}</td>
                         <td>{{ $resguardo->modelo }}</td>
                         <td>{{ $resguardo->nserie }}</td>
-                        <td>{{ $resguardo->nresguardo }}</td>
-                        <td>{{ $resguardo->estado_uso_id }}</td>
-                        <td>{{ $resguardo->area_de_uso_id }}</td>
+                        <td>{{ $resguardo->id }}</td>
+                        <td>{{ $resguardo->estadouso->estado }}</td>
+                        <td>{{ $resguardo->areadeasignacion->nombre }}</td>
                         <td>{{ $resguardo->ubicacion_fisicas_id }}</td>
-                        <td>{{ $resguardo->resguardante_id }}</td>
-                        <td>{{ $resguardo->puesto_id }}</td>
+                        <td>{{$resguardo->resguardante->nombre1}} {{$resguardo->resguardante->nombre2}} {{$resguardo->resguardante->apellido1}} {{$resguardo->resguardante->apellido2}}</td>
+                        <td>{{ $resguardo->puesto->nombre }}</td>
 
 
                         <td class="w-100">    

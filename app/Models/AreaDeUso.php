@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Resguardo;
 
 class AreaDeUso extends Model
 {
@@ -18,6 +19,11 @@ class AreaDeUso extends Model
             $value = strtoupper($value);
         }
         return parent::setAttribute($key, $value);
+    }
+
+    public function resguardos()
+    {
+        return $this->hasMany(Resguardo::class);
     }
     
 }

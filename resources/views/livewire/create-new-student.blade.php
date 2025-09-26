@@ -35,11 +35,13 @@
                                 <input type="text" id="numerodeserieid" wire:model.defer="numerodeserie" class="form-control" oninput="this.value = this.value.toUpperCase()">
                                 @error('numerodeserieid') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
+                            {{--
                             <div class="col-md-12">
                                 <label for="numeroderesguardoid" class="form-label">No. de resguardo*</label>
                                 <input type="text" id="numeroderesguardoid" wire:model.defer="numeroderesguardo" class="form-control" oninput="this.value = this.value.toUpperCase()">
                                 @error('numeroderesguardoid') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
+                            --}}
                             <div class="col-md-12">
                                 <label for="estadodeusoid" class="form-label">Estado de uso*</label>
                                 <select id="estadodeusoid" wire:model.defer="estadodeuso" class="form-control">
