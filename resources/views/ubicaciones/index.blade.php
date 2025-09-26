@@ -36,7 +36,7 @@
             <form action="{{ route('ubicacionfisica.store') }}" method="POST">
                 @csrf
                 <label for="namemarcalabel">Escribe el nombre de la ubicación y da click en el botón Registrar</label>
-                <input type="text" name="ubicacion" id="namemarcalabel" class="form-control">
+                <input type="text" name="ubicacion" autofocus id="namemarcalabel" class="form-control">
                 <div class="col d-flex justify-content-end">
                     <input type="submit" value="Registrar" class="btn btn-primary mt-4">
                 </div>

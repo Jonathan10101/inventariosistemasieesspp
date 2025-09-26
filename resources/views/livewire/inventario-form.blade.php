@@ -80,8 +80,8 @@
         <div class="col-md-6">            
             <div class="input-group">
                 <label for="searchid">Escanea el código de barras o escribe el nombre del resguardante y da clic en Buscar</label>
-                <input type="text" id="searchid" wire:model="search"  class="form-control" />
-                <button class="btn btn-primary" wire:click="searchEstudiantes">
+                <input type="text" id="searchid" wire:keydown.enter="searchResguardos" wire:model="search"  class="form-control" />
+                <button class="btn btn-primary" wire:click="searchResguardos">
                     <i class="fas fa-search"></i> Buscar
                 </button>
                 @if($search)
@@ -107,63 +107,47 @@
                     <th scope="col">NO. DE INVENTARIO</th>
                     <!--
                     <th scope="col">CUIP</th>
-                    -->
                     <th scope="col">NO. DE RESGUARDO</th>
+                    -->
                     <th scope="col">ESTADO DE USO</th>                      
                     <th scope="col">AREA DE ASIGNACIÓN</th>
                     <th scope="col">UBICACIÓN FISICA</th>
                     <th scope="col">NOMBRE USUARIO RESGUARDANTE</th>
                     <th scope="col">PUESTO USUARIO RESGUARDANTE</th>
+                    <!--
                     <th scope="col">N° DE INVENTARIO ACTUALIZADO</th>
-
+                    -->
                     <th scope="col">ACCIONES</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse ($estudiantes as $estudiante)
+                @forelse ($resguardos as $resguardo)
                     <tr>
-                        <td>{{ $estudiante->matricula_cuip }}</td>
-                        <td>{{ $estudiante->nombre1 }} {{ $estudiante->nombre2 }} {{ $estudiante->apellido1 }} {{ $estudiante->apellido2 }}</td>
-                        <td>{{ $estudiante->edad }}</td>        
-                        <td>{{ $estudiante->genero }}</td>        
-                        <td>{{ $estudiante->curp }}</td>
-                        {{--
-                        <td>{{ $estudiante->cuip }}</td>
-                        --}}
-                        <td>{{ $estudiante->escolaridad->nivel_escolaridad }}</td>
-                        @if(!empty($estudiante->cuip))
-                            <td>{{ $estudiante->cuip }}</td>    
-                        @else
-                            <td>SIN CUIP</td>
-                        @endif
-
-                        {{--
-                        <td>{{ $estudiante->municipio->nombre_municipio }}</td>
-                        --}}
-
-                        <td>{{ $estudiante->municipio->estado->nombre }}</td>
+                        <td>{{ $resguardo->descripcion }}</td>
+                        <td>{{ $resguardo->marca_id }}</td>
+                        <td>{{ $resguardo->modelo }}</td>
+                        <td>{{ $resguardo->nserie }}</td>
+                        <td>{{ $resguardo->nresguardo }}</td>
+                        <td>{{ $resguardo->estado_uso_id }}</td>
+                        <td>{{ $resguardo->area_de_uso_id }}</td>
+                        <td>{{ $resguardo->ubicacion_fisicas_id }}</td>
+                        <td>{{ $resguardo->resguardante_id }}</td>
+                        <td>{{ $resguardo->puesto_id }}</td>
 
 
-                        <td>
-                            {{$estudiante->estatus[0]->estatus}}
-                        </td>   
                         <td class="w-100">    
                             @can('alumnos.create')                                                    
-                            <button  wire:click="cambiarAccion('inscripcion_a_curso',{{$estudiante->id}})" class="btn btn-dark btn-sm mt-1 mb-1">                           
+                            <button  wire:click="cambiarAccion('inscripcion_a_curso',{{$resguardo->id}})" class="btn btn-dark btn-sm mt-1 mb-1">                           
                                 <i class="fas fa-hand-pointer"></i> Asignar
                             </button>
                             @endcan
                             @can('alumnos.edit')   
-                            <button wire:click="cambiarAccion('editar',{{ $estudiante->id }})" class="btn btn-primary btn-sm mt-1 mb-1">                            
+                            <button wire:click="cambiarAccion('editar',{{ $resguardo->id }})" class="btn btn-primary btn-sm mt-1 mb-1">                            
                                 <i class="fas fa-edit"></i>Editar
                             </button>  
                             @endcan                          
                             
-                            @if(isset($estudiante->inscripciones[0]) && $estudiante->inscripciones[0]->cursos)                            
-                            <button  wire:click="cambiarAccion('mostrar_certificados',{{ $estudiante->id }})" class="btn btn-warning btn-sm mt-1 mb-1">                                                                                            
-                                <i class="fas fa-download"></i> Certificados
-                            </button>
-                            @endif                                                                                                        
+                                                                                                                  
                         </td>
                     </tr>
                 @empty
@@ -177,7 +161,7 @@
 
     <!-- Paginación -->
     <div class="d-flex justify-content-end mt-3">
-        {{ $estudiantes->links() }}
+        {{ $resguardos->links() }}
     </div>
 
 

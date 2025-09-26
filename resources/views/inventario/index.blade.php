@@ -7,7 +7,7 @@
      <div class="row">
         <div class=""></div>
         <div class="col">
-            <h1 class="text-start mt-5 ml-5">Inventario</h1>
+            <h1 class="text-start mt-5 ml-1">Inventario</h1>
         </div>
         <div class=""></div>
     </div>    

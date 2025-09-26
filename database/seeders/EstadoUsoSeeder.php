@@ -17,7 +17,13 @@ class EstadoUsoSeeder extends Seeder
     {
         DB::table('estado_uso')->insert([
             [                
+                'estado' => 'Bueno',                
+            ],
+            [                
                 'estado' => 'Regular',                
+            ],
+            [                
+                'estado' => 'Malo',                
             ],
             
         ]);

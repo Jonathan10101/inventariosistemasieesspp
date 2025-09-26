@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Municipio;
+use App\Models\Resguardo;
 use App\Models\Escolaridad;
 use App\Models\Estudiante;
 use App\Models\Generaciones;
@@ -326,7 +327,8 @@ class StudentForm extends Component
     //Renderiza el componente
     public function render()
     {
-        $query = Estudiante::query();
+        /*
+        $query = Resguardo::query();
 
         if ($this->search) {
             // Convertimos a minúsculas y quitamos acentos
@@ -363,6 +365,11 @@ class StudentForm extends Component
                 }
             });
         }
+            */
+        dd("x");
+
+        $resguardo = Resguardo::find($this->search);
+      
 
         return view('livewire.student-form', [
             'municipios' => Municipio::all(),

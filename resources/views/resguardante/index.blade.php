@@ -43,7 +43,7 @@
                 
     <div class="row">
         <div class="col-md-12 mt-3">
-            <input type="text" name="nombre1" class="form-control" placeholder="Primer nombre" value="{{ old('nombre1') }}">
+            <input type="text" name="nombre1" autofocus class="form-control" placeholder="Primer nombre" value="{{ old('nombre1') }}">
         </div>
         <div class="col-md-12 mt-3">
             <input type="text" name="nombre2" class="form-control" placeholder="Segundo nombre (opcional)" value="{{ old('nombre2') }}">

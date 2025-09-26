@@ -25,7 +25,8 @@ use App\Livewire\Forms\StudentCreateForm;
 use NumberToWords\NumberToWords;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use  App\Models\EstatusEstudiante;
+use App\Models\EstatusEstudiante;
+use App\Models\Resguardo;
 
 class InventarioForm extends Component
 {
@@ -46,7 +47,7 @@ class InventarioForm extends Component
     public $tieneCursosAsignados = false;
     public $formSubmitted = false;    
     public $tituloModalPrincipal = "Registrar";
-    public $perPage = 5;
+    public $perPage = 3;
     public $idEstudianteADarDeBaja;
     public $fecha_baja;
     public $motivo_baja;
@@ -217,7 +218,7 @@ function generarEtiquetaBarcode($codigo, $texto = true)
     }
 
     // Función para realizar la búsqueda
-    public function searchEstudiantes()
+    public function searchResguardos()
     {
         // No es necesario hacer nada más, ya que Livewire maneja automáticamente el filtrado con `wire:model="search"`
     }
@@ -311,7 +312,7 @@ function generarEtiquetaBarcode($codigo, $texto = true)
     public function render()
     {
         $query = Estudiante::query();
-        if ($this->search) {
+        if ($this-> ) {
             $query->where(function ($q) {
                 $q->where('nombre1', 'like', "%{$this->search}%")
                     ->orWhere('nombre2', 'like', "%{$this->search}%")
@@ -334,6 +335,7 @@ function generarEtiquetaBarcode($codigo, $texto = true)
     //Renderiza el componente
     public function render()
     {
+        /*
         $query = Estudiante::query();
 
         if ($this->search) {
@@ -371,12 +373,20 @@ function generarEtiquetaBarcode($codigo, $texto = true)
                 }
             });
         }
+        */
+  
+        $query = Resguardo::query();
+
+        if ($this->search) {
+            $busqueda = ltrim($this->search, '0'); // quitar ceros de la izquierda
+            $query->where('id', $busqueda);
+        }
 
         return view('livewire.inventario-form', [
             'municipios' => Municipio::all(),
             'escolaridades' => Escolaridad::all(),
-            'generaciones' => Generaciones::all(), // Cargar generaciones
-            'estudiantes' => $query->paginate($this->perPage)
+            'generaciones' => Generaciones::all(),
+            'resguardos' => $query->paginate($this->perPage),
         ]);
     }
 
@@ -464,48 +474,58 @@ function generarEtiquetaBarcode($codigo, $texto = true)
     public function saveNewStudent($data){ 
         
         //dd($data);
-    return redirect()->route('etiquetas.show', $data['numerodeserie']);
+        //return redirect()->route('etiquetas.show', $data['numerodeserie']);
      
 
 
 
         $datafinal = [
             'descripcion' => $data['descripcion'],
-            'marca' => $data['marca'],
+            'marca_id' => $data['marca'],
             'modelo' => $data['modelo'],
-            'numerodeserie' => $data['numerodeserie'],
-            'numeroderesguardo' => $data['numeroderesguardo'],            
-            'estadodeuso' => $data['estadodeuso'],            
-            'areadeasignacion' => $data['areadeasignacion'],  
-            'ubicacionfisica' => $data['ubicacionfisica'],  
-            'resguardante' => $data['resguardante'],  
-            'puestodelresguardanteqq' => $data['puestodelresguardante'],  
+            'nserie' => $data['numerodeserie'],
+            'nresguardo' => $data['numeroderesguardo'],            
+            'estado_uso_id' => $data['estadodeuso'],            
+            'area_de_uso_id' => $data['areadeasignacion'],  
+            'ubicacion_fisicas_id' => $data['ubicacionfisica'],  
+            'resguardante_id' => $data['resguardante'],  
+            'puesto_id' => $data['puestodelresguardante'],  
         ];
 
 
         
         //$this->sudentCreate->validate();
         //dd($this->studentCreate);
-        $this->resetForm();
+        //$this->resetForm();
       
-        $id_of_student = Estudiante::create($datafinal);
+        $id_of_student = Resguardo::create($datafinal);
         $idEstudiante = $id_of_student->id;
+
+
+        //dd($idEstudiante);
+
+        /*
         $dataEstatusEstudiante = [
             'estatus' => 'ACTIVO',
             'estudiante_id' => $idEstudiante
         ];   
+
         EstatusEstudiante::create($dataEstatusEstudiante);             
-        
+                */
         
         $idStudent = (string) $id_of_student->id;
-        //dd(gettype('$idStudent'));
+        // Genera un código de 10 dígitos, con ceros a la izquierda
+        $codigo = str_pad($idStudent, 8, '0', STR_PAD_LEFT);
+        
         $this->dispatch('alumno-created', $idStudent);
         //$this->assignCourse($id);
         
-        
+        return redirect()->route('etiquetas.show',$codigo);
+
         //$this->assignCourse(3);
 
 
+        $this->resetForm();
         $this->showModal = false;  
     }
 

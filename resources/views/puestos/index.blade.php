@@ -35,7 +35,7 @@
             <form action="{{ route('puestos.store') }}" method="POST">
                 @csrf
                 <label for="descripcionlabel">Escribe el nombre del puesto y da click en el botón Registrar</label>
-                <input type="text" name="nombre" id="descripcionlabel" class="form-control">
+                <input type="text" name="nombre" id="descripcionlabel" autofocus class="form-control">
                 <div class="col d-flex justify-content-end">
                     <input type="submit" value="Registrar" class="btn btn-primary mt-4">
                 </div>
