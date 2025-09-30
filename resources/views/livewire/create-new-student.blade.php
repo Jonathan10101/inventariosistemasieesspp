@@ -13,7 +13,7 @@
                             <div class="col-md-12">
                                 <label for="descripcionid" class="form-label">Descripción*</label>
                                 <input type="text" id="descripcionid" wire:model.defer="descripcion" class="form-control" oninput="this.value = this.value.toUpperCase()">
-                                @error('descripcionid') <span class="text-danger">{{ $message }}</span> @enderror
+                                @error('descripcion') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                             <div class="col-md-12">
                                 <label for="marcaid" class="form-label">Marca*</label>
@@ -23,23 +23,23 @@
                                         <option value="{{ $marca->id }}">{{ $marca->nombre }}</option>
                                     @endforeach
                                 </select>
-                                @error('marcaid') <span class="text-danger">{{ $message }}</span> @enderror
+                                @error('marca') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                             <div class="col-md-12">
                                 <label for="modeloid" class="form-label">Modelo*</label>
                                 <input type="text" id="modeloid" wire:model.defer="modelo" class="form-control" oninput="this.value = this.value.toUpperCase()">
-                                @error('modeloid') <span class="text-danger">{{ $message }}</span> @enderror
+                                @error('modelo') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                             <div class="col-md-12">
                                 <label for="numerodeserieid" class="form-label">No. de serie*</label>
                                 <input type="text" id="numerodeserieid" wire:model.defer="numerodeserie" class="form-control" oninput="this.value = this.value.toUpperCase()">
-                                @error('numerodeserieid') <span class="text-danger">{{ $message }}</span> @enderror
+                                @error('numerodeserie') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                             {{--
                             <div class="col-md-12">
                                 <label for="numeroderesguardoid" class="form-label">No. de resguardo*</label>
                                 <input type="text" id="numeroderesguardoid" wire:model.defer="numeroderesguardo" class="form-control" oninput="this.value = this.value.toUpperCase()">
-                                @error('numeroderesguardoid') <span class="text-danger">{{ $message }}</span> @enderror
+                                @error('numeroderesguardo') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                             --}}
                             <div class="col-md-12">
@@ -50,7 +50,7 @@
                                         <option value="{{ $estadodeuso->id }}">{{ $estadodeuso->estado }}</option>
                                     @endforeach
                                 </select>
-                                @error('estadodeusoid') <span class="text-danger">{{ $message }}</span> @enderror
+                                @error('estadodeuso') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                             <div class="col-md-12">
                                 <label for="areadeasignacionid" class="form-label">Area de asignación*</label>
@@ -60,7 +60,7 @@
                                         <option value="{{ $areadeasignacion->id }}">{{ $areadeasignacion->nombre }}</option>
                                     @endforeach
                                 </select>
-                                @error('areadeasignacionid') <span class="text-danger">{{ $message }}</span> @enderror
+                                @error('areadeasignacion') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                             <div class="col-md-12">
                                 <label for="ubicacionfisicaid" class="form-label">Ubicación fisica*</label>
@@ -70,7 +70,7 @@
                                         <option value="{{ $ubicacionifisca->id }}">{{ $ubicacionifisca->descripcion }}</option>
                                     @endforeach
                                 </select>
-                                @error('ubicacionfisicaid') <span class="text-danger">{{ $message }}</span> @enderror
+                                @error('ubicacionfisica') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                             <div class="col-md-12">
                                 <label for="resguardanteid" class="form-label">Resguardante*</label>
@@ -80,7 +80,7 @@
                                         <option value="{{ $resguardante->id }}">{{ $resguardante->nombre1 }} {{ $resguardante->nombre2 }} {{ $resguardante->apellido1 }} {{ $resguardante->apellido2 }}</option>
                                     @endforeach
                                 </select>
-                                @error('resguardanteid') <span class="text-danger">{{ $message }}</span> @enderror
+                                @error('resguardante') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                             <div class="col-md-12">
                                 <label for="puestodelresguardanteid" class="form-label">Puesto del resguardante*</label>
@@ -90,7 +90,7 @@
                                         <option value="{{ $puesto->id }}">{{ $puesto->nombre }}</option>
                                     @endforeach
                                 </select>
-                                @error('puestodelresguardanteid') <span class="text-danger">{{ $message }}</span> @enderror
+                                @error('puestodelresguardante') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
 
 

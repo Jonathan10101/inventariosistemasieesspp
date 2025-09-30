@@ -9,6 +9,7 @@ use App\Models\EstadoUso;
 use App\Models\Resguardante;
 use App\Models\Puesto;
 use App\Models\AreaDeUso;
+use App\Models\UbicacionFisica;
 
 class Resguardo extends Model
 {
@@ -26,6 +27,10 @@ class Resguardo extends Model
         return $this->belongsTo(EstadoUso::class,'estado_uso_id','id');        
     }
 
+    public function ubicacionFisica(){
+        return $this->belongsTo(UbicacionFisica::class,'ubicacion_fisicas_id','id');
+    }
+
     public function resguardante()
     {
         return $this->belongsTo(Resguardante::class,'resguardante_id','id');
@@ -40,6 +45,18 @@ class Resguardo extends Model
     {
         return $this->belongsTo(AreaDeUso::class,'area_de_uso_id','id');
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($resguardo) {
+            // Una vez creado, asignamos el mismo valor que el id
+            $resguardo->nresguardo = $resguardo->id;
+            $resguardo->save();
+        });
+    }
+
 
 
 

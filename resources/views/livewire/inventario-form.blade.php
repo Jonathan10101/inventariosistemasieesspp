@@ -130,7 +130,7 @@
                         <td>{{ $resguardo->id }}</td>
                         <td>{{ $resguardo->estadouso->estado }}</td>
                         <td>{{ $resguardo->areadeasignacion->nombre }}</td>
-                        <td>{{ $resguardo->ubicacion_fisicas_id }}</td>
+                        <td>{{ $resguardo->ubicacionFisica->descripcion }}</td>
                         <td>{{$resguardo->resguardante->nombre1}} {{$resguardo->resguardante->nombre2}} {{$resguardo->resguardante->apellido1}} {{$resguardo->resguardante->apellido2}}</td>
                         <td>{{ $resguardo->puesto->nombre }}</td>
 

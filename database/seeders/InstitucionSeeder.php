@@ -23,7 +23,6 @@ class InstitucionSeeder extends Seeder
                 'nombre' => 'SECRETARIADO EJECUTIVO DEL SISTEMA ESTATAL DE SEGURIDAD PUBLICA (SESESP)',
                 'url_imagen' => 'sesesp.png'
             ],
-
         ]);        
     }
     

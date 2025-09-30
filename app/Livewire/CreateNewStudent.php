@@ -38,7 +38,7 @@ class CreateNewStudent extends Component
         'descripcion' => 'required',
         'marca' => 'required',
         'modelo' => 'required',
-        'numerodeserie' => 'required',
+        'numerodeserie' => 'required|unique',
         'numeroderesguardo' => 'required',
         'estadodeuso' => 'required',
         'areadeasignacion' => 'required',
@@ -72,7 +72,7 @@ class CreateNewStudent extends Component
         */   
         
         
-        //$this->validate();// Validamos los datos
+        $this->validate();// Validamos los datos
         $data = [
             'descripcion' => $this->descripcion,
             'marca' => $this->marca,

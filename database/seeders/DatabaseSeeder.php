@@ -8,6 +8,7 @@ use Database\Seeders\EstadoUsoSeeder;
 use Database\Seeders\AreaDeUsoSeeder;
 use Database\Seeders\UbicacionFisicaSeeder;
 use Database\Seeders\PuestoSeeder;
+use Database\Seeders\ResguardanteSeeder;
 
 use Database\Seeders\MunicipiosSeeder;
 use Database\Seeders\AdscripcionesSeeder;
@@ -19,6 +20,7 @@ use Database\Seeders\CursoSeeder;
 use Database\Seeders\EstadosSeeder;
 use Database\Seeders\YearSeeder;
 use Database\Seeders\InstitucionSeeder;
+use Database\Seeders\MarcaSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -39,6 +41,9 @@ class DatabaseSeeder extends Seeder
         $this->call(AreaDeUsoSeeder::class);
         $this->call(UbicacionFisicaSeeder::class);
         $this->call(PuestoSeeder::class);
+        $this->call(MarcaSeeder::class);
+        $this->call(ResguardanteSeeder::class);
+
 
 
         $this->call(EstadosSeeder::class);

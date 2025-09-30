@@ -346,11 +346,11 @@ return [
         ['header' => 'account_settings'],
         */
 
-
+        
         [
-            'text' => 'Buscar',
+            'text' => 'Dashboard',
             'url' => 'dashboard',            
-            'icon' => 'fas fa-fw fa-search',
+            'icon' => 'fas fa-fw fa-home',
             //'icon' => 'fas fa-fw fa-user',
         ],
         [

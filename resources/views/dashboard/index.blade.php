@@ -9,18 +9,6 @@
             {{--
             <livewire:student-stats />
             --}}
-            <form action="" class="row mt-5">
-                <div class="col-12">
-                    <label for="buscarid">Escanea el código de barras o escribe el nombre del resguardante y da clic en Buscar</label>
-                </div>
-                <div class="col-11 m-0 p-0">
-                    <input type="text" id="buscarid" class="form-control" required autofocus>
-                </div>
-                <div class="col-1 m-0 p-0">
-                    <input type="submit" value="Buscar" class="btn btn-primary w-100">
-                </div>
-            </form>
-
     
 @stop
 

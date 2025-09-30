@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string("descripcion");
             $table->unsignedBigInteger('marca_id');
             $table->string("modelo");
-            $table->string("nserie");
-            $table->string("nresguardo")->nullable();
+            $table->string("nserie")->unique();
+            $table->string("nresguardo")->nullable()->unique();
             $table->unsignedBigInteger('estado_uso_id');
             $table->unsignedBigInteger('area_de_uso_id');
             $table->unsignedBigInteger('ubicacion_fisicas_id');
