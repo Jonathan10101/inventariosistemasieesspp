@@ -473,47 +473,22 @@ function generarEtiquetaBarcode($codigo, $texto = true)
     #[On('saveFromComponentNewStudent')] 
     public function saveNewStudent($data){ 
         
-        //dd($data);
-        //return redirect()->route('etiquetas.show', $data['numerodeserie']);
-     
+  $id_of_student = Resguardo::create([
+    'descripcion' => $data['descripcion'],
+    'marca_id' => $data['marca_id'],
+    'modelo' => $data['modelo'],
+    'nserie' => $data['nserie'],
+    // no mandamos nresguardo aquí
+    'estado_uso_id' => $data['estado_uso_id'],            
+    'area_de_uso_id' => $data['area_de_uso_id'],  
+    'ubicacion_fisicas_id' => $data['ubicacion_fisicas_id'],  
+    'resguardante_id' => $data['resguardante_id'], 
+    'puesto_id' => $data['puesto_id'] 
+]);
 
-
-
-     
-        $datafinal = [
-            'descripcion' => $data['descripcion'],
-            'marca_id' => $data['marca_id'],
-            'modelo' => $data['modelo'],
-            'nserie' => $data['nserie'],
-            'nresguardo' => $data['nresguardo'],            
-            'estado_uso_id' => $data['estado_uso_id'],            
-            'area_de_uso_id' => $data['area_de_uso_id'],  
-            'ubicacion_fisicas_id' => $data['ubicacion_fisicas_id'],  
-            'resguardante_id' => $data['resguardante_id'], 
-            'puesto_id' => $data['puesto_id'] 
-        ];
-
-
-
-        
-        //$this->sudentCreate->validate();
-        //dd($this->studentCreate);
-        //$this->resetForm();
-      
-        $id_of_student = Resguardo::create($datafinal);
-        $idEstudiante = $id_of_student->id;
-
-
-        //dd($idEstudiante);
-
-        /*
-        $dataEstatusEstudiante = [
-            'estatus' => 'ACTIVO',
-            'estudiante_id' => $idEstudiante
-        ];   
-
-        EstatusEstudiante::create($dataEstatusEstudiante);             
-                */
+// Ahora que ya se creó, tenemos el ID
+//$id_of_student->nresguardo = $id_of_student->id;
+//$id_of_student->save();
         
         $idStudent = (string) $id_of_student->id;
         // Genera un código de 10 dígitos, con ceros a la izquierda

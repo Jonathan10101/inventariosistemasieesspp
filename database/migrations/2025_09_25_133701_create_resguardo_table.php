@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('marca_id');
             $table->string("modelo");
             $table->string("nserie")->unique();
-            $table->string("nresguardo")->unique();
+            $table->string("nresguardo")->nullable()->unique();
             $table->unsignedBigInteger('estado_uso_id');
             $table->unsignedBigInteger('area_de_uso_id');
             $table->unsignedBigInteger('ubicacion_fisicas_id');
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->unsignedBigInteger('puesto_id');
 
             $table->foreign('marca_id')->references('id')->on('marcas');
-            $table->foreign('estado_uso_id')->references('id')->on('estado_uso');
+            $table->foreign('estado_uso_id')->references('id')-W>on('estado_uso');
             $table->foreign('area_de_uso_id')->references('id')->on('area_de_uso');
             $table->foreign('ubicacion_fisicas_id')->references('id')->on('ubicacion_fisicas');
             $table->foreign('resguardante_id')->references('id')->on('resguardantes');

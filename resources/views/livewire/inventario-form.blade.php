@@ -79,8 +79,8 @@
     <div class="row mb-3">
         <div class="col-md-6">            
             <div class="input-group">
-                <label for="searchid">Da clic en el buscador y escanea el código de barras (o digitalo con el teclado), despues con el mouse da clic en Buscar</label>
-                <input type="text" id="searchid" wire:keydown.enter="searchResguardos" wire:model="search"  class="form-control" />
+                <label for="searchid">Da clic en el buscador, escanea o escribe el No. de inventario y luego presiona “Buscar”</label>
+                <input type="text" id="searchid" placeholder="Buscador" wire:keydown.enter="searchResguardos" wire:model="search"  class="form-control" />
                 <button class="btn btn-primary" wire:click="searchResguardos">
                     <i class="fas fa-search"></i> Buscar
                 </button>
@@ -128,11 +128,11 @@
                         <td>{{ $resguardo->modelo }}</td>
                         <td>{{ $resguardo->nserie }}</td>
                         <td>{{ $resguardo->id }}</td>
-                        <td>{{ $resguardo->estadouso->estado }}</td>
+                        <td>{{ strtoupper($resguardo->estadouso->estado) }}</td>
                         <td>{{ $resguardo->areadeasignacion->nombre }}</td>
                         <td>{{ $resguardo->ubicacionFisica->descripcion }}</td>
                         <td>{{$resguardo->resguardante->nombre1}} {{$resguardo->resguardante->nombre2}} {{$resguardo->resguardante->apellido1}} {{$resguardo->resguardante->apellido2}}</td>
-                        <td>{{ $resguardo->puesto->nombre }}</td>
+                        <td>{{ strtoupper($resguardo->puesto->nombre) }}</td>
 
 
                         <td class="w-100">    
@@ -190,7 +190,7 @@
                     allowEnterKey: false     // Deshabilita la tecla Enter
                 }).then((result) => {
                        if (result.isConfirmed) {
-                    window.location.reload();     
+                            window.location.reload();     
                         }    
                     /*
                     if (result.isConfirmed) {
