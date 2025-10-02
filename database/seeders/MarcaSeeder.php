@@ -18,6 +18,7 @@ class MarcaSeeder extends Seeder
             ['nombre' => 'DELL'],
             ['nombre' => 'HP'],
             ['nombre' => 'LENOVO'],
+            ['nombre' => 'MSI'],
             ['nombre' => 'CANON'],
         ]);  
     }

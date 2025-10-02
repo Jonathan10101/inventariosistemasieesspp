@@ -47,7 +47,7 @@ class InventarioForm extends Component
     public $tieneCursosAsignados = false;
     public $formSubmitted = false;    
     public $tituloModalPrincipal = "Registrar";
-    public $perPage = 3;
+    public $perPage = 1;
     public $idEstudianteADarDeBaja;
     public $fecha_baja;
     public $motivo_baja;
@@ -479,18 +479,20 @@ function generarEtiquetaBarcode($codigo, $texto = true)
 
 
 
+     
         $datafinal = [
             'descripcion' => $data['descripcion'],
-            'marca_id' => $data['marca'],
+            'marca_id' => $data['marca_id'],
             'modelo' => $data['modelo'],
-            'nserie' => $data['numerodeserie'],
-            'nresguardo' => $data['numeroderesguardo'],            
-            'estado_uso_id' => $data['estadodeuso'],            
-            'area_de_uso_id' => $data['areadeasignacion'],  
-            'ubicacion_fisicas_id' => $data['ubicacionfisica'],  
-            'resguardante_id' => $data['resguardante'],  
-            'puesto_id' => $data['puestodelresguardante'],  
+            'nserie' => $data['nserie'],
+            'nresguardo' => $data['nresguardo'],            
+            'estado_uso_id' => $data['estado_uso_id'],            
+            'area_de_uso_id' => $data['area_de_uso_id'],  
+            'ubicacion_fisicas_id' => $data['ubicacion_fisicas_id'],  
+            'resguardante_id' => $data['resguardante_id'], 
+            'puesto_id' => $data['puesto_id'] 
         ];
+
 
 
         

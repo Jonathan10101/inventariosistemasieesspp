@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('descripcion', 50)->nullable();
             $table->string('marca', 50)->nullable();
             $table->string('modelo', 50)->nullable();
-            $table->string('numerodeserie', 50)->nullable()->unique();
+            $table->string('numerodeserie',50);
             $table->string('numerodeinventario', 50)->nullable();
             $table->string('numeroderesguardo', 50)->nullable();
             $table->string('estadodeuso', 50)->nullable();

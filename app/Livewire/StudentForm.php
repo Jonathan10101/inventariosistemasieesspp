@@ -462,26 +462,35 @@ class StudentForm extends Component
     #[On('saveFromComponentNewStudent')] 
     public function saveNewStudent($data){ 
         
+        //dd("principal"+$data);
 
      
         $datafinal = [
             'descripcion' => $data['descripcion'],
-            'marca' => $data['marca'],
+            'marca_id' => $data['marca_id'],
             'modelo' => $data['modelo'],
-            'numerodeserie' => $data['numerodeserie'],
-            'numeroderesguardo' => $data['numeroderesguardo'],            
-            'estadodeuso' => $data['estadodeuso'],            
-            'areadeasignacion' => $data['areadeasignacion'],  
-            'ubicacionfisica' => $data['ubicacionfisica'],  
-            'resguardante' => $data['resguardante'],  
-            'puestodelresguardanteqq' => $data['puestodelresguardante'],  
+            'nserie' => $data['nserie'],
+            'nresguardo' => $data['nresguardo'],            
+            'estado_uso_id' => $data['estado_uso_id'],            
+            'area_de_uso_id' => $data['area_de_uso_id'],  
+            'ubicacion_fisicas_id' => $data['ubicaubicacion_fisicas_idcionfisica'],  
+            'resguardante_id' => $data['resguardante_id'], 
+            'puesto_id' => $data['puesto_id'] 
         ];
 
-        dd($dataFinal);
+
+
+
+
+        Resguardo::create($dataFinal);
+
         
         //$this->sudentCreate->validate();
         //dd($this->studentCreate);
         $this->resetForm();
+
+
+        /*
       
         $id_of_student = Estudiante::create($datafinal);
         $idEstudiante = $id_of_student->id;
@@ -499,7 +508,7 @@ class StudentForm extends Component
         
         
         //$this->assignCourse(3);
-
+        */
 
         $this->showModal = false;  
     }

@@ -28,24 +28,23 @@ class CreateNewStudent extends Component
     public $marcas,$estadosdeuso,$areasdeasignacion,$ubicacionesifiscas,$resguardantes,$puestos;
     public $showAdditionalFields = false;
     public $showModal = true; 
-    public $descripcion,$marca,$modelo,$numerodeserie,$numeroderesguardo,
-    $estadodeuso,$areadeasignacion,$ubicacionfisica,$resguardante,$puestodelresguardante;    
+    public $descripcion,$marca_id,$modelo,$nserie,$nresguardo,
+    $estado_uso_id,$area_de_uso_id,$ubicacion_fisicas_id,$resguardante_id,$puesto_id;    
     
-    
-   
-            
+    /*
     protected $rules = [
         'descripcion' => 'required',
-        'marca' => 'required',
+        'marca_id' => 'required',
         'modelo' => 'required',
-        'numerodeserie' => 'required|unique',
-        'numeroderesguardo' => 'required',
-        'estadodeuso' => 'required',
-        'areadeasignacion' => 'required',
-        'ubicacionfisica' => 'required',
-        'resguardante' => 'required',
-        'puestodelresguardante' => 'required',                               
+        'nserie' => 'required',
+        'nresguardo' => 'required',
+        'estado_uso_id' => 'required',
+        'area_de_uso_id' => 'required',
+        'ubicacion_fisicas_id' => 'required',
+        'resguardante_id' => 'required',
+        'puesto_id' => 'required'                               
     ];
+    */
         
     public function mount()
     {
@@ -65,25 +64,31 @@ class CreateNewStudent extends Component
    
 
     public function save(){       
-        /* 
-        if (!$this->matricula_cuip) {
-            $this->matricula_cuip = $this->generateMatricula();
-        }
-        */   
+
         
-        
-        $this->validate();// Validamos los datos
+        $this->validate([
+        'descripcion' => 'required',
+        'marca_id' => 'required',
+        'modelo' => 'required',
+    'nserie' => 'required|unique:resguardo,nserie',
+        'estado_uso_id' => 'required',
+        'area_de_uso_id' => 'required',
+        'ubicacion_fisicas_id' => 'required',
+        'resguardante_id' => 'required',
+        'puesto_id' => 'required' 
+
+        ]);// Validamos los datos
         $data = [
             'descripcion' => $this->descripcion,
-            'marca' => $this->marca,
+            'marca_id' => $this->marca_id,
             'modelo' => $this->modelo,
-            'numerodeserie' => $this->numerodeserie,
-            'numeroderesguardo' => $this->numeroderesguardo,
-            'estadodeuso' => $this->estadodeuso,
-            'areadeasignacion' => $this->areadeasignacion,
-            'ubicacionfisica' => $this->ubicacionfisica,
-            'resguardante' => $this->resguardante,            
-            'puestodelresguardante' => $this->puestodelresguardante,            
+            'nserie' => $this->nserie,
+            'nresguardo' => null,
+            'estado_uso_id' => $this->estado_uso_id,
+            'area_de_uso_id' => $this->area_de_uso_id,
+            'ubicacion_fisicas_id' => $this->ubicacion_fisicas_id,
+            'resguardante_id' => $this->resguardante_id,            
+            'puesto_id' => $this->puesto_id,
         ];
         //dd($data);     
         
@@ -95,8 +100,8 @@ class CreateNewStudent extends Component
     public function resetForm()
     {
         $this->reset([
-            'descripcion','marca', 'modelo', 'numerodeserie', 'numeroderesguardo',
-            'estadodeuso', 'areadeasignacion', 'ubicacionfisica', 'resguardante', 'puestodelresguardante'
+            'descripcion','marca_id', 'modelo', 'nserie', 'nresguardo',
+            'estado_uso_id', 'area_de_uso_id', 'ubicacion_fisicas_id', 'resguardante_id', 'puesto_id'
         ]);
     }
 

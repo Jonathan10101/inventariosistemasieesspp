@@ -79,7 +79,7 @@
     <div class="row mb-3">
         <div class="col-md-6">            
             <div class="input-group">
-                <label for="searchid">Escanea el código de barras o escribe el nombre del resguardante y da clic en Buscar</label>
+                <label for="searchid">Da clic en el buscador y escanea el código de barras (o digitalo con el teclado), despues con el mouse da clic en Buscar</label>
                 <input type="text" id="searchid" wire:keydown.enter="searchResguardos" wire:model="search"  class="form-control" />
                 <button class="btn btn-primary" wire:click="searchResguardos">
                     <i class="fas fa-search"></i> Buscar
@@ -136,18 +136,13 @@
 
 
                         <td class="w-100">    
-                            @can('alumnos.create')                                                    
-                            <button  wire:click="cambiarAccion('inscripcion_a_curso',{{$resguardo->id}})" class="btn btn-dark btn-sm mt-1 mb-1">                           
-                                <i class="fas fa-hand-pointer"></i> Asignar
-                            </button>
-                            @endcan
+                            {{--
                             @can('alumnos.edit')   
                             <button wire:click="cambiarAccion('editar',{{ $resguardo->id }})" class="btn btn-primary btn-sm mt-1 mb-1">                            
                                 <i class="fas fa-edit"></i>Editar
                             </button>  
-                            @endcan                          
-                            
-                                                                                                                  
+                            @endcan
+                            --}}                                                                                              
                         </td>
                     </tr>
                 @empty
@@ -187,13 +182,17 @@
             Livewire.on('alumno-created',function($message){                
                 Swal.fire({
                     title: '¡Éxito!',
-                    text: '!Alumno registrado con exito!',
+                    text: '!Resguardo registrado con exito!',
                     icon: 'success',
                     confirmButtonText: 'Ok',
                     allowOutsideClick: false, // Deshabilita clics fuera del modal
                     allowEscapeKey: false,   // Deshabilita la tecla Escape
                     allowEnterKey: false     // Deshabilita la tecla Enter
                 }).then((result) => {
+                       if (result.isConfirmed) {
+                    window.location.reload();     
+                        }    
+                    /*
                     if (result.isConfirmed) {
                         //Livewire.dispatch('notifyCloseModal');
                         //console.log($message);
@@ -203,6 +202,7 @@
                         
                         //window.location.reload();                        
                     }
+                        */
                 });                
             });   
             Livewire.on('alumno-created2',function($message){                
