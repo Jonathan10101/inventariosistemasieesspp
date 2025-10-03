@@ -39,6 +39,7 @@ class CreateNewStudent extends Component
     public $imagenBase64; // foto capturada desde JS
     public $usarCamara = true; // alternar entre cámara y PC
     public $tomadaDesdeCamara = true;
+    protected $listeners = ['resetImagenes' => 'resetImagenes'];
 
 
     
@@ -56,6 +57,12 @@ class CreateNewStudent extends Component
         'puesto_id' => 'required'                               
     ];
     */
+
+    public function resetImagenes()
+{
+    $this->imagen = null;
+    $this->imagenBase64 = null;
+}
         
     public function mount()
     {
@@ -83,9 +90,20 @@ public function updatedImagen()
 
 
    
-
-    public function save(){       
-
+    public function save()
+    {
+        $this->validate([
+            'descripcion' => 'required',
+            'marca_id' => 'required',
+            'modelo' => 'required',
+            'nserie' => 'required|unique:resguardo,nserie',
+            'estado_uso_id' => 'required',
+            'area_de_uso_id' => 'required',
+            'ubicacion_fisicas_id' => 'required',
+            'resguardante_id' => 'required',
+            'puesto_id' => 'required',
+            'imagen' => 'image|max:2048',
+        ]);
 
         // Si hay base64 (foto de cámara), convertir a UploadedFile
         if ($this->imagenBase64) {
@@ -101,37 +119,13 @@ public function updatedImagen()
                 null,
                 true
             );
-
-            //$tomadaDesdeCamara = true;
-                                    //dd("camara");
-
-        }else{
-               
-
-            //$tomadaDesdeCamara = false;
-            //dd("ordenador");
         }
 
-             $path = $this->imagen->store('resguardos', 'public');
+        // Solo si hay imagen, la guardamos
+        $path = $this->imagen 
+            ? $this->imagen->store('resguardos', 'public')
+            : null;
 
-              
-        $this->validate([
-            'descripcion' => 'required',
-            'marca_id' => 'required',
-            'modelo' => 'required',
-            'nserie' => 'required|unique:resguardo,nserie',
-            'estado_uso_id' => 'required',
-            'area_de_uso_id' => 'required',
-            'ubicacion_fisicas_id' => 'required',
-            'resguardante_id' => 'required',
-            'puesto_id' => 'required',
-            'imagen' => 'nullable|image|max:2048', // 2MB máx
-            //'imagen' => 'nullable|image|max:2048', // 2MB máx
-        ]);// Validamos los datos
-
-        //$path = $this->imagen->store('resguardos', 'public');
-        //dd($path);
-        
         $data = [
             'descripcion' => $this->descripcion,
             'marca_id' => $this->marca_id,
@@ -141,16 +135,15 @@ public function updatedImagen()
             'estado_uso_id' => $this->estado_uso_id,
             'area_de_uso_id' => $this->area_de_uso_id,
             'ubicacion_fisicas_id' => $this->ubicacion_fisicas_id,
-            'resguardante_id' => $this->resguardante_id,            
+            'resguardante_id' => $this->resguardante_id,
             'puesto_id' => $this->puesto_id,
-            'imagen' => $path, // se guarda la ruta
+            'imagen' => $path,
         ];
-        //dd($data);     
-        
-        
+
         $this->dispatch('saveFromComponentNewStudent',$data);        
-        $this->resetForm(); // Limpia las propiedades del formulario  
+        $this->resetForm();
     }
+
 
     public function resetForm()
     {

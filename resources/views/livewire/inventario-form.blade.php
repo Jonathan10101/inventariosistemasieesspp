@@ -124,18 +124,18 @@
             <tbody>
                 @forelse ($resguardos as $resguardo)
                     <tr>
-        <td>
-    @if($resguardo->imagen)
-        <a href="{{ asset('storage/' . $resguardo->imagen) }}" target="_blank">
-            <img src="{{ asset('storage/' . $resguardo->imagen) }}" 
-                 alt="Imagen del producto" 
-                 class="img-thumbnail" 
-                 width="100">
-        </a>
-    @else
-        <span class="text-muted">Sin imagen</span>
-    @endif
-</td>
+                        <td>
+                        @if($resguardo->imagen)
+                        <a href="{{ asset('storage/' . $resguardo->imagen) }}" target="_blank">
+                            <img src="{{ asset('storage/' . $resguardo->imagen) }}" 
+                                alt="Imagen del producto" 
+                                class="img-thumbnail" 
+                                width="100">
+                        </a>
+                        @else
+                            <span class="text-muted">Sin imagen</span>
+                        @endif
+                        </td>
 
 
                         <td><a href="">{{ $resguardo->descripcion }}</a></td>
@@ -177,7 +177,6 @@
 @push('js')
 @livewireScripts
     <script>
-      
         document.addEventListener('livewire:initialized',function(){    
             Livewire.on('closeloadingcertificates',function($message){                
                 //window.location.reload();
@@ -190,9 +189,10 @@
 
             Livewire.on('refresh-page',function($message){                
                 //window.location.reload();
-                
-
+                location.reload(); // Recarga la página completa
+                //alert("x");
             }); 
+
             Livewire.on('alumno-created',function($message){                
                 Swal.fire({
                     title: '¡Éxito!',
@@ -282,14 +282,11 @@
 
 
 
-Livewire.on('loadingDone', function() {
-    Swal.close(); // Cierra el SweetAlert cuando el proceso termine
-    alert("finish");
-});
-
-               
-                        
-        });
+        Livewire.on('loadingDone', function() {
+            Swal.close(); // Cierra el SweetAlert cuando el proceso termine
+            alert("finish");
+        });              
+    });
     </script>
 @endpush
 </div>

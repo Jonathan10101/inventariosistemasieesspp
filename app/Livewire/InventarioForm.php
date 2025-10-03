@@ -292,6 +292,8 @@ function generarEtiquetaBarcode($codigo, $texto = true)
         $this->id_curso = 0;
 
         $this->tituloModalPrincipal = "Registrar";
+        $this->dispatch('refresh-page'); 
+
     }
     
 
