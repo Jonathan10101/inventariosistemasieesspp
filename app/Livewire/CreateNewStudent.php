@@ -20,16 +20,27 @@ use App\Models\Escolaridad;
 use App\Models\Municipio;
 use App\Models\Estudiante;
 use App\Livewire\Forms\StudentCreateForm;
+use Livewire\WithFileUploads;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
+
+
 
 
 class CreateNewStudent extends Component
 {
-
+    use WithFileUploads;
     public $marcas,$estadosdeuso,$areasdeasignacion,$ubicacionesifiscas,$resguardantes,$puestos;
     public $showAdditionalFields = false;
     public $showModal = true; 
     public $descripcion,$marca_id,$modelo,$nserie,$nresguardo,
-    $estado_uso_id,$area_de_uso_id,$ubicacion_fisicas_id,$resguardante_id,$puesto_id;    
+    $estado_uso_id,$area_de_uso_id,$ubicacion_fisicas_id,$resguardante_id,$puesto_id;  
+    public $imagen;  
+    public $imagenBase64; // foto capturada desde JS
+    public $usarCamara = true; // alternar entre cámara y PC
+    public $tomadaDesdeCamara = true;
+
+
     
     /*
     protected $rules = [
@@ -61,23 +72,66 @@ class CreateNewStudent extends Component
         $this->showAdditionalFields = !$this->showAdditionalFields;
     }
 
+
+public function updatedImagen()
+{
+    // Aquí entra cada vez que se selecciona un archivo nuevo
+    $this->imagenBase64 = null; // limpiar la otra opción
+    $this->imagenFinal = $this->imagen; // asignar lo último cargado
+}
+
+
+
    
 
     public function save(){       
 
-        
-        $this->validate([
-        'descripcion' => 'required',
-        'marca_id' => 'required',
-        'modelo' => 'required',
-    'nserie' => 'required|unique:resguardo,nserie',
-        'estado_uso_id' => 'required',
-        'area_de_uso_id' => 'required',
-        'ubicacion_fisicas_id' => 'required',
-        'resguardante_id' => 'required',
-        'puesto_id' => 'required' 
 
+        // Si hay base64 (foto de cámara), convertir a UploadedFile
+        if ($this->imagenBase64) {
+            $fileData = explode(',', $this->imagenBase64)[1];
+            $fileName = 'resguardo_' . Str::random(5) . '.png';
+            $tempPath = sys_get_temp_dir() . '/' . $fileName;
+            file_put_contents($tempPath, base64_decode($fileData));
+
+            $this->imagen = new UploadedFile(
+                $tempPath,
+                $fileName,
+                'image/png',
+                null,
+                true
+            );
+
+            //$tomadaDesdeCamara = true;
+                                    //dd("camara");
+
+        }else{
+               
+
+            //$tomadaDesdeCamara = false;
+            //dd("ordenador");
+        }
+
+             $path = $this->imagen->store('resguardos', 'public');
+
+              
+        $this->validate([
+            'descripcion' => 'required',
+            'marca_id' => 'required',
+            'modelo' => 'required',
+            'nserie' => 'required|unique:resguardo,nserie',
+            'estado_uso_id' => 'required',
+            'area_de_uso_id' => 'required',
+            'ubicacion_fisicas_id' => 'required',
+            'resguardante_id' => 'required',
+            'puesto_id' => 'required',
+            'imagen' => 'nullable|image|max:2048', // 2MB máx
+            //'imagen' => 'nullable|image|max:2048', // 2MB máx
         ]);// Validamos los datos
+
+        //$path = $this->imagen->store('resguardos', 'public');
+        //dd($path);
+        
         $data = [
             'descripcion' => $this->descripcion,
             'marca_id' => $this->marca_id,
@@ -89,6 +143,7 @@ class CreateNewStudent extends Component
             'ubicacion_fisicas_id' => $this->ubicacion_fisicas_id,
             'resguardante_id' => $this->resguardante_id,            
             'puesto_id' => $this->puesto_id,
+            'imagen' => $path, // se guarda la ruta
         ];
         //dd($data);     
         
@@ -100,8 +155,8 @@ class CreateNewStudent extends Component
     public function resetForm()
     {
         $this->reset([
-            'descripcion','marca_id', 'modelo', 'nserie', 'nresguardo',
-            'estado_uso_id', 'area_de_uso_id', 'ubicacion_fisicas_id', 'resguardante_id', 'puesto_id'
+            'imagen','descripcion','marca_id', 'modelo', 'nserie', 'nresguardo',
+            'estado_uso_id', 'area_de_uso_id', 'ubicacion_fisicas_id', 'resguardante_id', 'puesto_id','tomadaDesdeCamara','imagenBase64'
         ]);
     }
 

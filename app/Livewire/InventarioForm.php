@@ -47,7 +47,7 @@ class InventarioForm extends Component
     public $tieneCursosAsignados = false;
     public $formSubmitted = false;    
     public $tituloModalPrincipal = "Registrar";
-    public $perPage = 1;
+    public $perPage = 3;
     public $idEstudianteADarDeBaja;
     public $fecha_baja;
     public $motivo_baja;
@@ -290,6 +290,7 @@ function generarEtiquetaBarcode($codigo, $texto = true)
                 
         $this->id_estudiante = 0;
         $this->id_curso = 0;
+
         $this->tituloModalPrincipal = "Registrar";
     }
     
@@ -473,22 +474,21 @@ function generarEtiquetaBarcode($codigo, $texto = true)
     #[On('saveFromComponentNewStudent')] 
     public function saveNewStudent($data){ 
         
-  $id_of_student = Resguardo::create([
-    'descripcion' => $data['descripcion'],
-    'marca_id' => $data['marca_id'],
-    'modelo' => $data['modelo'],
-    'nserie' => $data['nserie'],
-    // no mandamos nresguardo aquí
-    'estado_uso_id' => $data['estado_uso_id'],            
-    'area_de_uso_id' => $data['area_de_uso_id'],  
-    'ubicacion_fisicas_id' => $data['ubicacion_fisicas_id'],  
-    'resguardante_id' => $data['resguardante_id'], 
-    'puesto_id' => $data['puesto_id'] 
-]);
+        $id_of_student = Resguardo::create([
+            'descripcion' => $data['descripcion'],
+            'marca_id' => $data['marca_id'],
+            'modelo' => $data['modelo'],
+            'nserie' => $data['nserie'],
+            // no mandamos nresguardo aquí
+            'estado_uso_id' => $data['estado_uso_id'],            
+            'area_de_uso_id' => $data['area_de_uso_id'],  
+            'ubicacion_fisicas_id' => $data['ubicacion_fisicas_id'],  
+            'resguardante_id' => $data['resguardante_id'], 
+            'puesto_id' => $data['puesto_id'],
+            'imagen' => $data['imagen'] 
+        ]);
 
-// Ahora que ya se creó, tenemos el ID
-//$id_of_student->nresguardo = $id_of_student->id;
-//$id_of_student->save();
+
         
         $idStudent = (string) $id_of_student->id;
         // Genera un código de 10 dígitos, con ceros a la izquierda

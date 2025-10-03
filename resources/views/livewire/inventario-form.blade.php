@@ -97,7 +97,8 @@
     <div class="table-responsive">
         <table class="table table-striped table-hover">
             <thead>
-                <tr>                    
+                <tr>             
+                    <th scope="col">IMAGEN</th>
                     <th scope="col">DESCRIPCIÓN</th>
                     <th scope="col">MARCA</th>
                     <th scope="col">MODELO</th>
@@ -123,7 +124,21 @@
             <tbody>
                 @forelse ($resguardos as $resguardo)
                     <tr>
-                        <td>{{ $resguardo->descripcion }}</td>
+        <td>
+    @if($resguardo->imagen)
+        <a href="{{ asset('storage/' . $resguardo->imagen) }}" target="_blank">
+            <img src="{{ asset('storage/' . $resguardo->imagen) }}" 
+                 alt="Imagen del producto" 
+                 class="img-thumbnail" 
+                 width="100">
+        </a>
+    @else
+        <span class="text-muted">Sin imagen</span>
+    @endif
+</td>
+
+
+                        <td><a href="">{{ $resguardo->descripcion }}</a></td>
                         <td>{{ $resguardo->marca->nombre }}</td>
                         <td>{{ $resguardo->modelo }}</td>
                         <td>{{ $resguardo->nserie }}</td>
@@ -133,7 +148,6 @@
                         <td>{{ $resguardo->ubicacionFisica->descripcion }}</td>
                         <td>{{$resguardo->resguardante->nombre1}} {{$resguardo->resguardante->nombre2}} {{$resguardo->resguardante->apellido1}} {{$resguardo->resguardante->apellido2}}</td>
                         <td>{{ strtoupper($resguardo->puesto->nombre) }}</td>
-
 
                         <td class="w-100">    
                             {{--
