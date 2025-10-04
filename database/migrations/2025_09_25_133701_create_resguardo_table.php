@@ -26,6 +26,8 @@ return new class extends Migration
               
             // Imagen del producto original
             $table->string("imagen")->nullable();
+            $table->string("resguardo_pdf")->nullable();
+
 
             $table->foreign('marca_id')->references('id')->on('marcas');
             $table->foreign('estado_uso_id')->references('id')->on('estado_uso');

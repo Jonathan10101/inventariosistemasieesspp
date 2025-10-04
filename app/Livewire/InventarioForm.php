@@ -487,7 +487,8 @@ function generarEtiquetaBarcode($codigo, $texto = true)
             'ubicacion_fisicas_id' => $data['ubicacion_fisicas_id'],  
             'resguardante_id' => $data['resguardante_id'], 
             'puesto_id' => $data['puesto_id'],
-            'imagen' => $data['imagen'] 
+            'imagen' => $data['imagen'],
+            'resguardo_pdf' => $data['resguardo_pdf'] 
         ]);
 
 

@@ -137,19 +137,33 @@
                         @endif
                         </td>
 
-
-                        <td><a href="">{{ $resguardo->descripcion }}</a></td>
+                        <td>{{ $resguardo->descripcion }}</td>
                         <td>{{ $resguardo->marca->nombre }}</td>
                         <td>{{ $resguardo->modelo }}</td>
                         <td>{{ $resguardo->nserie }}</td>
-                        <td>{{ $resguardo->id }}</td>
+                        
+                        <td class="text-center">
+                            @if($resguardo->resguardo_pdf)
+                                {{ $resguardo->id }}
+                                <a href="{{ Storage::url($resguardo->resguardo_pdf) }}" target="_blank">
+                                    <br>
+                                    Descargar
+                                </a>
+                            @else
+                                {{ $resguardo->id }}
+                            @endif 
+                        </td>
+
                         <td>{{ strtoupper($resguardo->estadouso->estado) }}</td>
                         <td>{{ $resguardo->areadeasignacion->nombre }}</td>
                         <td>{{ $resguardo->ubicacionFisica->descripcion }}</td>
-                        <td>{{$resguardo->resguardante->nombre1}} {{$resguardo->resguardante->nombre2}} {{$resguardo->resguardante->apellido1}} {{$resguardo->resguardante->apellido2}}</td>
+                        <td><a href="{{ route('resguardante.show', $resguardo->resguardante->id) }}">{{$resguardo->resguardante->nombre1}} {{$resguardo->resguardante->nombre2}} {{$resguardo->resguardante->apellido1}} {{$resguardo->resguardante->apellido2}}</a></td>
                         <td>{{ strtoupper($resguardo->puesto->nombre) }}</td>
 
                         <td class="w-100">    
+                            <button wire:click="cambiarAccion('editar',{{ $resguardo->id }})" class="btn btn-primary btn-sm mt-1 mb-1">                            
+                                <i class="fas fa-edit"></i>Subir resguardo
+                            </button>  
                             {{--
                             @can('alumnos.edit')   
                             <button wire:click="cambiarAccion('editar',{{ $resguardo->id }})" class="btn btn-primary btn-sm mt-1 mb-1">                            

@@ -75,10 +75,13 @@ if($existe){
     /**
      * Display the specified resource.
      */
-    public function show(Resguardante $resguardante)
+    public function show($id)
     {
-        //
-    }
+        $resguardante = Resguardante::find($id);
+
+return view("resguardante.show", [
+    'resguardante' => $resguardante
+]);    }
 
     /**
      * Show the form for editing the specified resource.

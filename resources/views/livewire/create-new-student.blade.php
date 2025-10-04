@@ -139,6 +139,15 @@
                     @error('puesto_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
+
+                <!-- Subir archivo PDF del resguardo -->
+                <div class="col-md-12 mt-3">
+                    <label class="form-label">Archivo PDF del Resguardo*</label><br>
+                    <span>(Sube el archivo firmado en PDF)</span>
+                    <input type="file" wire:model="resguardo_pdf" accept="application/pdf" class="form-control">
+                    @error('resguardo_pdf') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
+
                 <!-- Botón Guardar -->
                 <div class="col d-flex justify-content-end mt-4">
                     <button type="submit" class="btn btn-primary">Guardar</button>

@@ -40,6 +40,8 @@ class CreateNewStudent extends Component
     public $usarCamara = true; // alternar entre cámara y PC
     public $tomadaDesdeCamara = true;
     protected $listeners = ['resetImagenes' => 'resetImagenes'];
+    public $resguardo_pdf;
+
 
 
     
@@ -103,6 +105,8 @@ public function updatedImagen()
             'resguardante_id' => 'required',
             'puesto_id' => 'required',
             'imagen' => 'image|max:2048',
+            'resguardo_pdf' => 'mimes:pdf|max:4096', // 4MB máx
+
         ]);
 
         // Si hay base64 (foto de cámara), convertir a UploadedFile
@@ -126,6 +130,10 @@ public function updatedImagen()
             ? $this->imagen->store('resguardos', 'public')
             : null;
 
+        $pdfPath = $this->resguardo_pdf 
+            ? $this->resguardo_pdf->store('resguardos/pdf', 'public')
+            : null;
+
         $data = [
             'descripcion' => $this->descripcion,
             'marca_id' => $this->marca_id,
@@ -138,6 +146,7 @@ public function updatedImagen()
             'resguardante_id' => $this->resguardante_id,
             'puesto_id' => $this->puesto_id,
             'imagen' => $path,
+            'resguardo_pdf' => $pdfPath,
         ];
 
         $this->dispatch('saveFromComponentNewStudent',$data);        
