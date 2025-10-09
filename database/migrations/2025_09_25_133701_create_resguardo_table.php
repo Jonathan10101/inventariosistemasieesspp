@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('resguardo', function (Blueprint $table) {
+        Schema::create('resguardos', function (Blueprint $table) {
             $table->id();
             $table->string("descripcion");
             $table->unsignedBigInteger('marca_id');
@@ -23,6 +23,8 @@ return new class extends Migration
             $table->unsignedBigInteger('ubicacion_fisicas_id');
             $table->unsignedBigInteger('resguardante_id');
             $table->unsignedBigInteger('puesto_id');
+            $table->unsignedBigInteger('resguardo_id');
+
               
             // Imagen del producto original
             $table->string("imagen")->nullable();
@@ -47,6 +49,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('resguardo');
+        Schema::dropIfExists('resguardos');
     }
 };

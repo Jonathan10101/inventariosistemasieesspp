@@ -16,6 +16,12 @@ class PuestoSeeder extends Seeder
     {
         DB::table('puestos')->insert([
             [                
+                'nombre' => 'Analista',                
+            ],
+            [                
+                'nombre' => 'Analista Profesional',                
+            ],
+            [                
                 'nombre' => 'Encargado de departamento',                
             ],
             [                

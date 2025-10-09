@@ -24,10 +24,7 @@ use Livewire\WithFileUploads;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 
-
-
-
-class CreateNewStudent extends Component
+class CreateNewResguardo extends Component
 {
     use WithFileUploads;
     public $marcas,$estadosdeuso,$areasdeasignacion,$ubicacionesifiscas,$resguardantes,$puestos;
@@ -82,12 +79,12 @@ class CreateNewStudent extends Component
     }
 
 
-public function updatedImagen()
-{
-    // Aquí entra cada vez que se selecciona un archivo nuevo
-    $this->imagenBase64 = null; // limpiar la otra opción
-    $this->imagenFinal = $this->imagen; // asignar lo último cargado
-}
+    public function updatedImagen()
+    {
+        // Aquí entra cada vez que se selecciona un archivo nuevo
+        $this->imagenBase64 = null; // limpiar la otra opción
+        $this->imagenFinal = $this->imagen; // asignar lo último cargado
+    }
 
 
 
@@ -98,7 +95,7 @@ public function updatedImagen()
             'descripcion' => 'required',
             'marca_id' => 'required',
             'modelo' => 'required',
-            'nserie' => 'required|unique:resguardo,nserie',
+            'nserie' => 'required|unique:resguardos,nserie',
             'estado_uso_id' => 'required',
             'area_de_uso_id' => 'required',
             'ubicacion_fisicas_id' => 'required',
@@ -107,7 +104,7 @@ public function updatedImagen()
             //'imagen' => 'image|max:6144',
             'imagen' => $this->imagenBase64 ? 'nullable' : 'required|image|max:2048',
             //'resguardo_pdf' => 'mimes:pdf|max:8192', // 4MB máx
-            'resguardo_pdf' => 'mimes:pdf|max:1080', // 4MB máx
+            'resguardo_pdf' => 'nullable|mimes:pdf|max:1080', // 4MB máx
 
         ]);
 
@@ -164,10 +161,8 @@ public function updatedImagen()
         ]);
     }
 
-        
     public function render()
-    {        
-        return view('livewire.create-new-student');  
+    {
+        return view('livewire.create-new-resguardo');
     }
-    
 }

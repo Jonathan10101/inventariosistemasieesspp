@@ -62,9 +62,9 @@
                         @livewire('update-assigment-course',['data'=>$data_external_component])               
                     @break 
                     
-                    {{--CREAR NUEVO ESTUDIANTE--}}
+                    {{--CREAR NUEVO RESGUARDO--}}
                     @default
-                        @livewire('create-new-student') 
+                        @livewire('create-new-resguardo') 
                     @break                    
                 @endswitch
 
@@ -111,7 +111,7 @@
                     <th scope="col">NO. DE RESGUARDO</th>
                     -->
                     <th scope="col">ESTADO DE USO</th>                      
-                    <th scope="col">AREA DE ASIGNACIÓN</th>
+                    <th scope="col">ÁREA DE ASIGNACIÓN</th>
                     <th scope="col">UBICACIÓN FISICA</th>
                     <th scope="col">NOMBRE USUARIO RESGUARDANTE</th>
                     <th scope="col">PUESTO USUARIO RESGUARDANTE</th>
@@ -151,6 +151,10 @@
                                 </a>
                             @else
                                 {{ $resguardo->id }}
+                                <button wire:click="showModalNewStudent" class="btn btn-outline-primary mb-3 fa">                        
+                                    <i class="fas fa-plus"></i>
+                                    Subir resguardo            
+                                </button> 
                             @endif 
                         </td>
 

@@ -19,7 +19,35 @@ class YearSeeder extends Seeder
             ],
             [                
                 'number' => 2025,             
-            ],                
+            ],     
+            [                
+                'number' => 2026,             
+            ],         
+            [                
+                'number' => 2027,             
+            ],  
+            [                
+                'number' => 2028,             
+            ],  
+            [                
+                'number' => 2029,             
+            ],  
+            [                
+                'number' => 2030,             
+            ],  
+            [                
+                'number' => 2031,             
+            ],  
+            [                
+                'number' => 2032,             
+            ],  
+            [                
+                'number' => 2033,             
+            ],  
+            [                
+                'number' => 2034,             
+            ],  
+            
         ]);
     }
 }
