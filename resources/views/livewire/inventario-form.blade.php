@@ -151,8 +151,8 @@
                                 </a>
                             @else
                                 {{ $resguardo->id }}
-                                <button wire:click="showModalNewStudent" class="btn btn-outline-primary mb-3 fa">                        
-                                    <i class="fas fa-plus"></i>
+                                <button wire:click="showModalNewStudent" class="btn btn-danger mb-3 fa">                        
+                                    <i class="fas fa-upload"></i>
                                     Subir resguardo            
                                 </button> 
                             @endif 

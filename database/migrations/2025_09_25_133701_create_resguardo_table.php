@@ -23,7 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ubicacion_fisicas_id');
             $table->unsignedBigInteger('resguardante_id');
             $table->unsignedBigInteger('puesto_id');
-            $table->unsignedBigInteger('resguardo_id');
+            //$table->unsignedBigInteger('resguardo_id');
 
               
             // Imagen del producto original

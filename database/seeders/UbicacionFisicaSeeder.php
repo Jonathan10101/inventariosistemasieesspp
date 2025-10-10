@@ -16,10 +16,11 @@ class UbicacionFisicaSeeder extends Seeder
     public function run(): void
     {
         DB::table('ubicacion_fisicas')->insert([
-            [                
-                'descripcion' => 'SALA DE COMPUTO',                                
-            ],
-           
+            ['descripcion' => 'SALA DE COMPUTO COMPLEJO 1'],
+            ['descripcion' => 'SALA DE COMPUTO COMPLEJO 2'],
+            ['descripcion' => 'GIMNASIO'],
+            ['descripcion' => 'COMEDORES COMPLEJO 1'],
+            ['descripcion' => 'COMEDORES COMPLEJO 2'],
         ]);
     }
 }
