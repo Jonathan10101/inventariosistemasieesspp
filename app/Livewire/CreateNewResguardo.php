@@ -148,7 +148,7 @@ class CreateNewResguardo extends Component
             'resguardo_pdf' => $pdfPath,
         ];
 
-        $this->dispatch('saveFromComponentNewStudent',$data);        
+        $this->dispatch('saveFromComponentNewResguardo',$data);        
         $this->resetForm();
     }
 

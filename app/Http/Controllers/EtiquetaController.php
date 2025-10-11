@@ -3,16 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Barryvdh\DomPDF\Facade\Pdf; // 
+use Barryvdh\DomPDF\Facade\Pdf; 
 use DNS1D;
-
 
 class EtiquetaController extends Controller
 {
     public function show($codigo)
     {
         $etiqueta = $this->generarEtiquetaBarcode($codigo);
-
         // Genera el PDF a partir de una vista
         $pdf = Pdf::loadView('etiquetas.pdf', compact('etiqueta', 'codigo'));
         $codigo = ltrim($codigo,'0');
@@ -20,32 +18,12 @@ class EtiquetaController extends Controller
         return $pdf->download("No. de inventario {$codigo}.pdf");
     }
 
-
-    /*
-private function generarEtiquetaBarcode($codigo)
-{
-    // Genera el código con número debajo (no agregamos div extra)
-    $barcode = DNS1D::getBarcodeHTML($codigo, 'C39', 1, 30);
-
-    // Encapsular con div que limita ancho y escala
-    $html = "<div style='width:140px; overflow:hidden; text-align:center;'>";
-    $html .= "<div style='transform:scale(0.8); transform-origin: top center; display:inline-block;'>$barcode</div>";
-    $html .= "</div>";
-
-    return $html;
-}
-    */
-private function generarEtiquetaBarcode($codigo)
-{
-    // Usa C128 para solo números, más compacto y legible
-    $barcode = DNS1D::getBarcodeHTML($codigo, 'C128', 2, 40); // grosor=2, altura=40
-
-    // Contenedor centrado, sin escalar para no romper legibilidad
-    $html = "<div style='width:160px; text-align:center; overflow:hidden;'>$barcode</div>";
-
-    return $html;
-}
-
-
-
+    private function generarEtiquetaBarcode($codigo)
+    {
+        // Usa C128 para solo números, más compacto y legible
+        $barcode = DNS1D::getBarcodeHTML($codigo, 'C128', 2, 40); // grosor=2, altura=40
+        // Contenedor centrado, sin escalar para no romper legibilidad
+        $html = "<div style='width:160px; text-align:center; overflow:hidden;'>$barcode</div>";
+        return $html;
+    }
 }
