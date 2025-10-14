@@ -33,10 +33,12 @@
     <div class="row justify-content-center">
         <div class="col"></div>
         <div class="col-md-6">                        
-            <form action="{{ route('ubicacionfisica.store') }}" method="POST">
+            <form action="{{ route('ubicacionfisica.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <label for="namemarcalabel">Escribe el nombre de la ubicación y da click en el botón Registrar</label>
                 <input type="text" name="ubicacion" autofocus id="namemarcalabel" class="form-control">
+                <label for="imagen">Imagen de la ubicación (opcional)</label>
+                <input type="file" name="imagen" id="imagen" class="form-control mb-3" accept="image/*">
                 <div class="col d-flex justify-content-end">
                     <input type="submit" value="Registrar" class="btn btn-primary mt-4">
                 </div>

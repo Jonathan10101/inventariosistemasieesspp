@@ -11,7 +11,7 @@ class UbicacionFisica extends Model
 {
     use HasFactory;
     protected $table = 'ubicacion_fisicas';
-    protected $fillable = ['descripcion'];
+    protected $fillable = ['descripcion','imagen'];
 
     public function setAttribute($key, $value)
     {

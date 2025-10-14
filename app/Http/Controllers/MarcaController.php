@@ -9,7 +9,8 @@ class MarcaController extends Controller
 {
     public function index()
     {
-        return view('marca/index');
+        $marcas = Marca::paginate(3);
+        return view('marca/index',compact("marcas"));
     }
 
     public function store(Request $request)

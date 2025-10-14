@@ -21,10 +21,18 @@ class UbicacionFisicaController extends Controller
     {        
         $request->validate([
             'ubicacion' => 'required|string|max:150|min:2|unique:ubicacion_fisicas,descripcion',
+            'imagen' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+
+        $rutaImagen = null;
+
+        if ($request->hasFile('imagen')) {
+            $rutaImagen = $request->file('imagen')->store('ubicaciones', 'public');
+        }
         // Guardar en la base de datos
         UbicacionFisica::create([
-            'descripcion' => $request->ubicacion
+            'descripcion' => $request->ubicacion,
+            'imagen' => $rutaImagen,
         ]);
         // Redirigir con mensaje
         return redirect()->back()->with('success', 'Ubicación registrada correctamente.');

@@ -16,7 +16,7 @@ class InventarioForm extends Component
     public $isEditing = false; // Determina si estamos editando o creando
     public $tituloModalPrincipal = "Registrar";
     public $accionPrincipal;
-    public $perPage = 3;
+    public $perPage = 1;
     
     public function changeModalTitle($accion){
         switch ($accion) {

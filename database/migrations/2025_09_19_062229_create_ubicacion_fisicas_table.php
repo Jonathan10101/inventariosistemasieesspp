@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('ubicacion_fisicas', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion', 150)->unique(); // Campo único
-
+            $table->string('imagen')->nullable();
             $table->timestamps();
         });
     }
