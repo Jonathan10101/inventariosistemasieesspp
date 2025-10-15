@@ -9,8 +9,7 @@ class MarcaController extends Controller
 {
     public function index()
     {
-        $marcas = Marca::paginate(3);
-        return view('marca/index',compact("marcas"));
+        return view('marca/index');
     }
 
     public function store(Request $request)
@@ -23,7 +22,6 @@ class MarcaController extends Controller
         Marca::create([
             'nombre' => $request->nombre,
         ]);
-
         // Redirigir con mensaje
         return redirect()->back()->with('success', 'Marca registrada correctamente.');
     }

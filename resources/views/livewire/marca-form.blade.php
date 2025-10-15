@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col d-flex justify-content-end">   
             @can('alumnos.create')               
-            <button wire:click="showModalNewStudent" class="btn btn-primary mb-3 fa">                        
+            <button wire:click="showModalNewMarca" class="btn btn-primary mb-3 fa">                        
                 <i class="fas fa-plus"></i>
                 Agregar            
             </button>  
@@ -28,13 +28,13 @@
   
                 @switch($accionPrincipal)        
                     {{--EDITAR MARCA--}}
-                    @case("editar_curso")
-                        @livewire('update-assigment-course',['data'=>$data_external_component])               
+                    @case("editar")
+                        @livewire('update-marca',['data'=>$data_external_component])     
                     @break 
-                    
+
                     {{--CREAR NUEVA MARCA--}}
                     @default
-                        @livewire('create-new-resguardo') 
+                        @livewire('create-new-marca') 
                     @break                    
                 @endswitch
 
@@ -79,7 +79,7 @@
                     <td>{{$marca->id}}</td>
                     <td>{{$marca->nombre}}</td>
                     <td>
-                        <button class="btn btn-primary">EDITAR</button>
+                        <button class="btn btn-primary" wire:click="cambiarAccion('editar',{{ $marca->id }})">EDITAR</button>
                     </td>
                 </tr>
                 @empty
@@ -112,7 +112,7 @@
             Livewire.on('alumno-created',function($message){                
                 Swal.fire({
                     title: '¡Éxito!',
-                    text: '!Resguardo registrado con exito!',
+                    text: '!Marca registrada con exito!',
                     icon: 'success',
                     confirmButtonText: 'Ok',
                     allowOutsideClick: false, // Deshabilita clics fuera del modal
@@ -124,6 +124,15 @@
                         }    
                 });                
             });   
+
+            Livewire.on('alumno-updated',function($message){                
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: '!Marca actualizada con éxito!',
+                    icon: 'success',
+                    confirmButtonText: 'Ok'
+                });                
+            }); 
         });
     </script>
 @endpush
