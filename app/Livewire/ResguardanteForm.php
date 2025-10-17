@@ -5,9 +5,10 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
-use App\Models\Marca;
+use App\Models\Resguardante;
 
-class MarcaForm extends Component
+
+class ResguardanteForm extends Component
 {
     use WithPagination;
     //public $marcas;
@@ -17,7 +18,7 @@ class MarcaForm extends Component
     public $search;
     public $perPage = 3;
     public $data_external_component;
-    public $marca;
+    public $resguardante;
 
     // Función para limpiar la búsqueda
     public function clearSearch()
@@ -27,12 +28,12 @@ class MarcaForm extends Component
     }
 
     // Función para realizar la búsqueda
-    public function searchMarcas()
+    public function searchResguardantes()
     {
         // No es necesario hacer nada más, ya que Livewire maneja automáticamente el filtrado con `wire:model="search"`
     }
 
-    public function showModalNewMarca(){
+    public function showModalNewResguardante(){
         $this->showModal = true;// Abre el modal
     }
 
@@ -45,21 +46,21 @@ class MarcaForm extends Component
     
     public function resetForm()
     {        
-        $this->reset(['marca','data_external_component','accionPrincipal']);        
+        $this->reset(['resguardante','data_external_component','accionPrincipal']);        
     }
 
-    #[On('saveFromComponentNewMarca')]
-    public function saveNewMarca($data){
-        Marca::create($data);
+    #[On('saveFromComponentNewPuesto')]
+    public function saveNewResguardante($data){
+        Resguardante::create($data);
         $this->showModal = false;  
         $this->dispatch('alumno-created', 1);
     }
 
-    #[On('saveUpdateMarcaFromAnotherComponent')]
-    public function saveUpdateMarca($data){
+    #[On('saveUpdatePuestoFromAnotherComponent')]
+    public function saveUpdateResguardante($data){
         //dd($data);
-        $updateMarca = Marca::find($data['id']);
-        $updateMarca->update([
+        $updateResguardante = Resguardante::find($data['id']);
+        $updateResguardante->update([
             'nombre' => $data['nombre']
         ]);
         $this->dispatch('alumno-updated',1);
@@ -99,24 +100,44 @@ class MarcaForm extends Component
     public function edit($id)
     {      
         $this->showModal = true;  
-        $this->marca = Marca::findOrFail($id);
+        $this->resguardante = Resguardante::findOrFail($id);
         $this->isEditing = true;
-        $this->data_external_component = $this->marca->id;
+        $this->data_external_component = $this->puesto->id;
         //$this->id_estudiante = $marca->id;
     }
 
     public function render()
     {
-        $query = Marca::query();
+        $query = Resguardante::query();
         
         if ($this->search) {
-            $query->where(function ($q) {
-                $q->where('nombre', 'like', "%{$this->search}%");
+            $search = trim($this->search);
+
+            $query->where(function ($q) use ($search) {
+                // Buscar cada palabra por separado en todos los campos
+                $words = explode(' ', $search);
+
+                foreach ($words as $word) {
+                    $q->where(function ($sub) use ($word) {
+                        $sub->where('nombre1', 'like', "%{$word}%")
+                            ->orWhere('nombre2', 'like', "%{$word}%")
+                            ->orWhere('apellido1', 'like', "%{$word}%")
+                            ->orWhere('apellido2', 'like', "%{$word}%");
+                    });
+                }
+
+                // Buscar combinaciones de campos
+                $q->orWhereRaw("CONCAT(nombre1, ' ', apellido1) LIKE ?", ["%{$search}%"])
+                ->orWhereRaw("CONCAT(nombre1, ' ', apellido2) LIKE ?", ["%{$search}%"])
+                ->orWhereRaw("CONCAT(nombre2, ' ', apellido1) LIKE ?", ["%{$search}%"])
+                ->orWhereRaw("CONCAT(nombre2, ' ', apellido2) LIKE ?", ["%{$search}%"])
+                ->orWhereRaw("CONCAT(apellido1, ' ', apellido2) LIKE ?", ["%{$search}%"])
+                ->orWhereRaw("CONCAT(nombre1, ' ', nombre2, ' ', apellido1, ' ', apellido2) LIKE ?", ["%{$search}%"]);
             });
-        }  
-        return view('livewire.marca-form', [
-            'marcas' => $query->paginate($this->perPage),
+        }
+
+        return view('livewire.resguardante-form', [
+            'resguardantes' => $query->paginate($this->perPage),
         ]);
     }
-    
 }

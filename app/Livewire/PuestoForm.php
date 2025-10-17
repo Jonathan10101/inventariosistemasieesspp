@@ -5,9 +5,10 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
-use App\Models\Marca;
+use App\Models\Puesto;
 
-class MarcaForm extends Component
+
+class PuestoForm extends Component
 {
     use WithPagination;
     //public $marcas;
@@ -17,7 +18,7 @@ class MarcaForm extends Component
     public $search;
     public $perPage = 3;
     public $data_external_component;
-    public $marca;
+    public $puesto;
 
     // Función para limpiar la búsqueda
     public function clearSearch()
@@ -27,12 +28,12 @@ class MarcaForm extends Component
     }
 
     // Función para realizar la búsqueda
-    public function searchMarcas()
+    public function searchPuestos()
     {
         // No es necesario hacer nada más, ya que Livewire maneja automáticamente el filtrado con `wire:model="search"`
     }
 
-    public function showModalNewMarca(){
+    public function showModalNewPuesto(){
         $this->showModal = true;// Abre el modal
     }
 
@@ -45,21 +46,21 @@ class MarcaForm extends Component
     
     public function resetForm()
     {        
-        $this->reset(['marca','data_external_component','accionPrincipal']);        
+        $this->reset(['puesto','data_external_component','accionPrincipal']);        
     }
 
-    #[On('saveFromComponentNewMarca')]
-    public function saveNewMarca($data){
-        Marca::create($data);
+    #[On('saveFromComponentNewPuesto')]
+    public function saveNewPuesto($data){
+        Puesto::create($data);
         $this->showModal = false;  
         $this->dispatch('alumno-created', 1);
     }
 
-    #[On('saveUpdateMarcaFromAnotherComponent')]
-    public function saveUpdateMarca($data){
+    #[On('saveUpdatePuestoFromAnotherComponent')]
+    public function saveUpdatePuesto($data){
         //dd($data);
-        $updateMarca = Marca::find($data['id']);
-        $updateMarca->update([
+        $updatePuesto = Puesto::find($data['id']);
+        $updatePuesto->update([
             'nombre' => $data['nombre']
         ]);
         $this->dispatch('alumno-updated',1);
@@ -99,24 +100,23 @@ class MarcaForm extends Component
     public function edit($id)
     {      
         $this->showModal = true;  
-        $this->marca = Marca::findOrFail($id);
+        $this->puesto = Puesto::findOrFail($id);
         $this->isEditing = true;
-        $this->data_external_component = $this->marca->id;
+        $this->data_external_component = $this->puesto->id;
         //$this->id_estudiante = $marca->id;
     }
 
     public function render()
     {
-        $query = Marca::query();
+        $query = Puesto::query();
         
         if ($this->search) {
             $query->where(function ($q) {
                 $q->where('nombre', 'like', "%{$this->search}%");
             });
         }  
-        return view('livewire.marca-form', [
-            'marcas' => $query->paginate($this->perPage),
+        return view('livewire.puesto-form', [
+            'puestos' => $query->paginate($this->perPage),
         ]);
     }
-    
 }

@@ -361,9 +361,14 @@ return [
             'icon' => 'fas fa-fw fa-box',
         ],
         [
-            'text' => 'Productos',
+            'text' => 'Marcas',
             //'icon' => 'fas fa-fw fa-share',
-            //'url' => 'alumnos',
+            'url' => 'marcas',
+            'icon' => 'fas fa-fw fa-copyright',
+        ],
+        /*
+        [
+            'text' => 'Productos',
             'icon' => 'fas fa-fw fa-laptop',
     
             'submenu' => [                
@@ -372,20 +377,10 @@ return [
                     'url' => 'marcas',
                     'icon' => 'fas fa-fw fa-boxsw',
                 ],
-                /*
-                [
-                    'text' => 'Modelo',
-                    'url' => 'modelo',
-                    'icon' => 'fas fa-fw fa-boxsw',
-                ],
-                [
-                    'text' => 'Estado de uso',
-                    'url' => 'estadouso',
-                    'icon' => 'fas fa-fw fa-boxsw',
-                ],
-                */
+              
             ],
         ],
+        */
         [
             'text' => 'Resguardantes',
             //'icon' => 'fas fa-fw fa-share',

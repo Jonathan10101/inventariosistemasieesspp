@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col d-flex justify-content-end">   
             @can('alumnos.create')               
-            <button wire:click="showModalNewMarca" class="btn btn-primary mb-3 fa">                        
+            <button wire:click="showModalNewPuesto" class="btn btn-primary mb-3 fa">                        
                 <i class="fas fa-plus"></i>
                 Agregar            
             </button>  
@@ -29,12 +29,12 @@
                 @switch($accionPrincipal)        
                     {{--EDITAR MARCA--}}
                     @case("editar")
-                        @livewire('update-marca',['data'=>$data_external_component])     
+                        @livewire('update-puesto',['data'=>$data_external_component])     
                     @break 
 
                     {{--CREAR NUEVA MARCA--}}
                     @default
-                        @livewire('create-new-marca') 
+                        @livewire('create-new-puesto') 
                     @break                    
                 @endswitch
 
@@ -49,9 +49,9 @@
     <div class="row mb-3">
         <div class="col-md-6">            
             <div class="input-group">
-                <label for="searchid">Da clic en el buscador y escribe el nombre de la Marca y luego presiona “Buscar”</label>
-                <input type="text" id="searchid" placeholder="Buscador" wire:keydown.enter="searchMarcas" wire:model="search"  class="form-control" />
-                <button class="btn btn-primary" wire:click="searchMarcas">
+                <label for="searchid">Da clic en el buscador y escribe el nombre del Resguardante y luego presiona “Buscar”</label>
+                <input type="text" id="searchid" placeholder="Buscador" wire:keydown.enter="searchResguardantes" wire:model="search"  class="form-control" />
+                <button class="btn btn-primary" wire:click="searchResguardantes">
                     <i class="fas fa-search"></i> Buscar
                 </button>
                 @if($search)
@@ -68,23 +68,27 @@
             <thead>
                 <tr>
                 <th scope="col">ID</th>
-                <th scope="col">MARCA</th>
+                <th scope="col">NOMBRE DEL RESGUARDANTE</th>
+                <th scope="col" class="text-center">RESGUARDOS</th>
                 <th scope="col">ACCIONES</th>
 
                 </tr>
             </thead>
             <tbody>
-                @forelse ($marcas as $marca)
+                @forelse ($resguardantes as $resguardante)
                 <tr>
-                    <td>{{$marca->id}}</td>
-                    <td>{{$marca->nombre}}</td>
+                    <td>{{$resguardante->id}}</td>
+                    <td>{{$resguardante->nombre1}} {{$resguardante->nombre2}} {{$resguardante->apellido1}} {{$resguardante->apellido2}}</td>
+                    <td class="d-flex justify-content-center">
+                        <a href="{{ route('resguardante.show', $resguardante->id)}}" class="btn btn-outline-primary">VER</a>
+                    </td>
                     <td>
-                        <button class="btn btn-primary" wire:click="cambiarAccion('editar',{{ $marca->id }})">EDITAR</button>
+                        <button class="btn btn-primary" wire:click="cambiarAccion('editar',{{$resguardante->id }})">EDITAR</button>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="13" class="text-center">No se encontro marcas.</td>
+                    <td colspan="13" class="text-center">No se encontraron resguardantes.</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -94,7 +98,7 @@
 
     <!-- Paginación -->
     <div class="d-flex justify-content-end mt-3">
-        {{ $marcas->links() }}
+        {{ $resguardantes->links() }}
     </div>
 
 
@@ -112,7 +116,7 @@
             Livewire.on('alumno-created',function($message){                
                 Swal.fire({
                     title: '¡Éxito!',
-                    text: '!Marca registrada con exito!',
+                    text: '!Puesto registrado con exito!',
                     icon: 'success',
                     confirmButtonText: 'Ok',
                     allowOutsideClick: false, // Deshabilita clics fuera del modal
@@ -128,7 +132,7 @@
             Livewire.on('alumno-updated',function($message){                
                 Swal.fire({
                     title: '¡Éxito!',
-                    text: '!Marca actualizada con éxito!',
+                    text: '!Puesto actualizado con éxito!',
                     icon: 'success',
                     confirmButtonText: 'Ok',
                      allowOutsideClick: false, // Deshabilita clics fuera del modal
