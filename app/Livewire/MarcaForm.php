@@ -41,6 +41,7 @@ class MarcaForm extends Component
     {
         $this->resetForm(); 
         $this->showModal = false; // Cerrar el modal
+        $this->dispatch('refresh-page'); 
     }
     
     public function resetForm()

@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col d-flex justify-content-end">   
             @can('alumnos.create')               
-            <button wire:click="showModalNewStudent" class="btn btn-primary mb-3 fa">                        
+            <button wire:click="showModalNewResguardo" class="btn btn-primary mb-3 fa">                        
                 <i class="fas fa-plus"></i>
                 Agregar            
             </button>  
@@ -39,13 +39,6 @@
                         @livewire('show-certificates',['student'=>$student,'inscripciones'=>$inscripciones])                                       
                     @break
 
-                    {{--EDITAR ESTUDIANTE--}}
-                    @case("editar")
-                        @livewire('update-modal',
-                        ['student'=>$student,'inscripciones'=>$inscripciones,'cursos'=>$cursos,'grupos'=>$grupos,
-                            'adscripciones'=>$adscripciones,'sedes'=>$sedes,'generacionesv2'=>$generacionesv2])                                        
-                    @break    
-                    
                     {{--DAR DE BAJA ESTUDIANTE--}}
                     @case("dar_de_baja_estudiante")
                         @livewire('unsubscribe-student',['student' => $student,'motivo_baja' => $motivo_baja,'fecha_baja' => $fecha_baja])                                  
@@ -56,9 +49,9 @@
                         @livewire('unsubscribe-student',['student' => $student,'motivo_baja' => $motivo_baja,'fecha_baja' => $fecha_baja])                                  
                     @break 
                     
-                    {{--EDITAR CURSO--}}
-                    @case("editar_curso")
-                        @livewire('update-assigment-course',['data'=>$data_external_component])               
+                    {{--EDITAR RESGUARDO--}}
+                    @case("editar")
+                        @livewire('update-resguardo',['data'=>$data_external_component])               
                     @break 
                     
                     {{--CREAR NUEVO RESGUARDO--}}

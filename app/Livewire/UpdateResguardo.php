@@ -23,8 +23,9 @@ use App\Livewire\Forms\StudentCreateForm;
 use Livewire\WithFileUploads;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
+use App\Models\Resguardo;
 
-class CreateNewResguardo extends Component
+class UpdateResguardo extends Component
 {
     use WithFileUploads;
     public $marcas,$estadosdeuso,$areasdeasignacion,$ubicacionesifiscas,$resguardantes,$puestos;
@@ -43,35 +44,36 @@ class CreateNewResguardo extends Component
 
 
 
-    
-    /*
-    protected $rules = [
-        'descripcion' => 'required',
-        'marca_id' => 'required',
-        'modelo' => 'required',
-        'nserie' => 'required',
-        'nresguardo' => 'required',
-        'estado_uso_id' => 'required',
-        'area_de_uso_id' => 'required',
-        'ubicacion_fisicas_id' => 'required',
-        'resguardante_id' => 'required',
-        'puesto_id' => 'required'                               
-    ];
-    */
-
-   
+    public function mount($data){
         
-    public function mount()
-    {
-        $this->marcas = Marca::all();
-        $this->areasdeasignacion = AreaDeUso::all();
-        $this->estadosdeuso = EstadoUso::all();
-        $this->ubicacionesifiscas = UbicacionFisica::all();
+     
+        $resguardo = Resguardo::find($data);
+           if ($resguardo) {
+            $this->imagenGuardada = $resguardo->imagen; // Ruta guardada
+        }
+        $this->descripcion = $resguardo->descripcion;
+        $this->marca_id = $resguardo->marca_id;
+        $this->modelo = $resguardo->modelo;
+        $this->nserie = $resguardo->nserie;
+        $this->estado_uso_id = $resguardo->estado_uso_id;
+        $this->area_de_uso_id = $resguardo->area_de_uso_id;
+        $this->ubicacion_fisicas_id = $resguardo->ubicacion_fisicas_id;
+        $this->resguardante_id = $resguardo->resguardante_id;
+        $this->puesto_id = $resguardo->puesto_id;
+        $this->resguardo_pdf = $resguardo->resguardo_pdf;
+
+
+        $this->ubicacionesifiscas  = UbicacionFisica::all();
         $this->resguardantes = Resguardante::all();
         $this->puestos = Puesto::all();
-    }
+        $this->marcas = Marca::all();
+        $this->estadosdeuso = EstadoUso::all();
+        $this->areasdeasignacion = AreaDeUso::all();
+        $this->ubicacionesfisicas = UbicacionFisica::all();
 
-     public function resetImagenes()
+    }
+    
+  public function resetImagenes()
     {
         $this->imagen = null;
         $this->imagenBase64 = null;
@@ -167,6 +169,6 @@ class CreateNewResguardo extends Component
 
     public function render()
     {
-        return view('livewire.create-new-resguardo');
+        return view('livewire.update-resguardo');
     }
 }

@@ -21,7 +21,6 @@
             <div class="row mt-4">
                 <!-- Aquí se incluye el componente Livewire para la tabla de productos -->
                 @livewire('inventario-form') 
-
             </div>
         </div>
     </div>

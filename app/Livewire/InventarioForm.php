@@ -17,43 +17,31 @@ class InventarioForm extends Component
     public $tituloModalPrincipal = "Registrar";
     public $accionPrincipal;
     public $perPage = 1;
-    
+    public $data_external_component;
+    public $data;
+
     public function changeModalTitle($accion){
         switch ($accion) {
-            case "mostrar_certificados":
-                $this->tituloModalPrincipal = "Certificados";            
-            break;
-            case "inscripcion_a_curso":
-                $this->tituloModalPrincipal = "Inscripción a curso";            
-            break;
             case "editar":                
-                $this->tituloModalPrincipal = "Editar";                
+                $this->tituloModalPrincipal = "Editar Resguardo";                
             break;
         }
     }
 
     public function accionEjecutada($accion,$id){
         switch ($accion) {
-            case "inscripcion_a_curso":                
-                $this->assignCourse($id);
-            break;
             case "editar":
+                //dd($id);
                 $this->edit($id);   
+                /*
                 //Estas lineas se agregan porque se le envian en el componente                             
                 $this->student = Estudiante::findOrFail($id);
                 if(isset($this->student->inscripciones[0]) && $this->student->inscripciones[0]->cursos){
                     $this->inscripciones =  $this->student->inscripciones;            
                     $this->tieneCursosAsignados = true;
-                }                
+                }       
+                */         
             break;
-            case "mostrar_certificados":
-                $this->showModalAllCertificados();
-                $this->student = Estudiante::findOrFail($id);
-                if(isset($this->student->inscripciones[0]) && $this->student->inscripciones[0]->cursos){
-                    $this->inscripciones =  $this->student->inscripciones;            
-                    $this->tieneCursosAsignados = true;
-                }            
-            break;                   
         }  
     }
 
@@ -81,13 +69,13 @@ class InventarioForm extends Component
         // No es necesario hacer nada más, ya que Livewire maneja automáticamente el filtrado con `wire:model="search"`
     }
 
-    // Método para editar estudiante
+    // Método para editar Resguardo
     public function edit($id)
     {      
-        $estudiante = Estudiante::findOrFail($id);
-        $this->isEditing = true;
-        $this->id_estudiante = $estudiante->id;
 
+        $this->data_external_component = $id;
+        //$this->data = "xd";
+        /*
         $this->nombre1 = $estudiante->nombre1;
         $this->nombre2 = $estudiante->nombre2;
         $this->apellido1 = $estudiante->apellido1;
@@ -101,9 +89,10 @@ class InventarioForm extends Component
         $this->genero = $estudiante->genero;
         $this->celular = $estudiante->celular;
         $this->correo_electronico = $estudiante->correo_electronico;
+        */
 
-        $this->showModalNewStudent();
-        //$this->showModal = true; // Abre el modal, se comento porque ya lo manda a llamar desde el metodo de arriba         
+        //$this->showModalNewResguardo();
+        $this->showModal = true; // Abre el modal, se comento porque ya lo manda a llamar desde el metodo de arriba         
     }
 
     public function assignCourse($id)
@@ -152,12 +141,18 @@ class InventarioForm extends Component
         $this->tituloModalPrincipal = "Registrar";
         $this->dispatch('refresh-page'); 
     }
+        public function cambiarAccion($nuevaAccion,$id)
+    {       
+        $this->accionPrincipal = $nuevaAccion;// Cambia el valor de la propiedad
+        $this->changeModalTitle($this->accionPrincipal);
+        $this->accionEjecutada($this->accionPrincipal,$id);
+    }
     
     public function showmodalselectedit(){
         $this->dispatch('update-modal');        
     }
 
-    public function showModalNewStudent(){               
+    public function showModalNewResguardo(){               
 
         $this->showModal = true;// Abre el modal
     }

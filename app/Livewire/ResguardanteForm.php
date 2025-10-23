@@ -3,6 +3,8 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+
+use App\Livewire\UpdateResguardante;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
 use App\Models\Resguardante;
@@ -33,7 +35,7 @@ class ResguardanteForm extends Component
         // No es necesario hacer nada más, ya que Livewire maneja automáticamente el filtrado con `wire:model="search"`
     }
 
-    public function showModalNewResguardante(){
+    public function showModalNewResguardo(){
         $this->showModal = true;// Abre el modal
     }
 
@@ -42,6 +44,7 @@ class ResguardanteForm extends Component
     {
         $this->resetForm(); 
         $this->showModal = false; // Cerrar el modal
+        $this->dispatch('refresh-page'); 
     }
     
     public function resetForm()
@@ -49,19 +52,21 @@ class ResguardanteForm extends Component
         $this->reset(['resguardante','data_external_component','accionPrincipal']);        
     }
 
-    #[On('saveFromComponentNewPuesto')]
+    #[On('saveFromComponentNewResguardante')]
     public function saveNewResguardante($data){
         Resguardante::create($data);
         $this->showModal = false;  
         $this->dispatch('alumno-created', 1);
     }
 
-    #[On('saveUpdatePuestoFromAnotherComponent')]
+    #[On('UpdateResguardanteFromAnotherComponent')]
     public function saveUpdateResguardante($data){
-        //dd($data);
         $updateResguardante = Resguardante::find($data['id']);
         $updateResguardante->update([
-            'nombre' => $data['nombre']
+            'nombre1' => $data['nombre1'],
+            'nombre2' => $data['nombre2'],
+            'apellido1' => $data['apellido1'],
+            'apellido2' => $data['apellido2'],
         ]);
         $this->dispatch('alumno-updated',1);
         $this->showModal = false;  
@@ -102,7 +107,7 @@ class ResguardanteForm extends Component
         $this->showModal = true;  
         $this->resguardante = Resguardante::findOrFail($id);
         $this->isEditing = true;
-        $this->data_external_component = $this->puesto->id;
+        $this->data_external_component = $this->resguardante->id;
         //$this->id_estudiante = $marca->id;
     }
 

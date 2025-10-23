@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col d-flex justify-content-end">   
             @can('alumnos.create')               
-            <button wire:click="showModalNewPuesto" class="btn btn-primary mb-3 fa">                        
+            <button wire:click="showModalNewResguardo" class="btn btn-primary mb-3 fa">                        
                 <i class="fas fa-plus"></i>
                 Agregar            
             </button>  
@@ -27,14 +27,14 @@
                 </div>
   
                 @switch($accionPrincipal)        
-                    {{--EDITAR MARCA--}}
+                    {{--EDITAR RESGUARDANTE--}}
                     @case("editar")
-                        @livewire('update-puesto',['data'=>$data_external_component])     
+                        @livewire('update-resguardante',['data'=>$data_external_component])     
                     @break 
 
                     {{--CREAR NUEVA MARCA--}}
                     @default
-                        @livewire('create-new-puesto') 
+                        @livewire('create-new-resguardante') 
                     @break                    
                 @endswitch
 
@@ -116,7 +116,7 @@
             Livewire.on('alumno-created',function($message){                
                 Swal.fire({
                     title: '¡Éxito!',
-                    text: '!Puesto registrado con exito!',
+                    text: '!Resguardante registrado con exito!',
                     icon: 'success',
                     confirmButtonText: 'Ok',
                     allowOutsideClick: false, // Deshabilita clics fuera del modal
@@ -132,7 +132,7 @@
             Livewire.on('alumno-updated',function($message){                
                 Swal.fire({
                     title: '¡Éxito!',
-                    text: '!Puesto actualizado con éxito!',
+                    text: '!Resguardante actualizado con éxito!',
                     icon: 'success',
                     confirmButtonText: 'Ok',
                      allowOutsideClick: false, // Deshabilita clics fuera del modal
