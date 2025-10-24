@@ -9,7 +9,7 @@
             @can('alumnos.create')               
             <button wire:click="showModalNewResguardo" class="btn btn-primary mb-3 fa">                        
                 <i class="fas fa-plus"></i>
-                Agregar            
+                Agregar resguardo            
             </button>  
             @endcan          
         </div>
@@ -71,7 +71,7 @@
     <div class="row mb-3">
         <div class="col-md-6">            
             <div class="input-group">
-                <label for="searchid">Da clic en el buscador, escanea o escribe el No. de inventario y luego presiona “Buscar”</label>
+                <label for="searchid">Da clic en el Buscador, escanea o escribe el No. de inventario y luego presiona “Buscar”</label>
                 <input type="text" id="searchid" placeholder="Buscador" wire:keydown.enter="searchResguardos" wire:model="search"  class="form-control" />
                 <button class="btn btn-primary" wire:click="searchResguardos">
                     <i class="fas fa-search"></i> Buscar

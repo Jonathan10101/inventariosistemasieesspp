@@ -17,8 +17,32 @@ class CreateNewResguardante extends Component
     ];
 
     public function save(){
+        // Normalizamos todo
+        $this->nombre1   = trim(mb_strtolower($this->nombre1));
+        $this->nombre2   = trim(mb_strtolower($this->nombre2));
+        $this->apellido1 = trim(mb_strtolower($this->apellido1));
+        $this->apellido2 = trim(mb_strtolower($this->apellido2));
+
         $this->validate();
 
+        // ✅ Unir TODO como una sola cadena (sin espacios extra)
+        $inputNormalizado = preg_replace('/\s+/', '', 
+            $this->nombre1 . $this->nombre2 . $this->apellido1 . $this->apellido2
+        );
+
+        $existe = Resguardante::get()->contains(function ($r) use ($inputNormalizado) {
+            $db = preg_replace('/\s+/', '', strtolower(
+                $r->nombre1 . $r->nombre2 . $r->apellido1 . $r->apellido2
+            ));
+            return $db === $inputNormalizado;
+        });
+
+        if ($existe) {
+            $this->addError('nombreCompleto', 'Este nombre ya parece estar registrado anteriormente. Es posible que esté guardado con otra combinación de nombre o apellidos. Por favor verifica la información ingresada.');
+            return;
+        }
+
+        
         $data = [
             'nombre1' => $this->nombre1,
             'nombre2' => $this->nombre2,
@@ -26,21 +50,12 @@ class CreateNewResguardante extends Component
             'apellido2' => $this->apellido2,
         ];
 
-        // Validar combinación única
-        $existe = Resguardante::where('nombre1', $this->nombre1)
-            ->where('nombre2', $this->nombre2)
-            ->where('apellido1', $this->apellido1)
-            ->where('apellido2', $this->apellido2)
-            ->exists();
-
-        if ($existe) {
-            $this->addError('nombreCompleto', 'Este resguardante ya fue registrado. Intenta con uno distinto.');
-            return;
-        }
 
         $this->dispatch('saveFromComponentNewResguardante',$data);        
         $this->resetForm();
     }
+
+
 
     public function resetForm()
     {

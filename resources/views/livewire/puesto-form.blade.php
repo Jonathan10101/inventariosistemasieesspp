@@ -9,7 +9,7 @@
             @can('alumnos.create')               
             <button wire:click="showModalNewPuesto" class="btn btn-primary mb-3 fa">                        
                 <i class="fas fa-plus"></i>
-                Agregar            
+                Agregar puesto           
             </button>  
             @endcan          
         </div>

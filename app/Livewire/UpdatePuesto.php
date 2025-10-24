@@ -19,7 +19,18 @@ class UpdatePuesto extends Component
     }
 
     public function save(){
-        $this->validate();    
+        $this->puesto = preg_replace('/\s+/', ' ', trim(mb_strtoupper($this->puesto)));
+        $this->validate();  
+        
+         $puestoComparacion = str_replace(' ', '', $this->puesto);
+
+        $existe = Puesto::whereRaw("REPLACE(nombre, ' ', '') = ?", [$puestoComparacion])->exists();
+
+        if ($existe) {
+            $this->addError('puesto', 'Este puesto ya existe aunque escrito diferente.');
+            return;
+        }
+
         $data = [
             'id' => $this->id_puesto,
             'nombre' =>  $this->puesto,

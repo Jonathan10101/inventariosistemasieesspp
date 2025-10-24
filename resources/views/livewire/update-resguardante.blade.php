@@ -12,25 +12,33 @@
                 <!-- Campos del formulario -->
                 <div class="col-md-12">
                     <label for="marca" class="form-label">Primer nombre*</label>
-                    <input type="text" id="marca" wire:model.defer="nombre1" class="form-control" oninput="this.value = this.value.toUpperCase()">
+                    <input type="text" id="marca" wire:model.defer="nombre1" class="form-control"
+                        onkeydown="if(event.key === ' ') event.preventDefault()"
+                        oninput="this.value = this.value.toUpperCase().replace(/^\s+/, '')">
                     @error('nombre1') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="col-md-12">
                     <label for="marca" class="form-label">Segundo nombre</label>
-                    <input type="text" id="marca" wire:model.defer="nombre2" class="form-control" oninput="this.value = this.value.toUpperCase()">
+                    <input type="text" id="marca" wire:model.defer="nombre2" class="form-control"
+                        onkeydown="if(event.key === ' ') event.preventDefault()"
+                        oninput="this.value = this.value.toUpperCase().replace(/^\s+/, '')">
                     @error('nombre2') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="col-md-12">
                     <label for="marca" class="form-label">Primer apellido*</label>
-                    <input type="text" id="marca" wire:model.defer="apellido1" class="form-control" oninput="this.value = this.value.toUpperCase()">
+                    <input type="text" id="marca" wire:model.defer="apellido1" class="form-control"
+                        onkeydown="if(event.key === ' ') event.preventDefault()"
+                        oninput="this.value = this.value.toUpperCase().replace(/^\s+/, '')">
                     @error('apellido1') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="col-md-12">
                     <label for="marca" class="form-label">Segundo apellido</label>
-                    <input type="text" id="marca" wire:model.defer="apellido2" class="form-control" oninput="this.value = this.value.toUpperCase()">
+                    <input type="text" id="marca" wire:model.defer="apellido2" class="form-control"
+                        onkeydown="if(event.key === ' ') event.preventDefault()"
+                        oninput="this.value = this.value.toUpperCase().replace(/^\s+/, '')">
                     @error('apellido2') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
                

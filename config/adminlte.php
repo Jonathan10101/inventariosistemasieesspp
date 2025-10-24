@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'Inventario IEESSPP',
+    'title' => 'Sistema Integral de Resguardos | IEESSPP',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -65,7 +65,7 @@ return [
     
 
 
-    'logo' => '<b>Inventario IEESSPP</b>',
+    'logo' => '<b>Resguardos IEESSPP</b>',
     //'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',        
     'logo_img' => 'vendor/adminlte/dist/img/logocircularieesspp.png',    
     //'logo_img_class' => 'brand-image img-circle elevation-3',
@@ -461,9 +461,10 @@ return [
         ],
         */
         [
-            'text' => 'By Jonathan V. 1.0.0 Alpha',
-            'url' => '',            
-            'icon' => 'fas',
+            'text' => 'Versión 1.0.0',
+            'url' => '#',
+            'icon' => 'fas fa-fw fa-code',
+            'classes' => 'disabled',
         ],
 
 

@@ -26,15 +26,9 @@ class UpdateResguardante extends Component
         $this->id_resguardante = $resguardanteBusqueda->id; 
     }
 
-#[On('resetUpdateResguardante')]
-public function resetUpdateResguardante()
-{
-    dd("x");
-    $this->resetForm();
-}
-
 
     public function save(){
+        /*
         $this->validate();    
         
         // Validar combinación única
@@ -48,6 +42,32 @@ public function resetUpdateResguardante()
             $this->addError('nombreCompleto', 'El nombre completo ya está registrado.');
             return;
         }
+        */
+        // Normalizamos todo
+        $this->nombre1   = trim(mb_strtolower($this->nombre1));
+        $this->nombre2   = trim(mb_strtolower($this->nombre2));
+        $this->apellido1 = trim(mb_strtolower($this->apellido1));
+        $this->apellido2 = trim(mb_strtolower($this->apellido2));
+
+        $this->validate();
+
+        // ✅ Unir TODO como una sola cadena (sin espacios extra)
+        $inputNormalizado = preg_replace('/\s+/', '', 
+            $this->nombre1 . $this->nombre2 . $this->apellido1 . $this->apellido2
+        );
+
+        $existe = Resguardante::get()->contains(function ($r) use ($inputNormalizado) {
+            $db = preg_replace('/\s+/', '', strtolower(
+                $r->nombre1 . $r->nombre2 . $r->apellido1 . $r->apellido2
+            ));
+            return $db === $inputNormalizado;
+        });
+
+        if ($existe) {
+            $this->addError('nombreCompleto', 'Este nombre ya parece estar registrado anteriormente. Es posible que esté guardado con otra combinación de nombre o apellidos. Por favor verifica la información ingresada.');
+            return;
+        }
+
 
         $data = [
             'id' => $this->id_resguardante,

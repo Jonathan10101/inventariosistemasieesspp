@@ -12,43 +12,6 @@
                     <hr>
                 </div>
 
-                <!-- Subir imagen desde PC -->
-                <div class="col-md-12" id="imgpc">
-                    <label class="form-label">Imagen del producto*</label><br>
-                    <span>(Sube una imagen desde la computadora o toma una foto)</span>
-                    <input type="file" wire:model="imagen" accept="image/*" class="form-control">
-                    @error('imagen') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-
-                <!-- Tomar foto con cámara -->
-                @if (!$imagen) {{-- Solo mostrar si NO hay imagen subida desde PC --}}
-                    <div class="col-md-12 mt-3" id="camara">
-                        <video id="video" width="300" height="200" autoplay></video>
-                        <canvas id="canvas" class="d-none"></canvas>
-                        <div class="mt-2">
-                            <button type="button" class="btn btn-primary" onclick="capturar()">Tomar foto</button>
-                        </div>
-                    </div>
-                @endif
-
-                <div class="row">
-                    <div class="col">
-                            @php
-                                $preview = $imagen ? $imagen->temporaryUrl() : ($imagenBase64 ?? null);
-                            @endphp
-
-                            @if($preview)
-                                <hr>
-                                <div class="col">
-                                    <p class="fw-ligth text-center">Imagen que se subirá</p>
-                                </div>
-                                <div class="col d-flex justify-content-center">
-                                    <img src="{{ $preview }}"  class="img-thumbnail" width="300" alt="Preview final">
-                                </div>
-                            @endif
-                    </div>
-                </div>     
-               
 
 
                 

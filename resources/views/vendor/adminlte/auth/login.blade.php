@@ -2,6 +2,34 @@
 
 @section('adminlte_css_pre')
     <link rel="stylesheet" href="{{ asset('vendor/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+    <style>
+        .titulo-sistema {
+            font-weight: bold;
+            color: #004085;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            animation: fadeInDown 1s ease;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Estilo del modal */
+        .modal-content {
+            border-radius: 15px;
+            background: linear-gradient(145deg, #e0eaff, #ffffff);
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        .modal-header {
+            background-color: #004085;
+            color: white;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+    </style>
+
+    <h4 class="text-center mb-4 titulo-sistema">Sistema Integral de Resguardos</h4>
 @stop
 
 @php( $login_url = View::getSection('login_url') ?? config('adminlte.login_url', 'login') )
@@ -23,7 +51,6 @@
 @section('auth_body')
     <form action="{{ $login_url }}" method="post">
         @csrf
-
         {{-- Email field --}}
         <div class="input-group mb-3">
             <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
@@ -62,53 +89,48 @@
 
         {{-- Login field --}}
         <div class="row">
-            <div class="col-7">
-                <div class="icheck-primary" title="{{ __('adminlte::adminlte.remember_me_hint') }}">
-                    <!--
-                    <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                    <label for="remember">
-                        {{ __('adminlte::adminlte.remember_me') }}
-                    </label>
-                    -->
-                </div>
-            </div>
-
+            <div class="col-7"></div>
             <div class="col-5">
-                <button type=submit class="btn btn-block w-100 {{ config('adminlte.classes_auth_btn', 'btn-flat btn-primary') }}">
+                <button type="submit" class="btn btn-block w-100 {{ config('adminlte.classes_auth_btn', 'btn-flat btn-primary') }}">
                     <span class="fas fa-sign-in-alt"></span>
                     {{ __('adminlte::adminlte.sign_in') }}
-                    
                 </button>
             </div>
         </div>
-
     </form>
+
+    {{-- Modal de bienvenida --}}
+    <div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="welcomeModalLabel">¡Bienvenido!</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <h5><strong>Sistema Integral de Resguardos</strong></h5>
+<p class="text-muted">La <span class="text-bold">herramienta oficial del IEESSPP</span> diseñada para una <span class="text-bold">gestión moderna, ágil y segura</span> de los <span class="text-bold">resguardos institucionales</span>. Optimiza tu trabajo y garantiza el <span class="text-bold">control total</span> en cada proceso.</p>                      {{-- 
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo" class="img-fluid my-2" style="max-height: 80px;">
+                    --}}
+                </div>
+            </div>
+        </div>
+    </div>
 @stop
-
-
 
 @section('auth_footer')
-    {{-- Password reset link --}}
-    @if($password_reset_url)
-    <!--
-        <p class="my-0">
-            <a href="{{ $password_reset_url }}">
-                {{ __('adminlte::adminlte.i_forgot_my_password') }}
-            </a>
-        </p>
-    -->
-    @endif
-
-    {{-- Register link --}}
-    @if($register_url)
-    <!--
-        <p class="my-0">
-            <a href="{{ $register_url }}">
-                {{ __('adminlte::adminlte.register_a_new_membership') }}
-            </a>
-        </p>
-        -->
-    @endif
+    <p class="text-center mt-2"><small>Versión 1.0.0</small></p>
 @stop
 
+@section('adminlte_js')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Solo mostrar el modal si no hay errores de validación
+            @if ($errors->isEmpty())
+                $('#welcomeModal').modal('show');
+            @endif
+        });
+    </script>
+@stop

@@ -142,7 +142,7 @@
 
                 <!-- Subir archivo PDF del resguardo -->
                 <div class="col-md-12 mt-3">
-                    <label class="form-label">Archivo PDF del Resguardo*</label><br>
+                    <label class="form-label">Archivo PDF del Resguardo</label><br>
                     <span>(Sube el archivo firmado en PDF)</span>
                     <input type="file" wire:model="resguardo_pdf" accept="application/pdf" class="form-control">
                     @error('resguardo_pdf') <span class="text-danger">{{ $message }}</span> @enderror
