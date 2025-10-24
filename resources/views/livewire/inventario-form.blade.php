@@ -90,27 +90,28 @@
         <table class="table table-striped table-hover">
             <thead>
                 <tr>             
-                    <th scope="col">IMAGEN</th>
-                    <th scope="col">DESCRIPCIÓN</th>
-                    <th scope="col">MARCA</th>
-                    <th scope="col">MODELO</th>
+                    <th scope="col">Imagen</th>
+                    <th scope="col">Equipo</th>
+                    <th scope="col">Marca</th>
+                    <th scope="col">Modelo</th>
 
-                    <th scope="col">NO. DE SERIE</th>
+                    <th scope="col">Serie</th>
                     
-                    <th scope="col">NO. DE INVENTARIO</th>
+                    <th scope="col">Inventario</th>
                     <!--
                     <th scope="col">CUIP</th>
                     <th scope="col">NO. DE RESGUARDO</th>
                     -->
-                    <th scope="col">ESTADO DE USO</th>                      
-                    <th scope="col">ÁREA DE ASIGNACIÓN</th>
-                    <th scope="col">UBICACIÓN FISICA</th>
-                    <th scope="col">NOMBRE USUARIO RESGUARDANTE</th>
-                    <th scope="col">PUESTO USUARIO RESGUARDANTE</th>
+                    <th scope="col">Estado</th>                      
+                    <th scope="col">Área</th>
+                    <th scope="col">Ubicación</th>
+                    <th scope="col">Resguardante</th>
                     <!--
+                    <th scope="col">Puesto</th>
+          
                     <th scope="col">N° DE INVENTARIO ACTUALIZADO</th>
                     -->
-                    <th scope="col">ACCIONES</th>
+                    <th scope="col">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -134,21 +135,27 @@
                         <td>{{ $resguardo->modelo }}</td>
                         <td>{{ $resguardo->nserie }}</td>
                         
+
+         
+
                         <td class="text-center">
-                            @if($resguardo->resguardo_pdf)
-                                {{ $resguardo->id }}
-                                <a href="{{ Storage::url($resguardo->resguardo_pdf) }}" target="_blank">
-                                    <br>
-                                    Descargar
-                                </a>
+                            @if($resguardo->historial[0]->resguardo_pdf != null)
+                                <div class="mt-2">
+                                    <a href="{{ Storage::url($resguardo->resguardo_pdf) }}" target="_blank">
+                                        Descargar Inventario No. {{ $resguardo->id }}
+                                        {{--   
+                                        ({{ $histo->fecha_asignacion->format('d/m/Y H:i') }})
+                                        --}} 
+                                    </a>
+                                </div>
                             @else
-                                {{ $resguardo->id }}
                                 <button wire:click="showModalNewStudent" class="btn btn-danger mb-3 fa">                        
                                     <i class="fas fa-upload"></i>
-                                    Subir resguardo            
-                                </button> 
-                            @endif 
+                                    Subir resguardo
+                                </button>
+                            @endif
                         </td>
+
 
                         <td>{{ strtoupper($resguardo->estadouso->estado) }}</td>
                         <td>{{ $resguardo->areadeasignacion->nombre }}</td>
@@ -167,8 +174,9 @@
                             @endif
                         </td>
                         <td><a href="{{ route('resguardante.show', $resguardo->resguardante->id) }}">{{$resguardo->resguardante->nombre1}} {{$resguardo->resguardante->nombre2}} {{$resguardo->resguardante->apellido1}} {{$resguardo->resguardante->apellido2}}</a></td>
+                        <!--
                         <td>{{ strtoupper($resguardo->puesto->nombre) }}</td>
-
+                        !-->
                         <td class="w-100">    
                             <button wire:click="cambiarAccion('editar',{{ $resguardo->id }})" class="btn btn-primary btn-sm mt-1 mb-1">                            
                                 <i class="fas fa-edit"></i>Editar resguardo

@@ -16,7 +16,7 @@
                 <div class="col-md-12" id="imgpc">
                     <label class="form-label">Imagen del producto*</label><br>
                     <span>(Sube una imagen desde la computadora o toma una foto)</span>
-                    <input type="file" wire:model="imagen" accept="image/*" class="form-control">
+                    <input type="file" wire:model="imagen" accept=".jpg, .jpeg, .png" class="form-control">
                     @error('imagen') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 

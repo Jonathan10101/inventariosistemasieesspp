@@ -49,7 +49,7 @@
     <div class="row mb-3">
         <div class="col-md-6">            
             <div class="input-group">
-                <label for="searchid">Da clic en el buscador y escribe el nombre del Puesto y luego presiona “Buscar”</label>
+                <label for="searchid">Da clic en el Buscador y escribe el nombre del Puesto y luego presiona “Buscar”</label>
                 <input type="text" id="searchid" placeholder="Buscador" wire:keydown.enter="searchPuestos" wire:model="search"  class="form-control" />
                 <button class="btn btn-primary" wire:click="searchPuestos">
                     <i class="fas fa-search"></i> Buscar

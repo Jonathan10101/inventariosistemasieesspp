@@ -10,12 +10,19 @@ use App\Models\Resguardante;
 use App\Models\Puesto;
 use App\Models\AreaDeUso;
 use App\Models\UbicacionFisica;
+use App\Models\HistorialResguardo;
 
 class Resguardo extends Model
 {
     use HasFactory;
     protected $table  = "resguardos";
     protected $fillable = ['id','descripcion','marca_id','modelo','nserie','nresguardo','estado_uso_id','area_de_uso_id','ubicacion_fisicas_id','resguardante_id','puesto_id','imagen','resguardo_pdf'];
+
+
+    public function historial()
+    {
+        return $this->hasMany(HistorialResguardo::class);
+    }
 
     public function marca()
     {

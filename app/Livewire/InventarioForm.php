@@ -7,16 +7,18 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
 use App\Models\Resguardo;
+use Illuminate\Support\Carbon;
+
 
 class InventarioForm extends Component
 {
     use WithPagination;
+    public $perPage = 3 ;
     public $search = '';
     public $showModal = false; // Controla el modal
     public $isEditing = false; // Determina si estamos editando o creando
     public $tituloModalPrincipal = "Registrar";
     public $accionPrincipal;
-    public $perPage = 1;
     public $data_external_component;
     public $data;
 
@@ -189,6 +191,14 @@ class InventarioForm extends Component
             'imagen' => $data['imagen'],
             'resguardo_pdf' => $data['resguardo_pdf'] 
         ]);
+
+            $id_of_student->historial()->create([
+                'resguardante_id' => $data['resguardante_id'],
+                'resguardo_pdf' => $data['resguardo_pdf'] ,
+                'fecha_asignacion' => now(),
+                'fecha_liberacion' => null,
+            ]);
+
 
 
         

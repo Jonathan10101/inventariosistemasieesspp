@@ -111,7 +111,7 @@
                 </div>
                 <div class="modal-body text-center">
                     <h5><strong>Sistema Integral de Resguardos</strong></h5>
-<p class="text-muted">La <span class="text-bold">herramienta oficial del IEESSPP</span> diseñada para una <span class="text-bold">gestión moderna, ágil y segura</span> de los <span class="text-bold">resguardos institucionales</span>. Optimiza tu trabajo y garantiza el <span class="text-bold">control total</span> en cada proceso.</p>                      {{-- 
+                    <p class="text-muted">La <span class="text-bold">herramienta oficial del IEESSPP</span> diseñada para una <span class="text-bold">gestión moderna, ágil y segura</span> de los <span class="text-bold">resguardos institucionales</span>.</p>                      {{-- 
                     <img src="{{ asset('images/logo.png') }}" alt="Logo" class="img-fluid my-2" style="max-height: 80px;">
                     --}}
                 </div>
