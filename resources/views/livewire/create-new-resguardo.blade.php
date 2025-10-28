@@ -102,7 +102,7 @@
                     <select id="areadeasignacionid" wire:model.defer="area_de_uso_id" class="form-control">
                         <option value="">Seleccione...</option>
                         @foreach($areasdeasignacion as $areadeasignacion)
-                            <option value="{{ $areadeasignacion->id }}">{{ $areadeasignacion->nombre }}</option>
+                            <option value="{{$areadeasignacion->id}}">{{$areadeasignacion->nombre}}</option>
                         @endforeach
                     </select>
                     @error('area_de_uso_id') <span class="text-danger">{{ $message }}</span> @enderror
@@ -124,7 +124,7 @@
                     <select id="resguardanteid" wire:model.defer="resguardante_id" class="form-control">
                         <option value="">Seleccione...</option>
                         @foreach($resguardantes as $resguardante)
-                            <option value="{{ $resguardante->id }}">{{ $resguardante->nombre1 }} {{ $resguardante->nombre2 }} {{ $resguardante->apellido1 }} {{ $resguardante->apellido2 }}</option>
+                            <option value="{{$resguardante->id}}">{{$resguardante->nombre1}} {{$resguardante->nombre2}} {{$resguardante->apellido1}} {{$resguardante->apellido2}}</option>
                         @endforeach
                     </select>
                     @error('resguardante_id') <span class="text-danger">{{ $message }}</span> @enderror
