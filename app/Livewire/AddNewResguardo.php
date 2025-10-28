@@ -24,14 +24,19 @@ use Livewire\WithFileUploads;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use App\Models\Resguardo;
+use Carbon\Carbon;
 
-class UpdateResguardo extends Component
+
+
+class AddNewResguardo extends Component
 {
     use WithFileUploads;
     public $marcas,$estadosdeuso,$areasdeasignacion,$ubicacionesifiscas,$resguardantes,$puestos;
    
     public $descripcion,$marca_id,$modelo,$nserie,$nresguardo,
-    $estado_uso_id,$area_de_uso_id,$ubicacion_fisicas_id,$resguardante_id,$puesto_id;  
+    $estado_uso_id,$area_de_uso_id,$ubicacion_fisicas_id,$resguardante_id,$puesto_id,$resguardante;
+
+    public $resguardo_id,$resguardo_pdf,$fecha_asignacion,$fecha_liberacion;
 
      public $showAdditionalFields = false;
     public $showModal = true; 
@@ -40,27 +45,28 @@ class UpdateResguardo extends Component
     public $usarCamara = true; // alternar entre cámara y PC
     public $tomadaDesdeCamara = true;
     protected $listeners = ['resetImagenes' => 'resetImagenes'];
-    public $resguardo_pdf;
 
 
-
+    
     public function mount($data){
-        
-     
         $resguardo = Resguardo::find($data);
-           if ($resguardo) {
+
+        
+        if ($resguardo) {
             $this->imagenGuardada = $resguardo->imagen; // Ruta guardada
+            $this->descripcion = $resguardo->descripcion;
+            $this->modelo = $resguardo->modelo;
+            $this->marca_id = $resguardo->marca_id;
+            $this->nserie = $resguardo->nserie;
+            $this->area_de_uso_id = $resguardo->area_de_uso_id;
+            $this->ubicacion_fisicas_id = $resguardo->ubicacion_fisicas_id;
+            $this->resguardante = $resguardo->resguardante;
+            
+            $this->resguardo_id = $resguardo->id;
+            $this->resguardante_id = $this->resguardante->id;
+
         }
-        $this->descripcion = $resguardo->descripcion;
-        $this->marca_id = $resguardo->marca_id;
-        $this->modelo = $resguardo->modelo;
-        $this->nserie = $resguardo->nserie;
-        $this->estado_uso_id = $resguardo->estado_uso_id;
-        $this->area_de_uso_id = $resguardo->area_de_uso_id;
-        $this->ubicacion_fisicas_id = $resguardo->ubicacion_fisicas_id;
-        $this->resguardante_id = $resguardo->resguardante_id;
-        $this->puesto_id = $resguardo->puesto_id;
-        $this->resguardo_pdf = $resguardo->resguardo_pdf;
+
 
 
         $this->ubicacionesifiscas  = UbicacionFisica::all();
@@ -101,7 +107,7 @@ class UpdateResguardo extends Component
             'descripcion' => 'required',
             'marca_id' => 'required',
             'modelo' => 'required',
-            'nserie' => 'required|unique:resguardos,nserie',
+            'nserie' => 'required',
             'estado_uso_id' => 'required',
             'area_de_uso_id' => 'required',
             'ubicacion_fisicas_id' => 'required',
@@ -109,9 +115,8 @@ class UpdateResguardo extends Component
             'puesto_id' => 'required',
             //'imagen' => 'image|max:6144',
             'imagen' => $this->imagenBase64 ? 'nullable' : 'required|image|max:2048',
-            //'resguardo_pdf' => 'mimes:pdf|max:8192', // 4MB máx
-            'resguardo_pdf' => 'nullable|mimes:pdf|max:1080', // 4MB máx
-
+            'resguardo_pdf' => 'mimes:pdf|max:8192', // 4MB máx
+            //'resguardo_pdf' => 'nullable|mimes:pdf|max:1080', // 4MB máx
         ]);
 
         // Si hay base64 (foto de cámara), convertir a UploadedFile
@@ -139,6 +144,11 @@ class UpdateResguardo extends Component
             ? $this->resguardo_pdf->store('resguardos/pdf', 'public')
             : null;
 
+
+        $this->fecha_asignacion = Carbon::now();
+
+
+        
         $data = [
             'descripcion' => $this->descripcion,
             'marca_id' => $this->marca_id,
@@ -152,9 +162,11 @@ class UpdateResguardo extends Component
             'puesto_id' => $this->puesto_id,
             'imagen' => $path,
             'resguardo_pdf' => $pdfPath,
+            'resguardo_id' => $this->resguardo_id,
+            'fecha_asignacion' => $this->fecha_asignacion,
         ];
 
-        $this->dispatch('saveFromComponentNewResguardo',$data);        
+        $this->dispatch('saveFromComponentNewHistorialResguardo',$data);        
         $this->resetForm();
     }
 
@@ -167,8 +179,9 @@ class UpdateResguardo extends Component
         ]);
     }
 
+
     public function render()
     {
-        return view('livewire.update-resguardo');
+        return view('livewire.add-new-resguardo');
     }
 }

@@ -107,8 +107,8 @@ class CreateNewResguardo extends Component
             'puesto_id' => 'required',
             //'imagen' => 'image|max:6144',
             'imagen' => $this->imagenBase64 ? 'nullable' : 'required|image|max:2048',
-            //'resguardo_pdf' => 'mimes:pdf|max:8192', // 4MB máx
-            'resguardo_pdf' => 'nullable|mimes:pdf|max:1080', // 4MB máx
+            'resguardo_pdf' => 'mimes:pdf|max:8192', // 4MB máx
+            //'resguardo_pdf' => 'nullable|mimes:pdf|max:1080', // 4MB máx
         ]);
 
         // Si hay base64 (foto de cámara), convertir a UploadedFile

@@ -20,9 +20,9 @@
                     @error('imagen') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
-                
                 <!-- Tomar foto con cámara -->
-                @if (!$imagen)
+                {{-- 
+                @if (!$imagen) Solo mostrar si NO hay imagen subida desde PC 
                     <div class="col-md-12 mt-3" id="camara">
                         <video id="video" width="300" height="200" autoplay></video>
                         <canvas id="canvas" class="d-none"></canvas>
@@ -31,7 +31,7 @@
                         </div>
                     </div>
                 @endif
- 
+                --}}
 
                 <div class="row">
                     <div class="col">
@@ -63,10 +63,10 @@
                     @error('descripcion') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
+
                 <div class="col-md-12">
                     <label for="marcaid" class="form-label">Marca*</label>
                     <select id="marcaid" wire:model.defer="marca_id" class="form-control">
-                        <option value="">Seleccione...</option>
                         @foreach($marcas as $marca)
                             <option value="{{ $marca->id }}">{{ $marca->nombre }}</option>
                         @endforeach
@@ -74,15 +74,19 @@
                     @error('marca_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
+
                 <div class="col-md-12">
                     <label for="modeloid" class="form-label">Modelo*</label>
                     <input type="text" id="modeloid" wire:model.defer="modelo" class="form-control" oninput="this.value = this.value.toUpperCase()">
                     @error('modelo') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
+                
                 <div class="col-md-12">
+                    {{--
                     <label for="numerodeserieid" class="form-label">No. de serie*</label>
-                    <input type="text" id="numerodeserieid" wire:model.defer="nserie" class="form-control" oninput="this.value = this.value.toUpperCase()">
+                    --}}
+                    <input type="hidden" id="numerodeserieid" wire:model.defer="nserie" class="form-control" oninput="this.value = this.value.toUpperCase()">
                     @error('nserie') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
@@ -97,10 +101,11 @@
                     @error('estado_uso_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
+                
+
                 <div class="col-md-12">
                     <label for="areadeasignacionid" class="form-label">Area de asignación*</label>
                     <select id="areadeasignacionid" wire:model.defer="area_de_uso_id" class="form-control">
-                        <option value="">Seleccione...</option>
                         @foreach($areasdeasignacion as $areadeasignacion)
                             <option value="{{ $areadeasignacion->id }}">{{ $areadeasignacion->nombre }}</option>
                         @endforeach
@@ -111,7 +116,6 @@
                 <div class="col-md-12">
                     <label for="ubicacionfisicaid" class="form-label">Ubicación fisica*</label>
                     <select id="ubicacionfisicaid" wire:model.defer="ubicacion_fisicas_id" class="form-control">
-                        <option value="">Seleccione...</option>
                         @foreach($ubicacionesifiscas as $ubicacionifisca)
                             <option value="{{ $ubicacionifisca->id }}">{{ $ubicacionifisca->descripcion }}</option>
                         @endforeach
@@ -122,9 +126,10 @@
                 <div class="col-md-12">
                     <label for="resguardanteid" class="form-label">Resguardante*</label>
                     <select id="resguardanteid" wire:model.defer="resguardante_id" class="form-control">
-                        <option value="">Seleccione...</option>
                         @foreach($resguardantes as $resguardante)
-                            <option value="{{ $resguardante->id }}">{{ $resguardante->nombre1 }} {{ $resguardante->nombre2 }} {{ $resguardante->apellido1 }} {{ $resguardante->apellido2 }}</option>
+                            @if($resguardante->id != $resguardante_id)
+                                <option value="{{ $resguardante->id }}">{{$resguardante->nombre1}} {{$resguardante->nombre2}} {{$resguardante->apellido1}} {{$resguardante->apellido2}}</option>
+                            @endif
                         @endforeach
                     </select>
                     @error('resguardante_id') <span class="text-danger">{{ $message }}</span> @enderror

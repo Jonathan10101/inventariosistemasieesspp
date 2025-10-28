@@ -8,6 +8,7 @@ use Livewire\WithPagination;
 use Livewire\Attributes\On;
 use App\Models\Resguardo;
 use Illuminate\Support\Carbon;
+use App\Models\HistorialResguardo;
 
 
 class InventarioForm extends Component
@@ -25,7 +26,10 @@ class InventarioForm extends Component
     public function changeModalTitle($accion){
         switch ($accion) {
             case "editar":                
-                $this->tituloModalPrincipal = "Editar Resguardo";                
+                $this->tituloModalPrincipal = "Editar resguardo";                
+            break;
+            case "addNewResguardo":                
+                $this->tituloModalPrincipal = "Agregar nuevo resguardo";                
             break;
         }
     }
@@ -43,6 +47,9 @@ class InventarioForm extends Component
                     $this->tieneCursosAsignados = true;
                 }       
                 */         
+            break;
+            case "addNewResguardo":
+                $this->addNewResguardo($id);
             break;
         }  
     }
@@ -97,8 +104,12 @@ class InventarioForm extends Component
         $this->showModal = true; // Abre el modal, se comento porque ya lo manda a llamar desde el metodo de arriba         
     }
 
-    public function assignCourse($id)
+    public function addNewResguardo($id)
     {        
+                $this->data_external_component = $id;
+
+
+        /*
         $this->student = Estudiante::findOrFail($id);
         $this->id_estudiante = $this->student->id;
         $this->cursos = Cursos::where('activo', 1)->get();
@@ -115,6 +126,7 @@ class InventarioForm extends Component
             $this->inscripciones = $estudiante->inscripciones;            
             $this->tieneCursosAsignados = true;
         }        
+        */
         $this->showModal = true; // Abre el modal
     }
 
@@ -216,6 +228,17 @@ class InventarioForm extends Component
 
         $this->resetForm();
         $this->showModal = false;  
+    }
+
+    #[On('saveFromComponentNewHistorialResguardo')]
+    public function guardarHistorialResguardo($data){
+        HistorialResguardo::create([
+            'resguardo_id' => $data['resguardo_id'],
+            'resguardante_id' => $data['resguardante_id'],
+            'resguardo_pdf' => $data['resguardo_pdf'],
+            'fecha_asignacion' => $data['fecha_asignacion'],
+            'fecha_liberacion' => null
+        ]);
     }
     
     #[On('notifyCloseModal')]
