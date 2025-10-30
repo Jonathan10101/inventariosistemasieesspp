@@ -9,7 +9,8 @@ class UbicacionFisicaController extends Controller
 {
     public function index()
     {
-        return view('ubicaciones/index');
+        $ubicacionesFisicas = UbicacionFisica::all();
+        return view('ubicaciones/index',compact('ubicacionesFisicas'));
     }
 
     public function create()

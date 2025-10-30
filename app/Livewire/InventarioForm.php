@@ -23,6 +23,14 @@ class InventarioForm extends Component
     public $data_external_component;
     public $data;
 
+    public function mount()
+    {
+        $this->search = request()->query('search', '');
+        if ($this->search) {
+            $this->searchResguardos(); // o el método que uses
+        }
+    }
+
     public function changeModalTitle($accion){
         switch ($accion) {
             case "editar":                
@@ -30,6 +38,9 @@ class InventarioForm extends Component
             break;
             case "addNewResguardo":                
                 $this->tituloModalPrincipal = "Agregar nuevo resguardo";                
+            break;
+            case 'showHistorialResguardo':
+                $this->tituloModalPrincipal = "Historial de Resguardos";                
             break;
         }
     }
@@ -50,6 +61,9 @@ class InventarioForm extends Component
             break;
             case "addNewResguardo":
                 $this->addNewResguardo($id);
+            break;
+            case 'showHistorialResguardo':
+                $this->showHistorialResguardo($id);
             break;
         }  
     }
@@ -130,6 +144,11 @@ class InventarioForm extends Component
         $this->showModal = true; // Abre el modal
     }
 
+    public function showHistorialResguardo($id){
+        $this->data_external_component = $id;
+        $this->showModal = true; // Abre el modal
+    }
+
     // Método para iniciar creación de un nuevo estudiante (esto es importante para limpiar todo)
     public function createNewStudent()
     {
@@ -148,6 +167,7 @@ class InventarioForm extends Component
         $this->isAnInscription = false;
         $this->inscripciones = "";     
         $isAnInscription = false;   
+        $this->search = "";
                 
         $this->id_estudiante = 0;
         $this->id_curso = 0;
@@ -204,12 +224,12 @@ class InventarioForm extends Component
             'resguardo_pdf' => $data['resguardo_pdf'] 
         ]);
 
-            $id_of_student->historial()->create([
-                'resguardante_id' => $data['resguardante_id'],
-                'resguardo_pdf' => $data['resguardo_pdf'] ,
-                'fecha_asignacion' => now(),
-                'fecha_liberacion' => null,
-            ]);
+        $id_of_student->historial()->create([
+            'resguardante_id' => $data['resguardante_id'],
+            'resguardo_pdf' => $data['resguardo_pdf'] ,
+            'fecha_asignacion' => now(),
+            'fecha_liberacion' => null,
+        ]);
 
 
 
@@ -230,14 +250,31 @@ class InventarioForm extends Component
         $this->showModal = false;  
     }
 
+    public function downloadEtiqueta($id){
+       
+        $codigo = str_pad($id, 8, '0', STR_PAD_LEFT);
+        //dd($codigo);
+
+        return redirect()->route('etiquetas.show',$codigo);
+    }
+
     #[On('saveFromComponentNewHistorialResguardo')]
     public function guardarHistorialResguardo($data){
         HistorialResguardo::create([
             'resguardo_id' => $data['resguardo_id'],
             'resguardante_id' => $data['resguardante_id'],
             'resguardo_pdf' => $data['resguardo_pdf'],
-            'fecha_asignacion' => $data['fecha_asignacion'],
+            'fecha_asignacion' => now(),
             'fecha_liberacion' => null
+        ]);
+        $resguardoUpdate = Resguardo::find($data['resguardo_id']);
+        $resguardoUpdate->update([
+            'imagen' => $data['imagen'],
+            'estado_uso_id' => $data['estado_uso_id'],
+            'area_de_uso_id' => $data['area_de_uso_id'],
+            'ubicacion_fisicas_id' => $data['ubicacion_fisicas_id'],
+            'resguardante_id' => $data['resguardante_id'],
+            'puesto_id' => $data['puesto_id']
         ]);
     }
     

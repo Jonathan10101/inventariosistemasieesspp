@@ -15,7 +15,7 @@ class EtiquetaController extends Controller
         $pdf = Pdf::loadView('etiquetas.pdf', compact('etiqueta', 'codigo'));
         $codigo = ltrim($codigo,'0');
         // Forzar descarga del archivo
-        return $pdf->download("No. de inventario {$codigo}.pdf");
+        return $pdf->download("Etiqueta del equipo con id {$codigo}.pdf");
     }
 
     private function generarEtiquetaBarcode($codigo)

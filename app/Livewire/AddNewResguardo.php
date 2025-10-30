@@ -23,6 +23,8 @@ use App\Livewire\Forms\StudentCreateForm;
 use Livewire\WithFileUploads;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
+use Illuminate\Support\Number;
+
 use App\Models\Resguardo;
 use Carbon\Carbon;
 
@@ -70,7 +72,9 @@ class AddNewResguardo extends Component
 
 
         $this->ubicacionesifiscas  = UbicacionFisica::all();
-        $this->resguardantes = Resguardante::all();
+        $this->resguardantes = Resguardante::where('id', '!=',$this->resguardante_id)->get();
+
+        //dd($x);
         $this->puestos = Puesto::all();
         $this->marcas = Marca::all();
         $this->estadosdeuso = EstadoUso::all();
@@ -145,7 +149,7 @@ class AddNewResguardo extends Component
             : null;
 
 
-        $this->fecha_asignacion = Carbon::now();
+        $this->fecha_asignacion = now();
 
 
         

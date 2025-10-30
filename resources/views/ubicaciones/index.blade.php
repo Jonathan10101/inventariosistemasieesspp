@@ -46,6 +46,17 @@
         </div>
         <div class="col"></div>
     </div>
+    
+    {{--
+    <div class="row">
+        <div class="col">
+            @forEach($ubicacionesFisicas as $ubicacionFisica)
+                <p>{{$ubicacionFisica->descripcion}}</p>
+            @endForEach
+        </div>
+    </div>
+    --}}
+
 </div>
 
 @stop

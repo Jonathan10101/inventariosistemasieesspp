@@ -43,7 +43,7 @@
             <th>Marca</th>
             <th>Modelo</th>
             <th>No. Serie</th>
-            <th>No. Resguardo</th>
+            <th>No. de inventario</th>
             <th>Acciones</th>
         </tr>
     </thead>
@@ -57,7 +57,9 @@
                 <td>{{ $resguardo->nserie }}</td>
                 <td>{{ $resguardo->nresguardo }}</td>
                 <td>
-                    
+                <a href="{{ route('inventario.index', ['search' => $resguardo->id]) }}" class="btn btn-dark">
+                    <i class="fas fa-eye"></i> Ver resguardo
+                </a>
                 </td>
             </tr>
         @empty

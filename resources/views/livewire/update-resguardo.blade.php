@@ -41,13 +41,13 @@
                     @error('modelo') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
-                <div class="col-md-12">
+                <div class="col-md-12" style="display:none;">
                     <label for="numerodeserieid" class="form-label">No. de serie*</label>
                     <input type="text" id="numerodeserieid" wire:model.defer="nserie" class="form-control" oninput="this.value = this.value.toUpperCase()">
                     @error('nserie') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
-                <div class="col-md-12">
+                <div class="col-md-12"  style="display:none;">
                     <label for="estadodeusoid" class="form-label">Estado de uso*</label>
                     <select id="estadodeusoid" wire:model.defer="estado_uso_id" class="form-control">
                         <option value="">Seleccione...</option>
@@ -80,7 +80,7 @@
                     @error('ubicacion_fisicas_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
-                <div class="col-md-12">
+                <div class="col-md-12" style="display:none;">
                     <label for="resguardanteid" class="form-label">Resguardante*</label>
                     <select id="resguardanteid" wire:model.defer="resguardante_id" class="form-control">
                         <option value="">Seleccione...</option>
@@ -91,7 +91,7 @@
                     @error('resguardante_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
-                <div class="col-md-12">
+                <div class="col-md-12" style="display:none;">
                     <label for="puestodelresguardanteid" class="form-label">Puesto del resguardante*</label>
                     <select id="puestodelresguardanteid" wire:model.defer="puesto_id" class="form-control">
                         <option value="">Seleccione...</option>
@@ -104,7 +104,7 @@
 
 
                 <!-- Subir archivo PDF del resguardo -->
-                <div class="col-md-12 mt-3">
+                <div class="col-md-12 mt-3" style="display:none;">
                     <label class="form-label">Archivo PDF del Resguardo*</label><br>
                     <span>(Sube el archivo firmado en PDF)</span>
                     <input type="file" wire:model="resguardo_pdf" accept="application/pdf" class="form-control">

@@ -360,6 +360,8 @@ return [
             'url' => 'inventario',
             'icon' => 'fas fa-fw fa-box',
         ],
+        
+
         [
             'text' => 'Marcas',
             //'icon' => 'fas fa-fw fa-share',
@@ -461,10 +463,10 @@ return [
         ],
         */
         [
-            'text' => 'Versión 1.0.0',
-            'url' => '#',
-            'icon' => 'fas fa-fw fa-code',
-            'classes' => 'disabled',
+            'text'    => 'Versión 1.0.0 By Jonathan (IEESSPP)',
+            'url' => '#',            
+            'icon'    => 'fas fa-fw fa-code',
+            'classes' => 'nav-link no-click', // usamos clase personalizada
         ],
 
 

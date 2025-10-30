@@ -32,9 +32,9 @@
                         @livewire('add-new-resguardo',['data'=>$data_external_component])                                       
                     @break
 
-                    {{--MOSTRAR CERTIFICADOS--}}
-                    @case("mostrar_certificados")                    
-                        @livewire('show-certificates',['student'=>$student,'inscripciones'=>$inscripciones])                                       
+                    {{--MOSTRAR HISTORIAL RESGUARDO--}}
+                    @case("showHistorialResguardo")                    
+                        @livewire('show-resguardos-modal',['data'=>$data_external_component])                              
                     @break
 
                     {{--DAR DE BAJA ESTUDIANTE--}}
@@ -87,7 +87,8 @@
     <div class="table-responsive">
         <table class="table table-striped table-hover">
             <thead>
-                <tr>             
+                <tr>           
+                    <th scope="col">Id</th>
                     <th scope="col">Imagen</th>
                     <th scope="col">Equipo</th>
                     <th scope="col">Marca</th>
@@ -115,6 +116,9 @@
             <tbody>
                 @forelse ($resguardos as $resguardo)
                     <tr>
+                        <td>
+                            {{ $resguardo->id }}
+                        </td>
                         <td>
                         @if($resguardo->imagen)
                         <a href="{{ asset('storage/' . $resguardo->imagen) }}" target="_blank">
@@ -177,12 +181,12 @@
                         <td>{{ strtoupper($resguardo->puesto->nombre) }}</td>
                         !-->
                         <td class="w-100">   
-                            {{-- 
-                            <button wire:click="cambiarAccion('editar',{{ $resguardo->id }})" class="btn btn-secondary btn-sm mt-1 mb-1">                            
-                                <i class="fas fa-edit"></i>Editar
+                            
+                            <button wire:click="cambiarAccion('editar',{{ $resguardo->id }})" class="btn btn-warning btn-sm mt-1 mb-1">                            
+                                <i class="fas fa-edit"></i> Editar
                             </button>
-                            --}}  
-                            <button wire:click="cambiarAccion('editar',{{ $resguardo->id }})" class="btn btn-secondary btn-sm mt-1 mb-1">                            
+                              
+                            <button wire:click="cambiarAccion('showHistorialResguardo',{{ $resguardo->id }})" class="btn btn-dark btn-sm mt-1 mb-1">                            
                                 <i class="fas fa-eye"></i> Ver resguardos
                             </button>
                             <button wire:click="" class="btn btn-danger btn-sm mt-1 mb-1">                            
@@ -191,6 +195,9 @@
                             <button wire:click="cambiarAccion('addNewResguardo',{{ $resguardo->id }})"  class="btn btn-primary btn-sm mt-1 mb-1">                            
                                 <i class="fas fa-plus"></i> Agregar resguardo
                             </button>  
+                            <button wire:click="downloadEtiqueta({{ $resguardo->id }})" class="btn btn-success btn-sm mt-1 mb-1">            
+                                <i class="fas fa-download"></i> Descargar etiqueta
+                            </button>
                             {{--
                             @can('alumnos.edit')   
                             <button wire:click="cambiarAccion('editar',{{ $resguardo->id }})" class="btn btn-primary btn-sm mt-1 mb-1">                            
@@ -217,6 +224,16 @@
 
 @push('js')
 @livewireScripts
+    @if(request()->has('search'))
+    <script>
+        // Espera un segundo y luego limpia el parámetro de la URL visualmente
+        setTimeout(() => {
+            const url = new URL(window.location.href);
+            url.searchParams.delete('search');
+            window.history.replaceState({}, document.title, url.pathname);
+        }, 1000);
+    </script>
+    @endif
     <script>
         document.addEventListener('livewire:initialized',function(){    
             Livewire.on('refresh-page',function($message){                
@@ -242,6 +259,7 @@
             });   
         });
     </script>
+
 @endpush
 </div>
 

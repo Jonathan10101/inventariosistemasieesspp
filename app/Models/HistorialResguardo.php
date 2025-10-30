@@ -16,6 +16,15 @@ class HistorialResguardo extends Model
         'fecha_liberacion' => 'datetime',
     ];
 
+    public function getFechaAsignacionAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->format('d/m/Y H:i');
+    }
+
+    public function getFechaLiberacionAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->format('d/m/Y H:i');  
+    }
 
     public function resguardo()
     {

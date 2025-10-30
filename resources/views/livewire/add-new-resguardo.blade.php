@@ -33,7 +33,7 @@
                 @endif
                 --}}
 
-                <div class="row">
+                <div class="row" >
                     <div class="col">
                             @php
                                 $preview = $imagen ? $imagen->temporaryUrl() : ($imagenBase64 ?? null);
@@ -57,15 +57,19 @@
                 <hr>
 
                 <!-- Campos del formulario -->
-                <div class="col-md-12">
+                <div class="col-md-12" style="display:none;" >
+                    <!-- 
                     <label for="descripcionid" class="form-label">Descripción*</label>
-                    <input type="text" id="descripcionid" wire:model.defer="descripcion" class="form-control" oninput="this.value = this.value.toUpperCase()">
+                    -->
+                    <input type="hidden" id="descripcionid" wire:model.defer="descripcion" class="form-control" oninput="this.value = this.value.toUpperCase()">
                     @error('descripcion') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
 
-                <div class="col-md-12">
+                <div class="col-md-12" style="display:none;" >
+                    <!-- 
                     <label for="marcaid" class="form-label">Marca*</label>
+                    -->
                     <select id="marcaid" wire:model.defer="marca_id" class="form-control">
                         @foreach($marcas as $marca)
                             <option value="{{ $marca->id }}">{{ $marca->nombre }}</option>
@@ -75,14 +79,16 @@
                 </div>
 
 
-                <div class="col-md-12">
+                <div class="col-md-12"  style="display:none;">
+                    <!-- 
                     <label for="modeloid" class="form-label">Modelo*</label>
-                    <input type="text" id="modeloid" wire:model.defer="modelo" class="form-control" oninput="this.value = this.value.toUpperCase()">
+                    -->
+                    <input type="hidden" id="modeloid" wire:model.defer="modelo" class="form-control" oninput="this.value = this.value.toUpperCase()">
                     @error('modelo') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
                 
-                <div class="col-md-12">
+                <div class="col-md-12"  style="display:none;">
                     {{--
                     <label for="numerodeserieid" class="form-label">No. de serie*</label>
                     --}}
@@ -107,7 +113,7 @@
                     <label for="areadeasignacionid" class="form-label">Area de asignación*</label>
                     <select id="areadeasignacionid" wire:model.defer="area_de_uso_id" class="form-control">
                         @foreach($areasdeasignacion as $areadeasignacion)
-                            <option value="{{ $areadeasignacion->id }}">{{ $areadeasignacion->nombre }}</option>
+                            <option value="{{$areadeasignacion->id}}">{{$areadeasignacion->nombre}}</option>
                         @endforeach
                     </select>
                     @error('area_de_uso_id') <span class="text-danger">{{ $message }}</span> @enderror
@@ -117,7 +123,7 @@
                     <label for="ubicacionfisicaid" class="form-label">Ubicación fisica*</label>
                     <select id="ubicacionfisicaid" wire:model.defer="ubicacion_fisicas_id" class="form-control">
                         @foreach($ubicacionesifiscas as $ubicacionifisca)
-                            <option value="{{ $ubicacionifisca->id }}">{{ $ubicacionifisca->descripcion }}</option>
+                            <option value="{{$ubicacionifisca->id}}">{{$ubicacionifisca->descripcion}}</option>
                         @endforeach
                     </select>
                     @error('ubicacion_fisicas_id') <span class="text-danger">{{ $message }}</span> @enderror
@@ -126,10 +132,9 @@
                 <div class="col-md-12">
                     <label for="resguardanteid" class="form-label">Resguardante*</label>
                     <select id="resguardanteid" wire:model.defer="resguardante_id" class="form-control">
+                        <option value="">Seleccione...</option>
                         @foreach($resguardantes as $resguardante)
-                            @if($resguardante->id != $resguardante_id)
-                                <option value="{{ $resguardante->id }}">{{$resguardante->nombre1}} {{$resguardante->nombre2}} {{$resguardante->apellido1}} {{$resguardante->apellido2}}</option>
-                            @endif
+                            <option value="{{$resguardante->id}}">{{$resguardante->nombre1}} {{$resguardante->nombre2}} {{$resguardante->apellido1}} {{$resguardante->apellido2}}</option>
                         @endforeach
                     </select>
                     @error('resguardante_id') <span class="text-danger">{{ $message }}</span> @enderror
