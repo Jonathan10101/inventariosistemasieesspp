@@ -161,14 +161,13 @@
 
                         <td>{{ strtoupper(optional($resguardo->historial->last()->estadouso)->estado) }}</td>
                    
-                        <td>{{ $resguardo->historial }}</td>
                         <td>{{ $resguardo->historial->last()->areaDeUso->nombre }}</td>
+                        <td>{{ $resguardo->historial->last()->ubicacionFisica->descripcion }}</td>
 
                          
                         <td>
-                            @if($resguardo->historial)
+                            @if($resguardo->historial->last())
                             <a href="{{ asset('storage/' . $resguardo->historial) }}" target="_blank">
-                                {{ $resguardo->historial }}<br>
                                 {{--
                                 <img src="{{ asset('storage/' . $resguardo->historial) }}" 
                                     alt="Imagen del producto" 
@@ -177,10 +176,10 @@
                                 --}}
                             </a>
                             @else
-                                {{ $resguardo->ubicacionFisica->descripcion }}<br>
+                                {{strtoupper(optional($resguardo->historial->last()->ubicacionFisica)->descripcion)}}<br>
                             @endif
                         </td>
-                        <td><a href="{{ route('resguardante.show', $resguardo->resguardante->id) }}">{{$resguardo->resguardante->nombre1}} {{$resguardo->resguardante->nombre2}} {{$resguardo->resguardante->apellido1}} {{$resguardo->resguardante->apellido2}}</a></td>
+                        <td><a href="{{ route('resguardante.show', $resguardo->resguardante->id) }}">{{strtoupper(optional($resguardo->historial->last()->resguardante)->nombre1)}} {{strtoupper(optional($resguardo->historial->last()->resguardante)->nombre2)}} {{strtoupper(optional($resguardo->historial->last()->resguardante)->apellido1)}} {{strtoupper(optional($resguardo->historial->last()->resguardante)->apellido2)}}</a></td>
                         <!--
                         <td>{{ strtoupper($resguardo->puesto->nombre) }}</td>
                         !-->
