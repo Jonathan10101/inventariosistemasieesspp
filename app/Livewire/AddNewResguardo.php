@@ -28,6 +28,8 @@ use Illuminate\Support\Number;
 use App\Models\Resguardo;
 use Carbon\Carbon;
 
+use App\Models\HistorialResguardo;
+
 
 
 class AddNewResguardo extends Component
@@ -47,24 +49,24 @@ class AddNewResguardo extends Component
     public $usarCamara = true; // alternar entre cámara y PC
     public $tomadaDesdeCamara = true;
     protected $listeners = ['resetImagenes' => 'resetImagenes'];
-
+    public $resguardo;
 
     
     public function mount($data){
-        $resguardo = Resguardo::find($data);
+        $this->resguardo = Resguardo::find($data);
 
         
-        if ($resguardo) {
-            $this->imagenGuardada = $resguardo->imagen; // Ruta guardada
-            $this->descripcion = $resguardo->descripcion;
-            $this->modelo = $resguardo->modelo;
-            $this->marca_id = $resguardo->marca_id;
-            $this->nserie = $resguardo->nserie;
-            $this->area_de_uso_id = $resguardo->area_de_uso_id;
-            $this->ubicacion_fisicas_id = $resguardo->ubicacion_fisicas_id;
-            $this->resguardante = $resguardo->resguardante;
+        if ($this->resguardo) {
+            $this->imagenGuardada = $this->resguardo->imagen; // Ruta guardada
+            $this->descripcion = $this->resguardo->descripcion;
+            $this->modelo = $this->resguardo->modelo;
+            $this->marca_id = $this->resguardo->marca_id;
+            $this->nserie = $this->resguardo->nserie;
+            $this->area_de_uso_id = $this->resguardo->area_de_uso_id;
+            $this->ubicacion_fisicas_id = $this->resguardo->ubicacion_fisicas_id;
+            $this->resguardante = $this->resguardo->resguardante;
             
-            $this->resguardo_id = $resguardo->id;
+            $this->resguardo_id = $this->resguardo->id;
             $this->resguardante_id = $this->resguardante->id;
 
         }
@@ -140,7 +142,7 @@ class AddNewResguardo extends Component
         }
 
         // Solo si hay imagen, la guardamos
-        $path = $this->imagen 
+        $imagenEvidencia = $this->imagen 
             ? $this->imagen->store('resguardos', 'public')
             : null;
 
@@ -152,7 +154,7 @@ class AddNewResguardo extends Component
         $this->fecha_asignacion = now();
 
 
-        
+        /*
         $data = [
             'descripcion' => $this->descripcion,
             'marca_id' => $this->marca_id,
@@ -169,8 +171,13 @@ class AddNewResguardo extends Component
             'resguardo_id' => $this->resguardo_id,
             'fecha_asignacion' => $this->fecha_asignacion,
         ];
+        */
+        
+        //HistorialResguardo::registrarAsignacion($this->resguardo, $this->resguardante_id, $pdfPath,$imagenEvidencia);
+        HistorialResguardo::registrarAsignacion($this->resguardo, $this->resguardante_id, $pdfPath,$imagenEvidencia,$this->estado_uso_id,$this->area_de_uso_id,$this->ubicacion_fisicas_id);
 
-        $this->dispatch('saveFromComponentNewHistorialResguardo',$data);        
+
+        //$this->dispatch('saveFromComponentNewHistorialResguardo',$data);        
         $this->resetForm();
     }
 

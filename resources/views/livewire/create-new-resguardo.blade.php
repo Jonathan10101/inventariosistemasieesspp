@@ -56,16 +56,16 @@
                 
                 <hr>
 
-                <!-- Campos del formulario -->
+                <!-- Campos generales -->
                 <div class="col-md-12">
-                    <label for="descripcionid" class="form-label">Descripción*</label>
-                    <input type="text" id="descripcionid" wire:model.defer="descripcion" class="form-control" oninput="this.value = this.value.toUpperCase()">
+                    <label class="form-label">Descripción*</label>
+                    <input type="text" wire:model.defer="descripcion" class="form-control text-uppercase">
                     @error('descripcion') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="col-md-12">
-                    <label for="marcaid" class="form-label">Marca*</label>
-                    <select id="marcaid" wire:model.defer="marca_id" class="form-control">
+                    <label class="form-label">Marca*</label>
+                    <select wire:model.defer="marca_id" class="form-control">
                         <option value="">Seleccione...</option>
                         @foreach($marcas as $marca)
                             <option value="{{ $marca->id }}">{{ $marca->nombre }}</option>
@@ -75,64 +75,68 @@
                 </div>
 
                 <div class="col-md-12">
-                    <label for="modeloid" class="form-label">Modelo*</label>
-                    <input type="text" id="modeloid" wire:model.defer="modelo" class="form-control" oninput="this.value = this.value.toUpperCase()">
+                    <label class="form-label">Modelo*</label>
+                    <input type="text" wire:model.defer="modelo" class="form-control text-uppercase">
                     @error('modelo') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="col-md-12">
-                    <label for="numerodeserieid" class="form-label">No. de serie*</label>
-                    <input type="text" id="numerodeserieid" wire:model.defer="nserie" class="form-control" oninput="this.value = this.value.toUpperCase()">
+                    <label class="form-label">No. de serie*</label>
+                    <input type="text" wire:model.defer="nserie" class="form-control text-uppercase">
                     @error('nserie') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
+                <!-- Estado, Área, Ubicación -->
                 <div class="col-md-12">
-                    <label for="estadodeusoid" class="form-label">Estado de uso*</label>
-                    <select id="estadodeusoid" wire:model.defer="estado_uso_id" class="form-control">
+                    <label class="form-label">Estado de uso*</label>
+                    <select wire:model.defer="estado_uso_id" class="form-control">
                         <option value="">Seleccione...</option>
-                        @foreach($estadosdeuso as $estadodeuso)
-                            <option value="{{ $estadodeuso->id }}">{{ $estadodeuso->estado }}</option>
+                        @foreach($estadosdeuso as $estado)
+                            <option value="{{ $estado->id }}">{{ $estado->estado }}</option>
                         @endforeach
                     </select>
                     @error('estado_uso_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="col-md-12">
-                    <label for="areadeasignacionid" class="form-label">Area de asignación*</label>
-                    <select id="areadeasignacionid" wire:model.defer="area_de_uso_id" class="form-control">
+                    <label class="form-label">Área de asignación*</label>
+                    <select wire:model.defer="area_de_uso_id" class="form-control">
                         <option value="">Seleccione...</option>
-                        @foreach($areasdeasignacion as $areadeasignacion)
-                            <option value="{{$areadeasignacion->id}}">{{$areadeasignacion->nombre}}</option>
+                        @foreach($areasdeasignacion as $area)
+                            <option value="{{ $area->id }}">{{ $area->nombre }}</option>
                         @endforeach
                     </select>
                     @error('area_de_uso_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="col-md-12">
-                    <label for="ubicacionfisicaid" class="form-label">Ubicación fisica*</label>
-                    <select id="ubicacionfisicaid" wire:model.defer="ubicacion_fisicas_id" class="form-control">
+                    <label class="form-label">Ubicación física*</label>
+                    <select wire:model.defer="ubicacion_fisicas_id" class="form-control">
                         <option value="">Seleccione...</option>
-                        @foreach($ubicacionesifiscas as $ubicacionifisca)
-                            <option value="{{ $ubicacionifisca->id }}">{{ $ubicacionifisca->descripcion }}</option>
+                        @foreach($ubicacionesifiscas as $ubicacion)
+                            <option value="{{ $ubicacion->id }}">{{ $ubicacion->descripcion }}</option>
                         @endforeach
                     </select>
                     @error('ubicacion_fisicas_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
+                <!-- Resguardante -->
                 <div class="col-md-12">
-                    <label for="resguardanteid" class="form-label">Resguardante*</label>
-                    <select id="resguardanteid" wire:model.defer="resguardante_id" class="form-control">
+                    <label class="form-label">Resguardante*</label>
+                    <select wire:model.defer="resguardante_id" class="form-control">
                         <option value="">Seleccione...</option>
                         @foreach($resguardantes as $resguardante)
-                            <option value="{{$resguardante->id}}">{{$resguardante->nombre1}} {{$resguardante->nombre2}} {{$resguardante->apellido1}} {{$resguardante->apellido2}}</option>
+                            <option value="{{ $resguardante->id }}">
+                                {{ $resguardante->apellido1 }} {{ $resguardante->apellido2 }} {{ $resguardante->nombre1 }} {{ $resguardante->nombre2 }}
+                            </option>
                         @endforeach
                     </select>
                     @error('resguardante_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="col-md-12">
-                    <label for="puestodelresguardanteid" class="form-label">Puesto del resguardante*</label>
-                    <select id="puestodelresguardanteid" wire:model.defer="puesto_id" class="form-control">
+                    <label class="form-label">Puesto del resguardante*</label>
+                    <select wire:model.defer="puesto_id" class="form-control">
                         <option value="">Seleccione...</option>
                         @foreach($puestos as $puesto)
                             <option value="{{ $puesto->id }}">{{ $puesto->nombre }}</option>
@@ -141,20 +145,23 @@
                     @error('puesto_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
-
-                <!-- Subir archivo PDF del resguardo -->
+                <!-- Subir archivo PDF -->
                 <div class="col-md-12 mt-3">
-                    <label class="form-label">Archivo PDF del Resguardo</label><br>
-                    <span>(Sube el archivo firmado en PDF)</span>
+                    <label class="form-label">Archivo PDF del Resguardo*</label>
+                    <small class="d-block text-muted mb-1">(Sube el archivo firmado en PDF)</small>
                     <input type="file" wire:model="resguardo_pdf" accept="application/pdf" class="form-control">
                     @error('resguardo_pdf') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
                 <!-- Botón Guardar -->
-                <div class="col d-flex justify-content-end mt-4">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                <div class="col-12 d-flex justify-content-end mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> Guardar
+                    </button>
                 </div>
 
+
+                
             </div>
         </form>
     </div>

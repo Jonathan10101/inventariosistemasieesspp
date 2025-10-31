@@ -159,14 +159,18 @@
                         --}}
 
 
-                        <td>{{ strtoupper($resguardo->estadouso->estado) }}</td>
-                        <td>{{ $resguardo->areadeasignacion->nombre }}</td>
+                        <td>{{ strtoupper(optional($resguardo->historial->last()->estadouso)->estado) }}</td>
+                   
+                        <td>{{ $resguardo->historial }}</td>
+                        <td>{{ $resguardo->historial->last()->areaDeUso->nombre }}</td>
+
+                         
                         <td>
-                            @if($resguardo->ubicacionFisica->imagen)
-                            <a href="{{ asset('storage/' . $resguardo->ubicacionFisica->imagen) }}" target="_blank">
-                                {{ $resguardo->ubicacionFisica->descripcion }}<br>
+                            @if($resguardo->historial)
+                            <a href="{{ asset('storage/' . $resguardo->historial) }}" target="_blank">
+                                {{ $resguardo->historial }}<br>
                                 {{--
-                                <img src="{{ asset('storage/' . $resguardo->ubicacionFisica->imagen) }}" 
+                                <img src="{{ asset('storage/' . $resguardo->historial) }}" 
                                     alt="Imagen del producto" 
                                     class="img-thumbnail" 
                                     width="100">

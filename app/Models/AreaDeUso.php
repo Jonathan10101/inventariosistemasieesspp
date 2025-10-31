@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Resguardo;
+use App\Models\HistorialResguardo;
 
 class AreaDeUso extends Model
 {
@@ -23,7 +24,7 @@ class AreaDeUso extends Model
 
     public function resguardos()
     {
-        return $this->hasMany(Resguardo::class);
+        return $this->hasMany(HistorialResguardo::class);
     }
     
 }

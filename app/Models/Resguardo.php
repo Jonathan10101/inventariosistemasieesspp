@@ -15,9 +15,22 @@ use App\Models\HistorialResguardo;
 class Resguardo extends Model
 {
     use HasFactory;
-    protected $table  = "resguardos";
-    protected $fillable = ['id','descripcion','marca_id','modelo','nserie','nresguardo','estado_uso_id','area_de_uso_id','ubicacion_fisicas_id','resguardante_id','puesto_id','imagen','resguardo_pdf'];
 
+    protected $table = 'resguardos';
+
+     protected $fillable = [
+        'descripcion',
+        'marca_id',
+        'modelo',
+        'nserie',
+        'nresguardo',
+        'resguardante_id',
+        'puesto_id',
+        'imagen',
+        'estado_actual',
+    ];
+
+    /* ================= RELACIONES ================= */
 
     public function historial()
     {
@@ -26,46 +39,47 @@ class Resguardo extends Model
 
     public function marca()
     {
-        return $this->belongsTo(Marca::class,'marca_id','id');        
+        return $this->belongsTo(Marca::class, 'marca_id');
     }
 
-    public function estadouso()
-    {
-        return $this->belongsTo(EstadoUso::class,'estado_uso_id','id');        
-    }
-
-    public function ubicacionFisica(){
-        return $this->belongsTo(UbicacionFisica::class,'ubicacion_fisicas_id','id');
-    }
-
+   
     public function resguardante()
     {
-        return $this->belongsTo(Resguardante::class,'resguardante_id','id');
+        return $this->belongsTo(Resguardante::class, 'resguardante_id');
     }
 
     public function puesto()
     {
-        return $this->belongsTo(Puesto::class,'puesto_id','id');
+        return $this->belongsTo(Puesto::class, 'puesto_id');
     }
 
-    public function areadeasignacion()
-    {
-        return $this->belongsTo(AreaDeUso::class,'area_de_uso_id','id');
-    }
+
+    /* ================= EVENTOS ================= */
 
     protected static function boot()
     {
         parent::boot();
 
         static::created(function ($resguardo) {
-            // Una vez creado, asignamos el mismo valor que el id
-            $resguardo->nresguardo = $resguardo->id;
-            $resguardo->save();
+            $resguardo->update(['nresguardo' => $resguardo->id]);
         });
     }
 
+    /* ================= MÉTODOS DE ESTADO ================= */
 
+    public function marcarComoDisponible()
+    {
+        $this->update(['estado_actual' => 'disponible']);
+    }
 
+    public function marcarComoAsignado()
+    {
+        $this->update(['estado_actual' => 'asignado']);
+    }
 
-
+    public function marcarComoBaja()
+    {
+        $this->update(['estado_actual' => 'baja']);
+    }
+    
 }
