@@ -113,7 +113,7 @@
                     <th scope="col">Acciones</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody> 
                 @forelse ($resguardos as $resguardo)
                     <tr>
                         <td>
@@ -162,22 +162,24 @@
                         <td>{{ strtoupper(optional($resguardo->historial->last()->estadouso)->estado) }}</td>
                    
                         <td>{{ $resguardo->historial->last()->areaDeUso->nombre }}</td>
-                        <td>{{ $resguardo->historial->last()->ubicacionFisica->descripcion }}</td>
 
                          
                         <td>
-                            @if($resguardo->historial->last())
-                            <a href="{{ asset('storage/' . $resguardo->historial) }}" target="_blank">
-                                {{--
-                                <img src="{{ asset('storage/' . $resguardo->historial) }}" 
-                                    alt="Imagen del producto" 
-                                    class="img-thumbnail" 
-                                    width="100">
-                                --}}
-                            </a>
+                        
+                            @if($resguardo->historial->last() && $resguardo->historial->last()->ubicacionFisica->imagen)
+                                <a href="{{ asset('storage/' . $resguardo->historial->last()->ubicacionFisica->imagen) }}" target="_blank">
+                                    {{--
+                                    <img src="{{ asset('storage/' . $resguardo->historial->last()->ubicacionFisica->imagen) }}" 
+                                        alt="Imagen del producto" 
+                                        class="img-thumbnail" 
+                                        width="100">
+                                    --}}
+                                    {{ $resguardo->historial->last()->ubicacionFisica->descripcion }}
+                                </a>
                             @else
-                                {{strtoupper(optional($resguardo->historial->last()->ubicacionFisica)->descripcion)}}<br>
+                                {{ optional($resguardo->historial->last()->ubicacionFisica)->descripcion }}
                             @endif
+
                         </td>
                         <td><a href="{{ route('resguardante.show', $resguardo->resguardante->id) }}">{{strtoupper(optional($resguardo->historial->last()->resguardante)->nombre1)}} {{strtoupper(optional($resguardo->historial->last()->resguardante)->nombre2)}} {{strtoupper(optional($resguardo->historial->last()->resguardante)->apellido1)}} {{strtoupper(optional($resguardo->historial->last()->resguardante)->apellido2)}}</a></td>
                         <!--
@@ -240,9 +242,12 @@
     <script>
         document.addEventListener('livewire:initialized',function(){    
             Livewire.on('refresh-page',function($message){                
-                //window.location.reload();
+    
+            const url = new URL(window.location.href);
+            url.searchParams.delete('search');
+            window.history.replaceState({}, document.title, url.pathname);
                 location.reload(); // Recarga la página completa
-                //alert("x");
+
             }); 
 
             Livewire.on('alumno-created',function($message){                

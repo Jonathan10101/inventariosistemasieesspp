@@ -1,26 +1,32 @@
 <div>
     <div class="row">
         <div class="col m-3">
-                @forelse ($historiales as $historial)
-                    <hr>
-                    <a href="{{ asset('storage/' . $historial->imagen_evidencia) }}" target="_blank">
-                        <img src="{{ asset('storage/' . $historial->imagen_evidencia) }}" 
-                                alt="Imagen del producto" 
-                                class="img-thumbnail" 
-                                width="100">
-                    </a>
-                    ESTADO DE USO : {{$historial->estadouso->estado}}
-                    <p><span class="text-bold">Fecha de asignación:</span> {{$historial->fecha_asignacion}}</p>
-                    <p><span class="text-bold">Resguardante:</span> {{$historial->resguardante->nombre1}} {{$historial->resguardante->nombre2}} {{$historial->resguardante->apellido1}} {{$historial->resguardante->apellido2}}</p>
-                    <a href="{{ Storage::url($historial->resguardo_pdf) }}" class="btn btn-primary mb-4" target="_blank">
-                        <i class="fas fa-download"></i> Descargar Resguardo                  
-                    </a>
-                @empty
-                    <tr>
-                        <td colspan="13" class="text-center">No se encontro historial.</td>
-                    </tr>
-                @endforelse
+            @forelse ($historiales as $historial)
+                <hr>
+                <a href="{{ asset('storage/' . $historial->imagen_evidencia) }}" target="_blank">
+                    <img src="{{ asset('storage/' . $historial->imagen_evidencia) }}" 
+                         alt="Imagen del producto" 
+                         class="img-thumbnail" 
+                         width="100">
+                </a>
+                <p><span class="text-bold">Estado de uso:</span> {{$historial->estadouso->estado}}</p>
+                <p><span class="text-bold">Ubicación fisica:</span> {{$historial->ubicacionFisica->descripcion}}</p>
+                <p><span class="text-bold">Fecha de asignación:</span> {{$historial->fecha_asignacion}}</p>
+                <p><span class="text-bold">Resguardante:</span> 
+                    {{$historial->resguardante->nombre1}} {{$historial->resguardante->nombre2}} 
+                    {{$historial->resguardante->apellido1}} {{$historial->resguardante->apellido2}}
+                </p>
+                <a href="{{ Storage::url($historial->resguardo_pdf) }}" class="btn btn-primary mb-4" target="_blank">
+                    <i class="fas fa-download"></i> Descargar Resguardo
+                </a>
+            @empty
+                <div class="text-center">No se encontró historial.</div>
+            @endforelse
+
+            <!-- 👇 Enlaces de paginación -->
+            <div class="mt-3 d-flex justify-content-end">
+                {{ $historiales->links() }}
+            </div>
         </div>
     </div>
-
 </div>
