@@ -12,7 +12,7 @@ class ShowResguardosModal extends Component
 {   
     use WithPagination;
     public $resguardo_id;
-    public $perPage = 2;
+    public $perPage = 1;
 
     // Para que la paginación funcione dentro de un modal, se recomienda usar un theme tipo bootstrap o tailwind
     protected $paginationTheme = 'bootstrap';

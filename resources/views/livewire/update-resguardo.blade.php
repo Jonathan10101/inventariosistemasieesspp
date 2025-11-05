@@ -8,7 +8,7 @@
                 </div>                            
 
                 <div class="text-center">
-                    <span class="text-bold">INFORMACIÓN GENERAL DEL RESGUARDO</span>
+                    <span class="text-bold">INFORMACIÓN GENERAL DEL RESGUARDOs</span>
                     <hr>
                 </div>
 

@@ -41,14 +41,17 @@ class UpdateResguardo extends Component
     public $tomadaDesdeCamara = true;
     protected $listeners = ['resetImagenes' => 'resetImagenes'];
     public $resguardo_pdf;
-
+    public $resguardo_id;
+    public $historial_resguardo_id;
 
 
     public function mount($data){
         
      
         $resguardo = Resguardo::find($data);
-           if ($resguardo) {
+        $this->historial_resguardo_id = $resguardo->historial->last()->id;
+        $this->resguardo_id = $resguardo->id;
+        if ($resguardo) {
             $this->imagenGuardada = $resguardo->imagen; // Ruta guardada
         }
         $this->descripcion = $resguardo->descripcion;
@@ -101,60 +104,25 @@ class UpdateResguardo extends Component
             'descripcion' => 'required',
             'marca_id' => 'required',
             'modelo' => 'required',
-            'nserie' => 'required|unique:resguardos,nserie',
-            'estado_uso_id' => 'required',
             'area_de_uso_id' => 'required',
-            'ubicacion_fisicas_id' => 'required',
-            'resguardante_id' => 'required',
-            'puesto_id' => 'required',
-            //'imagen' => 'image|max:6144',
-            'imagen' => $this->imagenBase64 ? 'nullable' : 'required|image|max:2048',
-            //'resguardo_pdf' => 'mimes:pdf|max:8192', // 4MB máx
-            'resguardo_pdf' => 'nullable|mimes:pdf|max:1080', // 4MB máx
-
+            'ubicacion_fisicas_id' => 'required'
         ]);
 
-        // Si hay base64 (foto de cámara), convertir a UploadedFile
-        if ($this->imagenBase64) {
-            $fileData = explode(',', $this->imagenBase64)[1];
-            $fileName = 'resguardo_' . Str::random(5) . '.png';
-            $tempPath = sys_get_temp_dir() . '/' . $fileName;
-            file_put_contents($tempPath, base64_decode($fileData));
-
-            $this->imagen = new UploadedFile(
-                $tempPath,
-                $fileName,
-                'image/png',
-                null,
-                true
-            );
-        }
-
-        // Solo si hay imagen, la guardamos
-        $path = $this->imagen 
-            ? $this->imagen->store('resguardos', 'public')
-            : null;
-
-        $pdfPath = $this->resguardo_pdf 
-            ? $this->resguardo_pdf->store('resguardos/pdf', 'public')
-            : null;
+     
 
         $data = [
             'descripcion' => $this->descripcion,
             'marca_id' => $this->marca_id,
             'modelo' => $this->modelo,
-            'nserie' => $this->nserie,
-            'nresguardo' => null,
-            'estado_uso_id' => $this->estado_uso_id,
             'area_de_uso_id' => $this->area_de_uso_id,
             'ubicacion_fisicas_id' => $this->ubicacion_fisicas_id,
+            'resguardo_id' => $this->resguardo_id,
             'resguardante_id' => $this->resguardante_id,
             'puesto_id' => $this->puesto_id,
-            'imagen' => $path,
-            'resguardo_pdf' => $pdfPath,
+            'historial_resguardo_id' => $this->historial_resguardo_id
         ];
-
-        $this->dispatch('saveFromComponentNewResguardo',$data);        
+               //dd($data);
+        $this->dispatch('updateUbicacionFromComponentResguardo',$data);        
         $this->resetForm();
     }
 

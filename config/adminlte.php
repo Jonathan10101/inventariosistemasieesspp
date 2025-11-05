@@ -367,6 +367,8 @@ return [
             //'icon' => 'fas fa-fw fa-share',
             'url' => 'marcas',
             'icon' => 'fas fa-fw fa-copyright',
+            'can' => 'cursos.update'
+
         ],
         /*
         [

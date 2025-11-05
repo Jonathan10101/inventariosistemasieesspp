@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Models\HistorialResguardo;
 
 class UbicacionFisica extends Model
 {
@@ -21,5 +22,11 @@ class UbicacionFisica extends Model
         }
         return parent::setAttribute($key, $value);
     }
+
+    public function historialResguardos()
+    {
+        return $this->hasMany(HistorialResguardo::class, 'ubicacion_fisicas_id');
+    }
+
 
 }

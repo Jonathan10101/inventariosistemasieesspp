@@ -27,7 +27,6 @@ class HistorialResguardo extends Model
         'evidencia_baja',
         'motivo_baja',
         'imagen_evidencia',
-
         'estado_uso_id',
         'area_de_uso_id',
         'ubicacion_fisicas_id',
@@ -86,7 +85,6 @@ class HistorialResguardo extends Model
     }
 
     /* ================= ACCESORES ================= */
-
     public function getFechaAsignacionFormattedAttribute()
     {
         return $this->fecha_asignacion?->format('d/m/Y H:i');
@@ -102,7 +100,6 @@ class HistorialResguardo extends Model
         return $this->fecha_baja?->format('d/m/Y H:i');
     }
 
-
     public function estadouso()
     {
         return $this->belongsTo(EstadoUso::class, 'estado_uso_id');
@@ -113,11 +110,9 @@ class HistorialResguardo extends Model
         return $this->belongsTo(UbicacionFisica::class, 'ubicacion_fisicas_id');
     }
 
-    
     public function areaDeUso()
     {
         return $this->belongsTo(AreaDeUso::class, 'area_de_uso_id');
     }
-
     
 }

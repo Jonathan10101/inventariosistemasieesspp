@@ -50,6 +50,8 @@ class AddNewResguardo extends Component
     public $tomadaDesdeCamara = true;
     protected $listeners = ['resetImagenes' => 'resetImagenes'];
     public $resguardo;
+    public $imagenSeleccionada = null;
+
 
     
     public function mount($data){
@@ -67,7 +69,7 @@ class AddNewResguardo extends Component
             $this->resguardante = $this->resguardo->resguardante;
             
             $this->resguardo_id = $this->resguardo->id;
-            $this->resguardante_id = $this->resguardante->id;
+            //$this->resguardante_id = $this->resguardante->id;
 
         }
 
@@ -83,6 +85,17 @@ class AddNewResguardo extends Component
         $this->areasdeasignacion = AreaDeUso::all();
         $this->ubicacionesfisicas = UbicacionFisica::all();
 
+    }
+
+    public function updatedUbicacionFisicasId($value)
+    {
+        if (!$value) {
+            $this->imagenSeleccionada = null;
+            return;
+        }
+
+        $ubicacion = UbicacionFisica::find($value);
+        $this->imagenSeleccionada = $ubicacion?->imagen;
     }
     
     public function resetImagenes()

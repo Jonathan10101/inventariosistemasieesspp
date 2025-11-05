@@ -110,8 +110,9 @@
                 
 
                 <div class="col-md-12">
-                    <label for="areadeasignacionid" class="form-label">Area de asignación*</label>
+                    <label for="areadeasignacionid" class="form-label">Area de asignawción*</label>
                     <select id="areadeasignacionid" wire:model.defer="area_de_uso_id" class="form-control">
+                        <option value="">Seleccione...</option>
                         @foreach($areasdeasignacion as $areadeasignacion)
                             <option value="{{$areadeasignacion->id}}">{{$areadeasignacion->nombre}}</option>
                         @endforeach
@@ -121,13 +122,29 @@
 
                 <div class="col-md-12">
                     <label for="ubicacionfisicaid" class="form-label">Ubicación fisica*</label>
-                    <select id="ubicacionfisicaid" wire:model.defer="ubicacion_fisicas_id" class="form-control">
-                        @foreach($ubicacionesifiscas as $ubicacionifisca)
-                            <option value="{{$ubicacionifisca->id}}">{{$ubicacionifisca->descripcion}}</option>
+                   <select 
+                        wire:model.live="ubicacion_fisicas_id"
+                        wire:key="select-ubicacion"
+                        class="form-control">
+                        <option value="">Seleccione...</option>
+                        @foreach($ubicacionesifiscas as $ubicacion)
+                            <option value="{{ $ubicacion->id }}">{{ $ubicacion->descripcion }}</option>
                         @endforeach
                     </select>
+
                     @error('ubicacion_fisicas_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
+
+                @if($imagenSeleccionada)
+                    <div class="mt-3 text-center">
+                        <img src="{{ asset('storage/' . $imagenSeleccionada) }}" 
+                            alt="Imagen de la ubicación" 
+                            class="img-fluid rounded border" 
+                            style="max-width: 300px;">
+                    </div>
+                @endif
+
+                
 
                 <div class="col-md-12">
                     <label for="resguardanteid" class="form-label">Resguardante*</label>

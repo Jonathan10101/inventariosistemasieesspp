@@ -13,6 +13,11 @@ class EstadoUso extends Model
     protected $table  = "estado_uso";
     protected $fillable = ['estado'];
 
+    /* ====== MUTADORES PARA MAYÚSCULAS ====== */
+    public function setEstadoAttribute($value)
+    {
+        $this->attributes['estado'] = mb_strtoupper($value, 'UTF-8');
+    }
 
     public function resguardos()
     {

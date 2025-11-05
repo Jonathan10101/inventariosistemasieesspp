@@ -12,12 +12,20 @@ class EvidenciaResguardo extends Model
     protected $table  = "evidencias_resguardo";
     protected $fillable = ['resguardo_id','fecha_evidencia','tipo','archivo','observaciones'];
 
+    /* ====== MUTADORES PARA MAYÚSCULAS ====== */
+    public function setArchivoAttribute($value)
+    {
+        $this->attributes['archivo'] = mb_strtoupper($value, 'UTF-8');
+    }
+
+    public function setObservacionesAttribute($value)
+    {
+        $this->attributes['observaciones'] = mb_strtoupper($value, 'UTF-8');
+    }
 
     public function resguardo()
     {
         return $this->belongsTo(Resguardo::class);
     }
-
-
     
 }

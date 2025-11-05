@@ -30,8 +30,34 @@ class Resguardo extends Model
         'estado_actual',
     ];
 
-    /* ================= RELACIONES ================= */
+    
+    /* ====== MUTADORES PARA MAYÚSCULAS ====== */
+    public function setDescripcionAttribute($value)
+    {
+        $this->attributes['descripcion'] = mb_strtoupper($value, 'UTF-8');
+    }
 
+    public function setModeloAttribute($value)
+    {
+        $this->attributes['modelo'] = mb_strtoupper($value, 'UTF-8');
+    }
+
+    public function setNserieAttribute($value)
+    {
+        $this->attributes['nserie'] = mb_strtoupper($value, 'UTF-8');
+    }
+
+    public function setNresguardoAttribute($value)
+    {
+        $this->attributes['nresguardo'] = mb_strtoupper($value, 'UTF-8');
+    }
+
+    public function setEstadoActualAttribute($value)
+    {
+        $this->attributes['estado_actual'] = mb_strtoupper($value, 'UTF-8');
+    }
+
+    /* ================= RELACIONES ================= */
     public function historial()
     {
         return $this->hasMany(HistorialResguardo::class);

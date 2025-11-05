@@ -13,6 +13,7 @@ class AreaDeUso extends Model
     protected $table = "area_de_uso";
     protected $fillable = ['nombre'];
 
+    /* ====== MUTADORES PARA MAYÚSCULAS ====== */
     public function setAttribute($key, $value)
     {
         // Si el atributo es fillable y es string, lo convierte en mayúsculas

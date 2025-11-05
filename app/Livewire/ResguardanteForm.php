@@ -8,6 +8,7 @@ use App\Livewire\UpdateResguardante;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
 use App\Models\Resguardante;
+use App\Models\User;
 
 
 class ResguardanteForm extends Component
@@ -54,7 +55,14 @@ class ResguardanteForm extends Component
 
     #[On('saveFromComponentNewResguardante')]
     public function saveNewResguardante($data){
+        //dd($data);
         Resguardante::create($data);
+        User::create([
+            "name" => $data['nombre1'] . $data['nombre2'] . $data['apellido1'] . $data['apellido2'],
+            "email" => $data['nombre1'] . $data['nombre2'] . $data['apellido1'] . $data['apellido2'] . "@ieesspp.com",
+            "password" => bcrypt('JBhjon13')
+        ])->assignRole("Empleado");
+
         $this->showModal = false;  
         $this->dispatch('alumno-created', 1);
     }

@@ -206,6 +206,25 @@ class InventarioForm extends Component
         ]);
     }
 
+    #[On('updateUbicacionFromComponentResguardo')]
+    public function updateResguardo($data){
+        //dd($data['resguardo_id']);
+        $resguardo = Resguardo::find($data['resguardo_id']);
+        $resguardo->update([
+            'descripcion' => $data['descripcion'],
+            'marca_id' => $data['marca_id'],
+            'modelo' => $data['modelo'],
+            'resguardante_id' => $data['resguardante_id'],
+            'puesto_id'=> $data['puesto_id']
+        ]);
+        $historial = HistorialResguardo::find($data['historial_resguardo_id']);
+        //dd($data['historial_resguardo_id']);
+        $historial->update([
+            'area_de_uso_id' => $data['area_de_uso_id'],
+            'ubicacion_fisicas_id' => $data['ubicacion_fisicas_id'],
+        ]);
+    }
+
     #[On('saveFromComponentNewResguardo')] 
     public function saveNewResguardo($data){ 
         
