@@ -6,10 +6,10 @@
     <!-- Add nueva Marca  -->
     <div class="row">
         <div class="col d-flex justify-content-end">   
-            @can('resguardante.create')               
-            <button wire:click="showModalNewResguardo" class="btn btn-primary mb-3 fa">                        
+            @can('ubicacionfisica.create')               
+            <button wire:click="showModalNewUbicacionFisica" class="btn btn-primary mb-3 fa">                        
                 <i class="fas fa-plus"></i>
-                Agregar resguardante          
+                Agregar ubicación fisica            
             </button>  
             @endcan          
         </div>
@@ -27,14 +27,14 @@
                 </div>
   
                 @switch($accionPrincipal)        
-                    {{--EDITAR RESGUARDANTE--}}
+                    {{--EDITAR UBICACIÓN FISICA--}}
                     @case("editar")
-                        @livewire('update-resguardante',['data'=>$data_external_component])     
+                        @livewire('update-marca',['data'=>$data_external_component])     
                     @break 
 
-                    {{--CREAR NUEVA MARCA--}}
+                    {{--CREAR NUEVA UBICACIÓN FISICA--}}
                     @default
-                        @livewire('create-new-resguardante') 
+                        @livewire('create-new-ubicacionfisica') 
                     @break                    
                 @endswitch
 
@@ -49,9 +49,9 @@
     <div class="row mb-3">
         <div class="col-md-6">            
             <div class="input-group">
-                <label for="searchid">Da clic en el Buscador y escribe el nombre del Resguardante y luego presiona “Buscar”</label>
-                <input type="text" id="searchid" placeholder="Buscador" wire:keydown.enter="searchResguardantes" wire:model="search" oninput="this.value = this.value.toUpperCase()" class="form-control" />
-                <button class="btn btn-primary" wire:click="searchResguardantes">
+                <label for="searchid">Da clic en el Buscador y escribe el nombre de la Ubicación Física y luego presiona “Buscar”</label>
+                <input type="text" id="searchid" placeholder="Buscador" wire:keydown.enter="searchUbicacionesFisicas" wire:model="search" oninput="this.value = this.value.toUpperCase()" class="form-control" />
+                <button class="btn btn-primary" wire:click="searchUbicacionesFisicas">
                     <i class="fas fa-search"></i> Buscar
                 </button>
                 @if($search)
@@ -68,31 +68,39 @@
             <thead>
                 <tr>
                 <th scope="col">ID</th>
-                <th scope="col">NOMBRE DEL RESGUARDANTE</th>
-                <th scope="col" class="text-center">RESGUARDOS</th>
+                <th scope="col">IMAGEN</th>
+                <th scope="col">UBICACIÓN FÍSICA</th>
                 <th scope="col">ACCIONES</th>
 
                 </tr>
             </thead>
             <tbody>
-                @forelse ($resguardantes as $resguardante)
+                @forelse ($ubicacionesfisicas as $ubicacion)
                 <tr>
-                    <td>{{$resguardante->id}}</td>
-                    <td>{{$resguardante->nombre1}} {{$resguardante->nombre2}} {{$resguardante->apellido1}} {{$resguardante->apellido2}}</td>
-                    <td class="d-flex justify-content-center">
-                        <a href="{{ route('resguardante.show', $resguardante->id)}}" class="btn btn-dark">
-                            <i class="fas fa-eye"></i> VER
-                        </a>
-                    </td>
+                    <td>{{$ubicacion->id}}</td>
                     <td>
-                        <button class="btn btn-warning" wire:click="cambiarAccion('editar',{{$resguardante->id }})">
+                    @if($ubicacion->imagen)
+                        <a href="{{ asset('storage/' . $ubicacion->imagen) }}" target="_blank">
+                            <img src="{{ asset('storage/' . $ubicacion->imagen) }}" 
+                                alt="Imagen de la ubicación" 
+                                class="img-thumbnail" 
+                                width="100">
+                        </a>
+                    @else
+                            <span class="text-muted">Sin imagen</span>
+                    @endif
+                    </td>
+
+                    <td>{{$ubicacion->descripcion}}</td>
+                    <td>
+                        <button class="btn btn-warning" wire:click="cambiarAccion('editar',{{ $ubicacion->id }})">
                             <i class="fas fa-edit"></i> EDITAR
                         </button>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="13" class="text-center">No se encontraron resguardantes.</td>
+                    <td colspan="13" class="text-center">No se encontro ubicaciones fisicas.</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -102,7 +110,7 @@
 
     <!-- Paginación -->
     <div class="d-flex justify-content-end mt-3">
-        {{ $resguardantes->links() }}
+        {{ $ubicacionesfisicas->links() }}
     </div>
 
 
@@ -120,7 +128,7 @@
             Livewire.on('alumno-created',function($message){                
                 Swal.fire({
                     title: '¡Éxito!',
-                    text: '!Resguardante registrado con exito!',
+                    text: '!Marca registrada con exito!',
                     icon: 'success',
                     confirmButtonText: 'Ok',
                     allowOutsideClick: false, // Deshabilita clics fuera del modal
@@ -136,7 +144,7 @@
             Livewire.on('alumno-updated',function($message){                
                 Swal.fire({
                     title: '¡Éxito!',
-                    text: '!Resguardante actualizado con éxito!',
+                    text: '!Marca actualizada con éxito!',
                     icon: 'success',
                     confirmButtonText: 'Ok',
                      allowOutsideClick: false, // Deshabilita clics fuera del modal

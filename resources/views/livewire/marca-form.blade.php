@@ -6,7 +6,7 @@
     <!-- Add nueva Marca  -->
     <div class="row">
         <div class="col d-flex justify-content-end">   
-            @can('alumnos.create')               
+            @can('marcas.create')               
             <button wire:click="showModalNewMarca" class="btn btn-primary mb-3 fa">                        
                 <i class="fas fa-plus"></i>
                 Agregar marca            

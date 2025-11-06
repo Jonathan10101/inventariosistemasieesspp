@@ -9,8 +9,9 @@ class UbicacionFisicaController extends Controller
 {
     public function index()
     {
-        $ubicacionesFisicas = UbicacionFisica::all();
-        return view('ubicaciones/index',compact('ubicacionesFisicas'));
+        //$ubicacionesFisicas = UbicacionFisica::all();
+        //return view('ubicaciones/index',compact('ubicacionesFisicas'));
+        return view('ubicaciones/index');
     }
 
     public function create()
@@ -20,6 +21,7 @@ class UbicacionFisicaController extends Controller
 
     public function store(Request $request)
     {        
+        /*
         $request->validate([
             'ubicacion' => 'required|string|max:150|min:2|unique:ubicacion_fisicas,descripcion',
             'imagen' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
@@ -37,6 +39,7 @@ class UbicacionFisicaController extends Controller
         ]);
         // Redirigir con mensaje
         return redirect()->back()->with('success', 'Ubicación registrada correctamente.');
+        */
     }
 
     public function show(UbicacionFisica $ubicacionFisica)

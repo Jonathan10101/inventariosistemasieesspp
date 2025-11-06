@@ -36,6 +36,8 @@ class CreateNewResguardo extends Component
     public $showAdditionalFields = false;
 
     protected $listeners = ['resetImagenes' => 'resetImagenes'];
+    public $imagenSeleccionada = null;
+
 
     /* =================== CICLO DE VIDA =================== */
     public function mount()
@@ -55,6 +57,18 @@ class CreateNewResguardo extends Component
         $this->imagen = null;
         $this->imagenBase64 = null;
     }
+
+    public function updatedUbicacionFisicasId($value)
+    {
+        if (!$value) {
+            $this->imagenSeleccionada = null;
+            return;
+        }
+
+        $ubicacion = UbicacionFisica::find($value);
+        $this->imagenSeleccionada = $ubicacion?->imagen;
+    }
+    
 
     public function toggleAdditionalFields()
     {

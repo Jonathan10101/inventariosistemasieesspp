@@ -110,15 +110,28 @@
                 </div>
 
                 <div class="col-md-12">
-                    <label class="form-label">Ubicación física*</label>
-                    <select wire:model.defer="ubicacion_fisicas_id" class="form-control">
+                    <label for="ubicacionfisicaid" class="form-label">Ubicación fisica*</label>
+                   <select 
+                        wire:model.live="ubicacion_fisicas_id"
+                        wire:key="select-ubicacion"
+                        class="form-control">
                         <option value="">Seleccione...</option>
                         @foreach($ubicacionesifiscas as $ubicacion)
                             <option value="{{ $ubicacion->id }}">{{ $ubicacion->descripcion }}</option>
                         @endforeach
                     </select>
+
                     @error('ubicacion_fisicas_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
+
+                @if($imagenSeleccionada)
+                    <div class="mt-3 text-center">
+                        <img src="{{ asset('storage/' . $imagenSeleccionada) }}" 
+                            alt="Imagen de la ubicación" 
+                            class="img-fluid rounded border" 
+                            style="max-width: 300px;">
+                    </div>
+                @endif
 
                 <!-- Resguardante -->
                 <div class="col-md-12">

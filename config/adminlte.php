@@ -346,8 +346,6 @@ return [
         AJUSTES DE LA CUENTA
         ['header' => 'account_settings'],
         */
-
-        
         [
             'text' => 'Dashboard',
             'url' => 'dashboard',            
@@ -367,8 +365,7 @@ return [
             //'icon' => 'fas fa-fw fa-share',
             'url' => 'marcas',
             'icon' => 'fas fa-fw fa-copyright',
-            'can' => 'cursos.update'
-
+            'can' => 'marcas.create'
         ],
         /*
         [
@@ -390,10 +387,12 @@ return [
             //'icon' => 'fas fa-fw fa-share',
             //'url' => 'alumnos',
             'icon' => 'fas fa-fw fa-user',
+            'can' => 'resguardante.create',
+
     
             'submenu' => [                
                 [
-                    'text' => 'Nombre usuario',
+                    'text' => 'Usuario',
                     'url' => 'resguardante',
                     'icon' => 'fas fa-fw',
                 ],                
@@ -408,6 +407,8 @@ return [
             'text' => 'Ubicaciones',
             'url' => 'ubicacionfisica',            
             'icon' => 'fas fa-fw fa-map',
+            'can' => 'ubicacionfisica.create',
+
                 
             'submenu' => [                
                 [

@@ -30,6 +30,7 @@
     
 <div class="etiqueta" style="border:1px solid #000; padding:10px; text-align:center; width:160px; margin:10px;">
     {!! $etiqueta !!}
+    <span>Etiqueta de equipo</span>
 </div>
 
 </body>

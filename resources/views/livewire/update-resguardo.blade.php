@@ -8,7 +8,7 @@
                 </div>                            
 
                 <div class="text-center">
-                    <span class="text-bold">INFORMACIÓN GENERAL DEL RESGUARDOs</span>
+                    <span class="text-bold">INFORMACIÓN GENERAL DEL RESGUARDO</span>
                     <hr>
                 </div>
 
@@ -18,12 +18,15 @@
                 <hr>
 
                 <!-- Campos del formulario -->
+                @can('inventario.update')   
                 <div class="col-md-12">
                     <label for="descripcionid" class="form-label">Descripción*</label>
                     <input type="text" id="descripcionid" wire:model.defer="descripcion" class="form-control" oninput="this.value = this.value.toUpperCase()">
                     @error('descripcion') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
+                @endcan
 
+                @can('inventario.update')   
                 <div class="col-md-12">
                     <label for="marcaid" class="form-label">Marca*</label>
                     <select id="marcaid" wire:model.defer="marca_id" class="form-control">
@@ -34,12 +37,15 @@
                     </select>
                     @error('marca_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
+                @endcan
 
+                @can('inventario.update')   
                 <div class="col-md-12">
                     <label for="modeloid" class="form-label">Modelo*</label>
                     <input type="text" id="modeloid" wire:model.defer="modelo" class="form-control" oninput="this.value = this.value.toUpperCase()">
                     @error('modelo') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
+                @endcan
 
                 <div class="col-md-12" style="display:none;">
                     <label for="numerodeserieid" class="form-label">No. de serie*</label>
@@ -58,6 +64,7 @@
                     @error('estado_uso_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
+                @can('inventario.update')   
                 <div class="col-md-12">
                     <label for="areadeasignacionid" class="form-label">Area de asignación*</label>
                     <select id="areadeasignacionid" wire:model.defer="area_de_uso_id" class="form-control">
@@ -68,6 +75,7 @@
                     </select>
                     @error('area_de_uso_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
+                @endcan
 
                 <div class="col-md-12">
                     <label for="ubicacionfisicaid" class="form-label">Ubicación fisica*</label>

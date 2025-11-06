@@ -10,6 +10,9 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Resguardo;
+use App\Models\Resguardante;
+
 
 
 class User extends Authenticatable
@@ -62,4 +65,25 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    
+    public function setAttribute($key, $value)
+    {
+        // Si el atributo es fillable y es string, lo convierte en mayúsculas
+        if (in_array($key, $this->fillable) && is_string($value)) {
+            $value = strtoupper($value);
+        }
+        return parent::setAttribute($key, $value);
+    }
+    
+    public function resguardos()
+    {
+        return $this->hasMany(Resguardo::class);
+    }
+
+    public function resguardante()
+    {
+        return $this->belongsTo(Resguardante::class, 'resguardante_id');
+    }
+
 }

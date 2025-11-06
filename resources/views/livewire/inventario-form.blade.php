@@ -6,7 +6,7 @@
     <!-- Add nuevo Inventario  -->
     <div class="row">
         <div class="col d-flex justify-content-end">   
-            @can('alumnos.create')               
+            @can('inventario.create')               
             <button wire:click="showModalNewResguardo" class="btn btn-primary mb-3 fa">                        
                 <i class="fas fa-plus"></i>
                 Agregar inventario            
@@ -194,15 +194,25 @@
                             <button wire:click="cambiarAccion('showHistorialResguardo',{{ $resguardo->id }})" class="btn btn-dark btn-sm mt-1 mb-1">                            
                                 <i class="fas fa-eye"></i> Ver resguardos
                             </button>
+                            
+                            @can('inventario.destroy')   
                             <button wire:click="" class="btn btn-danger btn-sm mt-1 mb-1">                            
                                 <i class="fas fa-trash"></i> Dar de baja inventario
                             </button>  
+                            @endcan
+
+                            @can('inventario.create')   
                             <button wire:click="cambiarAccion('addNewResguardo',{{ $resguardo->id }})"  class="btn btn-primary btn-sm mt-1 mb-1">                            
                                 <i class="fas fa-plus"></i> Agregar resguardo
                             </button>  
+                            @endcan
+
+                            @can('inventario.create')   
                             <button wire:click="downloadEtiqueta({{ $resguardo->id }})" class="btn btn-success btn-sm mt-1 mb-1">            
                                 <i class="fas fa-download"></i> Descargar etiqueta
                             </button>
+                            @endcan
+                            
                             {{--
                             @can('alumnos.edit')   
                             <button wire:click="cambiarAccion('editar',{{ $resguardo->id }})" class="btn btn-primary btn-sm mt-1 mb-1">                            
