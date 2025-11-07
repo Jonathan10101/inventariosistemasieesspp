@@ -4,13 +4,17 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\UbicacionFisica;
+use Livewire\WithFileUploads;
+
 
 class CreateNewUbicacionfisica extends Component
 {
-    public $ubicacionfisica;
+    use WithFileUploads;
+    public $ubicacionfisica,$imagen;
 
     protected $rules = [
-        'ubicacionfisica' => 'required|min:2|max:150|unique:ubicacion_fisicas,descripcion'
+        'ubicacionfisica' => 'required|min:2|max:150|unique:ubicacion_fisicas,descripcion',
+        'imagen' => 'nullable|image|max:2048', // máximo 2MB
     ];
 
     public function save(){
@@ -26,9 +30,19 @@ class CreateNewUbicacionfisica extends Component
             return;
         }
 
+        
+        $path = null;
+        if ($this->imagen) {
+            // Guarda la imagen en storage/app/public/ubicaciones
+            $path = $this->imagen->store('ubicaciones', 'public');
+        }
+
+
 
         $data = [
-            'ubicacionfisica' => $this->ubicacionfisica,
+            'descripcion' => $this->ubicacionfisica,
+            'imagen' => $path, // ✅ enviamos la ruta o null si no hay imagen
+
         ];
 
         $this->dispatch('saveFromComponentNewUbicacionFisica',$data);        

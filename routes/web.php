@@ -10,6 +10,7 @@ use App\Http\Controllers\UbicacionFisicaController;
 use App\Http\Controllers\AreaDeAsignacionController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\EtiquetaController;
+use App\Http\Controllers\Etiqueta2Controller;
 use App\Http\Controllers\DashboardController;
 
 /*
@@ -39,6 +40,7 @@ Route::resource('puestos', PuestoController::class)->middleware(['auth:sanctum',
 Route::resource("ubicacionfisica",UbicacionFisicaController::class)->middleware(['auth:sanctum','can:ubicacionfisica.create']);
 Route::resource("areadeasignacion",AreaDeAsignacionController::class)->middleware(['auth:sanctum','can:areadeasignacion.create']);
 Route::get('/etiqueta/{codigo}', [EtiquetaController::class, 'show'])->name('etiquetas.show')->middleware(['auth:sanctum','can:inventario.create']);
+Route::get('/etiqueta2/{codigo}', [Etiqueta2Controller::class, 'show'])->name('etiquetas2.show')->middleware(['auth:sanctum','can:inventario.create']);
 
 /*
 Route::resource("cursos",CursosController::class)->middleware(['auth:sanctum','can:cursos.index']);

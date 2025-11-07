@@ -60,9 +60,16 @@ class UbicacionfisicaForm extends Component
     public function saveUpdateUbicacionFisica($data){
         //dd($data);
         $updateMarca = UbicacionFisica::find($data['id']);
-        $updateMarca->update([
-            'nombre' => $data['nombre']
-        ]);
+        if($data['imagen']!=null){
+            $updateMarca->update([
+                'descripcion' => $data['descripcion'],
+                'imagen' => $data['imagen']
+            ]);
+        }else{
+            $updateMarca->update([
+                'descripcion' => $data['descripcion']
+            ]);
+        }
         $this->dispatch('alumno-updated',1);
         $this->showModal = false;  
     }
@@ -106,15 +113,32 @@ class UbicacionfisicaForm extends Component
         //$this->id_estudiante = $marca->id;
     }
 
+    public function downloadEtiqueta($id){
+       
+        $codigo = str_pad($id, 8, '0', STR_PAD_LEFT);
+        //dd($codigo);
+
+        return redirect()->route('etiquetas2.show',$codigo);
+    }
+
+
     public function render()
     {
         $query = UbicacionFisica::query();
-        
+
         if ($this->search) {
-            $query->where(function ($q) {
-                $q->where('descripcion', 'like', "%{$this->search}%");
+            $busqueda = trim($this->search);
+            $busquedaSinCeros = ltrim($this->search, '0');
+
+            $query->where(function ($q) use ($busqueda, $busquedaSinCeros) {
+                $q->where('descripcion', 'like', "{$this->search}")
+        ->orWhere('descripcion', 'like', "{$this->search} ")
+        ->orWhere('descripcion', 'like', "% {$this->search}")
+        ->orWhere('id', $busqueda);
+
             });
-        }  
+        }
+
         return view('livewire.ubicacionfisica-form', [
             'ubicacionesfisicas' => $query->paginate($this->perPage),
         ]);

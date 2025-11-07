@@ -80,12 +80,12 @@
                     <td>{{$resguardante->id}}</td>
                     <td>{{$resguardante->nombre1}} {{$resguardante->nombre2}} {{$resguardante->apellido1}} {{$resguardante->apellido2}}</td>
                     <td class="d-flex justify-content-center">
-                        <a href="{{ route('resguardante.show', $resguardante->id)}}" class="btn btn-dark">
+                        <a href="{{ route('resguardante.show', $resguardante->id)}}" class="btn btn-dark btn-sm">
                             <i class="fas fa-eye"></i> VER
                         </a>
                     </td>
                     <td>
-                        <button class="btn btn-warning" wire:click="cambiarAccion('editar',{{$resguardante->id }})">
+                        <button class="btn btn-warning btn-sm" wire:click="cambiarAccion('editar',{{$resguardante->id }})">
                             <i class="fas fa-edit"></i> EDITAR
                         </button>
                     </td>

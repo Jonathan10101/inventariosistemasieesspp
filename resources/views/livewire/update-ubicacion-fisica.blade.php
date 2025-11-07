@@ -27,11 +27,18 @@
                     @enderror
 
                     <!-- Vista previa -->
-                    @if ($imagen)
-                        <div class="mt-3 text-center">
+                 @if ($imagen)
+                    <div class="mt-3 text-center">
+                        @if (is_object($imagen))
+                            {{-- Imagen nueva cargada (aún no guardada) --}}
                             <img src="{{ $imagen->temporaryUrl() }}" class="img-fluid rounded shadow" width="150" alt="Vista previa">
-                        </div>
-                    @endif
+                        @else
+                            {{-- Imagen ya guardada en storage --}}
+                            <img src="{{ asset('storage/' . $imagen) }}" class="img-fluid rounded shadow" width="150" alt="Vista previa">
+                        @endif
+                    </div>
+                @endif
+
                 </div>
 
                 <!-- Botón Guardar -->

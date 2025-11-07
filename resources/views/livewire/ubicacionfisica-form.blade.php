@@ -29,7 +29,7 @@
                 @switch($accionPrincipal)        
                     {{--EDITAR UBICACIÓN FISICA--}}
                     @case("editar")
-                        @livewire('update-marca',['data'=>$data_external_component])     
+                        @livewire('update-ubicacion-fisica',['data'=>$data_external_component])     
                     @break 
 
                     {{--CREAR NUEVA UBICACIÓN FISICA--}}
@@ -45,11 +45,12 @@
         </div>
     </div>
 
+
     <!-- Buscador -->
     <div class="row mb-3">
         <div class="col-md-6">            
             <div class="input-group">
-                <label for="searchid">Da clic en el Buscador y escribe el nombre de la Ubicación Física y luego presiona “Buscar”</label>
+                <label for="searchid">Da clic en el Buscador, escanea o escribe el nombre de la Ubicación Física y luego presiona “Buscar”</label>
                 <input type="text" id="searchid" placeholder="Buscador" wire:keydown.enter="searchUbicacionesFisicas" wire:model="search" oninput="this.value = this.value.toUpperCase()" class="form-control" />
                 <button class="btn btn-primary" wire:click="searchUbicacionesFisicas">
                     <i class="fas fa-search"></i> Buscar
@@ -93,8 +94,12 @@
 
                     <td>{{$ubicacion->descripcion}}</td>
                     <td>
-                        <button class="btn btn-warning" wire:click="cambiarAccion('editar',{{ $ubicacion->id }})">
+                        <button class="btn btn-warning btn-sm" wire:click="cambiarAccion('editar',{{ $ubicacion->id }})">
                             <i class="fas fa-edit"></i> EDITAR
+                        </button>
+                        
+                        <button wire:click="downloadEtiqueta({{ $ubicacion->id }})" class="btn btn-success btn-sm mt-1 mb-1">            
+                            <i class="fas fa-download"></i> Descargar etiqueta
                         </button>
                     </td>
                 </tr>
@@ -128,7 +133,7 @@
             Livewire.on('alumno-created',function($message){                
                 Swal.fire({
                     title: '¡Éxito!',
-                    text: '!Marca registrada con exito!',
+                    text: '!Ubicación fisica registrada con exito!',
                     icon: 'success',
                     confirmButtonText: 'Ok',
                     allowOutsideClick: false, // Deshabilita clics fuera del modal
@@ -144,7 +149,7 @@
             Livewire.on('alumno-updated',function($message){                
                 Swal.fire({
                     title: '¡Éxito!',
-                    text: '!Marca actualizada con éxito!',
+                    text: '!Ubicación fisica actualizada con éxito!',
                     icon: 'success',
                     confirmButtonText: 'Ok',
                      allowOutsideClick: false, // Deshabilita clics fuera del modal

@@ -79,7 +79,7 @@
                     <td>{{$marca->id}}</td>
                     <td>{{$marca->nombre}}</td>
                     <td>
-                        <button class="btn btn-warning" wire:click="cambiarAccion('editar',{{ $marca->id }})">
+                        <button class="btn btn-warning btn-sm" wire:click="cambiarAccion('editar',{{ $marca->id }})">
                             <i class="fas fa-edit"></i> EDITAR
                         </button>
                     </td>
