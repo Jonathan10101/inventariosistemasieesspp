@@ -7,9 +7,12 @@ use App\Models\AreaDeUso;
 
 class AreaDeAsignacionController extends Controller
 {
+    public $perPage = 5;
+
     public function index()
     {
-        return view("areasasignacion/index");
+        $areasDeAsignacion = AreaDeUso::paginate($this->perPage);
+        return view("areasasignacion/index",compact('areasDeAsignacion'));
     }
 
     public function store(Request $request)
