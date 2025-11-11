@@ -35,7 +35,7 @@ Route::resource("inventario",InventarioController::class)->middleware(['auth:san
 Route::resource("marcas",MarcaController::class)->middleware(['auth:sanctum','can:marcas.create']);
 //Route::resource("modelo",ModeloController::class)->middleware(['auth:sanctum','can:inventario.index']);
 //Route::resource("estadouso",EstadoDeUsoController::class)->middleware(['auth:sanctum','can:inventario.index']);
-Route::resource('resguardante', ResguardanteController::class)->middleware(['auth:sanctum','can:resguardante.index']);
+Route::resource('resguardante', ResguardanteController::class)->middleware(['auth:sanctum','can:resguardante.create']);
 Route::resource('puestos', PuestoController::class)->middleware(['auth:sanctum','can:puestos.create']);
 Route::resource("ubicacionfisica",UbicacionFisicaController::class)->middleware(['auth:sanctum','can:ubicacionfisica.create']);
 Route::resource("areadeasignacion",AreaDeAsignacionController::class)->middleware(['auth:sanctum','can:areadeasignacion.create']);

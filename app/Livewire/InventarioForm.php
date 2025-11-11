@@ -25,6 +25,7 @@ class InventarioForm extends Component
 
     public function mount()
     {
+        
         $this->search = request()->query('search', '');
         if ($this->search) {
             $this->searchResguardos(); // o el método que uses

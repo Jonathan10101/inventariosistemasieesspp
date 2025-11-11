@@ -144,5 +144,16 @@
             }); 
         });
     </script>
+    <style>
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 0.6s ease forwards;
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
 @endpush
 </div>

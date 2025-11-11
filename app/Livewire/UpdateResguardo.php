@@ -59,8 +59,8 @@ class UpdateResguardo extends Component
         $this->modelo = $resguardo->modelo;
         $this->nserie = $resguardo->nserie;
         $this->estado_uso_id = $resguardo->estado_uso_id;
-        $this->area_de_uso_id = $resguardo->area_de_uso_id;
-        $this->ubicacion_fisicas_id = $resguardo->ubicacion_fisicas_id;
+        $this->area_de_uso_id = $resguardo->historial->last()->area_de_uso_id;
+        $this->ubicacion_fisicas_id = $resguardo->historial->last()->ubicacion_fisicas_id;
         $this->resguardante_id = $resguardo->resguardante_id;
         $this->puesto_id = $resguardo->puesto_id;
         $this->resguardo_pdf = $resguardo->resguardo_pdf;
@@ -100,6 +100,7 @@ class UpdateResguardo extends Component
    
     public function save()
     {
+        /*
         $this->validate([
             'descripcion' => 'required',
             'marca_id' => 'required',
@@ -107,8 +108,8 @@ class UpdateResguardo extends Component
             'area_de_uso_id' => 'required',
             'ubicacion_fisicas_id' => 'required'
         ]);
+        */
 
-     
 
         $data = [
             'descripcion' => $this->descripcion,
@@ -122,6 +123,7 @@ class UpdateResguardo extends Component
             'historial_resguardo_id' => $this->historial_resguardo_id
         ];
                //dd($data);
+        //dd($data);
         $this->dispatch('updateUbicacionFromComponentResguardo',$data);        
         $this->resetForm();
     }

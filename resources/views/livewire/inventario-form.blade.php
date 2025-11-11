@@ -167,6 +167,7 @@
                         <td>
                         
                             @if($resguardo->historial->last() && $resguardo->historial->last()->ubicacionFisica->imagen)
+                                <p>{{ $resguardo->historial->last()->ubicacionFisica->descripcion }}</p>
                                 <a href="{{ asset('storage/' . $resguardo->historial->last()->ubicacionFisica->imagen) }}" target="_blank">
                                     {{--
                                     <img src="{{ asset('storage/' . $resguardo->historial->last()->ubicacionFisica->imagen) }}" 
@@ -174,8 +175,9 @@
                                         class="img-thumbnail" 
                                         width="100">
                                     --}}
-                                    {{ $resguardo->historial->last()->ubicacionFisica->descripcion }}
+                                    Ver imagen
                                 </a>
+
                             @else
                                 {{ optional($resguardo->historial->last()->ubicacionFisica)->descripcion }}
                             @endif
