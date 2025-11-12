@@ -175,5 +175,5 @@ return [
     */
     'custom_css' => [
     'css/custom-adminlte.css', // solo la ruta relativa desde public
-s    ],
+    ],
 ];

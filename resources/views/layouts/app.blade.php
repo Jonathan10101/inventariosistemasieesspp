@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="vendor/adminlte/dist/img/logoicono.ico" type="image/x-icon">
-    
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">    
@@ -23,8 +22,6 @@
 
     <!-- Styles -->
     @livewireStyles
-    <link href="{{ asset('css/custom-adminlte.css') }}" rel="stylesheet">
-
 </head>
 <body>
     <div id="app">
