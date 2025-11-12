@@ -60,7 +60,18 @@ class ResguardanteController extends Controller
     public function show($id)
     {
         $resguardante = Resguardante::find($id);
+
+        // Obtener solo los historiales activos (sin fecha_liberacion)
+        $historiales = $resguardante
+            ? $resguardante->historialResguardos()->whereNull('fecha_liberacion')->get()
+            : collect();
+
+
+
+
+        $resguardante = Resguardante::find($id);
         return view("resguardante.show", [
+            'historiales' => $historiales,
             'resguardante' => $resguardante
         ]);    
     }

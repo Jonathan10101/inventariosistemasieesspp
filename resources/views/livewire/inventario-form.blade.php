@@ -1,236 +1,162 @@
-<div class="container mt-4">
-    <!-- Agregar SweetAlert2 CDN en tu archivo Blade -->
+<div class="container mt-0">
+
+    <!-- SweetAlert2 -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>
 
-    <!-- Add nuevo Inventario  -->
-    <div class="row">
+    <!-- Botón Agregar Inventario -->
+    <div class="row mb-3">
         <div class="col d-flex justify-content-end">   
             @can('inventario.create')               
-            <button wire:click="showModalNewResguardo" class="btn btn-primary mb-3 fa">                        
-                <i class="fas fa-plus"></i>
-                Agregar inventario            
+            <button wire:click="showModalNewResguardo" class="btn btn-primary shadow-sm" style="background-color:#171C63; border:none;">                        
+                <i class="fas fa-plus me-1"></i> Agregar inventario            
             </button>  
             @endcan          
         </div>
     </div>
 
-    <!--ESTE COMPONENTE TIENE LA LOGICA PARA MOSTRAL MODAL DE VENTANA EMERGENTE-->
-    <div class="modal fade @if($showModal) show @endif" style="display: @if($showModal) block @else none @endif; background-color: rgba(0,0,0,0.5);" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">                    
-                    <h5 class="modal-title w-100" id="studentModalLabel">  
-                        {{$tituloModalPrincipal}}                                                 
-                    </h5>
-                    <button type="button" class="btn-close" wire:click="closeModal"></button>                    
+    <!-- Modal -->
+    <div class="modal fade @if($showModal) show @endif"
+        style="display:@if($showModal) block @else none @endif; background-color:rgba(0,0,0,0.5);" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content border-0 shadow-lg rounded-3">
+                <div class="modal-header text-white" style="background-color:#171C63;">
+                    <h5 class="modal-title w-100 fw-bold" id="studentModalLabel">{{$tituloModalPrincipal}}</h5>
+                    <button type="button" class="btn-close btn-close-white" wire:click="closeModal"></button>                    
                 </div>
-  
+
                 @switch($accionPrincipal)
-                    {{--REALIZAR INSCRIPCIÓN A CURSO O PROGRAMA--}}
                     @case("addNewResguardo")                    
                         @livewire('add-new-resguardo',['data'=>$data_external_component])                                       
                     @break
-
-                    {{--MOSTRAR HISTORIAL RESGUARDO--}}
                     @case("showHistorialResguardo")                    
                         @livewire('show-resguardos-modal',['data'=>$data_external_component])                              
                     @break
-
-                    {{--DAR DE BAJA ESTUDIANTE--}}
                     @case("dar_de_baja_estudiante")
-                        @livewire('unsubscribe-student',['student' => $student,'motivo_baja' => $motivo_baja,'fecha_baja' => $fecha_baja])                                  
+                        @livewire('unsubscribe-student',['student'=>$student,'motivo_baja'=>$motivo_baja,'fecha_baja'=>$fecha_baja])                                  
                     @break    
-
-                    {{--VER DETALLES DE BAJA ESTUDIANTE--}}
                     @case("dar_de_baja_estudiante_detalles")
-                        @livewire('unsubscribe-student',['student' => $student,'motivo_baja' => $motivo_baja,'fecha_baja' => $fecha_baja])                                  
+                        @livewire('unsubscribe-student',['student'=>$student,'motivo_baja'=>$motivo_baja,'fecha_baja'=>$fecha_baja])                                  
                     @break 
-                    
-                    {{--EDITAR RESGUARDO--}}
                     @case("editar")
                         @livewire('update-resguardo',['data'=>$data_external_component])               
                     @break 
-                    
-                    {{--CREAR NUEVO RESGUARDO--}}
                     @default
                         @livewire('create-new-resguardo') 
                     @break                    
                 @endswitch
-
-                <div class="modal-footer">                           
-                </div>
-
+                <div class="modal-footer"></div>
             </div>
         </div>
     </div>
 
     <!-- Buscador -->
-    <div class="row mb-3">
-        <div class="col-md-6">            
-            <div class="input-group">
-                <label for="searchid">Da clic en el Buscador, escanea o escribe el No. de inventario y luego presiona “Buscar”</label>
-                <input type="text" id="searchid" placeholder="Buscador" wire:keydown.enter="searchResguardos" wire:model="search"  class="form-control" />
-                <button class="btn btn-primary" wire:click="searchResguardos">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <label class="form-label fw-semibold text-dark">Da clic en el Buscador, escanea o escribe el No. de inventario y luego presiona “Buscar”</label>
+            <div class="input-group shadow-sm">
+                <input type="text" id="searchid" placeholder="Buscar inventario..." 
+                       wire:keydown.enter="searchResguardos" wire:model="search" class="form-control border-end-0">
+                <button class="btn btn-primary" style="background-color:#171C63; border:none;" wire:click="searchResguardos">
                     <i class="fas fa-search"></i> Buscar
                 </button>
                 @if($search)
-                    <button class="btn btn-secondary" wire:click="clearSearch" style="border-left: none;">
-                        <i class="fas fa-times"></i> <!-- Icono de borrar -->
-                    </button>
+                <button class="btn btn-outline-secondary" wire:click="clearSearch">
+                    <i class="fas fa-times"></i>
+                </button>
                 @endif
             </div>
         </div>
     </div>
 
-    <!-- Tabla de estudiantes -->
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>           
-                    <th scope="col">Id</th>
-                    <th scope="col">Imagen</th>
-                    <th scope="col">Equipo</th>
-                    <th scope="col">Marca</th>
-                    <th scope="col">Modelo</th>
-
-                    <th scope="col">Serie</th>
-                    <!--
-                    <th scope="col">Inventario</th>
-                 
-                    <th scope="col">CUIP</th>
-                    <th scope="col">NO. DE RESGUARDO</th>
-                    -->
-                    <th scope="col">Estado</th>                      
-                    <th scope="col">Área</th>
-                    <th scope="col">Ubicación</th>
-                    <th scope="col">Resguardante</th>
-                    <!--
-                    <th scope="col">Puesto</th>
-          
-                    <th scope="col">N° DE INVENTARIO ACTUALIZADO</th>
-                    -->
-                    <th scope="col">Acciones</th>
-                </tr>
-            </thead>
-            <tbody> 
-                @forelse ($resguardos as $resguardo)
-                    <tr>
-                        <td>
-                            {{ $resguardo->id }}
-                        </td>
-                        <td>
-                        @if($resguardo->imagen)
-                        <a href="{{ asset('storage/' . $resguardo->imagen) }}" target="_blank">
-                            <img src="{{ asset('storage/' . $resguardo->imagen) }}" 
-                                alt="Imagen del producto" 
-                                class="img-thumbnail" 
-                                width="100">
-                        </a>
-                        @else
-                            <span class="text-muted">Sin imagen</span>
-                        @endif
-                        </td>
-
-                        <td>{{ $resguardo->descripcion }}</td>
-                        <td>{{ $resguardo->marca->nombre }}</td>
-                        <td>{{ $resguardo->modelo }}</td>
-                        <td>{{ $resguardo->nserie }}</td>
-                        
-
-         
-                        {{--
-                        <td class="text-center">
-                            @if($resguardo->historial[0]->resguardo_pdf != null)
-                                <div class="mt-2">
-                                    <a href="{{ Storage::url($resguardo->resguardo_pdf) }}" target="_blank">
-                                        Descargar Inventario No. {{ $resguardo->id }}
-                                        
-                                        ({{ $histo->fecha_asignacion->format('d/m/Y H:i') }})
-                                       
+    <!-- Tabla -->
+    <div class="card shadow border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" style="background-color:#F9FAFF;">
+                    <thead style="background-color:#171C63; color:white;">
+                        <tr>           
+                            <th>Id</th>
+                            <th>Imagen</th>
+                            <th>Equipo</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Serie</th>
+                            <th>Estado</th>                      
+                            <th>Área</th>
+                            <th>Ubicación</th>
+                            <th>Resguardante</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($resguardos as $resguardo)
+                            <tr>
+                                <td>{{ $resguardo->id }}</td>
+                                <td>
+                                    @if($resguardo->imagen)
+                                    <a href="{{ asset('storage/' . $resguardo->imagen) }}" target="_blank">
+                                        <img src="{{ asset('storage/' . $resguardo->imagen) }}" 
+                                             alt="Imagen del producto" class="img-thumbnail border" width="90">
                                     </a>
-                                </div>
-                            @else
-                                <button wire:click="showModalNewStudent" class="btn btn-warning btn-sm mt-1 mb-1">            
-                                    <i class="fas fa-upload"></i> Subir
-                                </button>
-                            @endif
-                        </td>
-                        --}}
-
-
-                        <td>{{ strtoupper(optional($resguardo->historial->last()->estadouso)->estado) }}</td>
-                   
-                        <td>{{ $resguardo->historial->last()->areaDeUso->nombre }}</td>
-
-                         
-                        <td>
-                        
-                            @if($resguardo->historial->last() && $resguardo->historial->last()->ubicacionFisica->imagen)
-                                <p>{{ $resguardo->historial->last()->ubicacionFisica->descripcion }}</p>
-                                <a href="{{ asset('storage/' . $resguardo->historial->last()->ubicacionFisica->imagen) }}" target="_blank">
-                                    {{--
-                                    <img src="{{ asset('storage/' . $resguardo->historial->last()->ubicacionFisica->imagen) }}" 
-                                        alt="Imagen del producto" 
-                                        class="img-thumbnail" 
-                                        width="100">
-                                    --}}
-                                    Ver imagen
-                                </a>
-
-                            @else
-                                {{ optional($resguardo->historial->last()->ubicacionFisica)->descripcion }}
-                            @endif
-
-                        </td>
-                        <td><a href="{{ route('resguardante.show', $resguardo->resguardante->id) }}">{{strtoupper(optional($resguardo->historial->last()->resguardante)->nombre1)}} {{strtoupper(optional($resguardo->historial->last()->resguardante)->nombre2)}} {{strtoupper(optional($resguardo->historial->last()->resguardante)->apellido1)}} {{strtoupper(optional($resguardo->historial->last()->resguardante)->apellido2)}}</a></td>
-                        <!--
-                        <td>{{ strtoupper($resguardo->puesto->nombre) }}</td>
-                        !-->
-                        <td class="w-100">   
-                            
-                            <button wire:click="cambiarAccion('editar',{{ $resguardo->id }})" class="btn btn-warning btn-sm mt-1 mb-1">                            
-                                <i class="fas fa-edit"></i> Editar
-                            </button>
-                              
-                            <button wire:click="cambiarAccion('showHistorialResguardo',{{ $resguardo->id }})" class="btn btn-dark btn-sm mt-1 mb-1">                            
-                                <i class="fas fa-eye"></i> Ver resguardos
-                            </button>
-                            
-                            @can('inventario.destroy')   
-                            <button wire:click="" class="btn btn-danger btn-sm mt-1 mb-1">                            
-                                <i class="fas fa-trash"></i> Dar de baja inventario
-                            </button>  
-                            @endcan
-
-                            @can('inventario.create')   
-                            <button wire:click="cambiarAccion('addNewResguardo',{{ $resguardo->id }})"  class="btn btn-primary btn-sm mt-1 mb-1">                            
-                                <i class="fas fa-plus"></i> Agregar resguardo
-                            </button>  
-                            @endcan
-
-                            @can('inventario.create')   
-                            <button wire:click="downloadEtiqueta({{ $resguardo->id }})" class="btn btn-success btn-sm mt-1 mb-1">            
-                                <i class="fas fa-download"></i> Descargar etiqueta
-                            </button>
-                            @endcan
-                            
-                            {{--
-                            @can('alumnos.edit')   
-                            <button wire:click="cambiarAccion('editar',{{ $resguardo->id }})" class="btn btn-primary btn-sm mt-1 mb-1">                            
-                                <i class="fas fa-edit"></i>Editar
-                            </button>  
-                            @endcan
-                            --}}                                                                                              
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="13" class="text-center">No se encontro inventario.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+                                    @else
+                                        <span class="text-muted">Sin imagen</span>
+                                    @endif
+                                </td>
+                                <td>{{ $resguardo->descripcion }}</td>
+                                <td>{{ $resguardo->marca->nombre }}</td>
+                                <td>{{ $resguardo->modelo }}</td>
+                                <td>{{ $resguardo->nserie }}</td>
+                                <td><span class="badge rounded-pill bg-{{ strtoupper(optional($resguardo->historial->last()->estadouso)->estado) == 'ACTIVO' ? 'success' : 'secondary' }}">{{ strtoupper(optional($resguardo->historial->last()->estadouso)->estado) }}</span></td>
+                                <td>{{ $resguardo->historial->last()->areaDeUso->nombre }}</td>
+                                <td>
+                                    @if($resguardo->historial->last() && $resguardo->historial->last()->ubicacionFisica->imagen)
+                                        <a href="{{ route('ubicacionfisica.show', $resguardo->historial->last()->ubicacionFisica->id) }}" class="fw-semibold text-decoration-none" style="color:#171C63;">
+                                            {{ optional($resguardo->historial->last()->ubicacionFisica)->descripcion }}
+                                        </a>
+                                        <br>
+                                        <a href="{{ asset('storage/' . $resguardo->historial->last()->ubicacionFisica->imagen) }}" target="_blank" class="small text-muted">
+                                            Ver imagen
+                                        </a>
+                                    @else
+                                        <a href="{{ route('ubicacionfisica.show', $resguardo->historial->last()->ubicacionFisica->id) }}" class="fw-semibold text-decoration-none" style="color:#171C63;">
+                                            {{ optional($resguardo->historial->last()->ubicacionFisica)->descripcion }}
+                                        </a>
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="{{ route('resguardante.show', $resguardo->historial->last()->resguardante->id) }}" 
+                                       class="fw-semibold text-decoration-none" style="color:#171C63;">
+                                        {{ strtoupper(optional($resguardo->historial->last()->resguardante)->nombre1) }}
+                                        {{ strtoupper(optional($resguardo->historial->last()->resguardante)->nombre2) }}
+                                        {{ strtoupper(optional($resguardo->historial->last()->resguardante)->apellido1) }}
+                                        {{ strtoupper(optional($resguardo->historial->last()->resguardante)->apellido2) }}
+                                    </a>
+                                </td>
+                                <td class="text-nowrap">
+                                    <button wire:click="cambiarAccion('editar',{{ $resguardo->id }})" class="btn btn-warning btn-sm text-white mb-1">
+                                        <i class="fas fa-edit"></i> 
+                                    </button>
+                                    <button wire:click="cambiarAccion('showHistorialResguardo',{{ $resguardo->id }})" class="btn btn-dark btn-sm mb-1">
+                                        <i class="fas fa-eye"></i> 
+                                    </button>
+                                    @can('inventario.create')   
+                                    <button wire:click="cambiarAccion('addNewResguardo',{{ $resguardo->id }})" class="btn btn-primary btn-sm mb-1" style="background-color:#171C63; border:none;">
+                                        <i class="fas fa-plus"></i> 
+                                    </button>  
+                                    <button wire:click="downloadEtiqueta({{ $resguardo->id }})" class="btn btn-success btn-sm mb-1">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    @endcan
+                                </td>
+                            </tr>
+                        @empty
+                            <tr><td colspan="13" class="text-center text-muted py-3">No se encontró inventario.</td></tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <!-- Paginación -->
@@ -238,49 +164,87 @@
         {{ $resguardos->links() }}
     </div>
 
-
 @push('js')
 @livewireScripts
-    @if(request()->has('search'))
-    <script>
-        // Espera un segundo y luego limpia el parámetro de la URL visualmente
-        setTimeout(() => {
-            const url = new URL(window.location.href);
-            url.searchParams.delete('search');
-            window.history.replaceState({}, document.title, url.pathname);
-        }, 1000);
-    </script>
-    @endif
-    <script>
-        document.addEventListener('livewire:initialized',function(){    
-            Livewire.on('refresh-page',function($message){                
-    
-            const url = new URL(window.location.href);
-            url.searchParams.delete('search');
-            window.history.replaceState({}, document.title, url.pathname);
-                location.reload(); // Recarga la página completa
-
-            }); 
-
-            Livewire.on('alumno-created',function($message){                
-                Swal.fire({
-                    title: '¡Éxito!',
-                    text: '!Resguardo registrado con exito!',
-                    icon: 'success',
-                    confirmButtonText: 'Ok',
-                    allowOutsideClick: false, // Deshabilita clics fuera del modal
-                    allowEscapeKey: false,   // Deshabilita la tecla Escape
-                    allowEnterKey: false     // Deshabilita la tecla Enter
-                }).then((result) => {
-                       if (result.isConfirmed) {
-                            window.location.reload();     
-                        }    
-                });                
-            });   
+<script>
+document.addEventListener('livewire:initialized', function() {
+    Livewire.on('refresh-page', function() {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('search');
+        window.history.replaceState({}, document.title, url.pathname);
+        location.reload();
+    });
+    Livewire.on('alumno-created', function() {
+        Swal.fire({
+            title: '¡Éxito!',
+            text: '!Resguardo registrado con éxito!',
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            allowEnterKey: false
+        }).then(result => {
+            if (result.isConfirmed) window.location.reload();
         });
-    </script>
-
+    });
+});
+</script>
 @endpush
+
+<style>
+    /* General */
+    body { background-color: #f7f9fc; }
+
+    .table th {
+        vertical-align: middle;
+        font-weight: 600;
+        background-color: #171C63;
+        color: white;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #e9edff;
+    }
+
+    .btn {
+        border-radius: 6px;
+        font-weight: 500;
+    }
+
+    .btn-warning {
+        background-color: #f4b400;
+        border: none;
+    }
+
+    .btn-warning:hover {
+        background-color: #e0a800;
+    }
+
+    .btn-dark {
+        background-color: #2c2f4c;
+        border: none;
+    }
+
+    .btn-dark:hover {
+        background-color: #171C63;
+    }
+
+    .page-link {
+        color: #171C63;
+    }
+
+    .page-item.active .page-link {
+        background-color: #171C63;
+        border-color: #171C63;
+    }
+
+    .modal-content {
+        border-radius: 12px;
+    }
+
+    .form-control:focus {
+        border-color: #171C63;
+        box-shadow: 0 0 0 0.2rem rgba(23, 28, 99, 0.25);
+    }
+</style>
 </div>
-
-

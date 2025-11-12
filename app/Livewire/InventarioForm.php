@@ -14,7 +14,7 @@ use App\Models\HistorialResguardo;
 class InventarioForm extends Component
 {
     use WithPagination;
-    public $perPage = 3 ;
+    public $perPage = 2;
     public $search = '';
     public $showModal = false; // Controla el modal
     public $isEditing = false; // Determina si estamos editando o creando

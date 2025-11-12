@@ -1,66 +1,112 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
+@section('title', 'Inventario')
 
 @section('content_header')
-    <!-- Encabezado de la página -->
-     <div class="row">
-        <div class=""></div>
-        <div class="col">
-            <h1 class="text-start mt-5 ml-1">Inventario</h1>
+    <div class="page-header border-bottom m-3 mt-0">
+        <div class="container-fluid py-4">
+            <div class="d-flex align-items-center">
+                <div class="title-accent me-3"></div>
+                <div>
+                    <h1 class="page-title mb-1">Inventario</h1>
+                    {{--
+                    <p class="page-subtitle mb-0">Control institucional de equipos y resguardos</p>
+                    --}}
+                </div>
+            </div>
         </div>
-        <div class=""></div>
-    </div>    
+    </div>
 @stop
 
 @section('content')
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-12">    
-
-            <!-- CONTENIDO -->
-            <div wire:loading.remove class="row mt-4 fade-in">
+<div class="fade-in">
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
                 @livewire('inventario-form')
             </div>
-
         </div>
     </div>
 </div>
 @stop
 
-
-
-
 @section('css')
-    <!-- Aquí puedes agregar otros estilos si es necesario -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <style>
-        .nav-link.no-click {
-            pointer-events: none !important; /* desactiva el clic */
-            cursor: default !important;       /* cambia el cursor */
-            background-color: transparent !important; /* quita hover */
-        }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        .nav-link.no-click:hover {
-            background-color: transparent !important;
-            
-        }
+<style>
+    :root {
+        --ieesspp-primary: #171C63;
+        --ieesspp-primary-light: #2a2f7f;
+        --ieesspp-bg-light: #f8f9fc;
+        --ieesspp-border: #e3e6f0;
+        --text-dark: #2d2d2d;
+    }
 
-        .fade-in {
-            opacity: 0;
-            animation: fadeIn 0.6s ease forwards;
-        }
+    body {
+        background-color: var(--ieesspp-bg-light);
+    }
 
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-    </style>
+    /* ====== HEADER ====== */
+    .page-header {
+        background-color: #ffffff;
+        border-bottom: 1px solid var(--ieesspp-border);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        animation: fadeSlideDown 0.5s ease-in-out;
+    }
+
+    .page-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: var(--ieesspp-primary);
+        letter-spacing: 0.4px;
+        margin-bottom: 0.25rem;
+    }
+
+    .page-subtitle {
+        font-size: 0.95rem;
+        color: #6c757d;
+        font-weight: 400;
+        letter-spacing: 0.2px;
+    }
+
+    /* Línea vertical institucional */
+    .title-accent {
+        width: 6px;
+        height: 45px;
+        border-radius: 4px;
+        background: var(--ieesspp-primary);
+        animation: growIn 0.6s ease;
+    }
+
+    /* ====== ANIMACIONES ====== */
+    @keyframes growIn {
+        from { height: 0; opacity: 0; transform: translateY(-10px); }
+        to { height: 45px; opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeSlideDown {
+        from { opacity: 0; transform: translateY(-6px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card, .modal-content {
+        border-radius: 10px !important;
+        border: 1px solid var(--ieesspp-border);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    .fade-in {
+        animation: fadeIn 0.4s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(4px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
 @stop
+
 @section('js')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script> console.log("¡Hola! Estoy usando el paquete Laravel-AdminLTE"); </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script> console.log("Interfaz IEESSPP profesional cargada ✔️"); </script>
 @stop
-
-

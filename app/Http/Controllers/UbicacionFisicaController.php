@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\UbicacionFisica;
+use App\Models\Resguardante;
 use Illuminate\Http\Request;
+use Livewire\WithPagination;
+
 
 class UbicacionFisicaController extends Controller
 {
+    use WithPagination;
+    public $perPage = 2;
+
     public function index()
     {
         //$ubicacionesFisicas = UbicacionFisica::all();
@@ -42,10 +48,23 @@ class UbicacionFisicaController extends Controller
         */
     }
 
-    public function show(UbicacionFisica $ubicacionFisica)
+    public function show($id)
     {
-        
+        $ubicacionFisica = UbicacionFisica::find($id);
+
+        // Obtener solo los historiales activos (sin fecha_liberacion) con paginación
+        $historiales = $ubicacionFisica
+        ? $ubicacionFisica->historialResguardos()
+        ->whereNull('fecha_liberacion')
+        ->paginate($this->perPage)
+        : collect();
+
+        return view("ubicaciones.show", [
+            'historiales' => $historiales,
+            'ubicacionFisica' => $ubicacionFisica
+        ]);
     }
+
 
     public function edit(UbicacionFisica $ubicacionFisica)
     {

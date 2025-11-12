@@ -1,4 +1,4 @@
-<div wire:ignore.self>
+<div >
     <div class="modal-body">
         <form wire:submit.prevent="save">
             <div class="row g-3">
@@ -20,8 +20,8 @@
 
                 <!-- Campo: Imagen -->
                 <div class="col-md-12">
-                    <label for="imagen" class="form-label">Imagen (opcional)</label>
-                    <input type="file" id="imagen" wire:model="imagen" class="form-control" accept="image/*">
+                    <label for="imagenid" class="form-label">Imagen (opcional)</label>
+                    <input type="file" id="imagenid" wire:model="imagen" class="form-control" accept="image/png, image/jpeg, image/jpg">
                     @error('imagen') 
                         <span class="text-danger">{{ $message }}</span> 
                     @enderror

@@ -149,6 +149,8 @@ class ResguardanteForm extends Component
             });
         }
 
+       
+
         return view('livewire.resguardante-form', [
             'resguardantes' => $query->paginate($this->perPage),
         ]);

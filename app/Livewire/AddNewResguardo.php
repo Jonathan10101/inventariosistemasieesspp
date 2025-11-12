@@ -167,27 +167,42 @@ class AddNewResguardo extends Component
         $this->fecha_asignacion = now();
 
 
-        /*
-        $data = [
-            'descripcion' => $this->descripcion,
-            'marca_id' => $this->marca_id,
-            'modelo' => $this->modelo,
-            'nserie' => $this->nserie,
-            'nresguardo' => null,
+        
+        $resguardo = Resguardo::find($this->resguardo_id);
+
+        $ultimoHistorial = $resguardo->historial()->get()->last();
+
+        if ($ultimoHistorial) {
+            $ultimoHistorial->update([
+                'fecha_liberacion' => now()
+            ]);
+        }
+
+
+
+        $resguardo->historial()->create([
+            'resguardo_id'=> $this->resguardo_id,
+            'resguardante_id' => $this->resguardante_id,
+            'resguardo_pdf' => $this->resguardo_pdf ,
+            'fecha_asignacion' => now(),
+            'fecha_liberacion' => null,
+            'imagen_evidencia' => $imagenEvidencia, // ← aquí guardas la foto o evidencia
+            'tipo_evento'       => 'asignacion',
+            'descripcion_evento'=> 'Equipo asignado al resguardante.',
             'estado_uso_id' => $this->estado_uso_id,
             'area_de_uso_id' => $this->area_de_uso_id,
             'ubicacion_fisicas_id' => $this->ubicacion_fisicas_id,
-            'resguardante_id' => $this->resguardante_id,
-            'puesto_id' => $this->puesto_id,
-            'imagen' => $path,
-            'resguardo_pdf' => $pdfPath,
-            'resguardo_id' => $this->resguardo_id,
-            'fecha_asignacion' => $this->fecha_asignacion,
-        ];
-        */
-        
+        ]);
+
+
+
+
+
+
+
+
         //HistorialResguardo::registrarAsignacion($this->resguardo, $this->resguardante_id, $pdfPath,$imagenEvidencia);
-        HistorialResguardo::registrarAsignacion($this->resguardo, $this->resguardante_id, $pdfPath,$imagenEvidencia,$this->estado_uso_id,$this->area_de_uso_id,$this->ubicacion_fisicas_id);
+        //HistorialResguardo::registrarAsignacion($this->resguardo, $this->resguardante_id, $pdfPath,$imagenEvidencia,$this->estado_uso_id,$this->area_de_uso_id,$this->ubicacion_fisicas_id);
 
 
         //$this->dispatch('saveFromComponentNewHistorialResguardo',$data);        

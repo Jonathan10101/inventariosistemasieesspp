@@ -15,7 +15,7 @@ class EvidenciaResguardo extends Model
     /* ====== MUTADORES PARA MAYÚSCULAS ====== */
     public function setArchivoAttribute($value)
     {
-        $this->attributes['archivo'] = mb_strtoupper($value, 'UTF-8');
+        $this->attribputes['archivo'] = mb_strtoupper($value, 'UTF-8');
     }
 
     public function setObservacionesAttribute($value)
