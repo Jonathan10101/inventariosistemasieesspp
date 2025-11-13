@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col d-flex justify-content-end">   
             @can('puestos.create')               
-            <button wire:click="showModalNewPuesto" class="btn btn-primary mb-3 fa">                        
+            <button wire:click="showModalNewPuesto" class="btn btn-primary mb-3 fa" style="background-color:#171C63; border:none;">                        
                 <i class="fas fa-plus"></i>
                 Agregar puesto           
             </button>  
@@ -19,11 +19,9 @@
     <div class="modal fade @if($showModal) show @endif" style="display: @if($showModal) block @else none @endif; background-color: rgba(0,0,0,0.5);" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header">                    
-                    <h5 class="modal-title w-100" id="studentModalLabel">  
-                        {{$tituloModalPrincipal}}                                                 
-                    </h5>
-                    <button type="button" class="btn-close" wire:click="closeModal"></button>                    
+                <div class="modal-header text-white" style="background-color:#171C63;">
+                    <h5 class="modal-title w-100 fw-bold" id="studentModalLabel">{{$tituloModalPrincipal}}</h5>
+                    <button type="button" class="btn-close btn-close-white" wire:click="closeModal"></button>                    
                 </div>
   
                 @switch($accionPrincipal)        
@@ -45,19 +43,21 @@
         </div>
     </div>
 
+
     <!-- Buscador -->
-    <div class="row mb-3">
-        <div class="col-md-6">            
-            <div class="input-group">
-                <label for="searchid">Da clic en el Buscador y escribe el nombre del Puesto y luego presiona “Buscar”</label>
-                <input type="text" id="searchid" placeholder="Buscador" wire:keydown.enter="searchPuestos" wire:model="search" oninput="this.value = this.value.toUpperCase()" class="form-control" />
-                <button class="btn btn-primary" wire:click="searchPuestos">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <label class="form-label fw-semibold text-dark">Da clic en el Buscador y escribe el nombre del Puesto y luego presiona “Buscar”</label>
+            <div class="input-group shadow-sm">
+                <input type="text" id="searchid" placeholder="Buscador ..." 
+                       wire:keydown.enter="searchPuestos" wire:model="search" class="form-control border-end-0">
+                <button class="btn btn-primary" style="background-color:#171C63; border:none;" wire:click="searchPuestos">
                     <i class="fas fa-search"></i> Buscar
                 </button>
                 @if($search)
-                    <button class="btn btn-secondary" wire:click="clearSearch" style="border-left: none;">
-                        <i class="fas fa-times"></i> <!-- Icono de borrar -->
-                    </button>
+                <button class="btn btn-outline-secondary" wire:click="clearSearch">
+                    <i class="fas fa-times"></i>
+                </button>
                 @endif
             </div>
         </div>
@@ -79,8 +79,8 @@
                     <td>{{$puesto->id}}</td>
                     <td>{{$puesto->nombre}}</td>
                     <td>
-                        <button class="btn btn-warning btn-sm" wire:click="cambiarAccion('editar',{{ $puesto->id }})">
-                            <i class="fas fa-edit"></i> EDITAR
+                        <button class="btn btn-warning btn-sm" wire:click="cambiarAccion('editar',{{ $puesto->id }})" title="Editar">
+                            <i class="fas fa-edit"></i>
                         </button>
                     </td>
                 </tr>
@@ -99,8 +99,8 @@
         {{ $puestos->links() }}
     </div>
 
-
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('css/ieessppformtable.css') }}">
 @push('js')
 @livewireScripts
     <script>

@@ -144,7 +144,7 @@ class CreateNewResguardo extends Component
 
         /* === Emitir evento al padre === */
         $this->dispatch('resguardoCreado');
-        session()->flash('message', 'Resguardo creado correctamente.');
+        //session()->flash('message', 'Resguardo creado correctamente.');
     }
 
     /* =================== RESETEAR FORMULARIO =================== */

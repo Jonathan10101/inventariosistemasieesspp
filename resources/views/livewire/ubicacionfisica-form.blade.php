@@ -19,11 +19,9 @@
     <div class="modal fade @if($showModal) show @endif" style="display: @if($showModal) block @else none @endif; background-color: rgba(0,0,0,0.5);" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header">                    
-                    <h5 class="modal-title w-100" id="studentModalLabel">  
-                        {{$tituloModalPrincipal}}                                                 
-                    </h5>
-                    <button type="button" class="btn-close" wire:click="closeModal"></button>                    
+                <div class="modal-header text-white" style="background-color:#171C63;">
+                    <h5 class="modal-title w-100 fw-bold" id="studentModalLabel">{{$tituloModalPrincipal}}</h5>
+                    <button type="button" class="btn-close btn-close-white" wire:click="closeModal"></button>                    
                 </div>
   
                 @switch($accionPrincipal)        
@@ -84,7 +82,7 @@
                         <a href="{{ asset('storage/' . $ubicacion->imagen) }}" target="_blank">
                             <img src="{{ asset('storage/' . $ubicacion->imagen) }}" 
                                 alt="Imagen de la ubicación" 
-                                class="img-thumbnail" 
+                                class="img-thumbnail border zoom-image" 
                                 width="100">
                         </a>
                     @else
@@ -94,12 +92,12 @@
 
                     <td>{{$ubicacion->descripcion}}</td>
                     <td>
-                        <button class="btn btn-warning btn-sm" wire:click="cambiarAccion('editar',{{ $ubicacion->id }})">
-                            <i class="fas fa-edit"></i> EDITAR
+                        <button class="btn btn-warning btn-sm" wire:click="cambiarAccion('editar',{{ $ubicacion->id }})" title="Editar">
+                            <i class="fas fa-edit"></i>
                         </button>
                         
-                        <button wire:click="downloadEtiqueta({{ $ubicacion->id }})" class="btn btn-success btn-sm mt-1 mb-1">            
-                            <i class="fas fa-download"></i> Descargar etiqueta
+                        <button wire:click="downloadEtiqueta({{ $ubicacion->id }})" class="btn btn-success btn-sm mt-1 mb-1" title="Descargar etiqueta">            
+                            <i class="fas fa-download"></i>
                         </button>
                     </td>
                 </tr>
@@ -119,7 +117,8 @@
     </div>
 
 
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('css/ieessppformtable.css') }}">
 @push('js')
 @livewireScripts
     <script>

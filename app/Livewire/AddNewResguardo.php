@@ -200,7 +200,6 @@ class AddNewResguardo extends Component
 
 
 
-
         //HistorialResguardo::registrarAsignacion($this->resguardo, $this->resguardante_id, $pdfPath,$imagenEvidencia);
         //HistorialResguardo::registrarAsignacion($this->resguardo, $this->resguardante_id, $pdfPath,$imagenEvidencia,$this->estado_uso_id,$this->area_de_uso_id,$this->ubicacion_fisicas_id);
 

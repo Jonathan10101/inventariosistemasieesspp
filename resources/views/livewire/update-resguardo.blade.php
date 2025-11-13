@@ -14,9 +14,6 @@
 
 
 
-                
-                <hr>
-
                 <!-- Campos del formulario -->
                 @can('inventario.update')   
                 <div class="col-md-12">
@@ -120,8 +117,10 @@
                 </div>
 
                 <!-- Botón Guardar -->
-                <div class="col d-flex justify-content-end mt-4">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                <div class="col-12 d-flex justify-content-end mt-4">
+                    <button type="submit" class="btn btn-primary" style="background-color:#171C63; border-color:#171C63; color:#fff;">
+                        <i class="fas fa-save me-1"></i> Guardar
+                    </button>
                 </div>
 
             </div>

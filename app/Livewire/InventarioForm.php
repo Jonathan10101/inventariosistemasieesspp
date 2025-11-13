@@ -121,7 +121,7 @@ class InventarioForm extends Component
 
     public function addNewResguardo($id)
     {        
-                $this->data_external_component = $id;
+        $this->data_external_component = $id;
 
 
         /*
@@ -226,6 +226,11 @@ class InventarioForm extends Component
         ]);
     }
 
+    #[On('resguardoCreado')]
+    public function emitirNewResguardoAlert(){
+                $this->dispatch('alumno-created', 1);
+
+    }
     #[On('saveFromComponentNewResguardo')] 
     public function saveNewResguardo($data){ 
         
@@ -251,9 +256,10 @@ class InventarioForm extends Component
             'fecha_liberacion' => null,
         ]);
 
+        $this->showModal = false;  
+        $this->dispatch('alumno-created', 1);
 
-
-        
+        /*
         $idStudent = (string) $id_of_student->id;
         // Genera un código de 10 dígitos, con ceros a la izquierda
         $codigo = str_pad($idStudent, 8, '0', STR_PAD_LEFT);
@@ -264,10 +270,11 @@ class InventarioForm extends Component
         return redirect()->route('etiquetas.show',$codigo);
 
         //$this->assignCourse(3);
+        */
 
 
         $this->resetForm();
-        $this->showModal = false;  
+        //$this->showModal = false;  
     }
 
     public function downloadEtiqueta($id){

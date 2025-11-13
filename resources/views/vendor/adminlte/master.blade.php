@@ -2,6 +2,8 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
+    <link rel="stylesheet" href="{{ asset('css/custom-adminlte.css') }}">
+
 
     {{-- Base Meta Tags --}}
     <meta charset="utf-8">

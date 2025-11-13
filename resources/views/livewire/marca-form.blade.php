@@ -1,30 +1,29 @@
 <div class="container mt-4">
-    <!-- Agregar SweetAlert2 CDN en tu archivo Blade -->
+    <!-- SweetAlert2 -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>
 
-    <!-- Add nueva Marca  -->
-    <div class="row">
+    <!-- Botón Agregar Inventario -->
+    <div class="row mb-3">
         <div class="col d-flex justify-content-end">   
             @can('marcas.create')               
-            <button wire:click="showModalNewMarca" class="btn btn-primary mb-3 fa">                        
-                <i class="fas fa-plus"></i>
-                Agregar marca            
+            <button wire:click="showModalNewMarca" class="btn btn-primary shadow-sm" style="background-color:#171C63; border:none;">                        
+                <i class="fas fa-plus me-1"></i> Agregar marca            
             </button>  
             @endcan          
         </div>
     </div>
 
+
     <!--ESTE COMPONENTE TIENE LA LOGICA PARA MOSTRAL MODAL DE VENTANA EMERGENTE-->
     <div class="modal fade @if($showModal) show @endif" style="display: @if($showModal) block @else none @endif; background-color: rgba(0,0,0,0.5);" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header">                    
-                    <h5 class="modal-title w-100" id="studentModalLabel">  
-                        {{$tituloModalPrincipal}}                                                 
-                    </h5>
-                    <button type="button" class="btn-close" wire:click="closeModal"></button>                    
+                <div class="modal-header text-white" style="background-color:#171C63;">
+                    <h5 class="modal-title w-100 fw-bold" id="studentModalLabel">{{$tituloModalPrincipal}}</h5>
+                    <button type="button" class="btn-close btn-close-white" wire:click="closeModal"></button>                    
                 </div>
+
   
                 @switch($accionPrincipal)        
                     {{--EDITAR MARCA--}}
@@ -45,19 +44,23 @@
         </div>
     </div>
 
+
+
+
     <!-- Buscador -->
-    <div class="row mb-3">
-        <div class="col-md-6">            
-            <div class="input-group">
-                <label for="searchid">Da clic en el Buscador y escribe el nombre de la Marca y luego presiona “Buscar”</label>
-                <input type="text" id="searchid" placeholder="Buscador" wire:keydown.enter="searchMarcas" wire:model="search" oninput="this.value = this.value.toUpperCase()" class="form-control" />
-                <button class="btn btn-primary" wire:click="searchMarcas">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <label class="form-label fw-semibold text-dark">Da clic en el Buscador, luego escribe el nombre de la Marca y presiona “Buscar”</label>
+            <div class="input-group shadow-sm">
+                <input type="text" id="searchid" placeholder="Buscador ..." 
+                       wire:keydown.enter="searchMarcas" wire:model="search" class="form-control border-end-0">
+                <button class="btn btn-primary" style="background-color:#171C63; border:none;" wire:click="searchMarcas">
                     <i class="fas fa-search"></i> Buscar
                 </button>
                 @if($search)
-                    <button class="btn btn-secondary" wire:click="clearSearch" style="border-left: none;">
-                        <i class="fas fa-times"></i> <!-- Icono de borrar -->
-                    </button>
+                <button class="btn btn-outline-secondary" wire:click="clearSearch">
+                    <i class="fas fa-times"></i>
+                </button>
                 @endif
             </div>
         </div>
@@ -79,8 +82,8 @@
                     <td>{{$marca->id}}</td>
                     <td>{{$marca->nombre}}</td>
                     <td>
-                        <button class="btn btn-warning btn-sm" wire:click="cambiarAccion('editar',{{ $marca->id }})">
-                            <i class="fas fa-edit"></i> EDITAR
+                        <button class="btn btn-warning btn-sm" wire:click="cambiarAccion('editar',{{ $marca->id }})"  title="Editar Marca">
+                            <i class="fas fa-edit"></i>
                         </button>
                     </td>
                 </tr>
@@ -99,8 +102,8 @@
         {{ $marcas->links() }}
     </div>
 
-
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('css/ieessppformtable.css') }}">
 @push('js')
 @livewireScripts
     <script>
@@ -111,21 +114,25 @@
                 //alert("x");
             }); 
 
-            Livewire.on('alumno-created',function($message){                
+            Livewire.on('alumno-created', function($message){                
                 Swal.fire({
                     title: '¡Éxito!',
-                    text: '!Marca registrada con exito!',
+                    text: '!Marca registrada con éxito!',
                     icon: 'success',
                     confirmButtonText: 'Ok',
                     allowOutsideClick: false, // Deshabilita clics fuera del modal
-                    allowEscapeKey: false,   // Deshabilita la tecla Escape
-                    allowEnterKey: false     // Deshabilita la tecla Enter
+                    allowEscapeKey: false,    // Deshabilita Escape
+                    allowEnterKey: false,     // Deshabilita Enter
+                    customClass: {
+                        confirmButton: 'btn-ieesspp' // Clase personalizada
+                    },
+                    buttonsStyling: false // Permite que la clase personalizada sobrescriba estilos de SweetAlert
                 }).then((result) => {
-                       if (result.isConfirmed) {
-                            window.location.reload();     
-                        }    
+                    if (result.isConfirmed) {
+                        window.location.reload();     
+                    }    
                 });                
-            });   
+            });
 
             Livewire.on('alumno-updated',function($message){                
                 Swal.fire({
@@ -135,7 +142,10 @@
                     confirmButtonText: 'Ok',
                      allowOutsideClick: false, // Deshabilita clics fuera del modal
                     allowEscapeKey: false,   // Deshabilita la tecla Escape
-                    allowEnterKey: false     // Deshabilita la tecla Enter
+                    allowEnterKey: false,     // Deshabilita la tecla Enter
+                    customClass: {
+                        confirmButton: 'btn-ieesspp' // Clase personalizada
+                    },
                 }).then((result) => {
                        if (result.isConfirmed) {
                             window.location.reload();     

@@ -23,11 +23,13 @@
                 
                 <!-- Tomar foto con cámara -->
                 @if (!$imagen)
-                    <div class="col-md-12 mt-3" id="camara">
+                    <div class="col-md-12 d-flex justify-content-center mt-3" id="camara">
                         <video id="video" width="300" height="200" autoplay></video>
                         <canvas id="canvas" class="d-none"></canvas>
+                    </div>
+                    <div class="col-md-12 d-flex justify-content-center mt-3" id="camara">
                         <div class="mt-2">
-                            <button type="button" class="btn btn-primary" onclick="capturar()">Tomar foto</button>
+                            <button type="button" class="btn" style="background-color:#171C63; border-color:#171C63; color:#fff;" onclick="capturar()">Tomar foto</button>
                         </div>
                     </div>
                 @endif
@@ -42,7 +44,7 @@
                             @if($preview)
                                 <hr>
                                 <div class="col">
-                                    <p class="fw-ligth text-center">Imagen que se subirá</p>
+                                    <p class="text-center">Imagen que se subirá</p>
                                 </div>
                                 <div class="col d-flex justify-content-center">
                                     <img src="{{ $preview }}"  class="img-thumbnail" width="300" alt="Preview final">
@@ -168,7 +170,7 @@
 
                 <!-- Botón Guardar -->
                 <div class="col-12 d-flex justify-content-end mt-4">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary" style="background-color:#171C63; border-color:#171C63; color:#fff;">
                         <i class="fas fa-save me-1"></i> Guardar
                     </button>
                 </div>
@@ -216,3 +218,4 @@ function capturar() {
 // Iniciar cámara al cargar la página/modal
 iniciarCamara();
 </script>
+

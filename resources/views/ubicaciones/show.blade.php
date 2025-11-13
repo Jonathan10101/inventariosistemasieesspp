@@ -91,23 +91,59 @@
 
 @section('css')
 <style>
-    body {
-        background-color: #f4f6fa !important;
-        font-family: 'Inter', 'Segoe UI', sans-serif !important;
+    /* General */
+    body { background-color: #f7f9fc; }
+
+    .table th {
+        vertical-align: middle;
+        font-weight: 600;
+        background-color: #171C63;
+        color: white;
     }
-    .card {
-        border-radius: 4px !important;
+
+    .table-hover tbody tr:hover {
+        background-color: #e9edff;
     }
+
     .btn {
-        border-radius: 4px !important;
-        transition: all 0.2s ease-in-out;
+        border-radius: 6px;
+        font-weight: 500;
     }
-    .btn:hover {
-        opacity: 0.9;
-        transform: translateY(-1px);
+
+    .btn-warning {
+        background-color: #f4b400;
+        border: none;
     }
-    table {
-        border-radius: 4px;
+
+    .btn-warning:hover {
+        background-color: #e0a800;
+    }
+
+    .btn-dark {
+        background-color: #2c2f4c;
+        border: none;
+    }
+
+    .btn-dark:hover {
+        background-color: #171C63;
+    }
+
+    .page-link {
+        color: #171C63;
+    }
+
+    .page-item.active .page-link {
+        background-color: #171C63;
+        border-color: #171C63;
+    }
+
+    .modal-content {
+        border-radius: 12px;
+    }
+
+    .form-control:focus {
+        border-color: #171C63;
+        box-shadow: 0 0 0 0.2rem rgba(23, 28, 99, 0.25);
     }
 </style>
 @stop

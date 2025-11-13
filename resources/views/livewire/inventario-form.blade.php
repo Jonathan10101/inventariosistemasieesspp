@@ -1,4 +1,4 @@
-<div class="container mt-0">
+<div class="container mt-4">
 
     <!-- SweetAlert2 -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.css" rel="stylesheet">
@@ -53,9 +53,9 @@
     <!-- Buscador -->
     <div class="row mb-4">
         <div class="col-md-12">
-            <label class="form-label fw-semibold text-dark">Da clic en el Buscador, escanea o escribe el No. de inventario y luego presiona “Buscar”</label>
+            <label class="form-label fw-semibold text-dark">Da clic en el Buscador, escanea o escribe el No. de Inventario y luego presiona “Buscar”</label>
             <div class="input-group shadow-sm">
-                <input type="text" id="searchid" placeholder="Buscar inventario..." 
+                <input type="text" id="searchid" placeholder="Buscador ..." 
                        wire:keydown.enter="searchResguardos" wire:model="search" class="form-control border-end-0">
                 <button class="btn btn-primary" style="background-color:#171C63; border:none;" wire:click="searchResguardos">
                     <i class="fas fa-search"></i> Buscar
@@ -95,10 +95,10 @@
                                 <td>{{ $resguardo->id }}</td>
                                 <td>
                                     @if($resguardo->imagen)
-                                    <a href="{{ asset('storage/' . $resguardo->imagen) }}" target="_blank">
-                                        <img src="{{ asset('storage/' . $resguardo->imagen) }}" 
-                                             alt="Imagen del producto" class="img-thumbnail border" width="90">
-                                    </a>
+                                        <a href="{{ asset('storage/' . $resguardo->imagen) }}" target="_blank">
+                                            <img src="{{ asset('storage/' . $resguardo->imagen) }}" 
+                                                alt="Imagen del producto" class="img-thumbnail border zoom-image" width="90">
+                                        </a>
                                     @else
                                         <span class="text-muted">Sin imagen</span>
                                     @endif
@@ -133,22 +133,35 @@
                                         {{ strtoupper(optional($resguardo->historial->last()->resguardante)->apellido2) }}
                                     </a>
                                 </td>
-                                <td class="text-nowrap">
-                                    <button wire:click="cambiarAccion('editar',{{ $resguardo->id }})" class="btn btn-warning btn-sm text-white mb-1">
-                                        <i class="fas fa-edit"></i> 
-                                    </button>
-                                    <button wire:click="cambiarAccion('showHistorialResguardo',{{ $resguardo->id }})" class="btn btn-dark btn-sm mb-1">
-                                        <i class="fas fa-eye"></i> 
-                                    </button>
-                                    @can('inventario.create')   
-                                    <button wire:click="cambiarAccion('addNewResguardo',{{ $resguardo->id }})" class="btn btn-primary btn-sm mb-1" style="background-color:#171C63; border:none;">
-                                        <i class="fas fa-plus"></i> 
-                                    </button>  
-                                    <button wire:click="downloadEtiqueta({{ $resguardo->id }})" class="btn btn-success btn-sm mb-1">
-                                        <i class="fas fa-download"></i>
-                                    </button>
-                                    @endcan
-                                </td>
+                      <td class="text-nowrap">
+                        <button wire:click="cambiarAccion('editar',{{ $resguardo->id }})" 
+                                class="btn btn-warning btn-sm text-white mb-1" 
+                                title="Editar Resguardo">
+                            <i class="fas fa-edit"></i>
+                        </button>
+
+                        <button wire:click="cambiarAccion('showHistorialResguardo',{{ $resguardo->id }})" 
+                                class="btn btn-dark btn-sm mb-1" 
+                                title="Ver Historial del Resguardo">
+                            <i class="fas fa-eye"></i>
+                        </button>
+
+                        @can('inventario.create')   
+                            <button wire:click="cambiarAccion('addNewResguardo',{{ $resguardo->id }})" 
+                                    class="btn btn-primary btn-sm mb-1" 
+                                    style="background-color:#171C63; border:none;" 
+                                    title="Añadir Nuevo Resguardo">
+                                <i class="fas fa-plus"></i>
+                            </button>  
+
+                            <button wire:click="downloadEtiqueta({{ $resguardo->id }})" 
+                                    class="btn btn-success btn-sm mb-1" 
+                                    title="Descargar Etiqueta">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        @endcan
+                    </td>
+
                             </tr>
                         @empty
                             <tr><td colspan="13" class="text-center text-muted py-3">No se encontró inventario.</td></tr>
@@ -164,87 +177,58 @@
         {{ $resguardos->links() }}
     </div>
 
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('css/ieessppformtable.css') }}">
 @push('js')
 @livewireScripts
-<script>
-document.addEventListener('livewire:initialized', function() {
-    Livewire.on('refresh-page', function() {
-        const url = new URL(window.location.href);
-        url.searchParams.delete('search');
-        window.history.replaceState({}, document.title, url.pathname);
-        location.reload();
-    });
-    Livewire.on('alumno-created', function() {
-        Swal.fire({
-            title: '¡Éxito!',
-            text: '!Resguardo registrado con éxito!',
-            icon: 'success',
-            confirmButtonText: 'Ok',
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            allowEnterKey: false
-        }).then(result => {
-            if (result.isConfirmed) window.location.reload();
+    <script>
+        document.addEventListener('livewire:initialized',function(){    
+            Livewire.on('refresh-page',function($message){                
+                //window.location.reload();
+                location.reload(); // Recarga la página completa
+                //alert("x");
+            }); 
+
+            Livewire.on('alumno-created', function($message){                
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: '!Resguardo registrado con éxito!',
+                    icon: 'success',
+                    confirmButtonText: 'Ok',
+                    allowOutsideClick: false, // Deshabilita clics fuera del modal
+                    allowEscapeKey: false,    // Deshabilita Escape
+                    allowEnterKey: false,     // Deshabilita Enter
+                    customClass: {
+                        confirmButton: 'btn-ieesspp' // Clase personalizada
+                    },
+                    buttonsStyling: false // Permite que la clase personalizada sobrescriba estilos de SweetAlert
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.reload();     
+                    }    
+                });                
+            });
+
+            Livewire.on('alumno-updated',function($message){                
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: '!Marca actualizada con éxito!',
+                    icon: 'success',
+                    confirmButtonText: 'Ok',
+                     allowOutsideClick: false, // Deshabilita clics fuera del modal
+                    allowEscapeKey: false,   // Deshabilita la tecla Escape
+                    allowEnterKey: false,     // Deshabilita la tecla Enter
+                    customClass: {
+                        confirmButton: 'btn-ieesspp' // Clase personalizada
+                    },
+                }).then((result) => {
+                       if (result.isConfirmed) {
+                            window.location.reload();     
+                        }    
+                });                   
+            }); 
         });
-    });
-});
-</script>
+    </script>
 @endpush
-
-<style>
-    /* General */
-    body { background-color: #f7f9fc; }
-
-    .table th {
-        vertical-align: middle;
-        font-weight: 600;
-        background-color: #171C63;
-        color: white;
-    }
-
-    .table-hover tbody tr:hover {
-        background-color: #e9edff;
-    }
-
-    .btn {
-        border-radius: 6px;
-        font-weight: 500;
-    }
-
-    .btn-warning {
-        background-color: #f4b400;
-        border: none;
-    }
-
-    .btn-warning:hover {
-        background-color: #e0a800;
-    }
-
-    .btn-dark {
-        background-color: #2c2f4c;
-        border: none;
-    }
-
-    .btn-dark:hover {
-        background-color: #171C63;
-    }
-
-    .page-link {
-        color: #171C63;
-    }
-
-    .page-item.active .page-link {
-        background-color: #171C63;
-        border-color: #171C63;
-    }
-
-    .modal-content {
-        border-radius: 12px;
-    }
-
-    .form-control:focus {
-        border-color: #171C63;
-        box-shadow: 0 0 0 0.2rem rgba(23, 28, 99, 0.25);
-    }
-</style>
 </div>

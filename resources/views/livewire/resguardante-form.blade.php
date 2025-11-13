@@ -3,27 +3,25 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>
 
-    <!-- Add nueva Marca  -->
-    <div class="row">
+    <!-- Add nuevo Resguardante  -->
+    <div class="row mb-3">
         <div class="col d-flex justify-content-end">   
             @can('resguardante.create')               
-            <button wire:click="showModalNewResguardo" class="btn btn-primary mb-3 fa">                        
-                <i class="fas fa-plus"></i>
-                Agregar resguardante          
+            <button wire:click="showModalNewResguardante" class="btn btn-primary shadow-sm" style="background-color:#171C63; border:none;">                        
+                <i class="fas fa-plus me-1"></i> Agregar resguardante            
             </button>  
             @endcan          
         </div>
     </div>
 
+
     <!--ESTE COMPONENTE TIENE LA LOGICA PARA MOSTRAL MODAL DE VENTANA EMERGENTE-->
     <div class="modal fade @if($showModal) show @endif" style="display: @if($showModal) block @else none @endif; background-color: rgba(0,0,0,0.5);" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header">                    
-                    <h5 class="modal-title w-100" id="studentModalLabel">  
-                        {{$tituloModalPrincipal}}                                                 
-                    </h5>
-                    <button type="button" class="btn-close" wire:click="closeModal"></button>                    
+                <div class="modal-header text-white" style="background-color:#171C63;">
+                    <h5 class="modal-title w-100 fw-bold" id="studentModalLabel">{{$tituloModalPrincipal}}</h5>
+                    <button type="button" class="btn-close btn-close-white" wire:click="closeModal"></button>                    
                 </div>
   
                 @switch($accionPrincipal)        
@@ -44,20 +42,22 @@
             </div>
         </div>
     </div>
+    
 
     <!-- Buscador -->
-    <div class="row mb-3">
-        <div class="col-md-6">            
-            <div class="input-group">
-                <label for="searchid">Da clic en el Buscador y escribe el nombre del Resguardante y luego presiona “Buscar”</label>
-                <input type="text" id="searchid" placeholder="Buscador" wire:keydown.enter="searchResguardantes" wire:model="search" oninput="this.value = this.value.toUpperCase()" class="form-control" />
-                <button class="btn btn-primary" wire:click="searchResguardantes">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <label class="form-label fw-semibold text-dark">Da clic en el Buscador y escribe el nombre del Resguardante y luego presiona “Buscar”</label>
+            <div class="input-group shadow-sm">
+                <input type="text" id="searchid" placeholder="Buscador ..." 
+                       wire:keydown.enter="searchResguardantes" wire:model="search" class="form-control border-end-0">
+                <button class="btn btn-primary" style="background-color:#171C63; border:none;" wire:click="searchResguardantes">
                     <i class="fas fa-search"></i> Buscar
                 </button>
                 @if($search)
-                    <button class="btn btn-secondary" wire:click="clearSearch" style="border-left: none;">
-                        <i class="fas fa-times"></i> <!-- Icono de borrar -->
-                    </button>
+                <button class="btn btn-outline-secondary" wire:click="clearSearch">
+                    <i class="fas fa-times"></i>
+                </button>
                 @endif
             </div>
         </div>
@@ -80,13 +80,13 @@
                     <td>{{$resguardante->id}}</td>
                     <td>{{$resguardante->nombre1}} {{$resguardante->nombre2}} {{$resguardante->apellido1}} {{$resguardante->apellido2}}</td>
                     <td class="d-flex justify-content-center">
-                        <a href="{{ route('resguardante.show', $resguardante->id)}}" class="btn btn-dark btn-sm">
-                            <i class="fas fa-eye"></i> VER
+                        <a href="{{ route('resguardante.show', $resguardante->id)}}" class="btn btn-dark btn-sm" title="Ver">
+                            <i class="fas fa-eye"></i>
                         </a>
                     </td>
                     <td>
-                        <button class="btn btn-warning btn-sm" wire:click="cambiarAccion('editar',{{$resguardante->id }})">
-                            <i class="fas fa-edit"></i> EDITAR
+                        <button class="btn btn-warning btn-sm" wire:click="cambiarAccion('editar',{{$resguardante->id }})" title="Editar">
+                            <i class="fas fa-edit"></i>
                         </button>
                     </td>
                 </tr>
@@ -106,7 +106,8 @@
     </div>
 
 
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('css/ieessppformtable.css') }}">
 @push('js')
 @livewireScripts
     <script>

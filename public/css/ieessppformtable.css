@@ -1,0 +1,91 @@
+/* 🎨 Estilos globales IEESSPP */
+
+/* General */
+body {
+    background-color: #f7f9fc;
+}
+
+/* Botón institucional */
+.btn-ieesspp {
+    background-color: #171C63;
+    color: #fff;
+    border: none;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.375rem;
+    font-weight: 500;
+}
+
+.btn-ieesspp:hover {
+    background-color: #0f144d;
+    color: #fff;
+}
+
+/* Tablas */
+.table th {
+    vertical-align: middle;
+    font-weight: 600;
+    background-color: #171C63;
+    color: white;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #e9edff;
+}
+
+/* Botones base */
+.btn {
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+/* Botones secundarios */
+.btn-warning {
+    background-color: #f4b400;
+    border: none;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+}
+
+.btn-dark {
+    background-color: #2c2f4c;
+    border: none;
+}
+
+.btn-dark:hover {
+    background-color: #171C63;
+}
+
+/* Paginación */
+.page-link {
+    color: #171C63;
+}
+
+.page-item.active .page-link {
+    background-color: #171C63;
+    border-color: #171C63;
+}
+
+/* Modales */
+.modal-content {
+    border-radius: 12px;
+}
+
+/* Formularios */
+.form-control:focus {
+    border-color: #171C63;
+    box-shadow: 0 0 0 0.2rem rgba(23, 28, 99, 0.25);
+}
+
+/* Imágenes con zoom */
+.zoom-image {
+    transition: transform 0.3s ease;
+}
+
+.zoom-image:hover {
+    transform: scale(2.8);
+    cursor: pointer;
+}

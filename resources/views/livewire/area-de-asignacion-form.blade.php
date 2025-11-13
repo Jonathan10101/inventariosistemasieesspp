@@ -19,11 +19,9 @@
     <div class="modal fade @if($showModal) show @endif" style="display: @if($showModal) block @else none @endif; background-color: rgba(0,0,0,0.5);" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header">                    
-                    <h5 class="modal-title w-100" id="studentModalLabel">  
-                        {{$tituloModalPrincipal}}                                                 
-                    </h5>
-                    <button type="button" class="btn-close" wire:click="closeModal"></button>                    
+                <div class="modal-header text-white" style="background-color:#171C63;">
+                    <h5 class="modal-title w-100 fw-bold" id="studentModalLabel">{{$tituloModalPrincipal}}</h5>
+                    <button type="button" class="btn-close btn-close-white" wire:click="closeModal"></button>                    
                 </div>
   
                 @switch($accionPrincipal)        
@@ -79,8 +77,8 @@
                     <td>{{$areadeasignacion->id}}</td>
                     <td>{{$areadeasignacion->nombre}}</td>
                     <td>
-                        <button class="btn btn-warning btn-sm" wire:click="cambiarAccion('editar',{{ $areadeasignacion->id }})">
-                            <i class="fas fa-edit"></i> EDITAR
+                        <button class="btn btn-warning btn-sm" wire:click="cambiarAccion('editar',{{ $areadeasignacion->id }})" title="Editar">
+                            <i class="fas fa-edit"></i>
                         </button>
                     </td>
                 </tr>
@@ -100,7 +98,7 @@
     </div>
 
 
-
+<link rel="stylesheet" href="{{ asset('css/ieessppformtable.css') }}">
 @push('js')
 @livewireScripts
     <script>

@@ -16,7 +16,7 @@
                     {{$historial->resguardante->nombre1}} {{$historial->resguardante->nombre2}} 
                     {{$historial->resguardante->apellido1}} {{$historial->resguardante->apellido2}}
                 </p>
-                <a href="{{ Storage::url($historial->resguardo_pdf) }}" class="btn btn-primary mb-4" target="_blank">
+                <a href="{{ Storage::url($historial->resguardo_pdf) }}" class="btn btn-primary mb-4" style="background-color:#171C63; border-color:#171C63; color:#fff;" target="_blank">
                     <i class="fas fa-download"></i> Descargar Resguardo
                 </a>
             @empty

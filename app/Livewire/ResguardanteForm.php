@@ -36,7 +36,7 @@ class ResguardanteForm extends Component
         // No es necesario hacer nada más, ya que Livewire maneja automáticamente el filtrado con `wire:model="search"`
     }
 
-    public function showModalNewResguardo(){
+    public function showModalNewResguardante(){
         $this->showModal = true;// Abre el modal
     }
 
