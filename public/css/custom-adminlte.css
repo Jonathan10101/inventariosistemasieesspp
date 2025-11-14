@@ -74,10 +74,12 @@
 }
 
 /* Asegura que el contenido quede encima */
+/*
 .sidebar-ieesspp * {
     position: relative;
     z-index: 1;
 }
+*/
 
 
 .brand-text{
@@ -96,3 +98,6 @@
     top: 50%;
     transform: translateY(-50%);
 }
+
+
+

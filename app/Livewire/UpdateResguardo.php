@@ -100,7 +100,6 @@ class UpdateResguardo extends Component
    
     public function save()
     {
-        /*
         $this->validate([
             'descripcion' => 'required',
             'marca_id' => 'required',
@@ -108,8 +107,6 @@ class UpdateResguardo extends Component
             'area_de_uso_id' => 'required',
             'ubicacion_fisicas_id' => 'required'
         ]);
-        */
-
 
         $data = [
             'descripcion' => $this->descripcion,

@@ -146,6 +146,7 @@
                     customClass: {
                         confirmButton: 'btn-ieesspp' // Clase personalizada
                     },
+                    buttonsStyling: false // Permite que la clase personalizada sobrescriba estilos de SweetAlert
                 }).then((result) => {
                        if (result.isConfirmed) {
                             window.location.reload();     

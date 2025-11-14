@@ -119,6 +119,8 @@ class CreateNewResguardo extends Component
         $imagenEvidencia = $pathImagen;
         $pathPdf = $this->resguardo_pdf ? $this->resguardo_pdf->store('resguardos/pdf', 'public') : null;
 
+        
+
         /* === Crear Resguardo === */
         $resguardo = Resguardo::create([
             'descripcion' => $this->descripcion,

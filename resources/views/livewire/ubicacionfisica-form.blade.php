@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col d-flex justify-content-end">   
             @can('ubicacionfisica.create')               
-            <button wire:click="showModalNewUbicacionFisica" class="btn btn-primary mb-3 fa">                        
+            <button wire:click="showModalNewUbicacionFisica" class="btn btn-primary mb-3 fa" style="background-color:#171C63; border:none;">                        
                 <i class="fas fa-plus"></i>
                 Agregar ubicación fisica            
             </button>  
@@ -44,19 +44,21 @@
     </div>
 
 
+
     <!-- Buscador -->
-    <div class="row mb-3">
-        <div class="col-md-6">            
-            <div class="input-group">
-                <label for="searchid">Da clic en el Buscador, escanea o escribe el nombre de la Ubicación Física y luego presiona “Buscar”</label>
-                <input type="text" id="searchid" placeholder="Buscador" wire:keydown.enter="searchUbicacionesFisicas" wire:model="search" oninput="this.value = this.value.toUpperCase()" class="form-control" />
-                <button class="btn btn-primary" wire:click="searchUbicacionesFisicas">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <label class="form-label fw-semibold text-dark">Da clic en el Buscador y escribe el nombre de la ubicación física y luego presiona “Buscar”</label>
+            <div class="input-group shadow-sm">
+                <input type="text" id="searchid" placeholder="Buscador ..." 
+                       wire:keydown.enter="searchUbicacionesFisicas" wire:model="search" class="form-control border-end-0">
+                <button class="btn btn-primary" style="background-color:#171C63; border:none;" wire:click="searchUbicacionesFisicas">
                     <i class="fas fa-search"></i> Buscar
                 </button>
                 @if($search)
-                    <button class="btn btn-secondary" wire:click="clearSearch" style="border-left: none;">
-                        <i class="fas fa-times"></i> <!-- Icono de borrar -->
-                    </button>
+                <button class="btn btn-outline-secondary" wire:click="clearSearch">
+                    <i class="fas fa-times"></i>
+                </button>
                 @endif
             </div>
         </div>
@@ -103,7 +105,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="13" class="text-center">No se encontro ubicaciones fisicas.</td>
+                    <td colspan="13" class="text-center">No se encontraron ubicaciones fisicas.</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -137,7 +139,11 @@
                     confirmButtonText: 'Ok',
                     allowOutsideClick: false, // Deshabilita clics fuera del modal
                     allowEscapeKey: false,   // Deshabilita la tecla Escape
-                    allowEnterKey: false     // Deshabilita la tecla Enter
+                    allowEnterKey: false,     // Deshabilita la tecla Enter
+                    customClass: {
+                        confirmButton: 'btn-ieesspp' // Clase personalizada
+                    },
+                    buttonsStyling: false // Permite que la clase personalizada sobrescriba estilos de SweetAlert
                 }).then((result) => {
                        if (result.isConfirmed) {
                             window.location.reload();     
@@ -153,7 +159,11 @@
                     confirmButtonText: 'Ok',
                      allowOutsideClick: false, // Deshabilita clics fuera del modal
                     allowEscapeKey: false,   // Deshabilita la tecla Escape
-                    allowEnterKey: false     // Deshabilita la tecla Enter
+                    allowEnterKey: false,     // Deshabilita la tecla Enter
+                    customClass: {
+                        confirmButton: 'btn-ieesspp' // Clase personalizada
+                    },
+                    buttonsStyling: false // Permite que la clase personalizada sobrescriba estilos de SweetAlert
                 }).then((result) => {
                        if (result.isConfirmed) {
                             window.location.reload();     

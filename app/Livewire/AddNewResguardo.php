@@ -178,8 +178,9 @@ class AddNewResguardo extends Component
             ]);
         }
 
+        HistorialResguardo::registrarAsignacion($resguardo, $this->resguardante_id, $pdfPath,$imagenEvidencia,$this->estado_uso_id,$this->area_de_uso_id,$this->ubicacion_fisicas_id);
 
-
+        /*
         $resguardo->historial()->create([
             'resguardo_id'=> $this->resguardo_id,
             'resguardante_id' => $this->resguardante_id,
@@ -193,7 +194,7 @@ class AddNewResguardo extends Component
             'area_de_uso_id' => $this->area_de_uso_id,
             'ubicacion_fisicas_id' => $this->ubicacion_fisicas_id,
         ]);
-
+        */
 
 
 
@@ -205,6 +206,7 @@ class AddNewResguardo extends Component
 
 
         //$this->dispatch('saveFromComponentNewHistorialResguardo',$data);        
+        $this->dispatch('saveFromComponentAddNewHistorialResguardo');        
         $this->resetForm();
     }
 

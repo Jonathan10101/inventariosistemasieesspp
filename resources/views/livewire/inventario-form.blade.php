@@ -210,10 +210,30 @@
                 });                
             });
 
+            Livewire.on('alumno-created2', function($message){                
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: '!Nuevo resguardo agregado a este inventario con éxito!',
+                    icon: 'success',
+                    confirmButtonText: 'Ok',
+                    allowOutsideClick: false, // Deshabilita clics fuera del modal
+                    allowEscapeKey: false,    // Deshabilita Escape
+                    allowEnterKey: false,     // Deshabilita Enter
+                    customClass: {
+                        confirmButton: 'btn-ieesspp' // Clase personalizada
+                    },
+                    buttonsStyling: false // Permite que la clase personalizada sobrescriba estilos de SweetAlert
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.reload();     
+                    }    
+                });                
+            });
+
             Livewire.on('alumno-updated',function($message){                
                 Swal.fire({
                     title: '¡Éxito!',
-                    text: '!Marca actualizada con éxito!',
+                    text: '!Resguardo actualizado con éxito!',
                     icon: 'success',
                     confirmButtonText: 'Ok',
                      allowOutsideClick: false, // Deshabilita clics fuera del modal
@@ -222,6 +242,7 @@
                     customClass: {
                         confirmButton: 'btn-ieesspp' // Clase personalizada
                     },
+                    buttonsStyling: false // Permite que la clase personalizada sobrescriba estilos de SweetAlert
                 }).then((result) => {
                        if (result.isConfirmed) {
                             window.location.reload();     

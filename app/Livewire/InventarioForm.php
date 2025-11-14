@@ -224,13 +224,20 @@ class InventarioForm extends Component
             'area_de_uso_id' => $data['area_de_uso_id'],
             'ubicacion_fisicas_id' => $data['ubicacion_fisicas_id'],
         ]);
+        $this->dispatch('alumno-updated', 1);
+
+    }
+
+    #[On('saveFromComponentAddNewHistorialResguardo')]
+    public function emitirAddNewResguardoAlert(){
+        $this->dispatch('alumno-created2', 1);
     }
 
     #[On('resguardoCreado')]
     public function emitirNewResguardoAlert(){
-                $this->dispatch('alumno-created', 1);
-
+        $this->dispatch('alumno-created', 1);
     }
+
     #[On('saveFromComponentNewResguardo')] 
     public function saveNewResguardo($data){ 
         

@@ -3,15 +3,17 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>
 
-    <!-- Add nueva Marca  -->
+    <!-- Add nueva Área de asignación  -->
     <div class="row">
-        <div class="col d-flex justify-content-end">   
+        <div class="col d-flex justify-content-end">
+            {{--   
             @can('areadeasignacion.create')               
-            <button wire:click="showModalNewAreaDeAsignacion" class="btn btn-primary mb-3 fa">                        
+            <button wire:click="showModalNewAreaDeAsignacion" class="btn btn-primary mb-3 fa" >                        
                 <i class="fas fa-plus"></i>
                 Agregar Área de Asignación            
             </button>  
-            @endcan          
+            @endcan     
+            --}}     
         </div>
     </div>
 
@@ -43,19 +45,21 @@
         </div>
     </div>
 
+    
     <!-- Buscador -->
-    <div class="row mb-3">
-        <div class="col-md-6">            
-            <div class="input-group">
-                <label for="searchid">Da clic en el Buscador y escribe el nombre de la área de asignación y luego presiona “Buscar”</label>
-                <input type="text" id="searchid" placeholder="Buscador" wire:keydown.enter="searchAreasDeAsignacion" wire:model="search" oninput="this.value = this.value.toUpperCase()" class="form-control" />
-                <button class="btn btn-primary" wire:click="searchAreasDeAsignacion">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <label class="form-label fw-semibold text-dark">Da clic en el Buscador y escribe el nombre de asignación y luego presiona “Buscar”</label>
+            <div class="input-group shadow-sm">
+                <input type="text" id="searchid" placeholder="Buscador ..." 
+                       wire:keydown.enter="searchAreasDeAsignacion" wire:model="search" class="form-control border-end-0">
+                <button class="btn btn-primary" style="background-color:#171C63; border:none;" wire:click="searchUsearchAreasDeAsignacionbicacionesFisicas">
                     <i class="fas fa-search"></i> Buscar
                 </button>
                 @if($search)
-                    <button class="btn btn-secondary" wire:click="clearSearch" style="border-left: none;">
-                        <i class="fas fa-times"></i> <!-- Icono de borrar -->
-                    </button>
+                <button class="btn btn-outline-secondary" wire:click="clearSearch">
+                    <i class="fas fa-times"></i>
+                </button>
                 @endif
             </div>
         </div>
@@ -67,8 +71,9 @@
                 <tr>
                 <th scope="col">ID</th>
                 <th scope="col">ÁREA DE ASIGNACIÓN</th>
+                {{--
                 <th scope="col">ACCIONES</th>
-
+                --}}
                 </tr>
             </thead>
             <tbody>
@@ -76,15 +81,19 @@
                 <tr>
                     <td>{{$areadeasignacion->id}}</td>
                     <td>{{$areadeasignacion->nombre}}</td>
+                    {{--
                     <td>
+                        
                         <button class="btn btn-warning btn-sm" wire:click="cambiarAccion('editar',{{ $areadeasignacion->id }})" title="Editar">
                             <i class="fas fa-edit"></i>
                         </button>
+                        
                     </td>
+                    --}}
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="13" class="text-center">No se encontro áreas de asignación.</td>
+                    <td colspan="13" class="text-center">No se encontraron áreas de asignación.</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -98,6 +107,7 @@
     </div>
 
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('css/ieessppformtable.css') }}">
 @push('js')
 @livewireScripts

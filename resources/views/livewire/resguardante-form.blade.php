@@ -126,7 +126,11 @@
                     confirmButtonText: 'Ok',
                     allowOutsideClick: false, // Deshabilita clics fuera del modal
                     allowEscapeKey: false,   // Deshabilita la tecla Escape
-                    allowEnterKey: false     // Deshabilita la tecla Enter
+                    allowEnterKey: false,     // Deshabilita la tecla Enter
+                    customClass: {
+                        confirmButton: 'btn-ieesspp' // Clase personalizada
+                    },
+                    buttonsStyling: false // Permite que la clase personalizada sobrescriba estilos de SweetAlert
                 }).then((result) => {
                        if (result.isConfirmed) {
                             window.location.reload();     
@@ -142,7 +146,11 @@
                     confirmButtonText: 'Ok',
                      allowOutsideClick: false, // Deshabilita clics fuera del modal
                     allowEscapeKey: false,   // Deshabilita la tecla Escape
-                    allowEnterKey: false     // Deshabilita la tecla Enter
+                    allowEnterKey: false,     // Deshabilita la tecla Enter
+                    customClass: {
+                        confirmButton: 'btn-ieesspp' // Clase personalizada
+                    },
+                    buttonsStyling: false // Permite que la clase personalizada sobrescriba estilos de SweetAlert
                 }).then((result) => {
                        if (result.isConfirmed) {
                             window.location.reload();     
