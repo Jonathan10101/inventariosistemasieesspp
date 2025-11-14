@@ -9,6 +9,8 @@ use Livewire\Attributes\On;
 use App\Models\Resguardo;
 use Illuminate\Support\Carbon;
 use App\Models\HistorialResguardo;
+use Illuminate\Support\Facades\Auth;
+
 
 
 class InventarioForm extends Component
@@ -193,6 +195,7 @@ class InventarioForm extends Component
     }
 
     //Renderiza el componente
+    /*
     public function render()
     {
         $query = Resguardo::query();
@@ -205,6 +208,74 @@ class InventarioForm extends Component
         return view('livewire.inventario-form', [
             'resguardos' => $query->paginate($this->perPage),
         ]);
+    }
+    */
+
+    public function render()
+    {
+        $user = Auth::user();
+        $resguardos = Resguardo::query();
+
+        /* ============================================================
+        🟦 ADMINISTRADOR — ve y busca TODO
+        ============================================================ */
+        if ($user->hasRole('Administrador')) {
+
+            if ($this->search) {
+                $busqueda = ltrim($this->search, '0');
+                $resguardos = Resguardo::where('id', $busqueda);
+            } else {
+                $resguardos = Resguardo::query();
+            }
+
+            $resguardos = $resguardos
+                ->with(['historial', 'marca'])
+                ->paginate(10);
+
+            return view('livewire.inventario-form', compact('resguardos'));
+        }
+
+
+        /* ============================================================
+        🟧 EMPLEADO — solo puede ver/buscar resguardos donde
+        el ÚLTIMO historial diga que él es el resguardante
+        ============================================================ */
+        if ($user->hasRole('Empleado')) {
+
+            $resguardos = Resguardo::where(function ($q) use ($user) {
+
+                $q->where(
+                    'id',
+                    function ($sub) use ($user) {
+                        $sub->select('resguardo_id')
+                            ->from('historial_resguardos')
+                            ->whereColumn('resguardo_id', 'resguardos.id')
+                            ->where('resguardante_id', $user->id)
+                            ->orderByDesc('id') // último historial
+                            ->limit(1);
+                    }
+                );
+
+            });
+
+            /* 🔍 BUSCADOR RESTRINGIDO (Empleado solo busca sus propios resguardos) */
+            if ($this->search) {
+                $busqueda = ltrim($this->search, '0');
+
+                $resguardos->where('id', $busqueda);
+            }
+
+            $resguardos = $resguardos->with([
+                    'historial.resguardante',
+                    'historial.estadouso',
+                    'historial.areaDeUso',
+                    'historial.ubicacionFisica',
+                    'marca'
+                ])
+                ->paginate(10);
+
+            return view('livewire.inventario-form', compact('resguardos'));
+        }
     }
 
     #[On('updateUbicacionFromComponentResguardo')]

@@ -13,10 +13,11 @@ class ResguardanteSeeder extends Seeder
     public function run(): void
     {
         DB::table('resguardantes')->insert([
+            ['nombre1' => 'JONATHAN','nombre2' => '','apellido1'=>"BEDOLLA",'apellido2'=>'HURTADO'],
+            ['nombre1' => 'ALICIA','nombre2' => '','apellido1'=>"MALDONADO",'apellido2'=>'FLORES'],
             ['nombre1' => 'YUVITZY','nombre2' => '','apellido1'=>"REBOLLAR",'apellido2'=>'RIVERA'],
             ['nombre1' => 'BLANCA','nombre2' => 'ESTHELA','apellido1'=>"PADILLA",'apellido2'=>'GARCIA'],
             ['nombre1' => 'ANGELICA','nombre2' => '','apellido1'=>"HERRERA",'apellido2'=>'ZAVALA'],
-            ['nombre1' => 'ALICIA','nombre2' => '','apellido1'=>"MALDONADO",'apellido2'=>'FLORES'],
             ['nombre1' => 'ANTONIA','nombre2' => '','apellido1'=>"DELGADO",'apellido2'=>'HERNANDEZ'],
             ['nombre1' => 'BEATRIZ','nombre2' => '','apellido1'=>"CERVANTES",'apellido2'=>'VELAZQUEZ'],
             ['nombre1' => 'BRYAN','nombre2' => 'ALEXIS','apellido1'=>"AYALA",'apellido2'=>'AMBRIZ'],
@@ -38,7 +39,6 @@ class ResguardanteSeeder extends Seeder
             ['nombre1' => 'HECTOR','nombre2' => '','apellido1'=>"PEREZ",'apellido2'=>'GARCIA'],
             ['nombre1' => 'ILIANA','nombre2' => 'MARISOL','apellido1'=>"PEREZ",'apellido2'=>'CARRILLO'],
             ['nombre1' => 'J.','nombre2' => 'SILVESTRE','apellido1'=>"DOMINGUEZ",'apellido2'=>'CADENAS'],
-            ['nombre1' => 'JONATHAN','nombre2' => '','apellido1'=>"BEDOLLA",'apellido2'=>'HURTADO'],
             ['nombre1' => 'JOVANNA','nombre2' => 'JANET','apellido1'=>"LOPEZ",'apellido2'=>'MENERA'],
             ['nombre1' => 'JUAN','nombre2' => 'DANIEL','apellido1'=>"GONZALEZ",'apellido2'=>'RODRIGUEZ'],
             ['nombre1' => 'JUAN','nombre2' => 'RICARDO','apellido1'=>"ZAVALA",'apellido2'=>'ALVAREZ'],
