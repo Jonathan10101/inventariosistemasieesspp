@@ -12,13 +12,25 @@
                 <p><span class="text-bold">Estado de uso:</span> {{$historial->estadouso->estado}}</p>
                 <p><span class="text-bold">Ubicación fisica:</span> {{$historial->ubicacionFisica->descripcion}}</p>
                 <p><span class="text-bold">Fecha de asignación:</span> {{$historial->fecha_asignacion}}</p>
+                <p><span class="text-bold">Fecha de liberación:</span> {{ $historial->fecha_liberacion ?? 'N/A' }}</p>
                 <p><span class="text-bold">Resguardante:</span> 
                     {{$historial->resguardante->nombre1}} {{$historial->resguardante->nombre2}} 
                     {{$historial->resguardante->apellido1}} {{$historial->resguardante->apellido2}}
                 </p>
-                <a href="{{ Storage::url($historial->resguardo_pdf) }}" class="btn btn-primary mb-4" style="background-color:#171C63; border-color:#171C63; color:#fff;" target="_blank">
+               
+            @php
+                $user = Auth::user();
+            @endphp
+
+            @if ($user->hasRole('Administrador') || $user->id == $historial->resguardante_id)
+                <a href="{{ Storage::url($historial->resguardo_pdf) }}" 
+                class="btn btn-primary mb-4"
+                style="background-color:#171C63; border-color:#171C63; color:#fff;" 
+                target="_blank">
                     <i class="fas fa-download"></i> Descargar Resguardo
                 </a>
+            @endif
+
             @empty
                 <div class="text-center">No se encontró historial.</div>
             @endforelse

@@ -101,6 +101,10 @@
                         <button wire:click="downloadEtiqueta({{ $ubicacion->id }})" class="btn btn-success btn-sm mt-1 mb-1" title="Descargar etiqueta">            
                             <i class="fas fa-download"></i>
                         </button>
+                   
+                        <a href="{{ route('ubicacionfisica.show', $ubicacion->id) }}"  class="btn btn-dark btn-sm mb-1" title="Ver el Inventario que esta en esta ubicación">
+                            <i class="fas fa-eye"></i>
+                        </a>
                     </td>
                 </tr>
                 @empty

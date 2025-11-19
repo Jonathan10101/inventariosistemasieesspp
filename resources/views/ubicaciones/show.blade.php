@@ -3,16 +3,16 @@
 @section('title', 'Resguardos por ubicación')
 
 @section('content_header')
-<div class="mb-3 border-bottom pb-2">
+<div class="mb-3 border-bottom pb-2 m-3 mt-0">
     <h1 class="fw-semibold text-dark text-uppercase mb-1" style="color:#171C63 !important;">
         Resguardos en {{ $ubicacionFisica->descripcion }}
     </h1>
-    <p class="text-secondary mb-0 fs-6">Historial de equipos asignados a esta ubicación</p>
+    <p class="text-secondary mb-0 fs-6">Equipos asignados a esta ubicación</p>
 </div>
 @stop
 
 @section('content')
-<div class="card border-0 shadow-sm">
+<div class="card border-0 shadow-sm m-3 mt-0">
     <div class="card-body">
         <div class="text-center mb-4">
             @if($ubicacionFisica->imagen)
@@ -50,8 +50,7 @@
                                     <a href="{{ asset('storage/' . $historial->imagen_evidencia) }}" target="_blank">
                                         <img src="{{ asset('storage/' . $historial->imagen_evidencia) }}" 
                                              alt="Evidencia"
-                                             class="rounded-1 border"
-                                             width="70">
+                                             class="img-thumbnail border zoom-image" width="90">
                                     </a>
                                 @else
                                     <span class="text-muted fst-italic">Sin imagen</span>
@@ -90,6 +89,7 @@
 @stop
 
 @section('css')
+<link rel="stylesheet" href="{{ asset('css/ieessppformtable.css') }}">
 <style>
     /* General */
     body { background-color: #f7f9fc; }

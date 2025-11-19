@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 class ResguardanteController extends Controller
 {
+    public $perPage = 5;
+
     public function index()
     {
         return view('resguardante/index');
@@ -63,11 +65,10 @@ class ResguardanteController extends Controller
 
         // Obtener solo los historiales activos (sin fecha_liberacion)
         $historiales = $resguardante
-            ? $resguardante->historialResguardos()->whereNull('fecha_liberacion')->get()
+            ? $resguardante->historialResguardos()
+                ->whereNull('fecha_liberacion')
+                ->paginate($this->perPage)
             : collect();
-
-
-
 
         $resguardante = Resguardante::find($id);
         return view("resguardante.show", [

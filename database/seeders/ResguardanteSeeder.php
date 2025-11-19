@@ -13,6 +13,7 @@ class ResguardanteSeeder extends Seeder
     public function run(): void
     {
         DB::table('resguardantes')->insert([
+            ['nombre1' => 'ADMINISTRADOR','nombre2' => '','apellido1'=>"",'apellido2'=>''],
             ['nombre1' => 'JONATHAN','nombre2' => '','apellido1'=>"BEDOLLA",'apellido2'=>'HURTADO'],
             ['nombre1' => 'ALICIA','nombre2' => '','apellido1'=>"MALDONADO",'apellido2'=>'FLORES'],
             ['nombre1' => 'YUVITZY','nombre2' => '','apellido1'=>"REBOLLAR",'apellido2'=>'RIVERA'],
