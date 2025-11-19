@@ -119,12 +119,17 @@
                                             Ver imagen
                                         </a>
                                     @else
+                                        @can('ubicacionfisica.create')               
                                         <a href="{{ route('ubicacionfisica.show', $resguardo->historial->last()->ubicacionFisica->id) }}" class="fw-semibold text-decoration-none" style="color:#171C63;">
                                             {{ optional($resguardo->historial->last()->ubicacionFisica)->descripcion }}
                                         </a>
+                                        @else
+                                        <p>{{ optional($resguardo->historial->last()->ubicacionFisica)->descripcion }}</p>
+                                        @endcan
                                     @endif
                                 </td>
                                 <td>
+                                    @can('resguardante.create')               
                                     <a href="{{ route('resguardante.show', $resguardo->historial->last()->resguardante->id) }}" 
                                        class="fw-semibold text-decoration-none" style="color:#171C63;">
                                         {{ strtoupper(optional($resguardo->historial->last()->resguardante)->nombre1) }}
@@ -132,6 +137,12 @@
                                         {{ strtoupper(optional($resguardo->historial->last()->resguardante)->apellido1) }}
                                         {{ strtoupper(optional($resguardo->historial->last()->resguardante)->apellido2) }}
                                     </a>
+                                    @else
+                                        <p> {{ strtoupper(optional($resguardo->historial->last()->resguardante)->nombre1) }}
+                                        {{ strtoupper(optional($resguardo->historial->last()->resguardante)->nombre2) }}
+                                        {{ strtoupper(optional($resguardo->historial->last()->resguardante)->apellido1) }}
+                                        {{ strtoupper(optional($resguardo->historial->last()->resguardante)->apellido2) }}</p>
+                                    @endcan
                                 </td>
                       <td class="text-nowrap">
                         <button wire:click="cambiarAccion('editar',{{ $resguardo->id }})" 

@@ -13,6 +13,7 @@ use App\Http\Controllers\EtiquetaController;
 use App\Http\Controllers\Etiqueta2Controller;
 use App\Http\Controllers\DashboardController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes

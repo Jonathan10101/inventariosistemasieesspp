@@ -77,9 +77,9 @@ class User extends Authenticatable
     }
 
     public function adminlte_desc()
-{
-    return 'Administrador del sistema';
-}
+    {
+        return 'Administrador del sistema';
+    }
 
 
 }
