@@ -42,7 +42,37 @@
                         oninput="this.value = this.value.toUpperCase().replace(/^\s+/, '')">
                     @error('apellido2') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
-               
+
+                <div class="col-md-12">
+                    <label for="emaillabel" class="form-label">Email</label>
+                    <div class="input-group">
+                        <input type="text"
+                            id="emaillabel"
+                            wire:model.defer="email"
+                            class="form-control"
+                            oninput="this.value = this.value.toLowerCase().replace(/\s/g, '')">
+                        <span class="input-group-text">@ieesspp.com</span>
+                    </div>
+                    @error('email') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
+
+                <div class="col-md-12">
+                    <label for="passwordlabel" class="form-label">Password</label>
+
+                    <div class="input-group">
+                        <input type="password"
+                            id="passwordlabel"
+                            wire:model.defer="password"
+                            class="form-control">
+
+                        <span class="input-group-text" style="cursor:pointer;" onclick="togglePassword()">
+                            👁️‍🗨️
+                        </span>
+                    </div>
+
+                    @error('password') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
+
                 <div class="col-md-12 d-flex justify-content-end">
                     @error('nombreCompleto') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
@@ -57,3 +87,10 @@
         </form>
     </div>
 </div>
+
+<script>
+function togglePassword() {
+    let input = document.getElementById('passwordlabel');
+    input.type = input.type === 'password' ? 'text' : 'password';
+}
+</script>

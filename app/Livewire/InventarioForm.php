@@ -251,6 +251,7 @@ class InventarioForm extends Component
                             ->from('historial_resguardos')
                             ->whereColumn('resguardo_id', 'resguardos.id')
                             ->where('resguardante_id', $user->id)
+                            ->where('fecha_liberacion', null)//Comentar esto para quitarlo
                             ->orderByDesc('id') // último historial
                             ->limit(1);
                     }

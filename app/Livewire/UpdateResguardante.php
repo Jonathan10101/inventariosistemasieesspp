@@ -4,24 +4,35 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Resguardante;
+use App\Models\User;
 use Livewire\Attributes\On;
 
 class UpdateResguardante extends Component
 {
-    public $nombre1,$nombre2,$apellido1,$apellido2,$resguardanteBusqueda,$id_resguardante;
+    public $nombre1,$nombre2,$apellido1,$apellido2,$resguardanteBusqueda,$id_resguardante,$email,$password;
+    public $emailOriginal;
+    public $passwordOriginal;
     protected $rules = [
         'nombre1' => 'required|min:2|max:50',
         'nombre2' => 'nullable|max:50',
         'apellido1' => 'required|min:2|max:50',
         'apellido2' => 'nullable|max:50',
+        'email' => 'required|min:10|max:75',
+        'password' => 'required|min:8|max:50',
     ];
 
     public function mount($data){   
         $resguardanteBusqueda = Resguardante::find($data);
+        $resguardanteUserBusqueda = User::find($data);
+
         $this->nombre1 = $resguardanteBusqueda->nombre1; 
         $this->nombre2 = $resguardanteBusqueda->nombre2; 
         $this->apellido1 = $resguardanteBusqueda->apellido1; 
         $this->apellido2 = $resguardanteBusqueda->apellido2; 
+        $this->email = $resguardanteUserBusqueda->email; 
+        $this->emailOriginal = $this->email;
+
+        //$this->password = $resguardanteUserBusqueda->password; 
 
         $this->id_resguardante = $resguardanteBusqueda->id; 
     }
@@ -48,6 +59,9 @@ class UpdateResguardante extends Component
         $this->nombre2   = trim(mb_strtolower($this->nombre2));
         $this->apellido1 = trim(mb_strtolower($this->apellido1));
         $this->apellido2 = trim(mb_strtolower($this->apellido2));
+        //dd($this->email);
+        $this->email = trim(mb_strtolower($this->email));
+        $this->password = trim(mb_strtolower($this->password));
 
         $this->validate();
 
@@ -75,6 +89,8 @@ class UpdateResguardante extends Component
             'nombre2' =>  $this->nombre2,
             'apellido1' =>  $this->apellido1,
             'apellido2' =>  $this->apellido2,
+            'email' => $this->email,
+            'password' => $this->password
         ];          
          
         $this->dispatch('UpdateResguardanteFromAnotherComponent',$data);

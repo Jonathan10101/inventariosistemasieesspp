@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('nombre2', 50)->nullable();
             $table->string('apellido1', 50);
             $table->string('apellido2', 50)->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
 
             $table->timestamps();
             $table->unique(['nombre1', 'nombre2', 'apellido1', 'apellido2'], 'resguardantes_nombre_unico');
