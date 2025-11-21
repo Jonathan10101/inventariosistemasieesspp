@@ -14,6 +14,7 @@ class Resguardante extends Model
     protected $table  = "resguardantes";
     protected $fillable = ['nombre1','nombre2','apellido1','apellido2','user_id'];
 
+    
     public function setAttribute($key, $value)
     {
         // Si el atributo es fillable y es string, lo convierte en mayúsculas
@@ -34,7 +35,7 @@ class Resguardante extends Model
     }
 
     public function user(){
-        return $this->hasOne(User::class,'user_id');
+        return $this->hasOne(User::class,'id');
     }
 
 

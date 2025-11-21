@@ -73,7 +73,7 @@ class User extends Authenticatable
 
     public function resguardante()
     {
-        return $this->belongsTo(Resguardante::class, 'resguardante_id');
+        return $this->belongsTo(Resguardante::class, 'id');
     }
 
     public function adminlte_desc()
