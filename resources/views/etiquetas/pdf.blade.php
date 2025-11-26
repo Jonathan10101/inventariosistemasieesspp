@@ -8,14 +8,24 @@
             font-family: Arial, sans-serif;
             font-size: 10px; /* Texto más pequeño */
         }
+        /*
         .etiqueta {
             border: 1px solid #000;
             padding: 5px;
             display: inline-block;
             text-align: center;
             margin: 5px;
-            width: 150px;   /* 👈 ancho reducido */
+            width: 150px;  
             height: auto;
+        }
+            */
+        .etiqueta {
+            border: 1px solid #000;
+            padding: 2mm;
+            display: inline-block;
+            width: 50mm;   /* 👈 ancho real */
+            height: 20mm;  /* 👈 alto real */
+            text-align: center;
         }
         .codigo-texto {
             font-size: 8px; /* 👈 número pequeño debajo */

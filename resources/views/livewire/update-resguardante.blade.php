@@ -46,7 +46,7 @@
                     @error('nombreCompleto') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
-                                <div class="col-md-12">
+                <div class="col-md-12">
                     <label for="emaillabel" class="form-label">Email</label>
                     <div class="input-group">
                         <input type="text"

@@ -57,6 +57,8 @@ class ResguardanteForm extends Component
     public function saveNewResguardante($data){
         //dd($data);
 
+        //dd($data['password']);
+
         $user_id = User::create([
             "name" => $data['nombre1'] . $data['nombre2'] . $data['apellido1'] . $data['apellido2'],
             //"email" => $data['nombre1'] . $data['nombre2'] . $data['apellido1'] . $data['apellido2'] . "@ieesspp.com",
@@ -65,6 +67,7 @@ class ResguardanteForm extends Component
         ])->assignRole("Empleado");
         $id_user = (int)$user_id->id;
         //dd($id_user);
+
         Resguardante::create([
             'nombre1' => $data['nombre1'],
             'nombre2' => $data['nombre2'],
@@ -86,14 +89,19 @@ class ResguardanteForm extends Component
             'apellido2' => $data['apellido2'],
         ]);
 
-        $resguardante = Resguardante::find($data['id'])->user;
+        $resguardante = Resguardante::find($data['id']);
         //$updateResguardanteUser = User::find($data['id']);
-        $resguardante->update([
-            'email' => $data['email'],
-            'password' => $data['password']
+
+        $id_user = $resguardante->user_id;
+
+        $user = User::find($id_user);
+        //dd(bcrypt($data['password']));
+        $user->update([
+            'email' => $data['email'].'@ieesspp.com',
+            'password' => bcrypt($data['password'])
         ]);
 
-        dd($resguardante);
+        //dd($resguardante);
 
 
         $this->dispatch('alumno-updated',1);

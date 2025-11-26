@@ -23,13 +23,16 @@ class UpdateResguardante extends Component
 
     public function mount($data){   
         $resguardanteBusqueda = Resguardante::find($data);
+        //dd($resguardanteBusqueda->user);
         $resguardanteUserBusqueda = User::find($data);
 
         $this->nombre1 = $resguardanteBusqueda->nombre1; 
         $this->nombre2 = $resguardanteBusqueda->nombre2; 
         $this->apellido1 = $resguardanteBusqueda->apellido1; 
         $this->apellido2 = $resguardanteBusqueda->apellido2; 
-        $this->email = $resguardanteUserBusqueda->email; 
+        //$this->email = $resguardanteUserBusqueda->email; 
+        $this->email = str_replace('@ieesspp.com', '', trim(mb_strtolower($resguardanteUserBusqueda->email)));
+
         $this->emailOriginal = $this->email;
 
         //$this->password = $resguardanteUserBusqueda->password; 
@@ -61,7 +64,7 @@ class UpdateResguardante extends Component
         $this->apellido2 = trim(mb_strtolower($this->apellido2));
         //dd($this->email);
         $this->email = trim(mb_strtolower($this->email));
-        $this->password = trim(mb_strtolower($this->password));
+        $this->password = trim($this->password);
 
         $this->validate();
 

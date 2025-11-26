@@ -26,7 +26,7 @@ class CreateNewResguardante extends Component
         $this->apellido1 = trim(mb_strtolower($this->apellido1));
         $this->apellido2 = trim(mb_strtolower($this->apellido2));
         $this->email = trim(mb_strtolower($this->email));
-        $this->password = trim(mb_strtolower($this->password));
+        $this->password = trim($this->password);
 
 
         $this->validate();
