@@ -9,7 +9,7 @@ use App\Models\AreaDeUso;
 use App\Models\UbicacionFisica;
 use App\Models\Resguardante;
 use App\Models\Puesto;
-
+use Illuminate\Validation\Rule;
 
 use App\Models\Cursos;
 use App\Models\Grupos;

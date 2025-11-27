@@ -51,7 +51,9 @@
                             wire:model.defer="email"
                             class="form-control"
                             oninput="this.value = this.value.toLowerCase().replace(/\s/g, '')">
+                        <!--    
                         <span class="input-group-text">@ieesspp.com</span>
+                        -->
                     </div>
                     @error('email') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>

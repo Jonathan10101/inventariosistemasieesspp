@@ -83,8 +83,8 @@
                 </div>
 
                 <div class="col-md-12">
-                    <label class="form-label">No. de serie*</label>
-                    <input type="text" wire:model.defer="nserie" class="form-control text-uppercase">
+                    <label class="form-label">No. de serie</label>
+                    <input type="text" placeholder="Dejar en blanco cuando sea N/A" wire:model.defer="nserie" class="form-control text-uppercase">
                     @error('nserie') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 

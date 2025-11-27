@@ -56,23 +56,22 @@ class ResguardanteForm extends Component
     #[On('saveFromComponentNewResguardante')]
     public function saveNewResguardante($data){
         //dd($data);
-
-        //dd($data['password']);
-
         $user_id = User::create([
             "name" => $data['nombre1'] . $data['nombre2'] . $data['apellido1'] . $data['apellido2'],
             //"email" => $data['nombre1'] . $data['nombre2'] . $data['apellido1'] . $data['apellido2'] . "@ieesspp.com",
-            "email" => $data['email'].'@ieesspp.com',
+            "email" => $data['email'],
             "password" => bcrypt($data['password'])
         ])->assignRole("Empleado");
         $id_user = (int)$user_id->id;
         //dd($id_user);
 
+        //dd($nombre1.$nombre2.$apellido1.$apellido2);
+
         Resguardante::create([
-            'nombre1' => $data['nombre1'],
+            'nombre1' =>$data['nombre1'],
             'nombre2' => $data['nombre2'],
             'apellido1' => $data['apellido1'],
-            'apellido1' => $data['apellido2'],
+            'apellido2' => $data['apellido2'],
             'user_id' => $id_user
         ]);
         $this->showModal = false;  
@@ -97,7 +96,7 @@ class ResguardanteForm extends Component
         $user = User::find($id_user);
         //dd(bcrypt($data['password']));
         $user->update([
-            'email' => $data['email'].'@ieesspp.com',
+            'email' => $data['email'],
             'password' => bcrypt($data['password'])
         ]);
 

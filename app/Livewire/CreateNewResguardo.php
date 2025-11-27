@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use App\Models\{
     Marca,
     EstadoUso,
@@ -87,7 +88,14 @@ class CreateNewResguardo extends Component
             'descripcion' => 'required|string|max:255',
             'marca_id' => 'required|exists:marcas,id',
             'modelo' => 'required|string|max:255',
-            'nserie' => 'required|string|unique:resguardos,nserie',
+            'nserie' => [
+                'nullable',
+                'string',
+                Rule::unique('resguardos', 'nserie')
+                    ->where(function ($query) {
+                        return $this->nserie !== 'N/A';
+                    })
+            ],
             'estado_uso_id' => 'required|exists:estado_uso,id',
             'area_de_uso_id' => 'required|exists:area_de_uso,id',
             'ubicacion_fisicas_id' => 'required|exists:ubicacion_fisicas,id',
@@ -119,14 +127,19 @@ class CreateNewResguardo extends Component
         $imagenEvidencia = $pathImagen;
         $pathPdf = $this->resguardo_pdf ? $this->resguardo_pdf->store('resguardos/pdf', 'public') : null;
 
-        
+        // si el usuario deja vacío el número de serie → poner "N/A"
+        $nserie = trim($this->nserie);
+        if ($nserie === '' || $nserie === null) {
+            $nserie = 'N/A';
+        }
+
 
         /* === Crear Resguardo === */
         $resguardo = Resguardo::create([
             'descripcion' => $this->descripcion,
             'marca_id' => $this->marca_id,
             'modelo' => $this->modelo,
-            'nserie' => $this->nserie,
+            'nserie' => $nserie,   // ← aquí ya va "N/A" si estaba vacío
             'resguardante_id' => $this->resguardante_id,
             'puesto_id' => $this->puesto_id,
             'imagen' => $pathImagen,

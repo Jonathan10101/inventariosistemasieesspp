@@ -15,7 +15,7 @@ class CreateNewResguardante extends Component
         'nombre2' => 'nullable|max:50',
         'apellido1' => 'required|min:2|max:50',
         'apellido2' => 'nullable|max:50',
-        'email' => 'required|min:10|max:75',
+        'email' => 'required|min:10|max:75|email|unique:users,email',
         'password' => 'required|min:8|max:50',
     ];
 

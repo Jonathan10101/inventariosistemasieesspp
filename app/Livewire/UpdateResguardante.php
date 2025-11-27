@@ -23,46 +23,21 @@ class UpdateResguardante extends Component
 
     public function mount($data){   
         $resguardanteBusqueda = Resguardante::find($data);
-        //dd($resguardanteBusqueda->user);
         $resguardanteUserBusqueda = User::find($data);
-
         $this->nombre1 = $resguardanteBusqueda->nombre1; 
         $this->nombre2 = $resguardanteBusqueda->nombre2; 
         $this->apellido1 = $resguardanteBusqueda->apellido1; 
         $this->apellido2 = $resguardanteBusqueda->apellido2; 
-        //$this->email = $resguardanteUserBusqueda->email; 
-        $this->email = str_replace('@ieesspp.com', '', trim(mb_strtolower($resguardanteUserBusqueda->email)));
-
-        $this->emailOriginal = $this->email;
-
-        //$this->password = $resguardanteUserBusqueda->password; 
-
+        $this->email = $resguardanteUserBusqueda->email;
         $this->id_resguardante = $resguardanteBusqueda->id; 
     }
 
 
     public function save(){
-        /*
-        $this->validate();    
-        
-        // Validar combinación única
-        $existe = Resguardante::where('nombre1', $this->nombre1)
-            ->where('nombre2', $this->nombre2)
-            ->where('apellido1', $this->apellido1)
-            ->where('apellido2', $this->apellido2)
-            ->exists();
-
-        if ($existe) {
-            $this->addError('nombreCompleto', 'El nombre completo ya está registrado.');
-            return;
-        }
-        */
-        // Normalizamos todo
         $this->nombre1   = trim(mb_strtolower($this->nombre1));
         $this->nombre2   = trim(mb_strtolower($this->nombre2));
         $this->apellido1 = trim(mb_strtolower($this->apellido1));
         $this->apellido2 = trim(mb_strtolower($this->apellido2));
-        //dd($this->email);
         $this->email = trim(mb_strtolower($this->email));
         $this->password = trim($this->password);
 
@@ -84,7 +59,6 @@ class UpdateResguardante extends Component
             $this->addError('nombreCompleto', 'Este nombre ya parece estar registrado anteriormente. Es posible que esté guardado con otra combinación de nombre o apellidos. Por favor verifica la información ingresada.');
             return;
         }
-
 
         $data = [
             'id' => $this->id_resguardante,

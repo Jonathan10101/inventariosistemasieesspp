@@ -13,7 +13,8 @@ return new class extends Migration
             $table->string('descripcion');
             $table->unsignedBigInteger('marca_id');
             $table->string('modelo');
-            $table->string('nserie')->unique();
+            //$table->string('nserie')->unique();
+            $table->string('nserie', 50); // quitar ->unique()
             $table->string('nresguardo')->nullable()->unique();
 
  
