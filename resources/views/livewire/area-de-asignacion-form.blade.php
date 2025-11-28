@@ -51,13 +51,13 @@
         <div class="col-md-12">
             <label class="form-label fw-semibold text-dark">Da clic en el Buscador y escribe el nombre de asignación y luego presiona “Buscar”</label>
             <div class="input-group shadow-sm">
-                <input type="text" id="searchid" placeholder="Buscador ..." 
+                <input disabled type="text" id="searchid" placeholder="Buscador ..." 
                        wire:keydown.enter="searchAreasDeAsignacion" wire:model="search" class="form-control border-end-0">
-                <button class="btn btn-primary" style="background-color:#171C63; border:none;" wire:click="searchUsearchAreasDeAsignacionbicacionesFisicas">
+                <button disabled class="btn btn-primary" style="background-color:#171C63; border:none;" wire:click="searchUsearchAreasDeAsignacionbicacionesFisicas">
                     <i class="fas fa-search"></i> Buscar
                 </button>
                 @if($search)
-                <button class="btn btn-outline-secondary" wire:click="clearSearch">
+                <button  class="btn btn-outline-secondary" wire:click="clearSearch">
                     <i class="fas fa-times"></i>
                 </button>
                 @endif

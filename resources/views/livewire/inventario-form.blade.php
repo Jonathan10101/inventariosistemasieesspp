@@ -7,11 +7,11 @@
     <!-- Botón Agregar Inventario -->
     <div class="row mb-3">
         <div class="col d-flex justify-content-end">   
-            @can('inventario.create')               
+            @hasanyrole('Administrador|Delegacion|Subdirector')
             <button wire:click="showModalNewResguardo" class="btn btn-primary shadow-sm" style="background-color:#171C63; border:none;">                        
                 <i class="fas fa-plus me-1"></i> Agregar inventario            
             </button>  
-            @endcan          
+            @endhasanyrole
         </div>
     </div>
 

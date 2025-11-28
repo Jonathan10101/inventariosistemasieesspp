@@ -219,8 +219,8 @@ class InventarioForm extends Component
         /* ============================================================
         🟦 ADMINISTRADOR — ve y busca TODO
         ============================================================ */
-        if ($user->hasRole('Administrador')) {
-
+        
+        if ($user->hasRole('Administrador')  || $user->hasRole('Director')  || $user->hasRole('Delegacion')) {
             if ($this->search) {
                 $busqueda = ltrim($this->search, '0');
                 $resguardos = Resguardo::where('id', $busqueda);
@@ -230,12 +230,72 @@ class InventarioForm extends Component
 
             $resguardos = $resguardos
                 ->with(['historial', 'marca'])
-                ->paginate(10);
+                ->paginate($this->perPage);
 
             return view('livewire.inventario-form', compact('resguardos'));
         }
 
 
+/* ============================================================
+    🟦 SUBDIRECTOR
+    Solo puede ver resguardos cuyo ÚLTIMO historial
+    pertenezca a su misma subdirección
+   ============================================================ */
+if ($user->hasRole('Subdirector')) {
+
+    // Obtiene su subdirección desde resguardante
+    $subdireccion = optional($user->resguardante)->subdireccion;
+
+    if (!$subdireccion) {
+        // Si el subdirector no tiene subdirección, devolvemos vacío
+        $emptyPaginator = new \Illuminate\Pagination\LengthAwarePaginator(
+            [], 0, $this->perPage, 1,
+            ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
+        );
+        return view('livewire.inventario-form', [
+            'resguardos' => $emptyPaginator
+        ]);
+    }
+
+    $resguardos = Resguardo::where(function ($q) use ($subdireccion) {
+
+        $q->where(
+            'id',
+            function ($sub) use ($subdireccion) {
+                $sub->select('resguardo_id')
+                    ->from('historial_resguardos')
+                    ->whereColumn('resguardo_id', 'resguardos.id')
+                    ->where('subdireccion', $subdireccion) // 🔥 FILTRO CLAVE
+                    ->where('fecha_liberacion', null)      // último historial activo
+                    ->orderByDesc('id')                   // último historial
+                    ->limit(1);
+            }
+        );
+
+    });
+
+    /* 🔍 BUSQUEDA solo dentro de su subdirección */
+    if ($this->search) {
+        $busqueda = ltrim($this->search, '0');
+        $resguardos->where('id', $busqueda);
+    }
+
+    $resguardos = $resguardos->with([
+            'historial.resguardante',
+            'historial.estadouso',
+            'historial.areaDeUso',
+            'historial.ubicacionFisica',
+            'marca'
+        ])
+        ->paginate($this->perPage);
+
+    return view('livewire.inventario-form', compact('resguardos'));
+}
+
+
+
+
+        
         /* ============================================================
         🟧 EMPLEADO — solo puede ver/buscar resguardos donde
         el ÚLTIMO historial diga que él es el resguardante
@@ -273,7 +333,7 @@ class InventarioForm extends Component
                     'historial.ubicacionFisica',
                     'marca'
                 ])
-                ->paginate(10);
+                ->paginate($this->perPage);
 
             return view('livewire.inventario-form', compact('resguardos'));
         }

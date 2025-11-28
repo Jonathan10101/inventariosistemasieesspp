@@ -97,7 +97,8 @@ class ResguardanteForm extends Component
         //dd(bcrypt($data['password']));
         $user->update([
             'email' => $data['email'],
-            'password' => bcrypt($data['password'])
+            'password' => bcrypt($data['password']),
+            'subdireccion' => $data['subdireccion']
         ]);
 
         //dd($resguardante);

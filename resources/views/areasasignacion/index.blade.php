@@ -8,7 +8,7 @@
             <div class="d-flex align-items-center">
                 <div class="title-accent me-3"></div>
                 <div>
-                    <h1 class="page-title mb-1">Áreas de asiganción</h1>
+                    <h1 class="page-title mb-1">Áreas de asignación</h1>
                     {{--
                     <p class="page-subtitle mb-0">Control institucional de equipos y resguardos</p>
                     --}}

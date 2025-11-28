@@ -7,7 +7,7 @@ use App\Models\Resguardante;
 
 class CreateNewResguardante extends Component
 {
-    public $nombre1,$nombre2,$apellido1,$apellido2,$email,$password;
+    public $nombre1,$nombre2,$apellido1,$apellido2,$email,$password,$subdireccion;
     
 
     protected $rules = [
@@ -17,6 +17,7 @@ class CreateNewResguardante extends Component
         'apellido2' => 'nullable|max:50',
         'email' => 'required|min:10|max:75|email|unique:users,email',
         'password' => 'required|min:8|max:50',
+        'subdireccion' => 'required'
     ];
 
     public function save(){
@@ -55,7 +56,8 @@ class CreateNewResguardante extends Component
             'apellido1' => $this->apellido1,
             'apellido2' => $this->apellido2,
             'email' => $this->email,
-            'password' => $this->password
+            'password' => $this->password,
+            'subdireccion' => $this->subdireccion
         ];
 
 

@@ -6,11 +6,11 @@
     <!-- Add nuevo Resguardante  -->
     <div class="row mb-3">
         <div class="col d-flex justify-content-end">   
-            @can('resguardante.create')               
+            @hasanyrole('Administrador')
             <button wire:click="showModalNewResguardante" class="btn btn-primary shadow-sm" style="background-color:#171C63; border:none;">                        
                 <i class="fas fa-plus me-1"></i> Agregar resguardante            
-            </button>  
-            @endcan          
+            </button>
+            @endhasanyrole
         </div>
     </div>
 
@@ -64,39 +64,51 @@
     </div>
 
 
-        <table class="table table-hover">
-            <thead>
-                <tr>
+    <table class="table table-hover">
+        <thead>
+            <tr>
                 <th scope="col">ID</th>
                 <th scope="col">NOMBRE DEL RESGUARDANTE</th>
                 <th scope="col" class="text-center">RESGUARDOS</th>
-                <th scope="col">ACCIONES</th>
 
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($resguardantes as $resguardante)
-                <tr>
-                    <td>{{$resguardante->id}}</td>
-                    <td>{{$resguardante->nombre1}} {{$resguardante->nombre2}} {{$resguardante->apellido1}} {{$resguardante->apellido2}}</td>
-                    <td class="d-flex justify-content-center">
-                        <a href="{{ route('resguardante.show', $resguardante->id)}}" class="btn btn-dark btn-sm" title="Ver">
-                            <i class="fas fa-eye"></i>
-                        </a>
-                    </td>
+                @hasanyrole('Administrador')
+                    <th scope="col">ACCIONES</th>
+                @endhasanyrole
+
+            </tr>
+        </thead>
+
+        <tbody>
+            @forelse ($resguardantes as $resguardante)
+            <tr>
+                <td>{{ $resguardante->id }}</td>
+                <td>{{ $resguardante->nombre1 }} {{ $resguardante->nombre2 }} {{ $resguardante->apellido1 }} {{ $resguardante->apellido2 }}</td>
+
+                <td class="d-flex justify-content-center">
+                    <a href="{{ route('resguardante.show', $resguardante->id) }}" class="btn btn-dark btn-sm" title="Ver">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                </td>
+
+                @hasanyrole('Administrador')
                     <td>
-                        <button class="btn btn-warning btn-sm" wire:click="cambiarAccion('editar',{{$resguardante->id }})" title="Editar">
+                        <button class="btn btn-warning btn-sm"
+                                wire:click="cambiarAccion('editar', {{ $resguardante->id }})"
+                                title="Editar">
                             <i class="fas fa-edit"></i>
                         </button>
                     </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="13" class="text-center">No se encontraron resguardantes.</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
+                @endhasanyrole
+
+            </tr>
+            @empty
+            <tr>
+                <td colspan="13" class="text-center">No se encontraron resguardantes.</td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
+
 
 
 

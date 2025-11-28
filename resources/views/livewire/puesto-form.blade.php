@@ -6,12 +6,12 @@
     <!-- Add nueva Marca  -->
     <div class="row">
         <div class="col d-flex justify-content-end">   
-            @can('puestos.create')               
+            @hasanyrole('Administrador|Delegacion|Subdirector')                             
             <button wire:click="showModalNewPuesto" class="btn btn-primary mb-3 fa" style="background-color:#171C63; border:none;">                        
                 <i class="fas fa-plus"></i>
                 Agregar puesto           
             </button>  
-            @endcan          
+            @endhasanyrole      
         </div>
     </div>
 
@@ -64,33 +64,43 @@
     </div>
 
 
-        <table class="table table-hover">
-            <thead>
-                <tr>
+    <table class="table table-hover">
+        <thead>
+            <tr>
                 <th scope="col">ID</th>
                 <th scope="col">PUESTO</th>
-                <th scope="col">ACCIONES</th>
+
+                @hasanyrole('Administrador')
+                    <th scope="col">ACCIONES</th>
+                @endhasanyrole
+
+            </tr>
+        </thead>
+
+        <tbody>
+            @forelse ($puestos as $puesto)
+                <tr>
+                    <td>{{ $puesto->id }}</td>
+                    <td>{{ $puesto->nombre }}</td>
+
+                    @hasanyrole('Administrador')
+                        <td>
+                            <button class="btn btn-warning btn-sm"
+                                    wire:click="cambiarAccion('editar', {{ $puesto->id }})"
+                                    title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </td>
+                    @endhasanyrole
 
                 </tr>
-            </thead>
-            <tbody>
-                @forelse ($puestos as $puesto)
+            @empty
                 <tr>
-                    <td>{{$puesto->id}}</td>
-                    <td>{{$puesto->nombre}}</td>
-                    <td>
-                        <button class="btn btn-warning btn-sm" wire:click="cambiarAccion('editar',{{ $puesto->id }})" title="Editar">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                    </td>
+                    <td colspan="13" class="text-center">No se encontraron puestos.</td>
                 </tr>
-                @empty
-                <tr>
-                    <td colspan="13" class="text-center">No se encontro puestos.</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
+            @endforelse
+        </tbody>
+    </table>
 
 
 

@@ -6,12 +6,12 @@
     <!-- Add nueva Marca  -->
     <div class="row">
         <div class="col d-flex justify-content-end">   
-            @can('ubicacionfisica.create')               
+            @hasanyrole('Administrador|Delegacion|Subdirector')                  
             <button wire:click="showModalNewUbicacionFisica" class="btn btn-primary mb-3 fa" style="background-color:#171C63; border:none;">                        
                 <i class="fas fa-plus"></i>
                 Agregar ubicación fisica            
             </button>  
-            @endcan          
+            @endhasanyrole          
         </div>
     </div>
 
@@ -65,55 +65,77 @@
     </div>
 
 
-        <table class="table table-hover">
-            <thead>
-                <tr>
+    <table class="table table-hover">
+        <thead>
+            <tr>
                 <th scope="col">ID</th>
                 <th scope="col">IMAGEN</th>
                 <th scope="col">UBICACIÓN FÍSICA</th>
                 <th scope="col">ACCIONES</th>
+            </tr>
+        </thead>
 
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($ubicacionesfisicas as $ubicacion)
+        <tbody>
+            @forelse ($ubicacionesfisicas as $ubicacion)
                 <tr>
-                    <td>{{$ubicacion->id}}</td>
+                    <td>{{ $ubicacion->id }}</td>
+
                     <td>
-                    @if($ubicacion->imagen)
-                        <a href="{{ asset('storage/' . $ubicacion->imagen) }}" target="_blank">
-                            <img src="{{ asset('storage/' . $ubicacion->imagen) }}" 
-                                alt="Imagen de la ubicación" 
-                                class="img-thumbnail border zoom-image" 
-                                width="100">
-                        </a>
-                    @else
+                        @if($ubicacion->imagen)
+                            <a href="{{ asset('storage/' . $ubicacion->imagen) }}" target="_blank">
+                                <img src="{{ asset('storage/' . $ubicacion->imagen) }}" 
+                                    alt="Imagen de la ubicación"
+                                    class="img-thumbnail border zoom-image"
+                                    width="100">
+                            </a>
+                        @else
                             <span class="text-muted">Sin imagen</span>
-                    @endif
+                        @endif
                     </td>
 
-                    <td>{{$ubicacion->descripcion}}</td>
+                    <td>{{ $ubicacion->descripcion }}</td>
+
                     <td>
-                        <button class="btn btn-warning btn-sm" wire:click="cambiarAccion('editar',{{ $ubicacion->id }})" title="Editar">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        
-                        <button wire:click="downloadEtiqueta({{ $ubicacion->id }})" class="btn btn-success btn-sm mt-1 mb-1" title="Descargar etiqueta">            
+
+                        {{-- ⭐ SOLO EL ADMINISTRADOR VE EDITAR --}}
+                        @hasanyrole('Administrador')
+                            <button class="btn btn-warning btn-sm mb-1"
+                                    wire:click="cambiarAccion('editar', {{ $ubicacion->id }})"
+                                    title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+
+                            <button wire:click="downloadEtiqueta({{ $ubicacion->id }})"
+                                class="btn btn-success btn-sm mb-1"
+                                title="Descargar etiqueta">
                             <i class="fas fa-download"></i>
                         </button>
-                   
-                        <a href="{{ route('ubicacionfisica.show', $ubicacion->id) }}"  class="btn btn-dark btn-sm mb-1" title="Ver el Inventario que esta en esta ubicación">
+                        @endhasanyrole
+
+                        {{-- ✔ TODOS (admin y no admin) pueden ver estas  acciones --}}
+
+
+                        <a href="{{ route('ubicacionfisica.show', $ubicacion->id) }}"
+                        class="btn btn-dark btn-sm mb-1"
+                        title="Ver el inventario en esta ubicación">
                             <i class="fas fa-eye"></i>
                         </a>
+
+                    </td>
+
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="13" class="text-center">
+                        No se encontraron ubicaciones físicas.
                     </td>
                 </tr>
-                @empty
-                <tr>
-                    <td colspan="13" class="text-center">No se encontraron ubicaciones fisicas.</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
+            @endforelse
+        </tbody>
+    </table>
+
+
+
 
 
 

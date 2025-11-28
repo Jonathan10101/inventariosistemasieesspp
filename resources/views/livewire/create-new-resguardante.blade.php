@@ -78,6 +78,19 @@
                 <div class="col-md-12 d-flex justify-content-end">
                     @error('nombreCompleto') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
+
+                <div class="col-md-12">
+                    <label for="subdireccion" class="form-label">Subdirección*</label>
+                    <select id="subdireccion"
+                        wire:model.defer="subdireccion"
+                        class="form-control">
+                        <option value="">Selecciona una opción</option>
+                        <option value="SUBDIRECCIÓN DE DESARROLLO POLICIAL">SUBDIRECCIÓN DE DESARROLLO POLICIAL</option>
+                        <option value="SUBDIRECCIÓN DE COORDINACIÓN E INFRAESTRUCTURA INSTITUCIONAL">SUBDIRECCIÓN DE COORDINACIÓN E INFRAESTRUCTURA INSTITUCIONAL</option>
+                    </select>
+                    @error('subdireccion') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
+
                 <!-- Botón Guardar -->
                 <div class="col-12 d-flex justify-content-end mt-4">
                     <button type="submit" class="btn btn-primary" style="background-color:#171C63; border-color:#171C63; color:#fff;">

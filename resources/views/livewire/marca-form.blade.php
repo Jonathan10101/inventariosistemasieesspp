@@ -6,11 +6,11 @@
     <!-- Botón Agregar Inventario -->
     <div class="row mb-3">
         <div class="col d-flex justify-content-end">   
-            @can('marcas.create')               
+            @hasanyrole('Administrador|Delegacion|Subdirector')              
             <button wire:click="showModalNewMarca" class="btn btn-primary shadow-sm" style="background-color:#171C63; border:none;">                        
                 <i class="fas fa-plus me-1"></i> Agregar marca            
             </button>  
-            @endcan          
+            @endhasanyrole        
         </div>
     </div>
 
@@ -67,33 +67,44 @@
     </div>
 
 
-        <table class="table table-hover">
-            <thead>
-                <tr>
+    <table class="table table-hover">
+        <thead>
+            <tr>
                 <th scope="col">ID</th>
                 <th scope="col">MARCA</th>
-                <th scope="col">ACCIONES</th>
+
+                @hasanyrole('Administrador')
+                    <th scope="col">ACCIONES</th>
+                @endhasanyrole
+
+            </tr>
+        </thead>
+
+        <tbody>
+            @forelse ($marcas as $marca)
+                <tr>
+                    <td>{{ $marca->id }}</td>
+                    <td>{{ $marca->nombre }}</td>
+
+                    @hasanyrole('Administrador')
+                        <td>
+                            <button class="btn btn-warning btn-sm"
+                                    wire:click="cambiarAccion('editar', {{ $marca->id }})"
+                                    title="Editar Marca">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </td>
+                    @endhasanyrole
 
                 </tr>
-            </thead>
-            <tbody>
-                @forelse ($marcas as $marca)
+            @empty
                 <tr>
-                    <td>{{$marca->id}}</td>
-                    <td>{{$marca->nombre}}</td>
-                    <td>
-                        <button class="btn btn-warning btn-sm" wire:click="cambiarAccion('editar',{{ $marca->id }})"  title="Editar Marca">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                    </td>
+                    <td colspan="13" class="text-center">No se encontraron marcas.</td>
                 </tr>
-                @empty
-                <tr>
-                    <td colspan="13" class="text-center">No se encontro marcas.</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
+            @endforelse
+        </tbody>
+    </table>
+
 
 
 
