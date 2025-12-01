@@ -101,7 +101,8 @@ class CreateNewResguardo extends Component
             'ubicacion_fisicas_id' => 'required|exists:ubicacion_fisicas,id',
             'resguardante_id' => 'required|exists:resguardantes,id',
             'puesto_id' => 'required|exists:puestos,id',
-            'imagen' => $this->imagenBase64 ? 'nullable' : 'required|image|max:4096',
+            //'imagen' => $this->imagenBase64 ? 'nullable' : 'required|image|max:4096',
+            'imagen' => 'nullable|image|max:4096',
             //'resguardo_pdf' => 'nullable|mimes:pdf|max:8192',
             'resguardo_pdf' => 'mimes:pdf|max:8192',
         ]);
