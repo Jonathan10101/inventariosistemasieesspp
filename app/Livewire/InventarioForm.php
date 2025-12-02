@@ -237,61 +237,27 @@ class InventarioForm extends Component
 
 
 /* ============================================================
-    🟦 SUBDIRECTOR
-    Solo puede ver resguardos cuyo ÚLTIMO historial
-    pertenezca a su misma subdirección
-   ============================================================ */
+🟩 SUBDIRECTOR — solo ve resguardos de su subdirección
+============================================================ */
 if ($user->hasRole('Subdirector')) {
 
-    // Obtiene su subdirección desde resguardante
-    $subdireccion = optional($user->resguardante)->subdireccion;
+    $miSubdireccion = $user->subdireccion;
 
-    if (!$subdireccion) {
-        // Si el subdirector no tiene subdirección, devolvemos vacío
-        $emptyPaginator = new \Illuminate\Pagination\LengthAwarePaginator(
-            [], 0, $this->perPage, 1,
-            ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
-        );
-        return view('livewire.inventario-form', [
-            'resguardos' => $emptyPaginator
-        ]);
-    }
-
-    $resguardos = Resguardo::where(function ($q) use ($subdireccion) {
-
-        $q->where(
-            'id',
-            function ($sub) use ($subdireccion) {
-                $sub->select('resguardo_id')
-                    ->from('historial_resguardos')
-                    ->whereColumn('resguardo_id', 'resguardos.id')
-                    ->where('subdireccion', $subdireccion) // 🔥 FILTRO CLAVE
-                    ->where('fecha_liberacion', null)      // último historial activo
-                    ->orderByDesc('id')                   // último historial
-                    ->limit(1);
-            }
-        );
-
+    $resguardos->whereHas('resguardante.user', function ($q) use ($miSubdireccion) {
+        $q->where('subdireccion', 'LIKE', "%{$miSubdireccion}%");
     });
 
-    /* 🔍 BUSQUEDA solo dentro de su subdirección */
     if ($this->search) {
         $busqueda = ltrim($this->search, '0');
         $resguardos->where('id', $busqueda);
     }
 
-    $resguardos = $resguardos->with([
-            'historial.resguardante',
-            'historial.estadouso',
-            'historial.areaDeUso',
-            'historial.ubicacionFisica',
-            'marca'
-        ])
+    $resguardos = $resguardos
+        ->with(['historial', 'marca'])
         ->paginate($this->perPage);
 
     return view('livewire.inventario-form', compact('resguardos'));
 }
-
 
 
 
@@ -337,6 +303,8 @@ if ($user->hasRole('Subdirector')) {
 
             return view('livewire.inventario-form', compact('resguardos'));
         }
+
+
     }
 
     #[On('updateUbicacionFromComponentResguardo')]
