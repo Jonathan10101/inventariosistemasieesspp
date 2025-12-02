@@ -34,6 +34,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'subdireccion'
     ];
 
     /**
@@ -79,10 +80,19 @@ class User extends Authenticatable
         return $this->hasMany(Resguardo::class);
     }
 
+    /*
     public function resguardante()
     {
         return $this->belongsTo(Resguardante::class, 'id');
     }
+    */
+
+    public function resguardantes()
+    {
+        return $this->hasMany(Resguardante::class, 'user_id');
+    }
+
+
 
     public function adminlte_desc()
     {

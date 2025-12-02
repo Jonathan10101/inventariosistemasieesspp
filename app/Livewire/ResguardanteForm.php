@@ -59,6 +59,7 @@ class ResguardanteForm extends Component
         $user_id = User::create([
             "name" => $data['nombre1'] . $data['nombre2'] . $data['apellido1'] . $data['apellido2'],
             //"email" => $data['nombre1'] . $data['nombre2'] . $data['apellido1'] . $data['apellido2'] . "@ieesspp.com",
+            'subdireccion' => $data['subdireccion'],
             "email" => $data['email'],
             "password" => bcrypt($data['password'])
         ])->assignRole("Empleado");

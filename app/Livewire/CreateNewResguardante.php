@@ -48,7 +48,7 @@ class CreateNewResguardante extends Component
             $this->addError('nombreCompleto', 'Este nombre ya parece estar registrado anteriormente. Es posible que esté guardado con otra combinación de nombre o apellidos. Por favor verifica la información ingresada.');
             return;
         }
-
+        //dd($this->subdireccion);
         
         $data = [
             'nombre1' => $this->nombre1,

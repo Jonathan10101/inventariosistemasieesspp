@@ -34,9 +34,19 @@ class Resguardante extends Model
         return $this->hasMany(HistorialResguardo::class, 'resguardante_id');
     }
 
+/*
     public function user(){
         return $this->hasOne(User::class,'id');
     }
+    */
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+
+
 
 
 }

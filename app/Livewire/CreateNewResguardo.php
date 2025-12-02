@@ -15,7 +15,8 @@ use App\Models\{
     Resguardante,
     Puesto,
     Resguardo,
-    HistorialResguardo
+    HistorialResguardo,
+    User
 };
 
 class CreateNewResguardo extends Component
@@ -47,8 +48,21 @@ class CreateNewResguardo extends Component
         $this->areasdeasignacion = AreaDeUso::all();
         $this->estadosdeuso = EstadoUso::all();
         $this->ubicacionesifiscas = UbicacionFisica::all();
-        $this->resguardantes = Resguardante::all();
         $this->puestos = Puesto::all();
+
+
+        if (auth()->user()->email == "subdesarrollopolicial@ieesspp.com") {
+            $userIds = User::where("subdireccion", "LIKE", "SUBDIRECCIÓN DE DESARROLLO POLICIAL")
+                        ->pluck('id');
+            $this->resguardantes = Resguardante::whereIn('user_id', $userIds)->get();
+        }else if (auth()->user()->email == "subcoordinacion@ieesspp.com") {
+            $userIds = User::where("subdireccion", "LIKE", "SUBDIRECCIÓN DE COORDINACIÓN E INFRAESTRUCTURA INSTITUCIONAL")
+                        ->pluck('id');
+            $this->resguardantes = Resguardante::whereIn('user_id', $userIds)->get();
+        }else{
+            $this->resguardantes = Resguardante::all();
+        }
+
     }
 
     /* =================== MÉTODOS =================== */
