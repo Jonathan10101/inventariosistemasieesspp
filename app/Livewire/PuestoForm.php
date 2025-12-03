@@ -110,6 +110,8 @@ class PuestoForm extends Component
     public function render()
     {
         $query = Puesto::query();
+        $this->search = strtoupper($this->search);
+
         
         if ($this->search) {
             $query->where(function ($q) {

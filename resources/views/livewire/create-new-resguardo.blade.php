@@ -78,8 +78,8 @@
                 </div>
 
                 <div class="col-md-12">
-                    <label class="form-label">Modelo*</label>
-                    <input type="text" wire:model.defer="modelo" class="form-control text-uppercase">
+                    <label class="form-label">Modelo</label>
+                    <input type="text"  placeholder="Dejar en blanco cuando sea N/A" wire:model.defer="modelo" class="form-control text-uppercase">
                     @error('modelo') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 

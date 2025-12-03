@@ -219,7 +219,6 @@ class InventarioForm extends Component
         /* ============================================================
         🟦 ADMINISTRADOR — ve y busca TODO
         ============================================================ */
-        
         if ($user->hasRole('Administrador')  || $user->hasRole('Director')  || $user->hasRole('Delegacion')) {
             if ($this->search) {
                 $busqueda = ltrim($this->search, '0');
@@ -236,30 +235,30 @@ class InventarioForm extends Component
         }
 
 
-/* ============================================================
-🟩 SUBDIRECTOR — solo ve resguardos de su subdirección
-============================================================ */
-if ($user->hasRole('Subdirector')) {
 
-    $miSubdireccion = $user->subdireccion;
+        /* ============================================================
+        🟩 SUBDIRECTOR — solo ve resguardos de su subdirección
+        ============================================================ */
+        if ($user->hasRole('Subdirector')) {
 
-    $resguardos->whereHas('resguardante.user', function ($q) use ($miSubdireccion) {
-        $q->where('subdireccion', 'LIKE', "%{$miSubdireccion}%");
-    });
+            $miSubdireccion = $user->subdireccion;
 
-    if ($this->search) {
-        $busqueda = ltrim($this->search, '0');
-        $resguardos->where('id', $busqueda);
-    }
+            $resguardos->whereHas('resguardante.user', function ($q) use ($miSubdireccion) {
+                $q->where('subdireccion', 'LIKE', "%{$miSubdireccion}%");
+            });
 
-    $resguardos = $resguardos
-        ->with(['historial', 'marca'])
-        ->paginate($this->perPage);
+            if ($this->search) {
+                $busqueda = ltrim($this->search, '0');
+                $resguardos->where('id', $busqueda);
+            }
 
-    return view('livewire.inventario-form', compact('resguardos'));
-}
+            $resguardos = $resguardos
+                ->with(['historial', 'marca'])
+                ->paginate($this->perPage);
 
-
+            return view('livewire.inventario-form', compact('resguardos'));
+        }
+        
 
         
         /* ============================================================
@@ -303,7 +302,6 @@ if ($user->hasRole('Subdirector')) {
 
             return view('livewire.inventario-form', compact('resguardos'));
         }
-
 
     }
 

@@ -56,7 +56,7 @@
             <label class="form-label fw-semibold text-dark">Da clic en el Buscador, escanea o escribe el No. de Inventario y luego presiona “Buscar”</label>
             <div class="input-group shadow-sm">
                 <input type="text" id="searchid" placeholder="Buscador ..." 
-                       wire:keydown.enter="searchResguardos" wire:model="search" class="form-control border-end-0">
+                       wire:keydown.enter="searchResguardos" wire:model="search" style="border:none; text-transform: uppercase;" class="form-control border-end-0">
                 <button class="btn btn-primary" style="background-color:#171C63; border:none;" wire:click="searchResguardos">
                     <i class="fas fa-search"></i> Buscar
                 </button>

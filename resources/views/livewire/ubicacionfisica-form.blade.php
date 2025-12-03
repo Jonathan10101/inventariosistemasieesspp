@@ -51,7 +51,7 @@
             <label class="form-label fw-semibold text-dark">Da clic en el Buscador y escribe el nombre de la ubicación física y luego presiona “Buscar”</label>
             <div class="input-group shadow-sm">
                 <input type="text" id="searchid" placeholder="Buscador ..." 
-                       wire:keydown.enter="searchUbicacionesFisicas" wire:model="search" class="form-control border-end-0">
+                       wire:keydown.enter="searchUbicacionesFisicas" wire:model="search" style="text-transform: uppercase;" class="form-control border-end-0">
                 <button class="btn btn-primary" style="background-color:#171C63; border:none;" wire:click="searchUbicacionesFisicas">
                     <i class="fas fa-search"></i> Buscar
                 </button>

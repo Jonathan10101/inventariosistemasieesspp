@@ -53,7 +53,7 @@
             <label class="form-label fw-semibold text-dark">Da clic en el Buscador, luego escribe el nombre de la Marca y presiona “Buscar”</label>
             <div class="input-group shadow-sm">
                 <input type="text" id="searchid" placeholder="Buscador ..." 
-                       wire:keydown.enter="searchMarcas" wire:model="search" class="form-control border-end-0">
+                       wire:keydown.enter="searchMarcas" wire:model="search" style="text-transform: uppercase;" class="form-control border-end-0">
                 <button class="btn btn-primary" style="background-color:#171C63; border:none;" wire:click="searchMarcas">
                     <i class="fas fa-search"></i> Buscar
                 </button>

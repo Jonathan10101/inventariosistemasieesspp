@@ -126,16 +126,14 @@ class UbicacionfisicaForm extends Component
     {
         $query = UbicacionFisica::query();
 
+
         if ($this->search) {
             $busqueda = trim($this->search);
             $busquedaSinCeros = ltrim($this->search, '0');
 
             $query->where(function ($q) use ($busqueda, $busquedaSinCeros) {
-                $q->where('descripcion', 'like', "{$this->search}")
-        ->orWhere('descripcion', 'like', "{$this->search} ")
-        ->orWhere('descripcion', 'like', "% {$this->search}")
-        ->orWhere('id', $busqueda);
-
+                $q->where('descripcion', 'like', "%{$this->search}%")
+                ->orWhere('id', $busqueda);
             });
         }
 

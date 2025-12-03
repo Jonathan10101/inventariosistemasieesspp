@@ -101,7 +101,7 @@ class CreateNewResguardo extends Component
         $this->validate([
             'descripcion' => 'required|string|max:255',
             'marca_id' => 'required|exists:marcas,id',
-            'modelo' => 'required|string|max:255',
+            'modelo' => 'nullable|string|max:255',
             'nserie' => [
                 'nullable',
                 'string',
@@ -148,12 +148,17 @@ class CreateNewResguardo extends Component
             $nserie = 'N/A';
         }
 
+        $modelo = trim($this->modelo);
+        if ($modelo === '' || $modelo === null) {
+            $modelo = 'N/A';
+        }
+
 
         /* === Crear Resguardo === */
         $resguardo = Resguardo::create([
             'descripcion' => $this->descripcion,
             'marca_id' => $this->marca_id,
-            'modelo' => $this->modelo,
+            'modelo' => $modelo,
             'nserie' => $nserie,   // ← aquí ya va "N/A" si estaba vacío
             'resguardante_id' => $this->resguardante_id,
             'puesto_id' => $this->puesto_id,

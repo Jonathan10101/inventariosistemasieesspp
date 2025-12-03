@@ -52,7 +52,7 @@
             <label class="form-label fw-semibold text-dark">Da clic en el Buscador y escribe el nombre de asignación y luego presiona “Buscar”</label>
             <div class="input-group shadow-sm">
                 <input disabled type="text" id="searchid" placeholder="Buscador ..." 
-                       wire:keydown.enter="searchAreasDeAsignacion" wire:model="search" class="form-control border-end-0">
+                       wire:keydown.enter="searchAreasDeAsignacion" wire:model="search" style="text-transform: uppercase;" class="form-control border-end-0">
                 <button disabled class="btn btn-primary" style="background-color:#171C63; border:none;" wire:click="searchUsearchAreasDeAsignacionbicacionesFisicas">
                     <i class="fas fa-search"></i> Buscar
                 </button>

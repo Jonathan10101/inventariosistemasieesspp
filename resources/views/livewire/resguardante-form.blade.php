@@ -50,8 +50,8 @@
             <label class="form-label fw-semibold text-dark">Da clic en el Buscador y escribe el nombre del Resguardante y luego presiona “Buscar”</label>
             <div class="input-group shadow-sm">
                 <input type="text" id="searchid" placeholder="Buscador ..." 
-                       wire:keydown.enter="searchResguardantes" wire:model="search" class="form-control border-end-0">
-                <button class="btn btn-primary" style="background-color:#171C63; border:none;" wire:click="searchResguardantes">
+                       wire:keydown.enter="searchResguardantes" wire:model="search" style="border:none; text-transform: uppercase;" class="form-control border-end-0">
+                <button class="btn btn-primary" style="background-color:#171C63;" wire:click="searchResguardantes">
                     <i class="fas fa-search"></i> Buscar
                 </button>
                 @if($search)
