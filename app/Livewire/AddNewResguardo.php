@@ -26,6 +26,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Number;
 
 use App\Models\Resguardo;
+use App\Models\User;
 use Carbon\Carbon;
 
 use App\Models\HistorialResguardo;
@@ -70,13 +71,25 @@ class AddNewResguardo extends Component
             
             $this->resguardo_id = $this->resguardo->id;
             //$this->resguardante_id = $this->resguardante->id;
-
         }
 
 
 
         $this->ubicacionesifiscas  = UbicacionFisica::all();
-        $this->resguardantes = Resguardante::where('id', '!=',$this->resguardante_id)->get();
+        //$this->resguardantes = Resguardante::where('id', '!=',$this->resguardante_id)->get();
+        if (auth()->user()->email == "subdesarrollopolicial@ieesspp.com") {
+            $userIds = User::where("subdireccion", "LIKE", "SUBDIRECCIÓN DE DESARROLLO POLICIAL")
+                        ->pluck('id');
+            $this->resguardantes = Resguardante::whereIn('user_id', $userIds)->get();
+        }else if (auth()->user()->email == "subcoordinacion@ieesspp.com") {
+            $userIds = User::where("subdireccion", "LIKE", "SUBDIRECCIÓN DE COORDINACIÓN E INFRAESTRUCTURA INSTITUCIONAL")
+                        ->pluck('id');
+            $this->resguardantes = Resguardante::whereIn('user_id', $userIds)->get();
+        }else{
+            $this->resguardantes = Resguardante::all();
+            //$this->resguardantes = Resguardante::where('id', '!=',$this->resguardante_id)->get();
+
+        }
 
         //dd($x);
         $this->puestos = Puesto::all();

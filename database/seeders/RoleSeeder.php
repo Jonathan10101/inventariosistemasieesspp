@@ -43,7 +43,7 @@ class RoleSeeder extends Seeder
         $perm8->syncRoles([$role1]);
         //Crear permisos Resguardantes
         $perm9 = Permission::create(['name'=>'resguardante.index']);
-        $perm9->syncRoles([$role1,$role2,$role3,$role4,$role5]);
+        $perm9->syncRoles([$role1,$role2,$role3,$role4]);
         $perm10 = Permission::create(['name'=>'resguardante.create']);
         $perm10->syncRoles([$role1,$role3,$role4]);
         $perm11 = Permission::create(['name'=>'resguardante.edit']);
@@ -61,7 +61,7 @@ class RoleSeeder extends Seeder
         $perm16->syncRoles([$role1]);
         //Crear permisos Ubicaciones Fisicas
         $perm17 = Permission::create(['name'=>'ubicacionfisica.index']);
-        $perm17->syncRoles([$role1,$role2,$role3,$role4,$role5]);
+        $perm17->syncRoles([$role1,$role2,$role3,$role4]);
         $perm18 = Permission::create(['name'=>'ubicacionfisica.create']);
         $perm18->syncRoles([$role1,$role3,$role4]);
         $perm19 = Permission::create(['name'=>'ubicacionfisica.edit']);
