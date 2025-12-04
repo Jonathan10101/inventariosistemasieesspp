@@ -4,10 +4,11 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Resguardante;
+use App\Models\Puesto;
 
 class CreateNewResguardante extends Component
 {
-    public $nombre1,$nombre2,$apellido1,$apellido2,$email,$password,$subdireccion;
+    public $nombre1,$nombre2,$apellido1,$apellido2,$email,$password,$subdireccion,$puestos,$puesto_id;
     
 
     protected $rules = [
@@ -17,8 +18,13 @@ class CreateNewResguardante extends Component
         'apellido2' => 'nullable|max:50',
         'email' => 'required|min:10|max:75|email|unique:users,email',
         'password' => 'required|min:8|max:50',
-        'subdireccion' => 'required'
+        'subdireccion' => 'required',
+        'puesto_id' => 'required'
     ];
+
+    public function mount(){
+        $this->puestos = Puesto::all();
+    }
 
     public function save(){
         // Normalizamos todo
@@ -57,7 +63,8 @@ class CreateNewResguardante extends Component
             'apellido2' => $this->apellido2,
             'email' => $this->email,
             'password' => $this->password,
-            'subdireccion' => $this->subdireccion
+            'subdireccion' => $this->subdireccion,
+            'puesto_id' => $this->puesto_id
         ];
 
 

@@ -124,7 +124,7 @@
                                             {{ optional($resguardo->historial->last()->ubicacionFisica)->descripcion }}
                                         </a>
                                         @else
-                                        <p>{{ optional($resguardo->historial->last()->ubicacionFisica)->descripcion }}</p>
+                                            <p>{{ optional($resguardo->historial->last()->ubicacionFisica)->descripcion }}</p>
                                         @endcan
                                     @endif
                                 </td>
@@ -145,11 +145,13 @@
                                     @endcan
                                 </td>
                       <td class="text-nowrap">
+                        @hasanyrole('Administrador|Delegacion|Subdirector|Empleado')              
                         <button wire:click="cambiarAccion('editar',{{ $resguardo->id }})" 
                                 class="btn btn-warning btn-sm text-white mb-1" 
                                 title="Editar Resguardo">
                             <i class="fas fa-edit"></i>
                         </button>
+                        @endhasanyrole
 
                         <button wire:click="cambiarAccion('showHistorialResguardo',{{ $resguardo->id }})" 
                                 class="btn btn-dark btn-sm mb-1" 
@@ -157,20 +159,21 @@
                             <i class="fas fa-eye"></i>
                         </button>
 
-                        @can('inventario.create')   
+                        @hasanyrole('Administrador|Delegacion|Subdirector')              
                             <button wire:click="cambiarAccion('addNewResguardo',{{ $resguardo->id }})" 
                                     class="btn btn-primary btn-sm mb-1" 
                                     style="background-color:#171C63; border:none;" 
                                     title="Añadir Nuevo Resguardo">
                                 <i class="fas fa-plus"></i>
                             </button>  
-
+                        @endhasanyrole
+                        @hasanyrole('Administrador|Delegacion')              
                             <button wire:click="downloadEtiqueta({{ $resguardo->id }})" 
                                     class="btn btn-success btn-sm mb-1" 
                                     title="Descargar Etiqueta">
                                 <i class="fas fa-download"></i>
                             </button>
-                        @endcan
+                        @endhasanyrole
                     </td>
 
                             </tr>

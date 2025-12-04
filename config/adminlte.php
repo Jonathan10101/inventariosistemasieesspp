@@ -192,17 +192,20 @@ return [
         ],
 
         // 🔹 Dashboard
+        /*
         [
             'text' => 'Panel principal',
             'url' => 'dashboard',
             'icon' => 'fas fa-tachometer-alt',
         ],
+        */
 
         // 🔹 Inventario
         [
             'text' => 'Inventario',
             'url' => 'inventario',
             'icon' => 'fas fa-boxes',
+            'can' => 'inventario.index',
         ],
 
         // 🔹 Marcas
@@ -210,24 +213,27 @@ return [
             'text' => 'Marcas',
             'url' => 'marcas',
             'icon' => 'fas fa-copyright',
-            'can' => 'marcas.create',
+            'can' => 'marcas.edit',
         ],
 
         // 🔹 Resguardantes
         [
             'text' => 'Resguardantes',
             'icon' => 'fas fa-user-shield',
-            'can' => 'resguardante.create',
+            'can' => 'resguardante.index',
             'submenu' => [
                 [
                     'text' => 'Usuarios',
                     'url' => 'resguardante',
                     'icon' => 'fas fa-id-badge',
+                    'can' => 'puestos.index'
+
                 ],
                 [
                     'text' => 'Puestos',
                     'url' => 'puestos',
                     'icon' => 'fas fa-briefcase',
+                    'can' => 'puestos.edit'
                 ],
             ],
         ],
@@ -236,17 +242,19 @@ return [
         [
             'text' => 'Ubicaciones',
             'icon' => 'fas fa-map-marked-alt',
-            'can' => 'ubicacionfisica.create',
+            'can' => 'ubicacionfisica.index',
             'submenu' => [
                 [
                     'text' => 'Ubicación física',
                     'url' => 'ubicacionfisica',
                     'icon' => 'fas fa-map-marker-alt',
+                    'can' => 'ubicacionfisica.index'
                 ],
                 [
                     'text' => 'Área de asignación',
                     'url' => 'areadeasignacion',
                     'icon' => 'fas fa-building',
+                    'can' => 'ubicacionfisica.edit'
                 ],
             ],
         ],

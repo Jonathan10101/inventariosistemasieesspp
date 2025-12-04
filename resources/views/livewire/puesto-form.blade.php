@@ -6,7 +6,8 @@
     <!-- Add nueva Marca  -->
     <div class="row">
         <div class="col d-flex justify-content-end">   
-            @hasanyrole('Administrador|Delegacion|Subdirector')                             
+            {{--@hasanyrole('Administrador|Delegacion|Subdirector')--}}
+            @hasanyrole('Administrador')                                              
             <button wire:click="showModalNewPuesto" class="btn btn-primary mb-3 fa" style="background-color:#171C63; border:none;">                        
                 <i class="fas fa-plus"></i>
                 Agregar puesto           
@@ -50,8 +51,8 @@
             <label class="form-label fw-semibold text-dark">Da clic en el Buscador y escribe el nombre del Puesto y luego presiona “Buscar”</label>
             <div class="input-group shadow-sm">
                 <input type="text" id="searchid" placeholder="Buscador ..." 
-                       wire:keydown.enter="searchPuestos" wire:model="search" style="border:none; text-transform: uppercase;" class="form-control border-end-0">
-                <button class="btn btn-primary" style="background-color:#171C63; border:none;text-transform: uppercase;" wire:click="Puestos">
+                       wire:keydown.enter="searchPuestos" wire:model="search" style="text-transform: uppercase;" class="form-control border-end-0">
+                <button class="btn btn-primary" style="background-color:#171C63; border:none;text-transform: uppercase;" wire:click="searchPuestos">
                     <i class="fas fa-search"></i> Buscar
                 </button>
                 @if($search)

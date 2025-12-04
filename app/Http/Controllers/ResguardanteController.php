@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Resguardante;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class ResguardanteController extends Controller
 {
@@ -63,19 +65,43 @@ class ResguardanteController extends Controller
     {
         $resguardante = Resguardante::find($id);
 
-        // Obtener solo los historiales activos (sin fecha_liberacion)
-        $historiales = $resguardante
-            ? $resguardante->historialResguardos()
-                ->whereNull('fecha_liberacion')
-                ->paginate($this->perPage)
-            : collect();
+        if (!$resguardante) {
+            abort(404);
+        }
 
-        $resguardante = Resguardante::find($id);
+        $user = Auth::user();
+
+        // 👉 ROLES QUE PUEDEN VER TODO
+        if ($user->hasRole('Administrador') ||
+            $user->hasRole('Delegacion')   ||
+            $user->hasRole('Director')) {
+
+            $historiales = $resguardante->historialResguardos()
+                ->whereNull('fecha_liberacion')
+                ->paginate($this->perPage);
+
+            return view("resguardante.show", [
+                'historiales' => $historiales,
+                'resguardante' => $resguardante
+            ]);
+        }
+
+        // 👉 VALIDAR SUBDIRECCIÓN PARA LOS DEMÁS USUARIOS
+        if ($resguardante->user->subdireccion !== $user->subdireccion) {
+            abort(403, 'No tienes permiso para ver este resguardante.');
+        }
+
+        // Historiales activos
+        $historiales = $resguardante->historialResguardos()
+            ->whereNull('fecha_liberacion')
+            ->paginate($this->perPage);
+
         return view("resguardante.show", [
             'historiales' => $historiales,
             'resguardante' => $resguardante
-        ]);    
+        ]);
     }
+
 
     public function edit(Resguardante $resguardante)
     {

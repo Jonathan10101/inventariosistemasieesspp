@@ -85,10 +85,15 @@
                 <td>{{ $resguardante->nombre1 }} {{ $resguardante->nombre2 }} {{ $resguardante->apellido1 }} {{ $resguardante->apellido2 }}</td>
 
                 <td class="d-flex justify-content-center">
-                    <a href="{{ route('resguardante.show', $resguardante->id) }}" class="btn btn-dark btn-sm" title="Ver">
-                        <i class="fas fa-eye"></i>
-                    </a>
+                    @if(auth()->user()->hasRole('Director') || auth()->user()->hasRole('Delegacion') || auth()->user()->hasRole('Administrador') || ($resguardante->user && $resguardante->user->subdireccion == Auth::user()->subdireccion))
+                        <a href="{{ route('resguardante.show', $resguardante->id) }}" class="btn btn-dark btn-sm" title="Ver">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                    @else
+                        <p>No pertenece a tu subdirección</p>
+                    @endif
                 </td>
+
 
                 @hasanyrole('Administrador')
                     <td>

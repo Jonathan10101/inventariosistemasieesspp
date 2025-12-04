@@ -16,6 +16,9 @@ class PuestoSeeder extends Seeder
     {
         DB::table('puestos')->insert([
             [                
+                'nombre' => 'N/A',                
+            ],
+            [                
                 'nombre' => 'ANALISTA',                
             ],
             [                

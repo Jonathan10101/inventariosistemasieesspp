@@ -12,7 +12,7 @@ class Resguardante extends Model
 {
     use HasFactory;
     protected $table  = "resguardantes";
-    protected $fillable = ['nombre1','nombre2','apellido1','apellido2','user_id'];
+    protected $fillable = ['nombre1','nombre2','apellido1','apellido2','user_id','puesto_id'];
 
     
     public function setAttribute($key, $value)

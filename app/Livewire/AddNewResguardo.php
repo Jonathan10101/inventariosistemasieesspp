@@ -131,9 +131,9 @@ class AddNewResguardo extends Component
             'area_de_uso_id' => 'required',
             'ubicacion_fisicas_id' => 'required',
             'resguardante_id' => 'required',
-            'puesto_id' => 'required',
+            //'puesto_id' => 'required',
             //'imagen' => 'image|max:6144',
-            'imagen' => $this->imagenBase64 ? 'nullable' : 'required|image|max:2048',
+            'imagen' => $this->imagenBase64 ? 'nullable' : 'image|max:2048',
             'resguardo_pdf' => 'mimes:pdf|max:8192', // 4MB máx
             //'resguardo_pdf' => 'nullable|mimes:pdf|max:1080', // 4MB máx
         ]);
@@ -171,6 +171,8 @@ class AddNewResguardo extends Component
         $resguardo = Resguardo::find($this->resguardo_id);
 
         $ultimoHistorial = $resguardo->historial()->get()->last();
+
+        
 
         if ($ultimoHistorial) {
             $ultimoHistorial->update([

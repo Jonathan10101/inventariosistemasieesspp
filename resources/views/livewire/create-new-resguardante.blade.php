@@ -91,6 +91,17 @@
                     @error('subdireccion') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
+                <div class="col-md-12">
+                    <label for="puesto" class="form-label">Puesto*</label>
+                    <select id="puesto" wire:model.defer="puesto_id" class="form-control">
+                        <option value="">Seleccione...</option>
+                        @foreach($puestos as $puesto)
+                            <option value="{{ $puesto->id }}">{{ $puesto->nombre }}</option>
+                        @endforeach
+                    </select>
+                    @error('puesto_id') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
+
                 <!-- Botón Guardar -->
                 <div class="col-12 d-flex justify-content-end mt-4">
                     <button type="submit" class="btn btn-primary" style="background-color:#171C63; border-color:#171C63; color:#fff;">

@@ -6,6 +6,8 @@ use App\Models\UbicacionFisica;
 use App\Models\Resguardante;
 use Illuminate\Http\Request;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Auth;
+
 
 
 class UbicacionFisicaController extends Controller
@@ -52,19 +54,49 @@ class UbicacionFisicaController extends Controller
     {
         $ubicacionFisica = UbicacionFisica::find($id);
 
-        // Obtener solo los historiales activos (sin fecha_liberacion) con paginación
-        $historiales = $ubicacionFisica
-        ? $ubicacionFisica->historialResguardos()
-        ->whereNull('fecha_liberacion')
-        ->paginate($this->perPage)
-        : collect();
+        if (!$ubicacionFisica) {
+            abort(404);
+        }
+
+        $user = Auth::user();
+
+        // 👉 ROLES QUE PUEDEN VER TODO (NO incluye subdirector)
+        if ($user->hasRole('Administrador') || 
+            $user->hasRole('Delegacion')   ||
+            $user->hasRole('Director')) {
+
+            $historiales = $ubicacionFisica->historialResguardos()
+                ->whereNull('fecha_liberacion')
+                ->paginate($this->perPage);
+
+            return view("ubicaciones.show", [
+                'historiales' => $historiales,
+                'ubicacionFisica' => $ubicacionFisica
+            ]);
+        }
+
+        // 👉 SUBDIRECTOR Y USUARIO NORMAL: validar subdirección
+        $puedeVer = $ubicacionFisica->historialResguardos()
+            ->whereNull('fecha_liberacion')
+            ->whereHas('resguardante.user', function ($q) use ($user) {
+                $q->where('subdireccion', $user->subdireccion);
+            })
+            ->exists();
+
+        if (!$puedeVer) {
+            abort(403, 'No tienes permiso para ver esta ubicación física.');
+        }
+
+        // Historiales activos con paginación (para subdirección)
+        $historiales = $ubicacionFisica->historialResguardos()
+            ->whereNull('fecha_liberacion')
+            ->paginate($this->perPage);
 
         return view("ubicaciones.show", [
             'historiales' => $historiales,
             'ubicacionFisica' => $ubicacionFisica
         ]);
     }
-
 
     public function edit(UbicacionFisica $ubicacionFisica)
     {

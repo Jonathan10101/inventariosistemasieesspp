@@ -110,16 +110,17 @@ class PuestoForm extends Component
     public function render()
     {
         $query = Puesto::query();
-        $this->search = strtoupper($this->search);
+        //$this->search = strtoupper($this->search);
 
         
         if ($this->search) {
             $query->where(function ($q) {
-                $q->where('nombre', 'like', "%{$this->search}%");
+                $q->where('nombre', 'LIKE', "%{$this->search}%");
             });
         }  
         return view('livewire.puesto-form', [
             'puestos' => $query->paginate($this->perPage),
         ]);
+
     }
 }

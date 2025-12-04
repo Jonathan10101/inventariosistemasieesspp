@@ -73,7 +73,8 @@ class ResguardanteForm extends Component
             'nombre2' => $data['nombre2'],
             'apellido1' => $data['apellido1'],
             'apellido2' => $data['apellido2'],
-            'user_id' => $id_user
+            'user_id' => $id_user,
+            'puesto_id' => $data['puesto_id']
         ]);
         $this->showModal = false;  
         $this->dispatch('alumno-created', 1);

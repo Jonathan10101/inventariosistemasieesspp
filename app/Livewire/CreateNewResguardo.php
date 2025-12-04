@@ -73,6 +73,17 @@ class CreateNewResguardo extends Component
         $this->imagenBase64 = null;
     }
 
+public function updatedResguardanteId($value)
+{
+    if ($value) {
+        $resguardante = Resguardante::find($value);
+        $this->puesto_id = $resguardante->puesto_id ?? null;
+    } else {
+        $this->puesto_id = null;
+    }
+}
+
+
     public function updatedUbicacionFisicasId($value)
     {
         if (!$value) {
@@ -114,7 +125,6 @@ class CreateNewResguardo extends Component
             'area_de_uso_id' => 'required|exists:area_de_uso,id',
             'ubicacion_fisicas_id' => 'required|exists:ubicacion_fisicas,id',
             'resguardante_id' => 'required|exists:resguardantes,id',
-            'puesto_id' => 'required|exists:puestos,id',
             //'imagen' => $this->imagenBase64 ? 'nullable' : 'required|image|max:4096',
             'imagen' => 'nullable|image|max:4096',
             //'resguardo_pdf' => 'nullable|mimes:pdf|max:8192',
@@ -153,6 +163,13 @@ class CreateNewResguardo extends Component
             $modelo = 'N/A';
         }
 
+        $resguardante = Resguardante::find($this->resguardante_id);
+        $puesto_id = $resguardante->puesto_id;
+        if($resguardante->puesto_id == null){
+            $puesto_id = 1;
+        }
+
+        //dd($puesto_id);
 
         /* === Crear Resguardo === */
         $resguardo = Resguardo::create([
@@ -161,7 +178,7 @@ class CreateNewResguardo extends Component
             'modelo' => $modelo,
             'nserie' => $nserie,   // ← aquí ya va "N/A" si estaba vacío
             'resguardante_id' => $this->resguardante_id,
-            'puesto_id' => $this->puesto_id,
+            'puesto_id' => $puesto_id,
             'imagen' => $pathImagen,
             'estado_actual' => 'asignado', // nuevo resguardo siempre inicia asignado
         ]);

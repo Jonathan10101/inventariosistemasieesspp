@@ -138,8 +138,9 @@
 
                 <!-- Resguardante -->
                 <div class="col-md-12">
-                    <label class="form-label">Resguardante*</label>
-                    <select wire:model.defer="resguardante_id" class="form-control">
+                    <label for="resguardantelabel" class="form-label">Resguardante*</label>
+                    <select id="resguardantelabel" wire:model="resguardante_id" class="form-control">
+                        <label class="form-label">Resguardante*</label>
                         <option value="">Seleccione...</option>
                         @foreach($resguardantes as $resguardante)
                             <option value="{{ $resguardante->id }}">
@@ -147,19 +148,8 @@
                             </option>
                         @endforeach
                     </select>
-                    @error('resguardante_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
-
-                <div class="col-md-12">
-                    <label class="form-label">Puesto del resguardante*</label>
-                    <select wire:model.defer="puesto_id" class="form-control">
-                        <option value="">Seleccione...</option>
-                        @foreach($puestos as $puesto)
-                            <option value="{{ $puesto->id }}">{{ $puesto->nombre }}</option>
-                        @endforeach
-                    </select>
-                    @error('puesto_id') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
+            
 
                 <!-- Subir archivo PDF -->
                 <div class="col-md-12 mt-3">
