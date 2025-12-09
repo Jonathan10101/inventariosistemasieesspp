@@ -22,7 +22,7 @@
                 $user = Auth::user();
             @endphp
 
-            @if ($user->hasRole('Administrador') || $user->id == $historial->resguardante_id)
+            @if ($user->hasRole('Administrador') || $user->hasRole('Delegacion') || $user->hasRole('Subdirector') ||  $user->hasRole('Director') || $user->id == $historial->resguardante_id)
                 <a href="{{ Storage::url($historial->resguardo_pdf) }}" 
                 class="btn btn-primary mb-4"
                 style="background-color:#171C63; border-color:#171C63; color:#fff;" 
