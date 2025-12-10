@@ -20,6 +20,7 @@ class ShowResguardosModal extends Component
     public function mount($data)
     {
         $this->resguardo_id = $data;
+        $this->resetPage(); // Carga página 1 automáticamente
     }
 
     public function render()

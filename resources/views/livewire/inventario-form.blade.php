@@ -78,6 +78,7 @@
                         <tr>           
                             <th>Id</th>
                             <th>Imagen</th>
+                            <th>Cantidad</th>
                             <th>Equipo</th>
                             <th>Marca</th>
                             <th>Modelo</th>
@@ -103,6 +104,7 @@
                                         <span class="text-muted">Sin imagen</span>
                                     @endif
                                 </td>
+                                <td>{{ $resguardo->cantidad }}</td>
                                 <td>{{ $resguardo->descripcion }}</td>
                                 <td>{{ $resguardo->marca->nombre }}</td>
                                 <td>{{ $resguardo->modelo }}</td>

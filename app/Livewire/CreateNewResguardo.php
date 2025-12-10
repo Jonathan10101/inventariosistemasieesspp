@@ -26,7 +26,7 @@ class CreateNewResguardo extends Component
     /* =================== VARIABLES =================== */
     public $marcas, $estadosdeuso, $areasdeasignacion, $ubicacionesifiscas, $resguardantes, $puestos;
 
-    public $descripcion, $marca_id, $modelo, $nserie, $nresguardo,
+    public $descripcion, $cantidad, $marca_id, $modelo, $nserie, $nresguardo,
            $estado_uso_id, $area_de_uso_id, $ubicacion_fisicas_id,
            $resguardante_id, $puesto_id;
 
@@ -111,6 +111,7 @@ public function updatedResguardanteId($value)
     {
         $this->validate([
             'descripcion' => 'required|string|max:255',
+            'cantidad' => 'nullable|integer|min:1|max:500',
             'marca_id' => 'required|exists:marcas,id',
             'modelo' => 'nullable|string|max:255',
             'nserie' => [
@@ -128,9 +129,13 @@ public function updatedResguardanteId($value)
             //'imagen' => $this->imagenBase64 ? 'nullable' : 'required|image|max:4096',
             'imagen' => 'nullable|image|max:4096',
             //'resguardo_pdf' => 'nullable|mimes:pdf|max:8192',
-            'resguardo_pdf' => 'mimes:pdf|max:8192',
+            'resguardo_pdf' => 'required|mimes:pdf|max:8192',
         ]);
 
+        if($this->cantidad == null){
+            $this->cantidad = 1;
+        }
+        
         /* === Procesar imagen base64 (foto tomada desde cámara) === */
         if ($this->imagenBase64) {
             $fileData = explode(',', $this->imagenBase64)[1];
@@ -171,9 +176,12 @@ public function updatedResguardanteId($value)
 
         //dd($puesto_id);
 
+        //dd((int)$this->cantidad);
+
         /* === Crear Resguardo === */
         $resguardo = Resguardo::create([
             'descripcion' => $this->descripcion,
+            'cantidad' => $this->cantidad,
             'marca_id' => $this->marca_id,
             'modelo' => $modelo,
             'nserie' => $nserie,   // ← aquí ya va "N/A" si estaba vacío
@@ -203,7 +211,7 @@ public function updatedResguardanteId($value)
     public function resetForm()
     {
         $this->reset([
-            'descripcion', 'marca_id', 'modelo', 'nserie', 'nresguardo',
+            'descripcion', 'cantidad', 'marca_id', 'modelo', 'nserie', 'nresguardo',
             'estado_uso_id', 'area_de_uso_id', 'ubicacion_fisicas_id',
             'resguardante_id', 'puesto_id', 'imagen', 'imagenBase64',
             'resguardo_pdf', 'tomadaDesdeCamara'

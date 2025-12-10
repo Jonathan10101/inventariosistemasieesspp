@@ -20,6 +20,7 @@ class Resguardo extends Model
 
      protected $fillable = [
         'descripcion',
+        'cantidad',
         'marca_id',
         'modelo',
         'nserie',

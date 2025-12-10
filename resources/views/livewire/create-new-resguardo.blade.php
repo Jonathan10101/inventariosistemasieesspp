@@ -52,11 +52,8 @@
                                 </div>
                             @endif
                     </div>
-                </div>     
-               
-
-
-                
+                </div>                    
+            
                 <hr>
 
                 <!-- Campos generales -->
@@ -64,6 +61,13 @@
                     <label class="form-label">Descripción*</label>
                     <input type="text" wire:model.defer="descripcion" class="form-control text-uppercase">
                     @error('descripcion') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
+
+                <!-- Campos generales -->
+                <div class="col-md-12">
+                    <label class="form-label">Cantidad (opcional)</label>
+                    <input type="number" wire:model.defer="cantidad"  min="1" max="500" class="form-control text-uppercase">
+                    @error('cantidad') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="col-md-12">
