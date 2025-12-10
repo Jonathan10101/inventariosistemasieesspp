@@ -85,6 +85,7 @@
                         wire:model.defer="subdireccion"
                         class="form-control">
                         <option value="">Selecciona una opción</option>
+                        <option value="NA">NA</option>
                         <option value="SUBDIRECCIÓN DE DESARROLLO POLICIAL">SUBDIRECCIÓN DE DESARROLLO POLICIAL</option>
                         <option value="SUBDIRECCIÓN DE COORDINACIÓN E INFRAESTRUCTURA INSTITUCIONAL">SUBDIRECCIÓN DE COORDINACIÓN E INFRAESTRUCTURA INSTITUCIONAL</option>
                     </select>

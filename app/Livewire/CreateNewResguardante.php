@@ -77,7 +77,7 @@ class CreateNewResguardante extends Component
     public function resetForm()
     {
         $this->reset([
-            'nombre1','nombre2','apellido1','apellido2'
+            'nombre1','nombre2','apellido1','apellido2','email','password','subdireccion','puesto_id'
         ]);
     }
 
