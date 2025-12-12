@@ -8,7 +8,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'title' => 'Sistema Integral de Resguardos | IEESSPP',
+    'title' => 'Sistema Integral de Inventarios | IEESSPP',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -37,7 +37,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'logo' => '<b>RESGUARDOS IEESSPP</b>',
+    'logo' => '<b>INVENTARIOS IEESSPP</b>',
     'logo_img' => 'vendor/adminlte/dist/img/logocircularieessppQUITARMAYUSCULAS.png',
     'logo_img_class' => 'brand-image',
     'logo_img_alt' => '',

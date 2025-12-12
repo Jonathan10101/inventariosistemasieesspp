@@ -5,8 +5,24 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>
 
     <!-- Botón Agregar Inventario -->
-    <div class="row mb-3">
-        <div class="col d-flex justify-content-end">   
+    <div class="row">
+        <div class="col">
+            <!-- Texto de rango de registros -->
+          
+                <!-- Select dinámico para cambiar cantidad por página -->
+                <div>
+                    <label class="text-muted me-2">Mostrar:</label>
+                    <select wire:model.live="perPage" class="form-select form-select-sm" style="width: auto;">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="25">25</option>
+                    </select>
+                </div>
+        </div>
+
+        <div class="col d-flex justify-content-end mt-4 mb-4">   
             @hasanyrole('Administrador|Delegacion|Subdirector')
             <button wire:click="showModalNewResguardo" class="btn btn-primary shadow-sm" style="background-color:#171C63; border:none;">                        
                 <i class="fas fa-plus me-1"></i> Agregar inventario            
@@ -77,13 +93,15 @@
                     <thead style="background-color:#171C63; color:white;">
                         <tr>           
                             <th>Id</th>
+                            {{--
                             <th>Imagen</th>
-                            <th>Cantidad</th>
+                            --}}
                             <th>Equipo</th>
                             <th>Marca</th>
                             <th>Modelo</th>
                             <th>Serie</th>
-                            <th>Estado</th>                      
+                            <th>Estado</th>
+                            <th>Cant.</th>
                             <th>Área</th>
                             <th>Ubicación</th>
                             <th>Resguardante</th>
@@ -93,7 +111,8 @@
                     <tbody>
                         @forelse ($resguardos as $resguardo)
                             <tr>
-                                <td>{{ $resguardo->id }}</td>
+                                <td class="text-center">{{ $resguardo->id }}</td>
+                                {{--
                                 <td>
                                     @if($resguardo->imagen)
                                         <a href="{{ asset('storage/' . $resguardo->imagen) }}" target="_blank">
@@ -104,12 +123,13 @@
                                         <span class="text-muted">Sin imagen</span>
                                     @endif
                                 </td>
-                                <td>{{ $resguardo->cantidad }}</td>
+                                --}}
                                 <td>{{ $resguardo->descripcion }}</td>
                                 <td>{{ $resguardo->marca->nombre }}</td>
                                 <td>{{ $resguardo->modelo }}</td>
                                 <td>{{ $resguardo->nserie }}</td>
                                 <td><span class="badge rounded-pill bg-{{ strtoupper(optional($resguardo->historial->last()->estadouso)->estado) == 'ACTIVO' ? 'success' : 'secondary' }}">{{ strtoupper(optional($resguardo->historial->last()->estadouso)->estado) }}</span></td>
+                                <td class="text-center">{{ $resguardo->cantidad }}</td>
                                 <td>{{ $resguardo->historial->last()->areaDeUso->nombre }}</td>
                                 <td>
                                     @if($resguardo->historial->last() && $resguardo->historial->last()->ubicacionFisica->imagen)
@@ -146,7 +166,8 @@
                                         {{ strtoupper(optional($resguardo->historial->last()->resguardante)->apellido2) }}</p>
                                     @endcan
                                 </td>
-                      <td class="text-nowrap">
+                      <!--  text-nowrap  -->
+                      <td class="text-wrap">
                         @hasanyrole('Administrador|Delegacion|Subdirector|Empleado')              
                         <button wire:click="cambiarAccion('editar',{{ $resguardo->id }})" 
                                 class="btn btn-warning btn-sm text-white mb-1" 
@@ -188,10 +209,33 @@
         </div>
     </div>
 
+    
+    <div class="row">
+        <div class="col d-flex justify-content-center">
+            <div class="mr-3">
+                <label class="fw-bold">Desde:</label>
+                <input type="number" wire:model.defer="rangeFrom" class="form-control" style="width:120px;">
+            </div>
+
+            <div>
+                <label class="fw-bold">Hasta:</label>
+                <input type="number" wire:model.live="rangeTo" class="form-control" style="width:120px;">
+            </div>
+        </div>
+    </div>
+
+    
     <!-- Paginación -->
+    {{--
     <div class="d-flex justify-content-end mt-3">
         {{ $resguardos->links() }}
     </div>
+    --}}
+    @if ($resguardos instanceof \Illuminate\Pagination\LengthAwarePaginator)
+    <div class="d-flex justify-content-end mt-3">
+        {{ $resguardos->links() }}
+    </div>
+@endif
 
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">

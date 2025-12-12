@@ -29,7 +29,7 @@
         }
     </style>
 
-    <h4 class="text-center mb-4 titulo-sistema">Sistema Integral de Resguardos</h4>
+    <h4 class="text-center mb-4 titulo-sistema">Sistema Integral de Inventarios</h4>
 @stop
 
 @php( $login_url = View::getSection('login_url') ?? config('adminlte.login_url', 'login') )
@@ -110,8 +110,8 @@
                     </button>
                 </div>
                 <div class="modal-body text-center">
-                    <h5><strong>Sistema Integral de Resguardos</strong></h5>
-                    <p class="text-muted">La <span class="text-bold">herramienta del IEESSPP</span> diseñada para una <span class="text-bold">gestión moderna, ágil y segura</span> de los <span class="text-bold">resguardos institucionales</span>.</p>                      {{-- 
+                    <h5><strong>Sistema Integral de Inventarios</strong></h5>
+                    <p class="text-muted">La <span class="text-bold">herramienta del IEESSPP</span> diseñada para una <span class="text-bold">gestión moderna, ágil y segura</span> de los <span class="text-bold">inventarios institucionales</span>.</p>                      {{-- 
                     <img src="{{ asset('images/logo.png') }}" alt="Logo" class="img-fluid my-2" style="max-height: 80px;">
                     --}}
                 </div>

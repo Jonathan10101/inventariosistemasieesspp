@@ -132,6 +132,7 @@ public function updatedResguardanteId($value)
             'resguardo_pdf' => 'required|mimes:pdf|max:8192',
         ]);
 
+        $this->cantidad = (int)$this->cantidad;
         if($this->cantidad == null){
             $this->cantidad = 1;
         }

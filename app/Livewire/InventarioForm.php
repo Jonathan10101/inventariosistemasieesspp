@@ -16,7 +16,12 @@ use Illuminate\Support\Facades\Auth;
 class InventarioForm extends Component
 {
     use WithPagination;
-    public $perPage = 2;
+    public $perPage = 5;
+    public $rangeFrom = null;
+    public $rangeTo = null;
+    public $from;
+    public $to;
+
     public $search = '';
     public $showModal = false; // Controla el modal
     public $isEditing = false; // Determina si estamos editando o creando
@@ -25,13 +30,44 @@ class InventarioForm extends Component
     public $data_external_component;
     public $data;
 
+
+    public function updated($field)
+    {
+        if ($this->from < 1) $this->from = 1;
+        if ($this->to < $this->from) $this->to = $this->from;
+    }
+
+    public function applyRange($query)
+    {
+        if ($this->rangeFrom && $this->rangeTo) {
+
+            $from = max(1, (int) $this->rangeFrom);
+            $to   = max($from, (int) $this->rangeTo);
+
+            $cantidad = $to - $from + 1;
+
+            return $query->skip($from - 1)->take($cantidad);
+        }
+
+        return $query;
+    }
+
+
+
+    public function updatingPerPage()
+    {
+        $this->resetPage(); // Para que no se quede en página 2, 3, etc.
+    }
+
+
     public function mount()
     {
-        
         $this->search = request()->query('search', '');
         if ($this->search) {
             $this->searchResguardos(); // o el método que uses
         }
+      
+
     }
 
     public function changeModalTitle($accion){
@@ -210,8 +246,111 @@ class InventarioForm extends Component
         ]);
     }
     */
-
     public function render()
+    {
+        $user = Auth::user();
+        $resguardos = Resguardo::query();
+
+        /* ============================================================
+        🟦 ADMINISTRADOR / DIRECTOR / DELEGACIÓN
+        ============================================================ */
+        if ($user->hasRole('Administrador')  || $user->hasRole('Director')  || $user->hasRole('Delegacion')) {
+
+            if ($this->search) {
+                $busqueda = ltrim($this->search, '0');
+                $resguardos = Resguardo::where('id', $busqueda);
+            } else {
+                $resguardos = Resguardo::query();
+            }
+
+            $resguardos = $resguardos->with(['historial', 'marca']);
+            $resguardos = $this->applyRange($resguardos);
+
+            // Si NO hay rango → usa paginación
+            if (!$this->rangeFrom || !$this->rangeTo) {
+                $resguardos = $resguardos->paginate($this->perPage);
+            } else {
+                $resguardos = $resguardos->get();
+            }
+
+            return view('livewire.inventario-form', compact('resguardos'));
+        }
+
+        /* ============================================================
+        🟩 SUBDIRECTOR
+        ============================================================ */
+        if ($user->hasRole('Subdirector')) {
+
+            $miSubdireccion = $user->subdireccion;
+
+            $resguardos->whereHas('resguardante.user', function ($q) use ($miSubdireccion) {
+                $q->where('subdireccion', 'LIKE', "%{$miSubdireccion}%");
+            });
+
+            if ($this->search) {
+                $busqueda = ltrim($this->search, '0');
+                $resguardos->where('id', $busqueda);
+            }
+
+            $resguardos = $resguardos->with(['historial', 'marca']);
+            $resguardos = $this->applyRange($resguardos);
+
+            if (!$this->rangeFrom || !$this->rangeTo) {
+                $resguardos = $resguardos->paginate($this->perPage);
+            } else {
+                $resguardos = $resguardos->get();
+            }
+
+            return view('livewire.inventario-form', compact('resguardos'));
+        }
+
+        /* ============================================================
+        🟧 EMPLEADO
+        ============================================================ */
+        if ($user->hasRole('Empleado')) {
+
+            $resguardos = Resguardo::where(function ($q) use ($user) {
+                $q->where(
+                    'id',
+                    function ($sub) use ($user) {
+                        $sub->select('resguardo_id')
+                            ->from('historial_resguardos')
+                            ->whereColumn('resguardo_id', 'resguardos.id')
+                            ->where('resguardante_id', $user->id)
+                            ->where('fecha_liberacion', null)
+                            ->orderByDesc('id')
+                            ->limit(1);
+                    }
+                );
+            });
+
+            if ($this->search) {
+                $busqueda = ltrim($this->search, '0');
+                $resguardos->where('id', $busqueda);
+            }
+
+            $resguardos = $resguardos->with([
+                'historial.resguardante',
+                'historial.estadouso',
+                'historial.areaDeUso',
+                'historial.ubicacionFisica',
+                'marca'
+            ]);
+
+            $resguardos = $this->applyRange($resguardos);
+
+            if (!$this->rangeFrom || !$this->rangeTo) {
+                $resguardos = $resguardos->paginate($this->perPage);
+            } else {
+                $resguardos = $resguardos->get();
+            }
+
+            return view('livewire.inventario-form', compact('resguardos'));
+        }
+    }
+
+    
+    public function render2()
     {
         $user = Auth::user();
         $resguardos = Resguardo::query();
@@ -338,7 +477,6 @@ class InventarioForm extends Component
 
     #[On('saveFromComponentNewResguardo')] 
     public function saveNewResguardo($data){ 
-        
         $id_of_student = Resguardo::create([
             'descripcion' => $data['descripcion'],
             'marca_id' => $data['marca_id'],

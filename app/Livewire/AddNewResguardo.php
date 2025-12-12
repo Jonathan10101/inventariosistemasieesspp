@@ -146,7 +146,10 @@ class AddNewResguardo extends Component
             'resguardante_id' => 'required',
             //'puesto_id' => 'required',
             //'imagen' => 'image|max:6144',
-            'imagen' => $this->imagenBase64 ? 'nullable' : 'image|max:2048',
+            // VALIDACIÓN DE IMAGEN CONDICIONAL
+            'imagen' => $this->imagenBase64
+                ? 'sometimes'        // No validar archivo si ya existe una imagen previa en Base64
+                : 'nullable|image|max:2048', // Si no hay imagen previa, validar como imagen obligatoria
             'resguardo_pdf' => 'mimes:pdf|max:8192', // 4MB máx
             //'resguardo_pdf' => 'nullable|mimes:pdf|max:1080', // 4MB máx
         ]);

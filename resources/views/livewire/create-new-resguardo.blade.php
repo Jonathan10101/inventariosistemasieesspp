@@ -65,8 +65,8 @@
 
                 <!-- Campos generales -->
                 <div class="col-md-12">
-                    <label class="form-label">Cantidad (opcional)</label>
-                    <input type="number" wire:model.defer="cantidad"  min="1" max="500" class="form-control text-uppercase">
+                    <label class="form-label">Cantidad</label>
+                    <input type="number" wire:model.defer="cantidad"  min="1" max="500" placeholder="DEJAR EN BLANCO CUANDO SEA 1" class="form-control text-uppercase">
                     @error('cantidad') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
