@@ -15,7 +15,7 @@
 
 
                 <!-- Campos del formulario -->
-                @can('inventario.update')   
+                @can('inventario.edit')   
                 <div class="col-md-12">
                     <label for="descripcionid" class="form-label">Descripción*</label>
                     <input type="text" id="descripcionid" wire:model.defer="descripcion" class="form-control" oninput="this.value = this.value.toUpperCase()">
@@ -23,7 +23,7 @@
                 </div>
                 @endcan
 
-                @can('inventario.update')   
+                @can('inventario.edit')   
                 <div class="col-md-12">
                     <label for="marcaid" class="form-label">Marca*</label>
                     <select id="marcaid" wire:model.defer="marca_id" class="form-control">
@@ -36,7 +36,7 @@
                 </div>
                 @endcan
 
-                @can('inventario.update')   
+                @can('inventario.edit')   
                 <div class="col-md-12">
                     <label for="modeloid" class="form-label">Modelo*</label>
                     <input type="text" id="modeloid" wire:model.defer="modelo" class="form-control" oninput="this.value = this.value.toUpperCase()">
@@ -44,7 +44,7 @@
                 </div>
                 @endcan
 
-                <div class="col-md-12" style="display:none;">
+                <div class="col-md-12">
                     <label for="numerodeserieid" class="form-label">No. de serie*</label>
                     <input type="text" id="numerodeserieid" wire:model.defer="nserie" class="form-control" oninput="this.value = this.value.toUpperCase()">
                     @error('nserie') <span class="text-danger">{{ $message }}</span> @enderror

@@ -110,7 +110,7 @@
                 
 
                 <div class="col-md-12">
-                    <label for="areadeasignacionid" class="form-label">Area de asignawción*</label>
+                    <label for="areadeasignacionid" class="form-label">Area de asignación*</label>
                     <select id="areadeasignacionid" wire:model.defer="area_de_uso_id" class="form-control">
                         <option value="">Seleccione...</option>
                         @foreach($areasdeasignacion as $areadeasignacion)

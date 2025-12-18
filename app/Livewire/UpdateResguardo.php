@@ -105,7 +105,17 @@ class UpdateResguardo extends Component
             'marca_id' => 'required',
             'modelo' => 'required',
             'area_de_uso_id' => 'required',
-            'ubicacion_fisicas_id' => 'required'
+            'ubicacion_fisicas_id' => 'required',
+            'nserie' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    if ($value !== 'N/A') {
+                        if (\App\Models\Resguardo::where('nserie', $value)->exists()) {
+                            $fail('El número de serie ya existe.');
+                        }
+                    }
+                },
+            ],
         ]);
 
         $data = [
@@ -117,7 +127,8 @@ class UpdateResguardo extends Component
             'resguardo_id' => $this->resguardo_id,
             'resguardante_id' => $this->resguardante_id,
             'puesto_id' => $this->puesto_id,
-            'historial_resguardo_id' => $this->historial_resguardo_id
+            'historial_resguardo_id' => $this->historial_resguardo_id,
+            'nserie' => $this->nserie
         ];
                //dd($data);
         //dd($data);
