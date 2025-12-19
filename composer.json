@@ -20,6 +20,7 @@
         "nesbot/carbon": "^2.72",
         "realrashid/sweet-alert": "^7.2",
         "simplesoftwareio/simple-qrcode": "^4.2",
+        "spatie/laravel-backup": "^9.3",
         "spatie/laravel-permission": "^6.10"
     },
     "require-dev": {
