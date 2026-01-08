@@ -254,19 +254,43 @@ class InventarioForm extends Component
         /* ============================================================
         🟦 ADMINISTRADOR / DIRECTOR / DELEGACIÓN
         ============================================================ */
-        if ($user->hasRole('Administrador')  || $user->hasRole('Director')  || $user->hasRole('Delegacion')) {
+        if ($user->hasRole('Administrador') || $user->hasRole('Director') || $user->hasRole('Delegacion')) {
+
+            $resguardos = Resguardo::query();
 
             if ($this->search) {
-                $busqueda = ltrim($this->search, '0');
-                $resguardos = Resguardo::where('id', $busqueda);
-            } else {
-                $resguardos = Resguardo::query();
+                $busqueda = trim($this->search);
+                $busquedaId = ltrim($busqueda, '0');
+
+                $resguardos->where(function ($q) use ($busqueda, $busquedaId) {
+
+                    // 🔢 Buscar por CÓDIGO
+                    $q->where('id', $busquedaId)
+                    ->orWhere('nresguardo', 'LIKE', "%{$busqueda}%")
+
+                    // 👤 Buscar por CUALQUIER PARTE del nombre del RESGUARDANTE
+                    ->orWhereHas('resguardante', function ($q2) use ($busqueda) {
+                        $q2->where('nombre1', 'LIKE', "%{$busqueda}%")
+                            ->orWhere('nombre2', 'LIKE', "%{$busqueda}%")
+                            ->orWhere('apellido1', 'LIKE', "%{$busqueda}%")
+                            ->orWhere('apellido2', 'LIKE', "%{$busqueda}%")
+                            // 🔥 Nombre completo concatenado
+                            ->orWhereRaw("
+                                CONCAT_WS(' ',
+                                    nombre1,
+                                    nombre2,
+                                    apellido1,
+                                    apellido2
+                                ) LIKE ?
+                            ", ["%{$busqueda}%"]);
+                    });
+                });
             }
 
-            $resguardos = $resguardos->with(['historial', 'marca']);
+            $resguardos->with(['historial', 'marca', 'resguardante']);
+
             $resguardos = $this->applyRange($resguardos);
 
-            // Si NO hay rango → usa paginación
             if (!$this->rangeFrom || !$this->rangeTo) {
                 $resguardos = $resguardos->paginate($this->perPage);
             } else {
@@ -275,6 +299,8 @@ class InventarioForm extends Component
 
             return view('livewire.inventario-form', compact('resguardos'));
         }
+
+
 
         /* ============================================================
         🟩 SUBDIRECTOR

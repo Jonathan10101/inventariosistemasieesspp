@@ -18,6 +18,8 @@
                         <option value="15">15</option>
                         <option value="20">20</option>
                         <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
                     </select>
                 </div>
         </div>
@@ -69,7 +71,9 @@
     <!-- Buscador -->
     <div class="row mb-4">
         <div class="col-md-12">
-            <label class="form-label fw-semibold text-dark">Da clic en el Buscador, escanea o escribe el No. de Inventario y luego presiona “Buscar”</label>
+            <label class="form-label fw-semibold text-dark">
+                Escribe o escanea el número de inventario o el nombre del resguardante y presiona “Buscar”.
+            </label>
             <div class="input-group shadow-sm">
                 <input type="text" id="searchid" placeholder="Buscador ..." 
                        wire:keydown.enter="searchResguardos" wire:model="search" style="border:none;" class="form-control border-end-0">
