@@ -485,6 +485,8 @@ class InventarioForm extends Component
         $historial = HistorialResguardo::find($data['historial_resguardo_id']);
         //dd($data['historial_resguardo_id']);
         $historial->update([
+            'resguardante_id' => $data['resguardante_id'],
+            'puesto_id'=> $data['puesto_id'],
             'area_de_uso_id' => $data['area_de_uso_id'],
             'ubicacion_fisicas_id' => $data['ubicacion_fisicas_id'],
         ]);
@@ -516,7 +518,8 @@ class InventarioForm extends Component
             'resguardante_id' => $data['resguardante_id'], 
             'puesto_id' => $data['puesto_id'],
             'imagen' => $data['imagen'],
-            'resguardo_pdf' => $data['resguardo_pdf'] 
+            'resguardo_pdf' => $data['resguardo_pdf'],
+            'updated_at' => null, 
         ]);
 
         $id_of_student->historial()->create([

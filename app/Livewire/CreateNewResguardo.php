@@ -190,6 +190,7 @@ public function updatedResguardanteId($value)
             'puesto_id' => $puesto_id,
             'imagen' => $pathImagen,
             'estado_actual' => 'asignado', // nuevo resguardo siempre inicia asignado
+            'updated_at' => null, 
         ]);
 
         /* === Generar número de resguardo === */

@@ -85,7 +85,7 @@
                     @error('ubicacion_fisicas_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
-                <div class="col-md-12" style="display:none;">
+                <div class="col-md-12" >
                     <label for="resguardanteid" class="form-label">Resguardante*</label>
                     <select id="resguardanteid" wire:model.defer="resguardante_id" class="form-control">
                         <option value="">Seleccione...</option>
@@ -96,7 +96,7 @@
                     @error('resguardante_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
-                <div class="col-md-12" style="display:none;">
+                <div class="col-md-12">
                     <label for="puestodelresguardanteid" class="form-label">Puesto del resguardante*</label>
                     <select id="puestodelresguardanteid" wire:model.defer="puesto_id" class="form-control">
                         <option value="">Seleccione...</option>
@@ -108,21 +108,14 @@
                 </div>
 
 
-                <!-- Subir archivo PDF del resguardo -->
-                <div class="col-md-12 mt-3" style="display:none;">
-                    <label class="form-label">Archivo PDF del Resguardo*</label><br>
-                    <span>(Sube el archivo firmado en PDF)</span>
-                    <input type="file" wire:model="resguardo_pdf" accept="application/pdf" class="form-control">
-                    @error('resguardo_pdf') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
+           
 
-                <!-- Botón Guardar -->
                 <div class="col-12 d-flex justify-content-end mt-4">
                     <button type="submit" class="btn btn-primary" style="background-color:#171C63; border-color:#171C63; color:#fff;">
                         <i class="fas fa-save me-1"></i> Guardar
                     </button>
                 </div>
-
+    
             </div>
         </form>
     </div>

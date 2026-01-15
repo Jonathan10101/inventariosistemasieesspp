@@ -89,3 +89,23 @@ body {
     transform: scale(2.8);
     cursor: pointer;
 }
+/*
+.fixed{
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.table-fixed{
+  table-layout: fixed;
+  width: 100%;
+}
+
+.table-fixed th,
+.table-fixed td{
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+}
+*/
+
+

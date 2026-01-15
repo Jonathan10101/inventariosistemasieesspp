@@ -29,6 +29,7 @@ class Resguardo extends Model
         'puesto_id',
         'imagen',
         'estado_actual',
+        'updated_at',
     ];
 
     
