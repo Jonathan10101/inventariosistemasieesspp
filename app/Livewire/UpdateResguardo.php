@@ -109,14 +109,19 @@ class UpdateResguardo extends Component
             'nserie' => [
                 'required',
                 function ($attribute, $value, $fail) {
-                    if ($value !== 'N/A') {
-                        if (\App\Models\Resguardo::where('nserie', $value)->exists()) {
-                            $fail('El número de serie ya existe.');
-                        }
+                    if (strtoupper(trim($value)) === 'N/A') return;
+
+                    $existe = \App\Models\Resguardo::where('nserie', $value)
+                        ->where('id', '!=', $this->resguardo_id) // ID del que estás editando
+                        ->exists();
+
+                    if ($existe) {
+                        $fail('El número de serie ya existe.');
                     }
                 },
             ],
         ]);
+
 
         $data = [
             'descripcion' => $this->descripcion,
