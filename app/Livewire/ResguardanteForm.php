@@ -88,6 +88,7 @@ class ResguardanteForm extends Component
             'nombre2' => $data['nombre2'],
             'apellido1' => $data['apellido1'],
             'apellido2' => $data['apellido2'],
+            'puesto_id' => $data['puesto_id']
         ]);
 
         $resguardante = Resguardante::find($data['id']);

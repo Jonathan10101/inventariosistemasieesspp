@@ -16,8 +16,8 @@ class CreateNewResguardante extends Component
         'nombre2' => 'nullable|max:50',
         'apellido1' => 'required|min:2|max:50',
         'apellido2' => 'nullable|max:50',
-        'email' => 'required|min:10|max:75|email|unique:users,email',
-        'password' => 'required|min:8|max:50',
+        //'email' => 'required|min:10|max:75|email|unique:users,email',
+        //'password' => 'required|min:8|max:50',
         'subdireccion' => 'required',
         'puesto_id' => 'required'
     ];
@@ -55,14 +55,17 @@ class CreateNewResguardante extends Component
             return;
         }
         //dd($this->subdireccion);
+        $emailFinal = $this->nombre1.$this->nombre2.$this->apellido1.$this->apellido2."@ieesspp.com";
+        $passwordFinal = $this->nombre1.$this->nombre2.$this->apellido1.$this->apellido2 . str_pad((string) random_int(0, 999), 3, '0', STR_PAD_LEFT);
+        //dd($passwordFinal);
         
         $data = [
             'nombre1' => $this->nombre1,
             'nombre2' => $this->nombre2,
             'apellido1' => $this->apellido1,
             'apellido2' => $this->apellido2,
-            'email' => $this->email,
-            'password' => $this->password,
+            'email' => $emailFinal,
+            'password' => $passwordFinal,
             'subdireccion' => $this->subdireccion,
             'puesto_id' => $this->puesto_id
         ];

@@ -76,18 +76,54 @@
 
                 <div class="col-md-12">
                     <label for="ubicacionfisicaid" class="form-label">Ubicación fisica*</label>
-                    <select id="ubicacionfisicaid" wire:model.defer="ubicacion_fisicas_id" class="form-control">
+                    <select id="ubicacionfisicaid" wire:model.live="ubicacion_fisicas_id" class="form-control">
                         <option value="">Seleccione...</option>
                         @foreach($ubicacionesifiscas as $ubicacionifisca)
                             <option value="{{ $ubicacionifisca->id }}">{{ $ubicacionifisca->descripcion }}</option>
                         @endforeach
                     </select>
                     @error('ubicacion_fisicas_id') <span class="text-danger">{{ $message }}</span> @enderror
+
+                    @if($ubicacion_img_url)
+                        <div class="mt-3">
+                            <img src="{{ $ubicacion_img_url }}" alt="Imagen de ubicación"
+                                style="max-width: 200px; height: auto; border-radius: 8px;">
+                        </div>
+                    @endif
+                </div>
+                
+                {{--
+                <div class="col-md-12">
+                    <label class="form-label">Contraseña para editar resguardante por equivocación de registro de Resguardo</label>
+                    <input type="password"
+                        class="form-control"
+                        wire:model.live="edit_password"
+                        placeholder="Solo para corregir errores. Para asignar a otra persona, usa + (Añadir Nuevo Resguardo).">
                 </div>
 
+                <div class="col-md-12 mt-3">
+                    <label for="resguardanteid" class="form-label">Resguardante*</label>
+
+                    <select id="resguardanteid"
+                            wire:model.defer="resguardante_id"
+                            class="form-control"
+                            @disabled(!$canEditResguardante)>
+                        <option value="">Seleccione...</option>
+                        @foreach($resguardantes as $resguardante)
+                            <option value="{{ $resguardante->id }}">
+                                {{ $resguardante->nombre1 }} {{ $resguardante->nombre2 }} {{ $resguardante->apellido1 }} {{ $resguardante->apellido2 }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    @error('resguardante_id') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
+                --}}
+
+                {{--
                 <div class="col-md-12" >
                     <label for="resguardanteid" class="form-label">Resguardante*</label>
-                    <select id="resguardanteid" wire:model.defer="resguardante_id" class="form-control">
+                    <select id="resguardanteid" wire:model.defer="resguardante_id" class="form-control"  disabled>
                         <option value="">Seleccione...</option>
                         @foreach($resguardantes as $resguardante)
                             <option value="{{ $resguardante->id }}">{{ $resguardante->nombre1 }} {{ $resguardante->nombre2 }} {{ $resguardante->apellido1 }} {{ $resguardante->apellido2 }}</option>
@@ -96,6 +132,7 @@
                     @error('resguardante_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
+            
                 <div class="col-md-12">
                     <label for="puestodelresguardanteid" class="form-label">Puesto del resguardante*</label>
                     <select id="puestodelresguardanteid" wire:model.defer="puesto_id" class="form-control">
@@ -106,9 +143,17 @@
                     </select>
                     @error('puesto_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
+                --}}
 
-
-           
+                <!-- Institución -->
+                <div class="col-md-12">
+                    <label class="form-label">Institución*</label>
+                    <select wire:model.defer="institucion" class="form-control">
+                        <option value="IEESSPP">IEESSPP</option>
+                        <option value="ARSPO">ARSPO</option>
+                    </select>
+                    @error('institucion') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
 
                 <div class="col-12 d-flex justify-content-end mt-4">
                     <button type="submit" class="btn btn-primary" style="background-color:#171C63; border-color:#171C63; color:#fff;">

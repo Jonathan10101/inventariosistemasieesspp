@@ -2,8 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MarcaController;
-use App\Http\Controllers\ModeloController;
-use App\Http\Controllers\EstadoDeUsoController;
 use App\Http\Controllers\ResguardanteController;
 use App\Http\Controllers\PuestoController;
 use App\Http\Controllers\UbicacionFisicaController;
@@ -12,7 +10,7 @@ use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\EtiquetaController;
 use App\Http\Controllers\Etiqueta2Controller;
 use App\Http\Controllers\DashboardController;
-
+use App\Http\Controllers\ExportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,16 +32,10 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified',])->group(function () {Route::apiResource('dashboard', DashboardController::class);});
 Route::resource("inventario",InventarioController::class)->middleware(['auth:sanctum','can:inventario.index']);
 Route::resource("marcas",MarcaController::class)->middleware(['auth:sanctum','can:marcas.index']);
-//Route::resource("modelo",ModeloController::class)->middleware(['auth:sanctum','can:inventario.index']);
-//Route::resource("estadouso",EstadoDeUsoController::class)->middleware(['auth:sanctum','can:inventario.index']);
 Route::resource('resguardante', ResguardanteController::class)->middleware(['auth:sanctum','can:resguardante.index']);
 Route::resource('puestos', PuestoController::class)->middleware(['auth:sanctum','can:puestos.create']);
 Route::resource("ubicacionfisica",UbicacionFisicaController::class)->middleware(['auth:sanctum','can:ubicacionfisica.index']);
 Route::resource("areadeasignacion",AreaDeAsignacionController::class)->middleware(['auth:sanctum','can:areadeasignacion.create']);
 Route::get('/etiqueta/{codigo}', [EtiquetaController::class, 'show'])->name('etiquetas.show')->middleware(['auth:sanctum','can:inventario.index']);
 Route::get('/etiqueta2/{codigo}', [Etiqueta2Controller::class, 'show'])->name('etiquetas2.show')->middleware(['auth:sanctum','can:inventario.index']);
-
-/*
-Route::resource("cursos",CursosController::class)->middleware(['auth:sanctum','can:cursos.index']);
-Route::resource("inscripciones",InscripcionesController::class)->middleware(['auth:sanctum','can:requisicionesCocina.index']);
-*/
+//Route::get('/export',[ExportController::class,'export'])->name('export');

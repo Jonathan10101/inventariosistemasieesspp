@@ -29,6 +29,8 @@ class InventarioForm extends Component
     public $accionPrincipal;
     public $data_external_component;
     public $data;
+    public string $filtroInstitucion = 'ALL'; // ALL | IEESSPP | ARSPO
+
 
 
     public function updated($field)
@@ -57,6 +59,22 @@ class InventarioForm extends Component
     public function updatingPerPage()
     {
         $this->resetPage(); // Para que no se quede en página 2, 3, etc.
+    }
+
+    public function updatedFiltroInstitucion()
+    {
+        $this->resetPage(); // importante con paginación
+    }
+
+    public function getResguardosProperty()
+    {
+        dd("x");
+        return Resguardo::query()
+            ->when($this->filtroInstitucion !== 'ALL', function ($q) {
+                $q->where('institucion', $this->filtroInstitucion);
+            })
+            ->orderByDesc('id')
+            ->paginate(10);
     }
 
 
@@ -287,6 +305,11 @@ class InventarioForm extends Component
                 });
             }
 
+            // ✅ filtro por institución
+            $resguardos->when($this->filtroInstitucion !== 'ALL', function($q){
+                $q->where('institucion', $this->filtroInstitucion);
+            });
+
             $resguardos->with(['historial', 'marca', 'resguardante']);
 
             $resguardos = $this->applyRange($resguardos);
@@ -317,6 +340,11 @@ class InventarioForm extends Component
                 $busqueda = ltrim($this->search, '0');
                 $resguardos->where('id', $busqueda);
             }
+
+            // ✅ filtro por institución
+            $resguardos->when($this->filtroInstitucion !== 'ALL', function($q){
+                $q->where('institucion', $this->filtroInstitucion);
+            });
 
             $resguardos = $resguardos->with(['historial', 'marca']);
             $resguardos = $this->applyRange($resguardos);
@@ -354,6 +382,11 @@ class InventarioForm extends Component
                 $busqueda = ltrim($this->search, '0');
                 $resguardos->where('id', $busqueda);
             }
+
+            // ✅ filtro por institución
+            $resguardos->when($this->filtroInstitucion !== 'ALL', function($q){
+                $q->where('institucion', $this->filtroInstitucion);
+            });
 
             $resguardos = $resguardos->with([
                 'historial.resguardante',
@@ -480,7 +513,8 @@ class InventarioForm extends Component
             'modelo' => $data['modelo'],
             'resguardante_id' => $data['resguardante_id'],
             'puesto_id'=> $data['puesto_id'],
-            'nserie' => $data['nserie']
+            'nserie' => $data['nserie'],
+            'institucion' => $data['institucion']
         ]);
         $historial = HistorialResguardo::find($data['historial_resguardo_id']);
         //dd($data['historial_resguardo_id']);

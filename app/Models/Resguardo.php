@@ -29,8 +29,11 @@ class Resguardo extends Model
         'puesto_id',
         'imagen',
         'estado_actual',
+        'institucion',
         'updated_at',
     ];
+
+    
 
     
     /* ====== MUTADORES PARA MAYÚSCULAS ====== */

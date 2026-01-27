@@ -157,6 +157,7 @@
                     @error('resguardante_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
+                {{--
                 <div class="col-md-12">
                     <label for="puestodelresguardanteid" class="form-label">Puesto del resguardante*</label>
                     <select id="puestodelresguardanteid" wire:model.defer="puesto_id" class="form-control">
@@ -167,7 +168,7 @@
                     </select>
                     @error('puesto_id') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
-
+                --}}
 
                 <!-- Subir archivo PDF del resguardo -->
                 <div class="col-md-12 mt-3">

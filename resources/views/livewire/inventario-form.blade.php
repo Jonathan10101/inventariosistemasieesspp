@@ -3,26 +3,28 @@
     <!-- SweetAlert2 -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>
+    
 
     <!-- Botón Agregar Inventario -->
     <div class="row">
-        <div class="col">
-            <!-- Select dinámico para cambiar cantidad por página -->
-            <div>
-                <label class="text-muted me-2">Mostrar:</label>
-                <select wire:model.live="perPage" class="form-select form-select-sm" style="width: auto;">
-                    <option value="5">IEESSPP</option>
-                    <option value="10">ARSPO</option>
-                    <option value="15">TODO</option>
+        <div class="col d-flex justify-content-between   ">
+            <div class="col-2 p-0">
+                <label class="form-label">Institución</label>
+                <select class="form-select" wire:model.live="filtroInstitucion">
+                    <option value="ALL">Mostrar todo</option>
+                    <option value="IEESSPP">IEESSPP</option>
+                    <option value="ARSPO">ARSPO</option>
                 </select>
             </div>
-        </div>
-        <div class="col d-flex justify-content-end mt-4 mb-4">   
-            @hasanyrole('Administrador|Delegacion|Subdirector')
-            <button wire:click="showModalNewResguardo" class="btn btn-primary shadow-sm" style="background-color:#171C63; border:none;">                        
-                <i class="fas fa-plus me-1"></i> Agregar inventario            
-            </button>  
-            @endhasanyrole
+            
+            <div class="col-2 p-0">   
+                <label for="" style="color:white;">na</label>
+                @hasanyrole('Administrador|Delegacion|Subdirector')
+                <button wire:click="showModalNewResguardo" class="btn btn-primary shadow-sm ml-2" style="background-color:#171C63; border:none;">                        
+                    <i class="fas fa-plus me-1"></i> Agregar inventario            
+                </button>  
+                @endhasanyrole
+            </div>
         </div>
     </div>
 
@@ -62,7 +64,7 @@
     </div>
 
     <!-- Buscador -->
-    <div class="row mb-4">
+    <div class="row mt-3 mb-4">
         <div class="col-md-12">
             <label class="form-label fw-semibold text-dark">
                 Escribe o escanea el número de inventario o el nombre del resguardante y presiona “Buscar”.
@@ -103,6 +105,7 @@
                             <th>Área</th>
                             <th>Ubicación</th>
                             <th>Resguardante</th>
+                            <th>Inventario</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -152,50 +155,54 @@
                                     @can('resguardante.create')               
                                     <a href="{{ route('resguardante.show', $resguardo->historial->last()->resguardante->id) }}" 
                                        class="fw-semibold text-decoration-none" style="color:#171C63;">
-                                        {{ strtoupper(optional($resguardo->historial->last()->resguardante)->nombre1) }}
-                                        {{ strtoupper(optional($resguardo->historial->last()->resguardante)->nombre2) }}
-                                        {{ strtoupper(optional($resguardo->historial->last()->resguardante)->apellido1) }}
-                                        {{ strtoupper(optional($resguardo->historial->last()->resguardante)->apellido2) }}
+                                        {{ mb_strtoupper(optional($resguardo->historial->last()->resguardante)->nombre1 ?? '', 'UTF-8') }}
+                                        {{ mb_strtoupper(optional($resguardo->historial->last()->resguardante)->nombre2 ?? '', 'UTF-8') }}
+                                        {{ mb_strtoupper(optional($resguardo->historial->last()->resguardante)->apellido1 ?? '', 'UTF-8') }}
+                                        {{ mb_strtoupper(optional($resguardo->historial->last()->resguardante)->apellido2 ?? '', 'UTF-8') }}
                                     </a>
+
                                     @else
-                                        <p> {{ strtoupper(optional($resguardo->historial->last()->resguardante)->nombre1) }}
-                                        {{ strtoupper(optional($resguardo->historial->last()->resguardante)->nombre2) }}
-                                        {{ strtoupper(optional($resguardo->historial->last()->resguardante)->apellido1) }}
-                                        {{ strtoupper(optional($resguardo->historial->last()->resguardante)->apellido2) }}</p>
+                                        <p>{{ mb_strtoupper(optional($resguardo->historial->last()->resguardante)->nombre1 ?? '', 'UTF-8') }}
+                                        {{ mb_strtoupper(optional($resguardo->historial->last()->resguardante)->nombre2 ?? '', 'UTF-8') }}
+                                        {{ mb_strtoupper(optional($resguardo->historial->last()->resguardante)->apellido1 ?? '', 'UTF-8') }}
+                                        {{ mb_strtoupper(optional($resguardo->historial->last()->resguardante)->apellido2 ?? '', 'UTF-8') }}</p>
                                     @endcan
                                 </td>
-                      <!--  text-nowrap  -->
-                      <td class="text-wrap">
-                        @hasanyrole('Administrador|Delegacion|Subdirector|Empleado')              
-                        <button wire:click="cambiarAccion('editar',{{ $resguardo->id }})" 
-                                class="btn btn-warning btn-sm text-white mb-1" 
-                                title="Editar Resguardo">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        @endhasanyrole
+                                <td>
+                                    <p>{{$resguardo->institucion}}</p>
+                                </td>
+                                <!--  text-nowrap  -->
+                                <td class="text-wrap">
+                                    @hasanyrole('Administrador|Delegacion|Subdirector|Empleado')              
+                                    <button wire:click="cambiarAccion('editar',{{ $resguardo->id }})" 
+                                            class="btn btn-warning btn-sm text-white mb-1" 
+                                            title="Editar Resguardo">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    @endhasanyrole
 
-                        <button wire:click="cambiarAccion('showHistorialResguardo',{{ $resguardo->id }})" 
-                                class="btn btn-dark btn-sm mb-1" 
-                                title="Ver Historial del Resguardo">
-                            <i class="fas fa-eye"></i>
-                        </button>
+                                    <button wire:click="cambiarAccion('showHistorialResguardo',{{ $resguardo->id }})" 
+                                            class="btn btn-dark btn-sm mb-1" 
+                                            title="Ver Historial del Resguardo">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
 
-                        @hasanyrole('Administrador|Delegacion|Subdirector')              
-                            <button wire:click="cambiarAccion('addNewResguardo',{{ $resguardo->id }})" 
-                                    class="btn btn-primary btn-sm mb-1" 
-                                    style="background-color:#171C63; border:none;" 
-                                    title="Añadir Nuevo Resguardo">
-                                <i class="fas fa-plus"></i>
-                            </button>  
-                        @endhasanyrole
-                        @hasanyrole('Administrador|Delegacion')              
-                            <button wire:click="downloadEtiqueta({{ $resguardo->id }})" 
-                                    class="btn btn-success btn-sm mb-1" 
-                                    title="Descargar Etiqueta">
-                                <i class="fas fa-download"></i>
-                            </button>
-                        @endhasanyrole
-                    </td>
+                                    @hasanyrole('Administrador|Delegacion|Subdirector')              
+                                        <button wire:click="cambiarAccion('addNewResguardo',{{ $resguardo->id }})" 
+                                                class="btn btn-primary btn-sm mb-1" 
+                                                style="background-color:#171C63; border:none;" 
+                                                title="Añadir Nuevo Resguardo">
+                                            <i class="fas fa-plus"></i>
+                                        </button>  
+                                    @endhasanyrole
+                                    @hasanyrole('Administrador|Delegacion')              
+                                        <button wire:click="downloadEtiqueta({{ $resguardo->id }})" 
+                                                class="btn btn-success btn-sm mb-1" 
+                                                title="Descargar Etiqueta">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                    @endhasanyrole
+                                </td>
 
                             </tr>
                         @empty
@@ -208,22 +215,30 @@
     </div>
 
     <div class="row">
-        <div class="col">
-            <!-- Texto de rango de registros -->
-          
-                <!-- Select dinámico para cambiar cantidad por página -->
-                <div>
-                    <label class="text-muted me-2">Mostrar:</label>
-                    <select wire:model.live="perPage" class="form-select form-select-sm" style="width: auto;">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select>
-                </div>
+        <div class="col d-flex justify-content-center">
+            <div class="col">
+                <!-- Texto de rango de registros -->
+            
+                    <!-- Select dinámico para cambiar cantidad por página -->
+                    <div>
+                        <label class="text-muted me-2">Mostrar:</label>
+                        <select wire:model.live="perPage" class="form-select form-select-sm" style="width: auto;">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+            </div>
+            {{--
+            <div class="col d-flex justify-content-end mt-4">
+                <a href="{{route('export')}}" class="btn btn-warning mb-2 fa"><i class="fas fa-file-export"></i> Exportar todo el Inventario a Excel</a>
+            </div>
+            --}}
+            
         </div>
     </div>
     
@@ -252,7 +267,7 @@
     <div class="d-flex justify-content-end mt-3">
         {{ $resguardos->links() }}
     </div>
-@endif
+    @endif
 
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">

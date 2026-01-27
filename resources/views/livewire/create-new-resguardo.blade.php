@@ -153,7 +153,18 @@
                         @endforeach
                     </select>
                 </div>
-            
+
+                <!-- Institución -->
+                <div class="col-md-12">
+                    <label class="form-label">Institución*</label>
+                    <select wire:model.defer="institucion" class="form-control">
+                        <option value="IEESSPP">IEESSPP</option>
+                        <option value="ARSPO">ARSPO</option>
+                    </select>
+                    @error('institucion') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
+
+                            
 
                 <!-- Subir archivo PDF -->
                 <div class="col-md-12 mt-3">

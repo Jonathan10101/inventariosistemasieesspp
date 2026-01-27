@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Resguardo;
+use App\Models\Puesto;
 use App\Models\HistorialResguardo;
 use App\Models\User;
 
@@ -32,6 +33,10 @@ class Resguardante extends Model
     public function historialResguardos()
     {
         return $this->hasMany(HistorialResguardo::class, 'resguardante_id');
+    }
+
+    public function puesto(){
+        return $this->hasOne(Puesto::class);
     }
 
 /*

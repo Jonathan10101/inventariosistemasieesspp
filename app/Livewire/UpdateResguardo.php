@@ -24,6 +24,8 @@ use Livewire\WithFileUploads;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use App\Models\Resguardo;
+use Illuminate\Support\Facades\Storage;
+
 
 class UpdateResguardo extends Component
 {
@@ -33,7 +35,7 @@ class UpdateResguardo extends Component
     public $descripcion,$marca_id,$modelo,$nserie,$nresguardo,
     $estado_uso_id,$area_de_uso_id,$ubicacion_fisicas_id,$resguardante_id,$puesto_id;  
 
-     public $showAdditionalFields = false;
+    public $showAdditionalFields = false;
     public $showModal = true; 
     public $imagen;  
     public $imagenBase64; // foto capturada desde JS
@@ -43,6 +45,13 @@ class UpdateResguardo extends Component
     public $resguardo_pdf;
     public $resguardo_id;
     public $historial_resguardo_id;
+    public $institucion;
+
+    public $edit_password = '';
+    public $canEditResguardante = false;
+
+    public $ubicacion_img_url = null;
+
 
 
     public function mount($data){
@@ -72,9 +81,25 @@ class UpdateResguardo extends Component
         $this->marcas = Marca::all();
         $this->estadosdeuso = EstadoUso::all();
         $this->areasdeasignacion = AreaDeUso::all();
-        $this->ubicacionesfisicas = UbicacionFisica::all();
-
+        $this->institucion = $resguardo->institucion;
     }
+
+    /*
+    public function updatedUbicacionFisicasId($value)
+    {
+        $this->ubicacion_img_url = null;
+
+        if (!$value) return;
+
+        $u = UbicacionFisica::find($value);
+        //dd($u);
+
+        // Cambia "imagen" por el nombre real de tu campo en la tabla
+        if ($u && $u->imagen) {
+            $this->ubicacion_img_url = Storage::url($u->imagen);
+        }
+    }
+    */
     
     public function resetImagenes()
     {
@@ -95,9 +120,12 @@ class UpdateResguardo extends Component
         $this->imagenFinal = $this->imagen; // asignar lo último cargado
     }
 
+    public function updatedEditPassword($value)
+    {
+        // Cambia esto por tu contraseña o mejor por config/env
+        $this->canEditResguardante = ($value === 'adminJBH$');
+    }
 
-
-   
     public function save()
     {
         $this->validate([
@@ -120,8 +148,14 @@ class UpdateResguardo extends Component
                     }
                 },
             ],
+            'institucion' => 'required',
         ]);
-
+        
+        $resguardante = Resguardante::find($this->resguardante_id);
+        $puesto_id = $resguardante->puesto_id;
+        if($resguardante->puesto_id == null){
+            $puesto_id = 1;
+        }
 
         $data = [
             'descripcion' => $this->descripcion,
@@ -131,9 +165,10 @@ class UpdateResguardo extends Component
             'ubicacion_fisicas_id' => $this->ubicacion_fisicas_id,
             'resguardo_id' => $this->resguardo_id,
             'resguardante_id' => $this->resguardante_id,
-            'puesto_id' => $this->puesto_id,
+            'puesto_id' => $puesto_id,
             'historial_resguardo_id' => $this->historial_resguardo_id,
-            'nserie' => $this->nserie
+            'nserie' => $this->nserie,
+            'institucion' => $this->institucion,
         ];
                //dd($data);
         //dd($data);
@@ -146,7 +181,7 @@ class UpdateResguardo extends Component
     {
         $this->reset([
             'imagen','descripcion','marca_id', 'modelo', 'nserie', 'nresguardo',
-            'estado_uso_id', 'area_de_uso_id', 'ubicacion_fisicas_id', 'resguardante_id', 'puesto_id','tomadaDesdeCamara','imagenBase64'
+            'estado_uso_id', 'area_de_uso_id', 'ubicacion_fisicas_id', 'resguardante_id', 'puesto_id','tomadaDesdeCamara','imagenBase64','institucion'
         ]);
     }
 

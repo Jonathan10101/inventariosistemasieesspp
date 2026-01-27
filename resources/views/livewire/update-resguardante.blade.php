@@ -45,6 +45,17 @@
                 <div class="col-md-12 d-flex justify-content-end">
                     @error('nombreCompleto') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
+                
+                <div class="col-md-12">
+                    <label for="puesto" class="form-label">Puesto*</label>
+                    <select id="puesto" wire:model.defer="puesto_id" class="form-control">
+                        <option value="">Seleccione...</option>
+                        @foreach($puestos as $puesto)
+                            <option value="{{ $puesto->id }}">{{ $puesto->nombre }}</option>
+                        @endforeach
+                    </select>
+                    @error('puesto_id') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
 
                 <div class="col-md-12">
                     <label for="emaillabel" class="form-label">Email</label>

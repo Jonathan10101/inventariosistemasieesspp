@@ -43,7 +43,7 @@
                     @error('apellido2') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
-                <div class="col-md-12">
+                <div class="col-md-12" style="display:none;">
                     <label for="emaillabel" class="form-label">Email</label>
                     <div class="input-group">
                         <input type="text"
@@ -58,7 +58,7 @@
                     @error('email') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
-                <div class="col-md-12">
+                <div class="col-md-12" style="display:none;">
                     <label for="passwordlabel" class="form-label">Password</label>
 
                     <div class="input-group">
