@@ -143,6 +143,8 @@ public function updatedResguardanteId($value)
             $this->cantidad = 1;
         }
         
+
+        /*
         if($this->cantidad > 1){
             $contador = 0;
             while($contador <= $this->cantidad){
@@ -161,7 +163,7 @@ public function updatedResguardanteId($value)
                     );
                 }
 
-                /* === Guardar archivos === */
+              
                 $pathImagen = $this->imagen ? $this->imagen->store('resguardos', 'public') : null;
                 $imagenEvidencia = $pathImagen;
                 $pathPdf = $this->resguardo_pdf ? $this->resguardo_pdf->store('resguardos/pdf', 'public') : null;
@@ -188,7 +190,7 @@ public function updatedResguardanteId($value)
                 //dd((int)$this->cantidad);
                 $cantidadDentroDeWhile = 1;
                 $nserieDentroDeWhile = "N/A";
-                /* === Crear Resguardo === */
+            
                 $resguardo = Resguardo::create([
                     'descripcion' => $this->descripcion,
                     'cantidad' => $cantidadDentroDeWhile,
@@ -204,19 +206,19 @@ public function updatedResguardanteId($value)
                 ]);
                 //dd($resguardo);
 
-                /* === Generar número de resguardo === */
+               
                 $resguardo->update(['nresguardo' => $resguardo->id]);
 
                 //dd($resguardo);
 
-                /* === Registrar historial de asignación === */
+                
                 HistorialResguardo::registrarAsignacion($resguardo, $this->resguardante_id, $pathPdf,$imagenEvidencia,$this->estado_uso_id,$this->area_de_uso_id,$this->ubicacion_fisicas_id);
 
                 
                 $contador++;
             }
         }else{
-             /* === Procesar imagen base64 (foto tomada desde cámara) === */
+          
             if ($this->imagenBase64) {
                 $fileData = explode(',', $this->imagenBase64)[1];
                 $fileName = 'resguardo_' . Str::random(8) . '.png';
@@ -230,6 +232,77 @@ public function updatedResguardanteId($value)
                     null,
                     true
                 );
+            }
+
+
+            $pathImagen = $this->imagen ? $this->imagen->store('resguardos', 'public') : null;
+            $imagenEvidencia = $pathImagen;
+            $pathPdf = $this->resguardo_pdf ? $this->resguardo_pdf->store('resguardos/pdf', 'public') : null;
+
+            // si el usuario deja vacío el número de serie → poner "N/A"
+            $nserie = trim($this->nserie);
+            if ($nserie === '' || $nserie === null) {
+                $nserie = 'N/A';
+            }
+
+            $modelo = trim($this->modelo);
+            if ($modelo === '' || $modelo === null) {
+                $modelo = 'N/A';
+            }
+
+            $resguardante = Resguardante::find($this->resguardante_id);
+            $puesto_id = $resguardante->puesto_id;
+            if($resguardante->puesto_id == null){
+                $puesto_id = 1;
+            }
+
+            //dd($puesto_id);
+
+            //dd((int)$this->cantidad);
+
+            $resguardo = Resguardo::create([
+                'descripcion' => $this->descripcion,
+                'cantidad' => $this->cantidad,
+                'marca_id' => $this->marca_id,
+                'modelo' => $modelo,
+                'nserie' => $nserie,   // ← aquí ya va "N/A" si estaba vacío
+                'resguardante_id' => $this->resguardante_id,
+                'puesto_id' => $puesto_id,
+                'imagen' => $pathImagen,
+                'estado_actual' => 'asignado', // nuevo resguardo siempre inicia asignado
+                'institucion' => $this->institucion,
+                'updated_at' => null, 
+            ]);
+
+            //dd("1 resguardo".$resguardo);
+
+            $resguardo->update(['nresguardo' => $resguardo->id]);
+
+            //dd($resguardo);
+
+
+            HistorialResguardo::registrarAsignacion($resguardo, $this->resguardante_id, $pathPdf,$imagenEvidencia,$this->estado_uso_id,$this->area_de_uso_id,$this->ubicacion_fisicas_id);
+
+  
+            
+        }
+        */
+
+
+
+            if ($this->imagenBase64) {
+                    $fileData = explode(',', $this->imagenBase64)[1];
+                    $fileName = 'resguardo_' . Str::random(8) . '.png';
+                    $tempPath = sys_get_temp_dir() . '/' . $fileName;
+                    file_put_contents($tempPath, base64_decode($fileData));
+
+                    $this->imagen = new UploadedFile(
+                        $tempPath,
+                        $fileName,
+                        'image/png',
+                        null,
+                        true
+                    );
             }
 
             /* === Guardar archivos === */
@@ -283,9 +356,6 @@ public function updatedResguardanteId($value)
             HistorialResguardo::registrarAsignacion($resguardo, $this->resguardante_id, $pathPdf,$imagenEvidencia,$this->estado_uso_id,$this->area_de_uso_id,$this->ubicacion_fisicas_id);
 
   
-            
-        }
-        //dd( $this->institucion);
         $this->resetForm();
 
         /* === Emitir evento al padre === */
