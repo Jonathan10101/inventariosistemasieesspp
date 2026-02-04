@@ -233,11 +233,11 @@
                         </select>
                     </div>
             </div>
-            {{--
+            
             <div class="col d-flex justify-content-end mt-4">
                 <a href="{{route('export')}}" class="btn btn-warning mb-2 fa"><i class="fas fa-file-export"></i> Exportar todo el Inventario a Excel</a>
             </div>
-            --}}
+            
             
         </div>
     </div>

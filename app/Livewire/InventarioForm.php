@@ -68,7 +68,7 @@ class InventarioForm extends Component
 
     public function getResguardosProperty()
     {
-        dd("x");
+        //dd("x");
         return Resguardo::query()
             ->when($this->filtroInstitucion !== 'ALL', function ($q) {
                 $q->where('institucion', $this->filtroInstitucion);

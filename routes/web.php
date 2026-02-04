@@ -11,6 +11,8 @@ use App\Http\Controllers\EtiquetaController;
 use App\Http\Controllers\Etiqueta2Controller;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExportController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,4 +40,4 @@ Route::resource("ubicacionfisica",UbicacionFisicaController::class)->middleware(
 Route::resource("areadeasignacion",AreaDeAsignacionController::class)->middleware(['auth:sanctum','can:areadeasignacion.create']);
 Route::get('/etiqueta/{codigo}', [EtiquetaController::class, 'show'])->name('etiquetas.show')->middleware(['auth:sanctum','can:inventario.index']);
 Route::get('/etiqueta2/{codigo}', [Etiqueta2Controller::class, 'show'])->name('etiquetas2.show')->middleware(['auth:sanctum','can:inventario.index']);
-//Route::get('/export',[ExportController::class,'export'])->name('export');
+Route::get('/export',[ExportController::class,'export'])->name('export');
