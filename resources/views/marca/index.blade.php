@@ -9,9 +9,6 @@
                 <div class="title-accent me-3"></div>
                 <div>
                     <h1 class="page-title mb-1">Marcas</h1>
-                    {{--
-                    <p class="page-subtitle mb-0">Control institucional de equipos y resguardos</p>
-                    --}}
                 </div>
             </div>
         </div>

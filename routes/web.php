@@ -1,19 +1,19 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MarcaController;
-use App\Http\Controllers\ResguardanteController;
-use App\Http\Controllers\PuestoController;
-use App\Http\Controllers\UbicacionFisicaController;
-use App\Http\Controllers\AreaDeAsignacionController;
-use App\Http\Controllers\InventarioController;
-use App\Http\Controllers\EtiquetaController;
-use App\Http\Controllers\Etiqueta2Controller;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ExportController;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\{Route, Auth, Redirect};
 
+use App\Http\Controllers\{
+    MarcaController,
+    ResguardanteController,
+    PuestoController,
+    UbicacionFisicaController,
+    AreaDeAsignacionController,
+    InventarioController,
+    EtiquetaController,
+    Etiqueta2Controller,
+    DashboardController,
+    ExportController
+};
 /*
 |--------------------------------------------------------------------------
 | Web Routes

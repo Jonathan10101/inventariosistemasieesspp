@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Ubicaciones Fisicas')
+@section('title', 'Ubicaciones > Ubicación física')
 
 @section('content_header')
     <div class="page-header border-bottom m-3 mt-0">

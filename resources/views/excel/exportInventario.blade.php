@@ -6,7 +6,9 @@
 <body>
 @php echo "\xEF\xBB\xBF"; @endphp  {{-- BOM UTF-8 para Excel --}}
 
+<!--
 <img src="{{ public_path('vendor/adminlte/dist/img/ieesspptransparente.png') }}" alt="Foto" style="height:60px;">
+-->
 
 <table>
     <thead>
@@ -20,14 +22,14 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($resguardos as $resguardo)
+        @foreach($inventarios as $inventario)
             <tr>
-                <td>{{ $resguardo->descripcion }}</td>
-                <td style="text-align:center;">{{ $resguardo->marca->nombre }}</td>
-                <td>{{ $resguardo->modelo }}</td>
-                <td style="text-align:center;">{{$resguardo->nserie }}</td>
-                <td style="text-align:center;">{{ $resguardo->id }}</td>
-                <td style="text-align:center;">{{ $resguardo->institucion}}</td>
+                <td>{{ $inventario->descripcion }}</td>
+                <td style="text-align:center;">{{ $inventario->marca->nombre }}</td>
+                <td>{{ $inventario->modelo }}</td>
+                <td style="text-align:center;">{{$inventario->nserie }}</td>
+                <td style="text-align:center;">{{ $inventario->id }}</td>
+                <td style="text-align:center;">{{ $inventario->institucion}}</td>
             </tr>
         @endforeach
     </tbody>

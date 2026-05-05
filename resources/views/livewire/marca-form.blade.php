@@ -1,4 +1,17 @@
 <div class="container mt-4">
+
+    {{-- LOADING BAR (solo acciones de botones) --}}
+    <div
+        wire:loading.delay
+        wire:target="showModalNewMarca,editar,searchMarcas,clearSearch"
+        class="position-fixed top-0 start-0 w-100"
+        style="z-index: 99999; height: 4px;"
+    >
+        <div class="progress w-100 h-100 rounded-0">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-info w-100"></div>
+        </div>
+    </div>
+
     <!-- SweetAlert2 -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>

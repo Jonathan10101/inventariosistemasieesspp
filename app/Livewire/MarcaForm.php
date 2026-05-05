@@ -103,13 +103,16 @@ class MarcaForm extends Component
         $this->marca = Marca::findOrFail($id);
         $this->isEditing = true;
         $this->data_external_component = $this->marca->id;
-        //$this->id_estudiante = $marca->id;
+    }
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
     }
 
     public function render()
     {
         $query = Marca::query();
-        
         if ($this->search) {
             $query->where(function ($q) {
                 $q->where('nombre', 'like', "%{$this->search}%");

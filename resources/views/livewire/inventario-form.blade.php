@@ -1,5 +1,17 @@
 <div class="container mt-4">
 
+    {{-- LOADING BAR (solo acciones de botones) --}}
+    <div
+        wire:loading.delay
+        wire:target="showModalNewResguardo,export,rangeFrom,rangeTo,edit,addNewResguardo,searchResguardos,clearSearch,cambiarAccion,showHistorialResguardo,downloadEtiqueta"
+        class="position-fixed top-0 start-0 w-100"
+        style="z-index: 99999; height: 4px;"
+    >
+        <div class="progress w-100 h-100 rounded-0">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-info w-100"></div>
+        </div>
+    </div>
+
     <!-- SweetAlert2 -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>
@@ -206,7 +218,13 @@
 
                             </tr>
                         @empty
-                            <tr><td colspan="13" class="text-center text-muted py-3">No se encontró inventario.</td></tr>
+                            <div class="row">
+                                <div class="col">
+                                    <td colspan="13" class="text-center text-muted py-3">
+                                        No se encontró inventario.
+                                    </td>
+                                </div>
+                            </div>
                         @endforelse
                     </tbody>
                 </table>
@@ -233,11 +251,12 @@
                         </select>
                     </div>
             </div>
-            
-            <div class="col d-flex justify-content-end mt-4">
-                <a href="{{route('export')}}" class="btn btn-warning mb-2 fa"><i class="fas fa-file-export"></i> Exportar todo el Inventario a Excel</a>
-            </div>
-            
+
+            @hasanyrole('Administrador|Delegacion|Subdirector')
+                <div class="col d-flex justify-content-end mt-4">
+                    <a href="{{route('export')}}" class="btn btn-warning mb-2 fa"><i class="fas fa-file-export"></i> Exportar todo el Inventario a Excel</a>
+                </div>
+            @endhasanyrole
             
         </div>
     </div>

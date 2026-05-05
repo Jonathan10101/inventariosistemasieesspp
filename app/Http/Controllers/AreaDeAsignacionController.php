@@ -29,19 +29,4 @@ class AreaDeAsignacionController extends Controller
         // Redirigir con mensaje
         return redirect()->back()->with('success', 'Área de uso registrada correctamente.');
     }
-
-    public function show(string $id)
-    {
-        
-    }
-
-    public function update(Request $request, string $id)
-    {
-        
-    }
-
-    public function destroy(string $id)
-    {
-        
-    }
 }

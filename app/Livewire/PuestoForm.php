@@ -11,7 +11,6 @@ use App\Models\Puesto;
 class PuestoForm extends Component
 {
     use WithPagination;
-    //public $marcas;
     public $tituloModalPrincipal = "REGISTRAR";
     public $showModal = false;
     public $accionPrincipal = "";
@@ -107,12 +106,14 @@ class PuestoForm extends Component
         //$this->id_estudiante = $marca->id;
     }
 
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
-        $query = Puesto::query();
-        //$this->search = strtoupper($this->search);
-
-        
+        $query = Puesto::query();        
         if ($this->search) {
             $query->where(function ($q) {
                 $q->where('nombre', 'LIKE', "%{$this->search}%");
@@ -121,6 +122,6 @@ class PuestoForm extends Component
         return view('livewire.puesto-form', [
             'puestos' => $query->paginate($this->perPage),
         ]);
-
     }
+    
 }

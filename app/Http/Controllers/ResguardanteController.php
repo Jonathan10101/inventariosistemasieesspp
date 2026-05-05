@@ -16,11 +16,6 @@ class ResguardanteController extends Controller
         return view('resguardante/index');
     }
 
-    public function create()
-    {
-        
-    }
-
     public function store(Request $request)
     {
         $request->validate([
@@ -102,19 +97,4 @@ class ResguardanteController extends Controller
         ]);
     }
 
-
-    public function edit(Resguardante $resguardante)
-    {
-        
-    }
-
-    public function update(Request $request, Resguardante $resguardante)
-    {
-        
-    }
-
-    public function destroy(Resguardante $resguardante)
-    {
-        
-    }
 }

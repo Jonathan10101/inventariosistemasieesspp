@@ -4,7 +4,6 @@ namespace App\Livewire;
 
 use Livewire\Component;
 
-use App\Livewire\UpdateResguardante;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
 use App\Models\Resguardante;
@@ -55,7 +54,6 @@ class ResguardanteForm extends Component
 
     #[On('saveFromComponentNewResguardante')]
     public function saveNewResguardante($data){
-        //dd($data);
         $user_id = User::create([
             "name" => $data['nombre1'] . $data['nombre2'] . $data['apellido1'] . $data['apellido2'],
             //"email" => $data['nombre1'] . $data['nombre2'] . $data['apellido1'] . $data['apellido2'] . "@ieesspp.com",
@@ -64,10 +62,6 @@ class ResguardanteForm extends Component
             "password" => bcrypt($data['password'])
         ])->assignRole("Empleado");
         $id_user = (int)$user_id->id;
-        //dd($id_user);
-
-        //dd($nombre1.$nombre2.$apellido1.$apellido2);
-
         Resguardante::create([
             'nombre1' =>$data['nombre1'],
             'nombre2' => $data['nombre2'],
@@ -92,20 +86,16 @@ class ResguardanteForm extends Component
         ]);
 
         $resguardante = Resguardante::find($data['id']);
-        //$updateResguardanteUser = User::find($data['id']);
 
         $id_user = $resguardante->user_id;
 
         $user = User::find($id_user);
-        //dd(bcrypt($data['password']));
+    
         $user->update([
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             //'subdireccion' => $data['subdireccion']
         ]);
-
-        //dd($resguardante);
-
 
         $this->dispatch('alumno-updated',1);
         $this->showModal = false;  
@@ -147,7 +137,11 @@ class ResguardanteForm extends Component
         $this->resguardante = Resguardante::findOrFail($id);
         $this->isEditing = true;
         $this->data_external_component = $this->resguardante->id;
-        //$this->id_estudiante = $marca->id;
+    }
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
     }
 
     public function render()
@@ -180,10 +174,9 @@ class ResguardanteForm extends Component
             });
         }
 
-       
-
         return view('livewire.resguardante-form', [
             'resguardantes' => $query->paginate($this->perPage),
         ]);
     }
+    
 }

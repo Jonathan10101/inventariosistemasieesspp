@@ -10,7 +10,6 @@ use App\Models\AreaDeUso;
 class AreaDeAsignacionForm extends Component
 {
     use WithPagination;
-    //public $marcas;
     public $tituloModalPrincipal = "REGISTRAR";
     public $showModal = false;
     public $accionPrincipal = "";
@@ -58,7 +57,6 @@ class AreaDeAsignacionForm extends Component
 
     #[On('saveUpdateAreaDeAsignacionFromAnotherComponent')]
     public function saveUpdateAreaDeAsignacion($data){
-        //dd($data);
         $updateAreaDeAsignacion = AreaDeUso::find($data['id']);
         $updateAreaDeAsignacion->update([
             'nombre' => $data['nombre']
@@ -85,7 +83,7 @@ class AreaDeAsignacionForm extends Component
         }
     }
 
-     public function accionEjecutada($accion,$id){
+    public function accionEjecutada($accion,$id){
         switch ($accion) {
             case "inscripcion_a_curso":                
                 //$this->assignCourse($id);
@@ -109,7 +107,6 @@ class AreaDeAsignacionForm extends Component
     public function render()
     {
         $query = AreaDeUso::query();
-        
         if ($this->search) {
             $query->where(function ($q) {
                 $q->where('nombre', 'like', "%{$this->search}%");

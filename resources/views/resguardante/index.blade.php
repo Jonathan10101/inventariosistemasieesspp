@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Resguardantes')
+@section('title', 'Resguardantes > Usuarios')
 
 @section('content_header')
     <div class="page-header border-bottom m-3 mt-0">

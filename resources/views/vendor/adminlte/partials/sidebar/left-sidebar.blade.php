@@ -26,7 +26,7 @@
         <!-- Sidebar Footer -->
         <div class="sidebar-footer mt-auto" style="background: transparent !important;">
             <strong>IEESSPP</strong> © {{ date('Y') }}<br>
-            V 1.1.0
+            V 1.2.0
         </div>
     </div>
 

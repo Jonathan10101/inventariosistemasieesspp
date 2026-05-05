@@ -20,7 +20,7 @@ class UsersExport implements FromView{
     public function view(): View
     {
         return view('exportUsers',[
-            'resguardos' => Resguardo::all()
+            'resguardos' => User::all()
         ]);
         
     }

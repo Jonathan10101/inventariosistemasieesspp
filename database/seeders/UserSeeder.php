@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
 
         User::create([
             "name" => "Delegación",
-            'subdireccion' => null,
+            'subdireccion' => null, 
             "email" => "delegacion@ieesspp.com",
             "password" => bcrypt('delegacion%$%IEESSPP')
         ])->assignRole("Delegacion");

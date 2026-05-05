@@ -92,7 +92,7 @@ class UbicacionfisicaForm extends Component
         }
     }
 
-     public function accionEjecutada($accion,$id){
+    public function accionEjecutada($accion,$id){
         switch ($accion) {
             case "inscripcion_a_curso":                
                 //$this->assignCourse($id);
@@ -113,20 +113,20 @@ class UbicacionfisicaForm extends Component
         //$this->id_estudiante = $marca->id;
     }
 
-    public function downloadEtiqueta($id){
-       
+    public function downloadEtiqueta($id)
+    {       
         $codigo = str_pad($id, 8, '0', STR_PAD_LEFT);
-        //dd($codigo);
-
         return redirect()->route('etiquetas2.show',$codigo);
     }
-
+    
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
 
     public function render()
     {
         $query = UbicacionFisica::query();
-
-
         if ($this->search) {
             $busqueda = trim($this->search);
             $busquedaSinCeros = ltrim($this->search, '0');
@@ -136,11 +136,8 @@ class UbicacionfisicaForm extends Component
                 ->orWhere('id', $busqueda);
             });
         }
-
         return view('livewire.ubicacionfisica-form', [
             'ubicacionesfisicas' => $query->paginate($this->perPage),
         ]);
     }
-    
-
 }

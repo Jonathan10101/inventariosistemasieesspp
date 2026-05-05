@@ -76,16 +76,15 @@ class CreateNewResguardo extends Component
         $this->imagenBase64 = null;
     }
 
-public function updatedResguardanteId($value)
-{
-    if ($value) {
-        $resguardante = Resguardante::find($value);
-        $this->puesto_id = $resguardante->puesto_id ?? null;
-    } else {
-        $this->puesto_id = null;
+    public function updatedResguardanteId($value)
+    {
+        if ($value) {
+            $resguardante = Resguardante::find($value);
+            $this->puesto_id = $resguardante->puesto_id ?? null;
+        } else {
+            $this->puesto_id = null;
+        }
     }
-}
-
 
     public function updatedUbicacionFisicasId($value)
     {
@@ -98,7 +97,6 @@ public function updatedResguardanteId($value)
         $this->imagenSeleccionada = $ubicacion?->imagen;
     }
     
-
     public function toggleAdditionalFields()
     {
         $this->showAdditionalFields = !$this->showAdditionalFields;
@@ -144,7 +142,7 @@ public function updatedResguardanteId($value)
         }
         
 
-        /*
+        
         if($this->cantidad > 1){
             $contador = 0;
             while($contador <= $this->cantidad){
@@ -286,7 +284,7 @@ public function updatedResguardanteId($value)
   
             
         }
-        */
+        
 
 
 
@@ -360,7 +358,6 @@ public function updatedResguardanteId($value)
 
         /* === Emitir evento al padre === */
         $this->dispatch('resguardoCreado');
-        //session()->flash('message', 'Resguardo creado correctamente.');
     }
 
     /* =================== RESETEAR FORMULARIO =================== */
@@ -378,8 +375,8 @@ public function updatedResguardanteId($value)
     /* =================== VISTA =================== */
     public function render()
     {
-
- return view('livewire.create-new-resguardo', [
-        'mostrarBotonLoading' => $this->mostrarBotonLoading,
-    ]);    }
+        return view('livewire.create-new-resguardo', [
+            'mostrarBotonLoading' => $this->mostrarBotonLoading,
+        ]);    
+    }
 }

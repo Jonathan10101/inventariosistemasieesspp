@@ -29,24 +29,4 @@ class PuestoController extends Controller
         // Redirigir con mensaje
         return redirect()->back()->with('success', 'Puesto registrado correctamente.');
     }
-
-    public function show(Puesto $puesto)
-    {
-        
-    }
-
-    public function edit(Puesto $puesto)
-    {
-        
-    }
-
-    public function update(Request $request, Puesto $puesto)
-    {
-        
-    }
-
-    public function destroy(Puesto $puesto)
-    {
-        
-    }
 }

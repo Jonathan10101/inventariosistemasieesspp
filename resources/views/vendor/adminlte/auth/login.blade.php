@@ -121,7 +121,7 @@
 @stop
 
 @section('auth_footer')
-    <p class="text-center mt-2"><small>Versión 1.1.0</small></p>
+    <p class="text-center mt-2"><small>Versión 1.2.0</small></p>
 @stop
 
 @section('adminlte_js')
