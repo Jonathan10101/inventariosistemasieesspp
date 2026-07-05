@@ -1,0 +1,308 @@
+/* =========================================================
+   INTEVI - ADMINLTE THEME
+   Laravel 12 + AdminLTE
+   Fácil de implementar
+========================================================= */
+body {
+    background: 8px solid red !important;
+}
+:root {
+    --intevi-primary: #171C63;
+    --intevi-primary-2: #26318f;
+    --intevi-bg: #f5f7fb;
+    --intevi-text: #0f172a;
+    --intevi-muted: #64748b;
+    --intevi-border: #e2e8f0;
+}
+
+/* Fondo general */
+body {
+    background: var(--intevi-bg) !important;
+    color: var(--intevi-text);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Wrapper principal */
+.content-wrapper {
+    background:
+        radial-gradient(circle at top left, rgba(23, 28, 99, 0.08), transparent 32%),
+        linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%) !important;
+}
+
+/* Navbar superior */
+.main-header.navbar {
+    min-height: 64px;
+    background: rgba(255, 255, 255, 0.92) !important;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.95) !important;
+    box-shadow: 0 8px 26px rgba(15, 23, 42, 0.05);
+    backdrop-filter: blur(12px);
+}
+
+.main-header .nav-link {
+    color: #334155 !important;
+    font-weight: 800;
+}
+
+.main-header .nav-link:hover {
+    color: var(--intevi-primary) !important;
+}
+
+/* Logo / marca */
+.brand-link {
+    min-height: 64px;
+    background: #ffffff !important;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.95) !important;
+    color: var(--intevi-primary) !important;
+    font-weight: 950;
+    letter-spacing: -0.03em;
+}
+
+.brand-link .brand-text {
+    color: var(--intevi-primary) !important;
+    font-size: 18px;
+    font-weight: 950 !important;
+}
+
+.brand-image {
+    max-height: 38px !important;
+    margin-top: -4px !important;
+    object-fit: contain;
+}
+
+/* Sidebar */
+.main-sidebar {
+    background: #ffffff !important;
+    border-right: 1px solid rgba(226, 232, 240, 0.95);
+    box-shadow: 10px 0 30px rgba(15, 23, 42, 0.04) !important;
+}
+
+.sidebar {
+    padding-top: 14px;
+}
+
+/* Usuario / panel */
+.user-panel {
+    margin: 0 10px 14px !important;
+    padding: 13px !important;
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(23, 28, 99, 0.08), rgba(37, 99, 235, 0.05));
+    border: 1px solid rgba(226, 232, 240, 0.95);
+}
+
+.user-panel .info a {
+    color: var(--intevi-text) !important;
+    font-weight: 900;
+}
+
+/* Menú */
+.nav-sidebar {
+    padding: 0 10px;
+}
+
+.nav-sidebar .nav-item {
+    margin-bottom: 5px;
+}
+
+.nav-sidebar .nav-link {
+    min-height: 44px;
+    border-radius: 14px !important;
+    color: #475569 !important;
+    font-size: 14px;
+    font-weight: 800;
+    transition: all 0.16s ease;
+}
+
+.nav-sidebar .nav-link i {
+    color: #64748b !important;
+    transition: all 0.16s ease;
+}
+
+.nav-sidebar .nav-link:hover {
+    background: rgba(23, 28, 99, 0.07) !important;
+    color: var(--intevi-primary) !important;
+    transform: translateX(2px);
+}
+
+.nav-sidebar .nav-link:hover i {
+    color: var(--intevi-primary) !important;
+}
+
+/* Menú activo */
+.nav-sidebar .nav-link.active {
+    background: linear-gradient(135deg, var(--intevi-primary), var(--intevi-primary-2)) !important;
+    color: #ffffff !important;
+    box-shadow: 0 12px 24px rgba(23, 28, 99, 0.22);
+}
+
+.nav-sidebar .nav-link.active i {
+    color: #ffffff !important;
+}
+
+/* Submenús */
+.nav-treeview {
+    padding-left: 7px;
+}
+
+.nav-treeview .nav-link {
+    min-height: 38px;
+    font-size: 13px;
+    border-radius: 12px !important;
+}
+
+.nav-treeview .nav-link.active {
+    background: rgba(23, 28, 99, 0.10) !important;
+    color: var(--intevi-primary) !important;
+    box-shadow: none;
+}
+
+.nav-treeview .nav-link.active i {
+    color: var(--intevi-primary) !important;
+}
+
+/* Headers */
+.content-header {
+    padding: 18px 1rem 0.5rem;
+}
+
+.content-header h1 {
+    color: var(--intevi-text);
+    font-weight: 950;
+    letter-spacing: -0.04em;
+}
+
+/* Cards AdminLTE */
+.card {
+    border: 1px solid rgba(226, 232, 240, 0.95) !important;
+    border-radius: 22px !important;
+    box-shadow: 0 16px 38px rgba(15, 23, 42, 0.06) !important;
+    overflow: hidden;
+}
+
+.card-header {
+    background: #ffffff !important;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.95) !important;
+    padding: 17px 20px;
+}
+
+.card-title {
+    color: var(--intevi-text);
+    font-weight: 950;
+}
+
+/* Botones */
+.btn-primary {
+    background: linear-gradient(135deg, var(--intevi-primary), var(--intevi-primary-2)) !important;
+    border-color: var(--intevi-primary) !important;
+    color: #ffffff !important;
+    border-radius: 13px !important;
+    font-weight: 900 !important;
+    box-shadow: 0 12px 24px rgba(23, 28, 99, 0.20);
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 16px 30px rgba(23, 28, 99, 0.28);
+}
+
+/* Tablas */
+.table {
+    color: #334155;
+}
+
+.table thead th {
+    background: #f8fafc;
+    color: #475569;
+    border-bottom: 1px solid var(--intevi-border);
+    font-size: 12px;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.table td {
+    vertical-align: middle;
+    border-top: 1px solid #edf2f7;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+/* Forms */
+.form-control {
+    border-radius: 13px !important;
+    border: 1px solid #dbe3ef !important;
+    background: #f8fafc !important;
+    color: #0f172a !important;
+    font-weight: 700;
+}
+
+.form-control:focus {
+    background: #ffffff !important;
+    border-color: rgba(23, 28, 99, 0.48) !important;
+    box-shadow: 0 0 0 4px rgba(23, 28, 99, 0.09) !important;
+}
+
+/* Modales */
+.modal-content {
+    border: none !important;
+    border-radius: 22px !important;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(15, 23, 42, 0.22) !important;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--intevi-primary), var(--intevi-primary-2)) !important;
+    color: #ffffff !important;
+    border-bottom: none !important;
+}
+
+.modal-title {
+    font-weight: 950 !important;
+}
+
+.modal-header .close {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* Footer */
+.main-footer {
+    background: #ffffff !important;
+    border-top: 1px solid rgba(226, 232, 240, 0.95) !important;
+    color: #64748b !important;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .main-header.navbar {
+        min-height: 58px;
+    }
+
+    .brand-link {
+        min-height: 58px;
+    }
+
+    .content-header h1 {
+        font-size: 23px;
+    }
+}

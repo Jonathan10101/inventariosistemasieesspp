@@ -1,14 +1,13 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Title
     |--------------------------------------------------------------------------
     */
 
-    'title' => 'Sistema Integral de Inventarios | IEESSPP',
+    'title' => 'INTEVI',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -37,8 +36,19 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'logo' => '<b>INVENTARIOS IEESSPP</b>',
-    'logo_img' => 'vendor/adminlte/dist/img/logocircularieessppQUITARMAYUSCULAS.png',
+    'logo' => '
+        <div class="intevi-brand">
+            <div class="intevi-brand-mark">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+
+            <div class="intevi-brand-text">
+                <strong>INTEVI</strong>
+                <span>FROM ANED</span>
+            </div>
+        </div>
+    ',
+    'logo_img' => null,
     'logo_img_class' => 'brand-image',
     'logo_img_alt' => '',
 
@@ -117,20 +127,17 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'classes_body' => '',
+    'classes_body' => 'sidebar-mini layout-fixed layout-navbar-fixed',
     'classes_brand' => '',
     'classes_brand_text' => '',
     'classes_content_wrapper' => '',
     'classes_content_header' => '',
     'classes_content' => '',
-
-    // ⭐ Sidebar institucional con tu color + estilos
-    'classes_sidebar' => 'sidebar-ieesspp elevation-4',
-
-    'classes_sidebar_nav' => '',
+    'classes_sidebar' => 'sidebar-light-primary elevation-0',
+    'classes_sidebar_nav' => 'nav-flat nav-child-indent',
     'classes_topnav' => 'navbar-white navbar-light',
     'classes_topnav_nav' => 'navbar-expand',
-    'classes_topnav_container' => 'container',
+    'classes_topnav_container' => 'container-fluid',
 
     /*
     |--------------------------------------------------------------------------
@@ -179,84 +186,83 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Admin Panel Assets
+    |--------------------------------------------------------------------------
+    */
+
+    'css' => [
+        'public/css/intevi-adminlte.css',
+    ],
+
+    'js' => [
+        //
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Menu
     |--------------------------------------------------------------------------
     */
 
     'menu' => [
-
-        // 🔹 Pantalla completa
         [
-            'type' => 'fullscreen-widget',
-            'topnav_right' => true,
-        ],
-
-        // 🔹 Dashboard
-        /*
-        [
-            'text' => 'Panel principal',
-            'url' => 'dashboard',
+            'text' => 'Panel de Control',
+            'url'  => 'dashboard',
             'icon' => 'fas fa-tachometer-alt',
         ],
-        */
 
-        // 🔹 Inventario
+        ['header' => 'GESTIÓN PRINCIPAL'],
+
         [
             'text' => 'Inventario',
-            'url' => 'inventario',
+            'url'  => 'inventario',
             'icon' => 'fas fa-boxes',
-            'can' => 'inventario.index',
         ],
-
-        // 🔹 Marcas
         [
-            'text' => 'Marcas',
-            'url' => 'marcas',
-            'icon' => 'fas fa-copyright',
-            'can' => 'marcas.edit',
+            'text' => 'Resguardos',
+            'url'  => 'resguardos',
+            'icon' => 'fas fa-file-signature',
         ],
-
-        // 🔹 Resguardantes
         [
             'text' => 'Resguardantes',
+            'url'  => 'resguardante',
             'icon' => 'fas fa-user-shield',
-            'can' => 'resguardante.index',
-            'submenu' => [
-                [
-                    'text' => 'Usuarios',
-                    'url' => 'resguardante',
-                    'icon' => 'fas fa-id-badge',
-                    'can' => 'puestos.index'
-
-                ],
-                [
-                    'text' => 'Puestos',
-                    'url' => 'puestos',
-                    'icon' => 'fas fa-briefcase',
-                    'can' => 'puestos.edit'
-                ],
-            ],
         ],
 
-        // 🔹 Ubicaciones
+        ['header' => 'CATÁLOGOS'],
+
         [
-            'text' => 'Ubicaciones',
-            'icon' => 'fas fa-map-marked-alt',
-            'can' => 'ubicacionfisica.index',
-            'submenu' => [
-                [
-                    'text' => 'Ubicación física',
-                    'url' => 'ubicacionfisica',
-                    'icon' => 'fas fa-map-marker-alt',
-                    'can' => 'ubicacionfisica.index'
-                ],
-                [
-                    'text' => 'Área de asignación',
-                    'url' => 'areadeasignacion',
-                    'icon' => 'fas fa-building',
-                    'can' => 'ubicacionfisica.edit'
-                ],
-            ],
+            'text' => 'Marcas',
+            'url'  => 'marcas',
+            'icon' => 'fas fa-tags',
+        ],
+        [
+            'text' => 'Puestos',
+            'url'  => 'puestos',
+            'icon' => 'fas fa-briefcase',
+        ],
+        [
+            'text' => 'Áreas de asignación',
+            'url'  => 'areadeasignacion',
+            'icon' => 'fas fa-sitemap',
+        ],
+        [
+            'text' => 'Ubicaciones físicas',
+            'url'  => 'ubicacionfisica',
+            'icon' => 'fas fa-map-marker-alt',
+        ],
+
+        ['header' => 'ADMINISTRACIÓN'],
+
+        [
+            'text' => 'Usuarios',
+            'url'  => 'usuarios',
+            'icon' => 'fas fa-users-cog',
+        ],
+        [
+            'text' => 'Roles y permisos',
+            'url'  => 'roles',
+            'icon' => 'fas fa-user-lock',
         ],
     ],
 

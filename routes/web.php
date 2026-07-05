@@ -9,6 +9,8 @@ use App\Http\Controllers\{
     UbicacionFisicaController,
     AreaDeAsignacionController,
     InventarioController,
+    UserController,
+    RolController,
     EtiquetaController,
     Etiqueta2Controller,
     DashboardController,
@@ -28,7 +30,8 @@ Route::get('/', function () {
     if (!Auth::check()) {
         return Redirect::route('login');  // Redirige si no está logueado
     }
-    return view('admin.index');
+    //return view('admin.index');
+    return view('dashboard');
 });
 
 Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified',])->group(function () {Route::apiResource('dashboard', DashboardController::class);});
@@ -38,6 +41,14 @@ Route::resource('resguardante', ResguardanteController::class)->middleware(['aut
 Route::resource('puestos', PuestoController::class)->middleware(['auth:sanctum','can:puestos.create']);
 Route::resource("ubicacionfisica",UbicacionFisicaController::class)->middleware(['auth:sanctum','can:ubicacionfisica.index']);
 Route::resource("areadeasignacion",AreaDeAsignacionController::class)->middleware(['auth:sanctum','can:areadeasignacion.create']);
+Route::resource('usuarios', UserController::class)->middleware(['auth:sanctum','can:puestos.create']);
+Route::resource('roles', RolController::class)->middleware(['auth:sanctum','can:puestos.create']);
+
 Route::get('/etiqueta/{codigo}', [EtiquetaController::class, 'show'])->name('etiquetas.show')->middleware(['auth:sanctum','can:inventario.index']);
 Route::get('/etiqueta2/{codigo}', [Etiqueta2Controller::class, 'show'])->name('etiquetas2.show')->middleware(['auth:sanctum','can:inventario.index']);
 Route::get('/export',[ExportController::class,'export'])->name('export');
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
+});

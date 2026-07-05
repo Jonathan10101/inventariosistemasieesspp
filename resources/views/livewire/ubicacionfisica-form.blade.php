@@ -1,214 +1,981 @@
-<div class="container mt-4">
-    {{-- LOADING BAR (solo acciones de botones) --}}
+<div class="container mt-4 ubicaciones-page">
+
+    {{-- LOADING BAR --}}
     <div
         wire:loading.delay
-        wire:target="showModalNewUbicacionFisica,downloadEtiqueta,cambiarAccion,editar,search,clearSearch"
-        class="position-fixed top-0 start-0 w-100"
-        style="z-index: 99999; height: 4px;"
+        wire:target="showModalNewUbicacionFisica,downloadEtiqueta,cambiarAccion,searchUbicacionesFisicas,clearSearch"
+        class="ieesspp-loading-bar"
     >
         <div class="progress w-100 h-100 rounded-0">
-            <div class="progress-bar progress-bar-striped progress-bar-animated bg-info w-100"></div>
+            <div class="progress-bar progress-bar-striped progress-bar-animated w-100"></div>
         </div>
     </div>
 
-    <!-- Agregar SweetAlert2 CDN en tu archivo Blade -->
+    {{-- BARRA MÓVIL --}}
+    <div class="mobile-page-nav">
+        <button
+            type="button"
+            class="mobile-nav-btn"
+            onclick="window.history.back()"
+        >
+            <i class="fas fa-arrow-left"></i>
+            <span>Atrás</span>
+        </button>
+
+        <a href="{{ url('/dashboard') }}" class="mobile-nav-btn primary">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+        </a>
+    </div>
+
+    <!-- SweetAlert2 -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>
 
-    <!-- Add nueva Marca  -->
-    <div class="row">
-        <div class="col d-flex justify-content-end">   
-            @hasanyrole('Administrador|Delegacion|Subdirector')                  
-            <button wire:click="showModalNewUbicacionFisica" class="btn btn-primary mb-3 fa" style="background-color:#171C63; border:none;">                        
-                <i class="fas fa-plus"></i>
-                Agregar ubicación fisica            
-            </button>  
-            @endhasanyrole          
+    <!-- ENCABEZADO -->
+    <div class="ubicaciones-header mb-4">
+        <div>
+            <div class="ubicaciones-kicker">
+                <i class="fas fa-map-marker-alt"></i>
+                Inventario institucional
+            </div>
+
+            <h2 class="ubicaciones-title">
+                Ubicaciones físicas
+            </h2>
+
+            <p class="ubicaciones-subtitle">
+                Administra los espacios donde se resguardan los bienes institucionales.
+            </p>
         </div>
+
+        @hasanyrole('Administrador|Delegacion|Subdirector')
+            <button
+                type="button"
+                wire:click="showModalNewUbicacionFisica"
+                class="btn btn-add-ubicacion"
+            >
+                <i class="fas fa-plus"></i>
+                <span>Agregar ubicación física</span>
+            </button>
+        @endhasanyrole
     </div>
 
-    <!--ESTE COMPONENTE TIENE LA LOGICA PARA MOSTRAL MODAL DE VENTANA EMERGENTE-->
-    <div class="modal fade @if($showModal) show @endif" style="display: @if($showModal) block @else none @endif; background-color: rgba(0,0,0,0.5);" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header text-white" style="background-color:#171C63;">
-                    <h5 class="modal-title w-100 fw-bold" id="studentModalLabel">{{$tituloModalPrincipal}}</h5>
-                    <button type="button" class="btn-close btn-close-white" wire:click="closeModal"></button>                    
+    <!-- MODAL -->
+    <div
+        class="modal fade ieesspp-modal @if($showModal) show d-block @endif"
+        tabindex="-1"
+        role="dialog"
+    >
+        <div class="modal-dialog modal-lg {{ $accionPrincipal === 'editar' ? 'modal-dialog-centered' : '' }} ieesspp-modal-dialog" role="document">
+            <div class="modal-content ieesspp-modal-content">
+
+                <div class="modal-header ieesspp-modal-header">
+                    <div>
+                        <span class="modal-label">
+                            {{ $accionPrincipal === 'editar' ? 'Edición de registro' : 'Nuevo registro' }}
+                        </span>
+
+                        <h5 class="modal-title" id="studentModalLabel">
+                            {{ $tituloModalPrincipal }}
+                        </h5>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="modal-close-btn"
+                        wire:click="closeModal"
+                        aria-label="Cerrar"
+                    >
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
-  
-                @switch($accionPrincipal)        
-                    {{--EDITAR UBICACIÓN FISICA--}}
-                    @case("editar")
-                        @livewire('update-ubicacion-fisica',['data'=>$data_external_component])     
-                    @break 
 
-                    {{--CREAR NUEVA UBICACIÓN FISICA--}}
-                    @default
-                        @livewire('create-new-ubicacionfisica') 
-                    @break                    
-                @endswitch
+                <div class="ieesspp-modal-body">
+                    @switch($accionPrincipal)
 
-                <div class="modal-footer">                           
+                        {{-- EDITAR UBICACIÓN FÍSICA --}}
+                        @case("editar")
+                            @livewire('update-ubicacion-fisica', ['data' => $data_external_component])
+                        @break
+
+                        {{-- CREAR NUEVA UBICACIÓN FÍSICA --}}
+                        @default
+                            @livewire('create-new-ubicacionfisica')
+                        @break
+
+                    @endswitch
                 </div>
 
             </div>
         </div>
     </div>
 
+    <!-- BUSCADOR -->
+    <div class="search-panel mb-4">
+        <div class="search-panel-header">
+            <div>
+                <label for="searchid" class="search-title">
+                    Buscar ubicación física
+                </label>
 
+                <p class="search-description">
+                    Escribe el nombre o descripción de la ubicación. Los resultados se actualizan automáticamente.
+                </p>
+            </div>
 
-    <!-- Buscador -->
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <label class="form-label fw-semibold text-dark">Da clic en el Buscador y escribe el nombre de la ubicación física y luego presiona “Buscar”</label>
-            <div class="input-group shadow-sm">
-                <input type="text" id="searchid" placeholder="Buscador ..." 
-                       wire:keydown.enter="searchUbicacionesFisicas" wire:model="search" style="text-transform: uppercase;" class="form-control border-end-0">
-                <button class="btn btn-primary" style="background-color:#171C63; border:none;" wire:click="searchUbicacionesFisicas">
-                    <i class="fas fa-search"></i> Buscar
-                </button>
-                @if($search)
-                <button class="btn btn-outline-secondary" wire:click="clearSearch">
+            <div class="search-status" wire:loading wire:target="searchUbicacionesFisicas">
+                <i class="fas fa-spinner fa-spin"></i>
+                Buscando
+            </div>
+        </div>
+
+        <div class="search-box">
+            <span class="search-icon">
+                <i class="fas fa-search"></i>
+            </span>
+
+            <input
+                type="text"
+                id="searchid"
+                placeholder="Ejemplo: ALMACÉN GENERAL"
+                wire:model="search"
+                wire:keyup.debounce.400ms="searchUbicacionesFisicas"
+                oninput="this.value = this.value.toUpperCase()"
+                class="form-control search-input"
+                autocomplete="off"
+            >
+
+            @if($search)
+                <button
+                    type="button"
+                    class="btn-clear-search"
+                    wire:click="clearSearch"
+                    title="Limpiar búsqueda"
+                >
                     <i class="fas fa-times"></i>
                 </button>
-                @endif
-            </div>
+            @endif
         </div>
     </div>
 
+    <!-- TABLA -->
+    <div class="table-card">
+        <div class="table-card-header">
+            <div>
+                <h5 class="table-title">
+                    Ubicaciones registradas
+                </h5>
 
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">IMAGEN</th>
-                <th scope="col">UBICACIÓN FÍSICA</th>
-                <th scope="col">ACCIONES</th>
-            </tr>
-        </thead>
+                <p class="table-subtitle">
+                    Listado general de espacios físicos disponibles en el sistema.
+                </p>
+            </div>
 
-        <tbody>
-            @forelse ($ubicacionesfisicas as $ubicacion)
-                <tr>
-                    <td>{{ $ubicacion->id }}</td>
+            <div class="table-counter">
+                {{ $ubicacionesfisicas->total() }} registros
+            </div>
+        </div>
 
-                    <td>
-                        @if($ubicacion->imagen)
-                            <a href="{{ asset('storage/' . $ubicacion->imagen) }}" target="_blank">
-                                <img src="{{ asset('storage/' . $ubicacion->imagen) }}" 
-                                    alt="Imagen de la ubicación"
-                                    class="img-thumbnail border zoom-image"
-                                    width="100">
-                            </a>
-                        @else
-                            <span class="text-muted">Sin imagen</span>
-                        @endif
-                    </td>
+        <div class="table-responsive">
+            <table class="table ubicaciones-table mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Imagen</th>
+                        <th scope="col">Ubicación física</th>
+                        <th scope="col" class="text-center">Acciones</th>
+                    </tr>
+                </thead>
 
-                    <td>{{ $ubicacion->descripcion }}</td>
+                <tbody>
+                    @forelse ($ubicacionesfisicas as $ubicacion)
+                        <tr>
+                            <td>
+                                <span class="id-badge">
+                                    #{{ $ubicacion->id }}
+                                </span>
+                            </td>
 
-                    <td>
+                            <td>
+                                @if($ubicacion->imagen)
+                                    <a
+                                        href="{{ asset('storage/' . $ubicacion->imagen) }}"
+                                        target="_blank"
+                                        class="ubicacion-image-link"
+                                        title="Ver imagen"
+                                    >
+                                        <img
+                                            src="{{ asset('storage/' . $ubicacion->imagen) }}"
+                                            alt="Imagen de la ubicación"
+                                            class="ubicacion-image"
+                                        >
+                                    </a>
+                                @else
+                                    <span class="no-image-badge">
+                                        <i class="fas fa-image"></i>
+                                        Sin imagen
+                                    </span>
+                                @endif
+                            </td>
 
-                        {{-- ⭐ SOLO EL ADMINISTRADOR VE EDITAR --}}
-                        @hasanyrole('Administrador')
-                            <button class="btn btn-warning btn-sm mb-1"
-                                    wire:click="cambiarAccion('editar', {{ $ubicacion->id }})"
-                                    title="Editar">
-                                <i class="fas fa-edit"></i>
-                            </button>
+                            <td>
+                                <div class="ubicacion-info">
+                                    <div class="ubicacion-icon">
+                                        <i class="fas fa-building"></i>
+                                    </div>
 
-                            <button wire:click="downloadEtiqueta({{ $ubicacion->id }})"
-                                class="btn btn-success btn-sm mb-1"
-                                title="Descargar etiqueta">
-                            <i class="fas fa-download"></i>
-                        </button>
-                        @endhasanyrole
+                                    <div>
+                                        <div class="ubicacion-name">
+                                            {{ $ubicacion->descripcion }}
+                                        </div>
 
-                        {{-- ✔ TODOS (admin y no admin) pueden ver estas  acciones --}}
+                                        <div class="ubicacion-meta">
+                                            Espacio físico institucional
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
 
+                            <td class="text-center">
+                                <div class="actions-group">
 
-                        <a href="{{ route('ubicacionfisica.show', $ubicacion->id) }}"
-                        class="btn btn-dark btn-sm mb-1"
-                        title="Ver el inventario en esta ubicación">
-                            <i class="fas fa-eye"></i>
-                        </a>
+                                    @hasanyrole('Administrador')
+                                        <button
+                                            type="button"
+                                            class="btn-action-edit"
+                                            wire:click="cambiarAccion('editar', {{ $ubicacion->id }})"
+                                            title="Editar ubicación"
+                                        >
+                                            <i class="fas fa-pen"></i>
+                                        </button>
 
-                    </td>
+                                        <button
+                                            type="button"
+                                            wire:click="downloadEtiqueta({{ $ubicacion->id }})"
+                                            class="btn-action-download"
+                                            title="Descargar etiqueta"
+                                        >
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                    @endhasanyrole
 
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="13" class="text-center">
-                        No se encontraron ubicaciones físicas.
-                    </td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
+                                    <a
+                                        href="{{ route('ubicacionfisica.show', $ubicacion->id) }}"
+                                        class="btn-action-view"
+                                        title="Ver inventario en esta ubicación"
+                                    >
+                                        <i class="fas fa-eye"></i>
+                                    </a>
 
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="13">
+                                <div class="empty-state">
+                                    <div class="empty-icon">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
 
+                                    <h6>No se encontraron ubicaciones físicas</h6>
 
+                                    <p>
+                                        Intenta con otro nombre o limpia la búsqueda para ver todos los registros.
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-
-
-    <!-- Paginación -->
-    <div class="d-flex justify-content-end mt-3">
+    <!-- PAGINACIÓN -->
+    <div class="pagination-wrapper mt-4">
         {{ $ubicacionesfisicas->links() }}
     </div>
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/ieessppformtable.css') }}">
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="{{ asset('css/ieessppformtable.css') }}">
-@push('js')
-@livewireScripts
-    <script>
-        document.addEventListener('livewire:initialized',function(){    
-            Livewire.on('refresh-page',function($message){                
-                //window.location.reload();
-                location.reload(); // Recarga la página completa
-                //alert("x");
-            }); 
+    @push('js')
+        @livewireScripts
 
-            Livewire.on('alumno-created',function($message){                
-                Swal.fire({
-                    title: '¡Éxito!',
-                    text: '!Ubicación fisica registrada con exito!',
-                    icon: 'success',
-                    confirmButtonText: 'Ok',
-                    allowOutsideClick: false, // Deshabilita clics fuera del modal
-                    allowEscapeKey: false,   // Deshabilita la tecla Escape
-                    allowEnterKey: false,     // Deshabilita la tecla Enter
-                    customClass: {
-                        confirmButton: 'btn-ieesspp' // Clase personalizada
-                    },
-                    buttonsStyling: false // Permite que la clase personalizada sobrescriba estilos de SweetAlert
-                }).then((result) => {
-                       if (result.isConfirmed) {
-                            window.location.reload();     
-                        }    
-                });                
-            });   
+        <script>
+            document.addEventListener('livewire:initialized', function () {
 
-            Livewire.on('alumno-updated',function($message){                
-                Swal.fire({
-                    title: '¡Éxito!',
-                    text: '!Ubicación fisica actualizada con éxito!',
-                    icon: 'success',
-                    confirmButtonText: 'Ok',
-                     allowOutsideClick: false, // Deshabilita clics fuera del modal
-                    allowEscapeKey: false,   // Deshabilita la tecla Escape
-                    allowEnterKey: false,     // Deshabilita la tecla Enter
-                    customClass: {
-                        confirmButton: 'btn-ieesspp' // Clase personalizada
-                    },
-                    buttonsStyling: false // Permite que la clase personalizada sobrescriba estilos de SweetAlert
-                }).then((result) => {
-                       if (result.isConfirmed) {
-                            window.location.reload();     
-                        }    
-                });                   
-            }); 
-        });
-    </script>
-@endpush
+                Livewire.on('refresh-page', function ($message) {
+                    location.reload();
+                });
+
+                Livewire.on('alumno-created', function ($message) {
+                    Swal.fire({
+                        title: '¡Éxito!',
+                        text: '¡Ubicación física registrada con éxito!',
+                        icon: 'success',
+                        confirmButtonText: 'Ok',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        allowEnterKey: false,
+                        customClass: {
+                            confirmButton: 'btn-ieesspp'
+                        },
+                        buttonsStyling: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload();
+                        }
+                    });
+                });
+
+                Livewire.on('alumno-updated', function ($message) {
+                    Swal.fire({
+                        title: '¡Éxito!',
+                        text: '¡Ubicación física actualizada con éxito!',
+                        icon: 'success',
+                        confirmButtonText: 'Ok',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        allowEnterKey: false,
+                        customClass: {
+                            confirmButton: 'btn-ieesspp'
+                        },
+                        buttonsStyling: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload();
+                        }
+                    });
+                });
+
+            });
+        </script>
+    @endpush
+
+    <style>
+        .ubicaciones-page {
+            color: #111827;
+        }
+
+        .ieesspp-loading-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 99999;
+            height: 4px;
+        }
+
+        .ieesspp-loading-bar .progress-bar {
+            background: linear-gradient(90deg, #171C63, #2563eb, #06b6d4);
+        }
+
+        .ubicaciones-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            background:
+                radial-gradient(circle at top left, rgba(23, 28, 99, 0.12), transparent 35%),
+                linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
+        }
+
+        .ubicaciones-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(23, 28, 99, 0.08);
+            color: #171C63;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .ubicaciones-title {
+            margin: 0;
+            color: #0f172a;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+        }
+
+        .ubicaciones-subtitle {
+            margin: 6px 0 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .btn-add-ubicacion {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            min-height: 44px;
+            padding: 0 18px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #171C63 0%, #26318f 100%);
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: 0 14px 28px rgba(23, 28, 99, 0.22);
+            transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+        }
+
+        .btn-add-ubicacion:hover {
+            color: #ffffff;
+            transform: translateY(-1px);
+            filter: brightness(1.04);
+            box-shadow: 0 18px 34px rgba(23, 28, 99, 0.28);
+        }
+
+        .ieesspp-modal {
+            background: rgba(15, 23, 42, 0.58);
+            backdrop-filter: blur(5px);
+        }
+
+        .ieesspp-modal-dialog {
+            z-index: 1055;
+        }
+
+        .ieesspp-modal-content {
+            border: none;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 28px 70px rgba(15, 23, 42, 0.28);
+        }
+
+        .ieesspp-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px 22px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            background:
+                radial-gradient(circle at top left, rgba(255, 255, 255, 0.20), transparent 35%),
+                linear-gradient(135deg, #171C63 0%, #0f143f 100%);
+            color: #ffffff;
+        }
+
+        .ieesspp-modal-header .modal-title {
+            margin: 2px 0 0;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .modal-label {
+            display: block;
+            color: rgba(255, 255, 255, 0.76);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .modal-close-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.18s ease, transform 0.18s ease;
+        }
+
+        .modal-close-btn:hover {
+            background: rgba(255, 255, 255, 0.22);
+            transform: rotate(90deg);
+        }
+
+        .ieesspp-modal-body {
+            background: #ffffff;
+        }
+
+        .search-panel {
+            background: #ffffff;
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: 0 16px 42px rgba(15, 23, 42, 0.055);
+        }
+
+        .search-panel-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+
+        .search-title {
+            display: block;
+            margin: 0;
+            color: #0f172a;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .search-description {
+            margin: 4px 0 0;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .search-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #171C63;
+            background: rgba(23, 28, 99, 0.08);
+            border-radius: 999px;
+            padding: 7px 11px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            min-height: 50px;
+            background: #f8fafc;
+            border: 1px solid transparent;
+            border-radius: 14px;
+            overflow: hidden;
+            transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .search-box:focus-within {
+            background: #ffffff;
+            border-color: rgba(23, 28, 99, 0.35);
+            box-shadow: 0 0 0 4px rgba(23, 28, 99, 0.09);
+        }
+
+        .search-icon {
+            width: 48px;
+            color: #171C63;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+
+        .search-input {
+            height: 50px;
+            border: none !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            color: #0f172a;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .search-input::placeholder {
+            color: #94a3b8;
+            font-weight: 500;
+            text-transform: none;
+        }
+
+        .btn-clear-search {
+            width: 42px;
+            height: 42px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 12px;
+            background: transparent;
+            color: #64748b;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.18s ease, color 0.18s ease;
+        }
+
+        .btn-clear-search:hover {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .table-card {
+            background: #ffffff;
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
+        }
+
+        .table-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px 20px;
+            border-bottom: 1px solid #edf2f7;
+            background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+        }
+
+        .table-title {
+            margin: 0;
+            color: #0f172a;
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .table-subtitle {
+            margin: 4px 0 0;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .table-counter {
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: #f1f5f9;
+            color: #334155;
+            font-size: 12px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .ubicaciones-table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .ubicaciones-table thead th {
+            padding: 14px 20px;
+            background: #f8fafc;
+            color: #475569;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .ubicaciones-table tbody td {
+            padding: 16px 20px;
+            vertical-align: middle;
+            border-bottom: 1px solid #f1f5f9;
+            color: #0f172a;
+            font-size: 14px;
+        }
+
+        .ubicaciones-table tbody tr {
+            transition: background 0.16s ease;
+        }
+
+        .ubicaciones-table tbody tr:hover {
+            background: #fbfdff;
+        }
+
+        .id-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 48px;
+            padding: 6px 9px;
+            border-radius: 999px;
+            background: rgba(23, 28, 99, 0.08);
+            color: #171C63;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .ubicacion-image-link {
+            display: inline-block;
+            border-radius: 14px;
+            overflow: hidden;
+            text-decoration: none;
+        }
+
+        .ubicacion-image {
+            width: 86px;
+            height: 62px;
+            object-fit: cover;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .ubicacion-image:hover {
+            transform: scale(1.04);
+            box-shadow: 0 14px 28px rgba(15, 23, 42, 0.14);
+        }
+
+        .no-image-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            min-height: 34px;
+            padding: 0 12px;
+            border-radius: 999px;
+            background: #f1f5f9;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .ubicacion-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ubicacion-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(23, 28, 99, 0.12), rgba(37, 99, 235, 0.12));
+            color: #171C63;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+
+        .ubicacion-name {
+            color: #111827;
+            font-weight: 800;
+            letter-spacing: 0.01em;
+            line-height: 1.25;
+        }
+
+        .ubicacion-meta {
+            margin-top: 2px;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .actions-group {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-action-edit,
+        .btn-action-download,
+        .btn-action-view {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 11px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .btn-action-edit {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .btn-action-edit:hover {
+            background: #f97316;
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(249, 115, 22, 0.24);
+        }
+
+        .btn-action-download {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .btn-action-download:hover {
+            background: #059669;
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(5, 150, 105, 0.24);
+        }
+
+        .btn-action-view {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .btn-action-view:hover {
+            background: #171C63;
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(23, 28, 99, 0.22);
+        }
+
+        .empty-state {
+            padding: 34px 20px;
+            text-align: center;
+            color: #64748b;
+        }
+
+        .empty-icon {
+            width: 54px;
+            height: 54px;
+            margin: 0 auto 12px;
+            border-radius: 16px;
+            background: rgba(23, 28, 99, 0.08);
+            color: #171C63;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .empty-state h6 {
+            margin: 0;
+            color: #0f172a;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .empty-state p {
+            margin: 6px 0 0;
+            font-size: 13px;
+        }
+
+        .pagination-wrapper {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-ieesspp {
+            background: #171C63 !important;
+            border: none !important;
+            color: #ffffff !important;
+            border-radius: 10px !important;
+            padding: 9px 20px !important;
+            font-weight: 700 !important;
+        }
+
+        .mobile-page-nav {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .resguardos-page {
+                margin-top: 12px !important;
+                padding-left: 12px !important;
+                padding-right: 12px !important;
+            }
+
+            .mobile-page-nav {
+                position: sticky;
+                top: 8px;
+                z-index: 1050;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 10px;
+                margin-bottom: 14px;
+                padding: 10px;
+                border-radius: 18px;
+                background: rgba(255, 255, 255, 0.92);
+                border: 1px solid rgba(226, 232, 240, 0.95);
+                box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12);
+                backdrop-filter: blur(12px);
+            }
+
+            .mobile-nav-btn {
+                min-height: 42px;
+                flex: 1;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                border: 1px solid #e2e8f0;
+                border-radius: 14px;
+                background: #f8fafc;
+                color: #334155;
+                font-size: 13px;
+                font-weight: 900;
+                text-decoration: none !important;
+                outline: none !important;
+                transition: all 0.18s ease;
+            }
+
+            .mobile-nav-btn i {
+                font-size: 13px;
+            }
+
+            .mobile-nav-btn:hover,
+            .mobile-nav-btn:focus {
+                background: #ffffff;
+                color: #171C63;
+                border-color: rgba(23, 28, 99, 0.25);
+            }
+
+            .mobile-nav-btn.primary {
+                background: linear-gradient(135deg, #171C63 0%, #26318f 100%);
+                border-color: #171C63;
+                color: #ffffff !important;
+                box-shadow: 0 12px 24px rgba(23, 28, 99, 0.22);
+            }
+
+            .mobile-nav-btn.primary:hover,
+            .mobile-nav-btn.primary:focus {
+                color: #ffffff !important;
+                transform: translateY(-1px);
+                box-shadow: 0 16px 30px rgba(23, 28, 99, 0.28);
+            }
+
+            .resguardos-header {
+                margin-top: 4px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .resguardos-header {
+                align-items: stretch;
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .header-actions,
+            .btn-add-resguardo {
+                width: 100%;
+            }
+
+            .search-panel-header {
+                flex-direction: column;
+            }
+
+            .table-card-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .table-bottom-controls {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .per-page-control,
+            .btn-export-inventory {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .pagination-wrapper {
+                justify-content: center;
+            }
+        }
+    </style>
+
 </div>

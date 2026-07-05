@@ -3,19 +3,19 @@
 @section('title', 'Ubicaciones > Áreas de asignación')
 
 @section('content_header')
+    {{--
     <div class="page-header border-bottom m-3 mt-0">
         <div class="container-fluid py-4">
             <div class="d-flex align-items-center">
                 <div class="title-accent me-3"></div>
                 <div>
                     <h1 class="page-title mb-1">Áreas de asignación</h1>
-                    {{--
                     <p class="page-subtitle mb-0">Control institucional de equipos y resguardos</p>
-                    --}}
                 </div>
             </div>
         </div>
     </div>
+    --}}
 @stop
 
 @section('content')

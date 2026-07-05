@@ -3,6 +3,7 @@
 @section('title', 'Resguardantes > Puestos')
 
 @section('content_header')
+    {{-- 
     <div class="page-header border-bottom m-3 mt-0">
         <div class="container-fluid py-4">
             <div class="d-flex align-items-center">
@@ -13,6 +14,7 @@
             </div>
         </div>
     </div>
+    --}}
 @stop
 
 @section('content')

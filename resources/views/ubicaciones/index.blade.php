@@ -3,19 +3,18 @@
 @section('title', 'Ubicaciones > Ubicación física')
 
 @section('content_header')
+    {{--
     <div class="page-header border-bottom m-3 mt-0">
         <div class="container-fluid py-4">
             <div class="d-flex align-items-center">
                 <div class="title-accent me-3"></div>
                 <div>
                     <h1 class="page-title mb-1">Ubicaciones Fisicas</h1>
-                    {{--
-                    <p class="page-subtitle mb-0">Control institucional de equipos y resguardos</p>
-                    --}}
                 </div>
             </div>
         </div>
     </div>
+    --}}
 @stop
 
 @section('content')
@@ -31,7 +30,7 @@
 @stop
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/ieesspptitleanimado.css') }}">
+<link rel="stylesheet" href="{{ asset('css/ieesspptitleanimado.css')C">
 @stop
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

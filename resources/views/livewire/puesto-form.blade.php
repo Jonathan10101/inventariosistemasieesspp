@@ -1,179 +1,866 @@
-<div class="container mt-4">
-    {{-- LOADING BAR (solo acciones de botones) --}}
+<div class="container mt-4 puestos-page">
+
+    {{-- LOADING BAR --}}
     <div
         wire:loading.delay
-        wire:target="showModalNewPuesto,cambiarAccion,editar,search,clearSearch"
-        class="position-fixed top-0 start-0 w-100"
-        style="z-index: 99999; height: 4px;"
+        wire:target="showModalNewPuesto,cambiarAccion,searchPuestos,clearSearch"
+        class="ieesspp-loading-bar"
     >
         <div class="progress w-100 h-100 rounded-0">
-            <div class="progress-bar progress-bar-striped progress-bar-animated bg-info w-100"></div>
+            <div class="progress-bar progress-bar-striped progress-bar-animated w-100"></div>
         </div>
     </div>
 
-    <!-- Agregar SweetAlert2 CDN en tu archivo Blade -->
+    {{-- BARRA MÓVIL --}}
+    <div class="mobile-page-nav">
+        <button
+            type="button"
+            class="mobile-nav-btn"
+            onclick="window.history.back()"
+        >
+            <i class="fas fa-arrow-left"></i>
+            <span>Atrás</span>
+        </button>
+
+        <a href="{{ url('/dashboard') }}" class="mobile-nav-btn primary">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+        </a>
+    </div>
+
+    <!-- SweetAlert2 -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>
 
-    <!-- Add nueva Marca  -->
-    <div class="row">
-        <div class="col d-flex justify-content-end">   
-            {{--@hasanyrole('Administrador|Delegacion|Subdirector')--}}
-            @hasanyrole('Administrador')                                              
-            <button wire:click="showModalNewPuesto" class="btn btn-primary mb-3 fa" style="background-color:#171C63; border:none;">                        
-                <i class="fas fa-plus"></i>
-                Agregar puesto           
-            </button>  
-            @endhasanyrole      
+    <!-- ENCABEZADO -->
+    <div class="puestos-header mb-4">
+        <div>
+            <div class="puestos-kicker">
+                <i class="fas fa-briefcase"></i>
+                Inventario institucional
+            </div>
+
+            <h2 class="puestos-title">
+                Catálogo de puestos
+            </h2>
+
+            <p class="puestos-subtitle">
+                Administra los puestos utilizados para asignar responsables y controlar bienes institucionales.
+            </p>
         </div>
+
+        @hasanyrole('Administrador')
+            <button
+                type="button"
+                wire:click="showModalNewPuesto"
+                class="btn btn-add-puesto"
+            >
+                <i class="fas fa-plus"></i>
+                <span>Agregar puesto</span>
+            </button>
+        @endhasanyrole
     </div>
 
-    <!--ESTE COMPONENTE TIENE LA LOGICA PARA MOSTRAL MODAL DE VENTANA EMERGENTE-->
-    <div class="modal fade @if($showModal) show @endif" style="display: @if($showModal) block @else none @endif; background-color: rgba(0,0,0,0.5);" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header text-white" style="background-color:#171C63;">
-                    <h5 class="modal-title w-100 fw-bold" id="studentModalLabel">{{$tituloModalPrincipal}}</h5>
-                    <button type="button" class="btn-close btn-close-white" wire:click="closeModal"></button>                    
+    <!-- MODAL -->
+    <div
+        class="modal fade ieesspp-modal @if($showModal) show d-block @endif"
+        tabindex="-1"
+        role="dialog"
+    >
+        <div class="modal-dialog modal-lg {{ $accionPrincipal === 'editar' ? 'modal-dialog-centered' : '' }} ieesspp-modal-dialog" role="document">
+            <div class="modal-content ieesspp-modal-content">
+
+                <div class="modal-header ieesspp-modal-header">
+                    <div>
+                        <span class="modal-label">
+                            {{ $accionPrincipal === 'editar' ? 'Edición de registro' : 'Nuevo registro' }}
+                        </span>
+
+                        <h5 class="modal-title" id="studentModalLabel">
+                            {{ $tituloModalPrincipal }}
+                        </h5>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="modal-close-btn"
+                        wire:click="closeModal"
+                        aria-label="Cerrar"
+                    >
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
-  
-                @switch($accionPrincipal)        
-                    {{--EDITAR MARCA--}}
-                    @case("editar")
-                        @livewire('update-puesto',['data'=>$data_external_component])     
-                    @break 
 
-                    {{--CREAR NUEVA MARCA--}}
-                    @default
-                        @livewire('create-new-puesto') 
-                    @break                    
-                @endswitch
+                <div class="ieesspp-modal-body">
+                    @switch($accionPrincipal)
 
-                <div class="modal-footer">                           
+                        {{-- EDITAR PUESTO --}}
+                        @case("editar")
+                            @livewire('update-puesto', ['data' => $data_external_component])
+                        @break
+
+                        {{-- CREAR NUEVO PUESTO --}}
+                        @default
+                            @livewire('create-new-puesto')
+                        @break
+
+                    @endswitch
                 </div>
 
             </div>
         </div>
     </div>
 
+    <!-- BUSCADOR -->
+    <div class="search-panel mb-4">
+        <div class="search-panel-header">
+            <div>
+                <label for="searchid" class="search-title">
+                    Buscar puesto
+                </label>
 
-    <!-- Buscador -->
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <label class="form-label fw-semibold text-dark">Da clic en el Buscador y escribe el nombre del Puesto y luego presiona “Buscar”</label>
-            <div class="input-group shadow-sm">
-                <input type="text" id="searchid" placeholder="Buscador ..." 
-                       wire:keydown.enter="searchPuestos" wire:model="search" style="text-transform: uppercase;" class="form-control border-end-0">
-                <button class="btn btn-primary" style="background-color:#171C63; border:none;" wire:click="searchPuestos">
-                    <i class="fas fa-search"></i> Buscar
-                </button>
-                @if($search)
-                <button class="btn btn-outline-secondary" wire:click="clearSearch">
+                <p class="search-description">
+                    Escribe el nombre del puesto. Los resultados se actualizan automáticamente.
+                </p>
+            </div>
+
+            <div class="search-status" wire:loading wire:target="searchPuestos">
+                <i class="fas fa-spinner fa-spin"></i>
+                Buscando
+            </div>
+        </div>
+
+        <div class="search-box">
+            <span class="search-icon">
+                <i class="fas fa-search"></i>
+            </span>
+
+            <input
+                type="text"
+                id="searchid"
+                placeholder="Ejemplo: DIRECTOR GENERAL"
+                wire:model="search"
+                wire:keyup.debounce.400ms="searchPuestos"
+                oninput="this.value = this.value.toUpperCase()"
+                class="form-control search-input"
+                autocomplete="off"
+            >
+
+            @if($search)
+                <button
+                    type="button"
+                    class="btn-clear-search"
+                    wire:click="clearSearch"
+                    title="Limpiar búsqueda"
+                >
                     <i class="fas fa-times"></i>
                 </button>
-                @endif
-            </div>
+            @endif
         </div>
     </div>
 
+    <!-- TABLA -->
+    <div class="table-card">
+        <div class="table-card-header">
+            <div>
+                <h5 class="table-title">
+                    Puestos registrados
+                </h5>
 
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">PUESTO</th>
+                <p class="table-subtitle">
+                    Listado general de puestos disponibles en el sistema.
+                </p>
+            </div>
 
-                @hasanyrole('Administrador')
-                    <th scope="col">ACCIONES</th>
-                @endhasanyrole
+            <div class="table-counter">
+                {{ $puestos->total() }} registros
+            </div>
+        </div>
 
-            </tr>
-        </thead>
+        <div class="table-responsive">
+            <table class="table puestos-table mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Puesto</th>
 
-        <tbody>
-            @forelse ($puestos as $puesto)
-                <tr>
-                    <td>{{ $puesto->id }}</td>
-                    <td>{{ $puesto->nombre }}</td>
+                        @hasanyrole('Administrador')
+                            <th scope="col" class="text-center">Acciones</th>
+                        @endhasanyrole
+                    </tr>
+                </thead>
 
-                    @hasanyrole('Administrador')
-                        <td>
-                            <button class="btn btn-warning btn-sm"
-                                    wire:click="cambiarAccion('editar', {{ $puesto->id }})"
-                                    title="Editar">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                        </td>
-                    @endhasanyrole
+                <tbody>
+                    @forelse ($puestos as $puesto)
+                        <tr>
+                            <td>
+                                <span class="id-badge">
+                                    #{{ $puesto->id }}
+                                </span>
+                            </td>
 
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="13" class="text-center">No se encontraron puestos.</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
+                            <td>
+                                <div class="puesto-info">
+                                    <div class="puesto-icon">
+                                        <i class="fas fa-briefcase"></i>
+                                    </div>
 
+                                    <div>
+                                        <div class="puesto-name">
+                                            {{ $puesto->nombre }}
+                                        </div>
 
+                                        <div class="puesto-meta">
+                                            Puesto institucional
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
 
-    <!-- Paginación -->
-    <div class="d-flex justify-content-end mt-3">
+                            @hasanyrole('Administrador')
+                                <td class="text-center">
+                                    <button
+                                        type="button"
+                                        class="btn-action-edit"
+                                        wire:click="cambiarAccion('editar', {{ $puesto->id }})"
+                                        title="Editar puesto"
+                                    >
+                                        <i class="fas fa-pen"></i>
+                                    </button>
+                                </td>
+                            @endhasanyrole
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="13">
+                                <div class="empty-state">
+                                    <div class="empty-icon">
+                                        <i class="fas fa-briefcase"></i>
+                                    </div>
+
+                                    <h6>No se encontraron puestos</h6>
+
+                                    <p>
+                                        Intenta con otro nombre o limpia la búsqueda para ver todos los registros.
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- PAGINACIÓN -->
+    <div class="pagination-wrapper mt-4">
         {{ $puestos->links() }}
     </div>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="{{ asset('css/ieessppformtable.css') }}">
-@push('js')
-@livewireScripts
-    <script>
-        document.addEventListener('livewire:initialized',function(){    
-            Livewire.on('refresh-page',function($message){                
-                //window.location.reload();
-                location.reload(); // Recarga la página completa
-                //alert("x");
-            }); 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/ieessppformtable.css') }}">
 
-            Livewire.on('alumno-created',function($message){                
-                Swal.fire({
-                    title: '¡Éxito!',
-                    text: '!Puesto registrado con exito!',
-                    icon: 'success',
-                    confirmButtonText: 'Ok',
-                    allowOutsideClick: false, // Deshabilita clics fuera del modal
-                    allowEscapeKey: false,   // Deshabilita la tecla Escape
-                    allowEnterKey: false,     // Deshabilita la tecla Enter
-                    customClass: {
-                        confirmButton: 'btn-ieesspp' // Clase personalizada
-                    },
-                    buttonsStyling: false // Permite que la clase personalizada sobrescriba estilos de SweetAlert
-                }).then((result) => {
-                       if (result.isConfirmed) {
-                            window.location.reload();     
-                        }    
-                });                
-            });   
+    @push('js')
+        @livewireScripts
 
-            Livewire.on('alumno-updated',function($message){                
-                Swal.fire({
-                    title: '¡Éxito!',
-                    text: '!Puesto actualizado con éxito!',
-                    icon: 'success',
-                    confirmButtonText: 'Ok',
-                     allowOutsideClick: false, // Deshabilita clics fuera del modal
-                    allowEscapeKey: false,   // Deshabilita la tecla Escape
-                    allowEnterKey: false,     // Deshabilita la tecla Enter
-                    customClass: {
-                        confirmButton: 'btn-ieesspp' // Clase personalizada
-                    },
-                    buttonsStyling: false // Permite que la clase personalizada sobrescriba estilos de SweetAlert
-                }).then((result) => {
-                       if (result.isConfirmed) {
-                            window.location.reload();     
-                        }    
-                });                   
-            }); 
-        });
-    </script>
-@endpush
+        <script>
+            document.addEventListener('livewire:initialized', function () {
+
+                Livewire.on('refresh-page', function ($message) {
+                    location.reload();
+                });
+
+                Livewire.on('alumno-created', function ($message) {
+                    Swal.fire({
+                        title: '¡Éxito!',
+                        text: '¡Puesto registrado con éxito!',
+                        icon: 'success',
+                        confirmButtonText: 'Ok',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        allowEnterKey: false,
+                        customClass: {
+                            confirmButton: 'btn-ieesspp'
+                        },
+                        buttonsStyling: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload();
+                        }
+                    });
+                });
+
+                Livewire.on('alumno-updated', function ($message) {
+                    Swal.fire({
+                        title: '¡Éxito!',
+                        text: '¡Puesto actualizado con éxito!',
+                        icon: 'success',
+                        confirmButtonText: 'Ok',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        allowEnterKey: false,
+                        customClass: {
+                            confirmButton: 'btn-ieesspp'
+                        },
+                        buttonsStyling: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload();
+                        }
+                    });
+                });
+
+            });
+        </script>
+    @endpush
+
+    <style>
+        .puestos-page {
+            color: #111827;
+        }
+
+        .ieesspp-loading-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 99999;
+            height: 4px;
+        }
+
+        .ieesspp-loading-bar .progress-bar {
+            background: linear-gradient(90deg, #171C63, #2563eb, #06b6d4);
+        }
+
+        .puestos-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            background:
+                radial-gradient(circle at top left, rgba(23, 28, 99, 0.12), transparent 35%),
+                linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
+        }
+
+        .puestos-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(23, 28, 99, 0.08);
+            color: #171C63;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .puestos-title {
+            margin: 0;
+            color: #0f172a;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+        }
+
+        .puestos-subtitle {
+            margin: 6px 0 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .btn-add-puesto {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            min-height: 44px;
+            padding: 0 18px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #171C63 0%, #26318f 100%);
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: 0 14px 28px rgba(23, 28, 99, 0.22);
+            transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+        }
+
+        .btn-add-puesto:hover {
+            color: #ffffff;
+            transform: translateY(-1px);
+            filter: brightness(1.04);
+            box-shadow: 0 18px 34px rgba(23, 28, 99, 0.28);
+        }
+
+        .ieesspp-modal {
+            background: rgba(15, 23, 42, 0.58);
+            backdrop-filter: blur(5px);
+        }
+
+        .ieesspp-modal-dialog {
+            z-index: 1055;
+        }
+
+        .ieesspp-modal-content {
+            border: none;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 28px 70px rgba(15, 23, 42, 0.28);
+        }
+
+        .ieesspp-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px 22px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            background:
+                radial-gradient(circle at top left, rgba(255, 255, 255, 0.20), transparent 35%),
+                linear-gradient(135deg, #171C63 0%, #0f143f 100%);
+            color: #ffffff;
+        }
+
+        .ieesspp-modal-header .modal-title {
+            margin: 2px 0 0;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .modal-label {
+            display: block;
+            color: rgba(255, 255, 255, 0.76);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .modal-close-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.18s ease, transform 0.18s ease;
+        }
+
+        .modal-close-btn:hover {
+            background: rgba(255, 255, 255, 0.22);
+            transform: rotate(90deg);
+        }
+
+        .ieesspp-modal-body {
+            background: #ffffff;
+        }
+
+        .search-panel {
+            background: #ffffff;
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: 0 16px 42px rgba(15, 23, 42, 0.055);
+        }
+
+        .search-panel-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+
+        .search-title {
+            display: block;
+            margin: 0;
+            color: #0f172a;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .search-description {
+            margin: 4px 0 0;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .search-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #171C63;
+            background: rgba(23, 28, 99, 0.08);
+            border-radius: 999px;
+            padding: 7px 11px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            min-height: 50px;
+            background: #f8fafc;
+            border: 1px solid transparent;
+            border-radius: 14px;
+            overflow: hidden;
+            transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .search-box:focus-within {
+            background: #ffffff;
+            border-color: rgba(23, 28, 99, 0.35);
+            box-shadow: 0 0 0 4px rgba(23, 28, 99, 0.09);
+        }
+
+        .search-icon {
+            width: 48px;
+            color: #171C63;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+
+        .search-input {
+            height: 50px;
+            border: none !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            color: #0f172a;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .search-input::placeholder {
+            color: #94a3b8;
+            font-weight: 500;
+            text-transform: none;
+        }
+
+        .btn-clear-search {
+            width: 42px;
+            height: 42px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 12px;
+            background: transparent;
+            color: #64748b;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.18s ease, color 0.18s ease;
+        }
+
+        .btn-clear-search:hover {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .table-card {
+            background: #ffffff;
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
+        }
+
+        .table-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px 20px;
+            border-bottom: 1px solid #edf2f7;
+            background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+        }
+
+        .table-title {
+            margin: 0;
+            color: #0f172a;
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .table-subtitle {
+            margin: 4px 0 0;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .table-counter {
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: #f1f5f9;
+            color: #334155;
+            font-size: 12px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .puestos-table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .puestos-table thead th {
+            padding: 14px 20px;
+            background: #f8fafc;
+            color: #475569;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .puestos-table tbody td {
+            padding: 16px 20px;
+            vertical-align: middle;
+            border-bottom: 1px solid #f1f5f9;
+            color: #0f172a;
+            font-size: 14px;
+        }
+
+        .puestos-table tbody tr {
+            transition: background 0.16s ease;
+        }
+
+        .puestos-table tbody tr:hover {
+            background: #fbfdff;
+        }
+
+        .id-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 48px;
+            padding: 6px 9px;
+            border-radius: 999px;
+            background: rgba(23, 28, 99, 0.08);
+            color: #171C63;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .puesto-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .puesto-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(23, 28, 99, 0.12), rgba(37, 99, 235, 0.12));
+            color: #171C63;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+
+        .puesto-name {
+            color: #111827;
+            font-weight: 800;
+            letter-spacing: 0.01em;
+            line-height: 1.25;
+        }
+
+        .puesto-meta {
+            margin-top: 2px;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .btn-action-edit {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 11px;
+            background: #fff7ed;
+            color: #c2410c;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .btn-action-edit:hover {
+            background: #f97316;
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(249, 115, 22, 0.24);
+        }
+
+        .empty-state {
+            padding: 34px 20px;
+            text-align: center;
+            color: #64748b;
+        }
+
+        .empty-icon {
+            width: 54px;
+            height: 54px;
+            margin: 0 auto 12px;
+            border-radius: 16px;
+            background: rgba(23, 28, 99, 0.08);
+            color: #171C63;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .empty-state h6 {
+            margin: 0;
+            color: #0f172a;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .empty-state p {
+            margin: 6px 0 0;
+            font-size: 13px;
+        }
+
+        .pagination-wrapper {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-ieesspp {
+            background: #171C63 !important;
+            border: none !important;
+            color: #ffffff !important;
+            border-radius: 10px !important;
+            padding: 9px 20px !important;
+            font-weight: 700 !important;
+        }
+
+        .mobile-page-nav {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .resguardos-page {
+                margin-top: 12px !important;
+                padding-left: 12px !important;
+                padding-right: 12px !important;
+            }
+
+            .mobile-page-nav {
+                position: sticky;
+                top: 8px;
+                z-index: 1050;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 10px;
+                margin-bottom: 14px;
+                padding: 10px;
+                border-radius: 18px;
+                background: rgba(255, 255, 255, 0.92);
+                border: 1px solid rgba(226, 232, 240, 0.95);
+                box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12);
+                backdrop-filter: blur(12px);
+            }
+
+            .mobile-nav-btn {
+                min-height: 42px;
+                flex: 1;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                border: 1px solid #e2e8f0;
+                border-radius: 14px;
+                background: #f8fafc;
+                color: #334155;
+                font-size: 13px;
+                font-weight: 900;
+                text-decoration: none !important;
+                outline: none !important;
+                transition: all 0.18s ease;
+            }
+
+            .mobile-nav-btn i {
+                font-size: 13px;
+            }
+
+            .mobile-nav-btn:hover,
+            .mobile-nav-btn:focus {
+                background: #ffffff;
+                color: #171C63;
+                border-color: rgba(23, 28, 99, 0.25);
+            }
+
+            .mobile-nav-btn.primary {
+                background: linear-gradient(135deg, #171C63 0%, #26318f 100%);
+                border-color: #171C63;
+                color: #ffffff !important;
+                box-shadow: 0 12px 24px rgba(23, 28, 99, 0.22);
+            }
+
+            .mobile-nav-btn.primary:hover,
+            .mobile-nav-btn.primary:focus {
+                color: #ffffff !important;
+                transform: translateY(-1px);
+                box-shadow: 0 16px 30px rgba(23, 28, 99, 0.28);
+            }
+
+            .resguardos-header {
+                margin-top: 4px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .resguardos-header {
+                align-items: stretch;
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .header-actions,
+            .btn-add-resguardo {
+                width: 100%;
+            }
+
+            .search-panel-header {
+                flex-direction: column;
+            }
+
+            .table-card-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .table-bottom-controls {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .per-page-control,
+            .btn-export-inventory {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .pagination-wrapper {
+                justify-content: center;
+            }
+        }
+    </style>
+
 </div>
