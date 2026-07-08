@@ -19,10 +19,12 @@ return new class extends Migration
             $table->string('apellido2', 50)->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('puesto_id')->nullable();
+            $table->unsignedBigInteger('area_id')->nullable();
 
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
             $table->foreign('puesto_id')->references('id')->on('puestos')->onDelete('set null');
+            $table->foreign('area_id')->references('id')->on('area_de_uso')->onDelete('set null');
 
 
             $table->timestamps();

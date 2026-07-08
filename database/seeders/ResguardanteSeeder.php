@@ -14,10 +14,12 @@ class ResguardanteSeeder extends Seeder
     {
         DB::table('resguardantes')->insert([
             ['nombre1' => 'ADMINISTRADOR','nombre2' => '','apellido1'=>"",'apellido2'=>'','user_id'=>1],
+            /*
             ['nombre1' => 'DIRECCIÓN','nombre2' => '','apellido1'=>"",'apellido2'=>'','user_id'=>2],
             ['nombre1' => 'DELEGACIÓN','nombre2' => '','apellido1'=>"",'apellido2'=>'','user_id'=>3],
             ['nombre1' => 'SUB DESARROLLO POLICIAL','nombre2' => '','apellido1'=>"",'apellido2'=>'','user_id'=>4],
             ['nombre1' => 'SUB COORDINACIÓN','nombre2' => '','apellido1'=>"",'apellido2'=>'','user_id'=>5],
+            */
             /*
             ['nombre1' => 'JONATHAN','nombre2' => '','apellido1'=>"BEDOLLA",'apellido2'=>'HURTADO','user_id'=>2],
             ['nombre1' => 'ALICIA','nombre2' => '','apellido1'=>"MALDONADO",'apellido2'=>'FLORES','user_id'=>3],

@@ -183,7 +183,9 @@
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Área de asignación</th>
+                        {{--
                         <th scope="col" class="text-center">Acciones</th>
+                        --}}
                     </tr>
                 </thead>
 
@@ -213,7 +215,8 @@
                                     </div>
                                 </div>
                             </td>
-
+                             
+                            {{--
                             <td class="text-center">
                                 <div class="actions-group">
 
@@ -249,6 +252,8 @@
 
                                 </div>
                             </td>
+                            --}}
+
                         </tr>
                     @empty
                         <tr>

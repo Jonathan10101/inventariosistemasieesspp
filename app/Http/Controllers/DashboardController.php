@@ -7,6 +7,8 @@ use App\Models\Inventario;
 use App\Models\Resguardo;
 use App\Models\Resguardante;
 use App\Models\AreaDeUso;
+use App\Models\Marca;
+
 
 class DashboardController extends Controller
 {    
@@ -14,12 +16,12 @@ class DashboardController extends Controller
     {     
         //return view("dashboard/index");
         return view('dashboard', [
-        'totalInventarios' => Inventario::count(),
-        'totalResguardos' => Resguardo::count(),
-        'totalResguardantes' => Resguardante::count(),
-        'totalAreas' => AreaDeUso::count(),
-        'ultimosResguardos' => Resguardo::latest()->take(5)->get(),
-    ]);
+            'totalInventarios' => Resguardo::count(),
+            'totalMarcas' => Marca::count(),
+            'totalResguardantes' => Resguardante::count(),
+            'totalAreas' => AreaDeUso::count(),
+            'ultimosResguardos' => Resguardo::latest()->take(5)->get(),
+        ]);
     }
 
     public function store(Request $request)

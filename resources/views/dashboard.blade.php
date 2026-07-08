@@ -30,12 +30,12 @@
                     Agregar inventario
                 </a>
 
-                <!--
+                {{--
                 <a href="{{ url('/resguardos') }}" class="btn dash-btn-secondary">
-                    <i class="fas fa-file-signature"></i>
-                    Ver resguardos
+                    <i class="fas fa-chart-area"></i>
+                    Ver gráficos estadísticos 
                 </a>
-                -->
+                --}}
             </div>
         </div>
 
@@ -50,7 +50,7 @@
 
                 <div class="dash-status">
                     <span></span>
-                    V. 1.0.0 alpha
+                    V. 1.1.0 alpha
                 </div>
             </div>
         </div>
@@ -66,18 +66,18 @@
 
             <div>
                 <span>Inventarios</span>
-                <strong>{{ $totalInventarios ?? 0 }}</strong>
+                <strong>{{ $totalInventarios ?? 0  }}</strong>
             </div>
         </div>
 
         <div class="dash-stat">
             <div class="dash-stat-icon green">
-                <i class="fas fa-file-signature"></i>
+                <i class="fas fa-tags"></i>
             </div>
 
             <div>
-                <span>Resguardos</span>
-                <strong>{{ $totalResguardos ?? 0 }}</strong>
+                <span>Marcas</span>
+                <strong>{{ $totalMarcas ?? 0 }}</strong>
             </div>
         </div>
 
@@ -133,12 +133,12 @@
 
             <a href="{{ url('/resguardos') }}" class="dash-module-card">
                 <div class="dash-module-icon success">
-                    <i class="fas fa-file-contract"></i>
+                    <i class="fas fa-tags"></i>
                 </div>
-
+            
                 <div>
-                    <h3>Resguardos</h3>
-                    <p>Consulta documentos, responsables y movimientos.</p>
+                    <h3>Marcas</h3>
+                    <p>Consulta las marcas registradas.</p>
                 </div>
 
                 <span class="dash-module-arrow">
@@ -205,7 +205,7 @@
                                     <span>Bienes y activos registrados.</span>
                                 </div>
                             </a>
-
+                            <!--
                             <a href="{{ url('/resguardos') }}" class="dash-mini-link">
                                 <i class="fas fa-file-signature"></i>
                                 <div>
@@ -213,7 +213,7 @@
                                     <span>Documentación y movimientos.</span>
                                 </div>
                             </a>
-
+                            -->
                             <a href="{{ url('/resguardantes') }}" class="dash-mini-link">
                                 <i class="fas fa-user-shield"></i>
                                 <div>
@@ -312,6 +312,7 @@
                                 </div>
                             </a>
 
+                            <!--
                             <a href="{{ url('/roles') }}" class="dash-mini-link">
                                 <i class="fas fa-key"></i>
                                 <div>
@@ -319,7 +320,7 @@
                                     <span>Control de privilegios.</span>
                                 </div>
                             </a>
-
+                            -->
                         </div>
                     </div>
                 </div>
@@ -337,7 +338,7 @@
                         <p>Últimos movimientos del sistema.</p>
                     </div>
 
-                    <a href="{{ url('/inventarios') }}" class="dash-card-link">
+                    <a href="{{ url('/inventario') }}" class="dash-card-link">
                         Ver todo
                     </a>
                 </div>

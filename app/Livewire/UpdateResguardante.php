@@ -30,6 +30,7 @@ class UpdateResguardante extends Component
         $this->nombre2 = $resguardanteBusqueda->nombre2; 
         $this->apellido1 = $resguardanteBusqueda->apellido1; 
         $this->apellido2 = $resguardanteBusqueda->apellido2; 
+        //dd($resguardanteBusqueda);
         $this->email = $resguardanteUserBusqueda->email;
         $this->id_resguardante = $resguardanteBusqueda->id;
         $this->puesto_id = $resguardanteBusqueda->puesto_id; 

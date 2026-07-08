@@ -177,56 +177,6 @@
                     </div>
                 </div>
 
-                {{-- CAMPOS OCULTOS --}}
-                <div style="display:none;">
-                    <div class="angular-field angular-floating @error('email') has-error @enderror">
-                        <i class="fas fa-envelope angular-field-icon"></i>
-
-                        <input
-                            id="emaillabel"
-                            type="text"
-                            wire:model.defer="email"
-                            class="form-control"
-                            placeholder=" "
-                            oninput="this.value = this.value.toLowerCase().replace(/\s/g, '')"
-                        >
-
-                        <label for="emaillabel" class="angular-field-label">
-                            Email
-                        </label>
-
-                        @error('email')
-                            <div class="angular-error">
-                                <i class="fas fa-exclamation-circle"></i>
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                    <div class="angular-field angular-floating @error('password') has-error @enderror">
-                        <i class="fas fa-lock angular-field-icon"></i>
-
-                        <input
-                            id="passwordlabel"
-                            type="password"
-                            wire:model.defer="password"
-                            class="form-control"
-                            placeholder=" "
-                        >
-
-                        <label for="passwordlabel" class="angular-field-label">
-                            Password
-                        </label>
-
-                        @error('password')
-                            <div class="angular-error">
-                                <i class="fas fa-exclamation-circle"></i>
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-
                 {{-- SECCIÓN: ADSCRIPCIÓN --}}
                 <div class="angular-section mb-4">
                     <div class="angular-section-header">
@@ -243,29 +193,28 @@
                     <div class="row">
 
                         <div class="col-md-12">
-                            <div class="angular-field angular-select @error('subdireccion') has-error @enderror">
+                            <div class="angular-field angular-select @error('area_id') has-error @enderror">
                                 <i class="fas fa-building angular-field-icon"></i>
 
-                                <label for="subdireccion" class="angular-field-label">
-                                    Subdirección*
+                                <label for="area_id" class="angular-field-label">
+                                    Área*
                                 </label>
 
                                 <select
-                                    id="subdireccion"
-                                    wire:model.defer="subdireccion"
+                                    id="area_id"
+                                    wire:model.defer="area_id"
                                     class="form-control"
                                 >
                                     <option value="">Selecciona una opción</option>
-                                    <option value="NA">NA</option>
-                                    <option value="SUBDIRECCIÓN DE DESARROLLO POLICIAL">
-                                        SUBDIRECCIÓN DE DESARROLLO POLICIAL
-                                    </option>
-                                    <option value="SUBDIRECCIÓN DE COORDINACIÓN E INFRAESTRUCTURA INSTITUCIONAL">
-                                        SUBDIRECCIÓN DE COORDINACIÓN E INFRAESTRUCTURA INSTITUCIONAL
-                                    </option>
+                                    @foreach($areas as $area)
+                                        <option value="{{ $area->id }}">
+                                            {{ $area->nombre }}
+                                        </option>
+                                    @endforeach
+                                   
                                 </select>
 
-                                @error('subdireccion')
+                                @error('area_id')
                                     <div class="angular-error">
                                         <i class="fas fa-exclamation-circle"></i>
                                         {{ $message }}
@@ -304,6 +253,122 @@
                                 @enderror
                             </div>
                         </div>
+
+                    </div>
+                </div>
+
+                {{-- ACCESO --}}
+                <div class="angular-section mb-4">
+                    <div class="angular-section-header">
+                        <div class="angular-section-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+
+                        <div>
+                            <h5>Datos de acceso</h5>
+                            <p>Actualiza correo y contraseña del resguardante cuando sea necesario.</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="angular-field angular-floating @error('email') has-error @enderror">
+                                <i class="fas fa-envelope angular-field-icon"></i>
+
+                                <input
+                                    id="emaillabel"
+                                    type="text"
+                                    wire:model.defer="email"
+                                    class="form-control"
+                                    placeholder=" "
+                                    autocomplete="off"
+                                    oninput="this.value = this.value.toLowerCase().replace(/\s/g, '')"
+                                >
+
+                                <label for="emaillabel" class="angular-field-label">
+                                    Email
+                                </label>
+
+                                <small class="angular-help">
+                                    Escribe el correo sin espacios.
+                                </small>
+
+                                @error('email')
+                                    <div class="angular-error">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="angular-field angular-floating angular-password-field @error('password') has-error @enderror">
+                                <i class="fas fa-key angular-field-icon"></i>
+
+                                <input
+                                    id="passwordlabel"
+                                    type="password"
+                                    wire:model.defer="password"
+                                    class="form-control"
+                                    placeholder=" "
+                                    autocomplete="new-password"
+                                >
+
+                                <label for="passwordlabel" class="angular-field-label">
+                                    Password
+                                </label>
+
+                                <button
+                                    type="button"
+                                    class="angular-password-toggle"
+                                    onclick="togglePasswordResguardante()"
+                                    title="Mostrar/Ocultar contraseña"
+                                >
+                                    <i class="fas fa-eye"></i>
+                                </button>
+
+                                @error('password')
+                                    <div class="angular-error">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="angular-field angular-select @error('rol') has-error @enderror">
+                                <i class="fas fa-briefcase angular-field-icon"></i>
+
+                                <label for="puesto" class="angular-field-label">
+                                    Rol en el sistema*
+                                </label>
+
+                                <select
+                                    id="puesto"
+                                    wire:model.defer="rol"
+                                    class="form-control"
+                                >
+                                    <option value="">Seleccione...</option>
+
+                                    @foreach($roles as $rol)
+                                        <option value="{{ $puesto->id }}">
+                                            {{ $rol->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                @error('rol')
+                                    <div class="angular-error">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+
 
                     </div>
                 </div>
@@ -546,6 +611,14 @@
             letter-spacing: 0.055em;
         }
 
+        .angular-help {
+            display: block;
+            margin-top: 6px;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
         .angular-error {
             display: flex;
             align-items: center;
@@ -564,6 +637,33 @@
         .angular-field.has-error .angular-field-icon,
         .angular-field.has-error .angular-field-label {
             color: #dc2626;
+        }
+
+        .angular-password-field .form-control {
+            padding-right: 52px !important;
+        }
+
+        .angular-password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 9px;
+            z-index: 5;
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(23, 28, 99, 0.08);
+            color: #171C63;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+
+        .angular-password-toggle:hover {
+            background: #171C63;
+            color: #ffffff;
         }
 
         .angular-actions {
@@ -629,4 +729,29 @@
             }
         }
     </style>
+
+    <script>
+        function togglePasswordResguardante() {
+            const input = document.getElementById('passwordlabel');
+            const icon = document.querySelector('.angular-password-toggle i');
+
+            if (!input) return;
+
+            if (input.type === 'password') {
+                input.type = 'text';
+
+                if (icon) {
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                }
+            } else {
+                input.type = 'password';
+
+                if (icon) {
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            }
+        }
+    </script>
 </div>

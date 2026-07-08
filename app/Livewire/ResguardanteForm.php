@@ -57,11 +57,12 @@ class ResguardanteForm extends Component
         $user_id = User::create([
             "name" => $data['nombre1'] . $data['nombre2'] . $data['apellido1'] . $data['apellido2'],
             //"email" => $data['nombre1'] . $data['nombre2'] . $data['apellido1'] . $data['apellido2'] . "@ieesspp.com",
-            'subdireccion' => $data['subdireccion'],
+            //'subdireccion' => $data['subdireccion'],
             "email" => $data['email'],
             "password" => bcrypt($data['password'])
         ])->assignRole("Empleado");
         $id_user = (int)$user_id->id;
+        //dd($id_user);
         Resguardante::create([
             'nombre1' =>$data['nombre1'],
             'nombre2' => $data['nombre2'],
@@ -70,6 +71,7 @@ class ResguardanteForm extends Component
             'user_id' => $id_user,
             'puesto_id' => $data['puesto_id']
         ]);
+    
         $this->showModal = false;  
         $this->dispatch('alumno-created', 1);
     }

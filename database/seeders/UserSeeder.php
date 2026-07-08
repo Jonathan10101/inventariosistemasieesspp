@@ -14,39 +14,41 @@ class UserSeeder extends Seeder
     {
         User::create([
             "name" => "Administrador",
-            'subdireccion' => null,
+            "email" => "jonathanbedollahurtado@gmail.com",
+            "password" => bcrypt('JBHjhon13$')
+        ])->assignRole("Administrador");
+
+        /*
+        User::create([
+            "name" => "Administrador",
             "email" => "admin@ieesspp.com",
             "password" => bcrypt('adminJBH$')
         ])->assignRole("Administrador");
 
         User::create([
             "name" => "Dirección",
-            'subdireccion' => null,
             "email" => "direccion@ieesspp.com",
             "password" => bcrypt('direccion#$#IEESSPP')
         ])->assignRole("Director");
 
         User::create([
             "name" => "Delegación",
-            'subdireccion' => null, 
             "email" => "delegacion@ieesspp.com",
             "password" => bcrypt('delegacion%$%IEESSPP')
         ])->assignRole("Delegacion");
 
         User::create([
             "name" => "Subdirección de Desarrollo Policial",
-            'subdireccion' => 'SUBDIRECCIÓN DE DESARROLLO POLICIAL',
             "email" => "subdesarrollopolicial@ieesspp.com",
             "password" => bcrypt('subdp#$%IEESSPP')
         ])->assignRole("Subdirector");
 
         User::create([
             "name" => "Subdirección de Coordinación e Infraestructura Institucional",
-            'subdireccion' => 'SUBDIRECCIÓN DE COORDINACIÓN E INFRAESTRUCTURA INSTITUCIONAL',
             "email" => "subcoordinacion@ieesspp.com",
             "password" => bcrypt('subco#$%IEESSPP')
         ])->assignRole("Subdirector");
-
+        */
 
 
 

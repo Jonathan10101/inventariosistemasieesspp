@@ -391,46 +391,7 @@
                 </div>
                 --}}
 
-                {{-- SECCIÓN: INSTITUCIÓN --}}
-                <div class="angular-section mb-4">
-                    <div class="angular-section-header">
-                        <div class="angular-section-icon">
-                            <i class="fas fa-building-columns"></i>
-                        </div>
-
-                        <div>
-                            <h5>Institución</h5>
-                            <p>Selecciona la institución a la que pertenece el registro.</p>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="angular-field angular-select @error('institucion') has-error @enderror">
-                                <i class="fas fa-university angular-field-icon"></i>
-
-                                <label class="angular-field-label">
-                                    Institución*
-                                </label>
-
-                                <select
-                                    wire:model.defer="institucion"
-                                    class="form-control"
-                                >
-                                    <option value="IEESSPP">IEESSPP</option>
-                                    <option value="ARSPO">ARSPO</option>
-                                </select>
-
-                                @error('institucion')
-                                    <div class="angular-error">
-                                        <i class="fas fa-exclamation-circle"></i>
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        
 
                 {{-- PDF OPCIONAL: SOLO FUNCIONA SI TU COMPONENTE TIENE public $resguardo_pdf --}}
                 @if(property_exists($this, 'resguardo_pdf'))

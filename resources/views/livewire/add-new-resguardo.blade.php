@@ -982,4 +982,117 @@
             }
         }
     </style>
+    @section('css')
+    @parent
+
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.6.1/dist/css/tom-select.css" rel="stylesheet">
+
+    <style>
+        .intevi-person-select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .angular-select .ts-wrapper.single .ts-control {
+            min-height: 54px;
+            border: 1px solid #d9e1f2;
+            border-radius: 16px;
+            padding: 12px 14px 12px 46px;
+            background: #fff;
+            box-shadow: 0 10px 24px rgba(23, 28, 99, .06);
+            transition: all .2s ease;
+            font-size: 14px;
+        }
+
+        .angular-select .ts-wrapper.focus .ts-control {
+            border-color: #171C63;
+            box-shadow: 0 0 0 4px rgba(23, 28, 99, .10);
+        }
+
+        .angular-select .ts-wrapper.single .ts-control input {
+            font-size: 14px;
+        }
+
+        .angular-select .ts-dropdown {
+            border: 1px solid #e1e7f5;
+            border-radius: 18px;
+            box-shadow: 0 20px 45px rgba(23, 28, 99, .16);
+            padding: 8px;
+            overflow: hidden;
+            z-index: 9999;
+        }
+
+        .angular-select .ts-dropdown .option {
+            border-radius: 14px;
+            padding: 10px 12px;
+            margin-bottom: 4px;
+            transition: all .15s ease;
+        }
+
+        .angular-select .ts-dropdown .option.active {
+            background: #f2f5ff;
+            color: #171C63;
+        }
+
+        .intevi-person-option,
+        .intevi-person-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .intevi-person-avatar {
+            width: 34px;
+            height: 34px;
+            min-width: 34px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #171C63, #3b46b8);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: .4px;
+        }
+
+        .intevi-person-info {
+            min-width: 0;
+        }
+
+        .intevi-person-name {
+            font-size: 14px;
+            font-weight: 800;
+            color: #111827;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .intevi-person-meta {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+
+        .intevi-person-item .intevi-person-avatar {
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 10px;
+            font-size: 11px;
+        }
+
+        .intevi-person-item .intevi-person-name {
+            font-size: 14px;
+        }
+
+        .has-error .ts-control {
+            border-color: #dc3545 !important;
+            box-shadow: 0 0 0 4px rgba(220, 53, 69, .10) !important;
+        }
+    </style>
+@stop
 </div>

@@ -45,7 +45,7 @@ class UpdateResguardo extends Component
     public $resguardo_pdf;
     public $resguardo_id;
     public $historial_resguardo_id;
-    public $institucion;
+    //public $institucion;
 
     public $edit_password = '';
     public $canEditResguardante = false;
@@ -81,7 +81,7 @@ class UpdateResguardo extends Component
         $this->marcas = Marca::all();
         $this->estadosdeuso = EstadoUso::all();
         $this->areasdeasignacion = AreaDeUso::all();
-        $this->institucion = $resguardo->institucion;
+        //$this->institucion = $resguardo->institucion;
     }
 
     /*
@@ -148,7 +148,7 @@ class UpdateResguardo extends Component
                     }
                 },
             ],
-            'institucion' => 'required',
+            //'institucion' => 'required',
         ]);
         
         $resguardante = Resguardante::find($this->resguardante_id);
@@ -168,7 +168,7 @@ class UpdateResguardo extends Component
             'puesto_id' => $puesto_id,
             'historial_resguardo_id' => $this->historial_resguardo_id,
             'nserie' => $this->nserie,
-            'institucion' => $this->institucion,
+            //'institucion' => $this->institucion,
         ];
                //dd($data);
         //dd($data);
@@ -181,7 +181,7 @@ class UpdateResguardo extends Component
     {
         $this->reset([
             'imagen','descripcion','marca_id', 'modelo', 'nserie', 'nresguardo',
-            'estado_uso_id', 'area_de_uso_id', 'ubicacion_fisicas_id', 'resguardante_id', 'puesto_id','tomadaDesdeCamara','imagenBase64','institucion'
+            'estado_uso_id', 'area_de_uso_id', 'ubicacion_fisicas_id', 'resguardante_id', 'puesto_id','tomadaDesdeCamara','imagenBase64',
         ]);
     }
 

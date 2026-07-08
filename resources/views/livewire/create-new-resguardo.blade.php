@@ -162,7 +162,7 @@
                                 <input
                                     id="cantidad"
                                     type="number"
-                                    wire:model.defer="cantidad"
+                                    wire:model.live.debounce.300ms="cantidad"
                                     min="1"
                                     max="500"
                                     class="form-control"
@@ -213,7 +213,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="{{ empty($cantidad) || (int) $cantidad < 2 ? 'col-md-6' : 'col-md-12' }}">
                             <div class="angular-field angular-floating @error('modelo') has-error @enderror">
                                 <i class="fas fa-laptop angular-field-icon"></i>
 
@@ -243,35 +243,37 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
-                            <div class="angular-field angular-floating @error('nserie') has-error @enderror">
-                                <i class="fas fa-barcode angular-field-icon"></i>
+                        @if(empty($cantidad) || (int) $cantidad < 2)
+                            <div class="col-md-6">
+                                <div class="angular-field angular-floating @error('nserie') has-error @enderror">
+                                    <i class="fas fa-barcode angular-field-icon"></i>
 
-                                <input
-                                    id="nserie"
-                                    type="text"
-                                    wire:model.defer="nserie"
-                                    class="form-control text-uppercase"
-                                    placeholder=" "
-                                    autocomplete="off"
-                                >
+                                    <input
+                                        id="nserie"
+                                        type="text"
+                                        wire:model.defer="nserie"
+                                        class="form-control text-uppercase"
+                                        placeholder=" "
+                                        autocomplete="off"
+                                    >
 
-                                <label for="nserie" class="angular-field-label">
-                                    No. de serie
-                                </label>
+                                    <label for="nserie" class="angular-field-label">
+                                        No. de serie
+                                    </label>
 
-                                <small class="angular-help">
-                                    Déjalo en blanco cuando no aplique.
-                                </small>
+                                    <small class="angular-help">
+                                        Déjalo en blanco cuando no aplique.
+                                    </small>
 
-                                @error('nserie')
-                                    <div class="angular-error">
-                                        <i class="fas fa-exclamation-circle"></i>
-                                        {{ $message }}
-                                    </div>
-                                @enderror
+                                    @error('nserie')
+                                        <div class="angular-error">
+                                            <i class="fas fa-exclamation-circle"></i>
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
                             </div>
-                        </div>
+                        @endif
 
                     </div>
                 </div>
@@ -446,6 +448,7 @@
                             </div>
                         </div>
 
+                        {{--
                         <div class="col-md-12">
                             <div class="angular-field angular-select @error('institucion') has-error @enderror">
                                 <i class="fas fa-university angular-field-icon"></i>
@@ -467,6 +470,7 @@
                                 @enderror
                             </div>
                         </div>
+                        --}}
 
                     </div>
                 </div>

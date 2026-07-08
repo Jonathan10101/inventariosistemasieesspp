@@ -183,6 +183,8 @@
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Nombre del resguardante</th>
+                        <th scope="col">Rol</th>
+
                         <th scope="col" class="text-center">Resguardos</th>
 
                         @hasanyrole('Administrador')
@@ -219,6 +221,12 @@
                                         </div>
                                     </div>
                                 </div>
+                            </td>
+
+                            <td>
+                                <span class="id-badge">
+                                    {{ $resguardante->user->roles[0]->name}}
+                                </span>
                             </td>
 
                             <td class="text-center">

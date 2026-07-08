@@ -30,7 +30,7 @@ class CreateNewResguardo extends Component
            $estado_uso_id, $area_de_uso_id, $ubicacion_fisicas_id,
            $resguardante_id, $puesto_id;
 
-    public string $institucion = 'IEESSPP';
+    //public string $institucion = 'IEESSPP';
 
     public $imagen;
     public $imagenBase64;
@@ -53,7 +53,7 @@ class CreateNewResguardo extends Component
         $this->ubicacionesifiscas = UbicacionFisica::all();
         $this->puestos = Puesto::all();
 
-
+        /*
         if (auth()->user()->email == "subdesarrollopolicial@ieesspp.com") {
             $userIds = User::where("subdireccion", "LIKE", "SUBDIRECCIÓN DE DESARROLLO POLICIAL")
                         ->pluck('id');
@@ -65,7 +65,8 @@ class CreateNewResguardo extends Component
         }else{
             $this->resguardantes = Resguardante::all();
         }
-
+        */
+        $this->resguardantes = Resguardante::all();
     }
 
     /* =================== MÉTODOS =================== */
@@ -110,7 +111,6 @@ class CreateNewResguardo extends Component
     /* =================== GUARDADO PRINCIPAL =================== */
     public function save()
     {        
-
         $this->validate([
             'descripcion' => 'required|string|max:255',
             'cantidad' => 'nullable|integer|min:1|max:500',
@@ -131,7 +131,7 @@ class CreateNewResguardo extends Component
             //'imagen' => $this->imagenBase64 ? 'nullable' : 'required|image|max:4096',
             'imagen' => 'nullable|image|max:4096',
             //'resguardo_pdf' => 'nullable|mimes:pdf|max:8192',
-            'institucion' => 'required|in:IEESSPP,ARSPO',
+            //'institucion' => 'required|in:IEESSPP,ARSPO',
             'resguardo_pdf' => 'required|mimes:pdf|max:8192',
         ]);
         //dd("validate".$this->institucion);
@@ -145,7 +145,7 @@ class CreateNewResguardo extends Component
         
         if($this->cantidad > 1){
             $contador = 0;
-            while($contador <= $this->cantidad){
+            while($contador < $this->cantidad){
                 if ($this->imagenBase64) {
                     $fileData = explode(',', $this->imagenBase64)[1];
                     $fileName = 'resguardo_' . Str::random(8) . '.png';
@@ -199,7 +199,7 @@ class CreateNewResguardo extends Component
                     'puesto_id' => $puesto_id,
                     'imagen' => $pathImagen,
                     'estado_actual' => 'asignado', // nuevo resguardo siempre inicia asignado
-                    'institucion' => $this->institucion,
+                    //'institucion' => $this->institucion,
                     'updated_at' => null, 
                 ]);
                 //dd($resguardo);
@@ -268,7 +268,7 @@ class CreateNewResguardo extends Component
                 'puesto_id' => $puesto_id,
                 'imagen' => $pathImagen,
                 'estado_actual' => 'asignado', // nuevo resguardo siempre inicia asignado
-                'institucion' => $this->institucion,
+                //'institucion' => $this->institucion,
                 'updated_at' => null, 
             ]);
 
@@ -287,72 +287,7 @@ class CreateNewResguardo extends Component
         
 
 
-
-            if ($this->imagenBase64) {
-                    $fileData = explode(',', $this->imagenBase64)[1];
-                    $fileName = 'resguardo_' . Str::random(8) . '.png';
-                    $tempPath = sys_get_temp_dir() . '/' . $fileName;
-                    file_put_contents($tempPath, base64_decode($fileData));
-
-                    $this->imagen = new UploadedFile(
-                        $tempPath,
-                        $fileName,
-                        'image/png',
-                        null,
-                        true
-                    );
-            }
-
-            /* === Guardar archivos === */
-            $pathImagen = $this->imagen ? $this->imagen->store('resguardos', 'public') : null;
-            $imagenEvidencia = $pathImagen;
-            $pathPdf = $this->resguardo_pdf ? $this->resguardo_pdf->store('resguardos/pdf', 'public') : null;
-
-            // si el usuario deja vacío el número de serie → poner "N/A"
-            $nserie = trim($this->nserie);
-            if ($nserie === '' || $nserie === null) {
-                $nserie = 'N/A';
-            }
-
-            $modelo = trim($this->modelo);
-            if ($modelo === '' || $modelo === null) {
-                $modelo = 'N/A';
-            }
-
-            $resguardante = Resguardante::find($this->resguardante_id);
-            $puesto_id = $resguardante->puesto_id;
-            if($resguardante->puesto_id == null){
-                $puesto_id = 1;
-            }
-
-            //dd($puesto_id);
-
-            //dd((int)$this->cantidad);
-
-            /* === Crear Resguardo === */
-            $resguardo = Resguardo::create([
-                'descripcion' => $this->descripcion,
-                'cantidad' => $this->cantidad,
-                'marca_id' => $this->marca_id,
-                'modelo' => $modelo,
-                'nserie' => $nserie,   // ← aquí ya va "N/A" si estaba vacío
-                'resguardante_id' => $this->resguardante_id,
-                'puesto_id' => $puesto_id,
-                'imagen' => $pathImagen,
-                'estado_actual' => 'asignado', // nuevo resguardo siempre inicia asignado
-                'institucion' => $this->institucion,
-                'updated_at' => null, 
-            ]);
-
-            //dd("1 resguardo".$resguardo);
-            /* === Generar número de resguardo === */
-            $resguardo->update(['nresguardo' => $resguardo->id]);
-
-            //dd($resguardo);
-
-            /* === Registrar historial de asignación === */
-            HistorialResguardo::registrarAsignacion($resguardo, $this->resguardante_id, $pathPdf,$imagenEvidencia,$this->estado_uso_id,$this->area_de_uso_id,$this->ubicacion_fisicas_id);
-
+        
   
         $this->resetForm();
 

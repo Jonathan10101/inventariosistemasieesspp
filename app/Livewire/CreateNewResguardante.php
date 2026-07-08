@@ -5,10 +5,13 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Resguardante;
 use App\Models\Puesto;
+use App\Models\AreaDeUso;
+use Spatie\Permission\Models\Role;
+
 
 class CreateNewResguardante extends Component
 {
-    public $nombre1,$nombre2,$apellido1,$apellido2,$email,$password,$subdireccion,$puestos,$puesto_id;
+    public $nombre1,$nombre2,$apellido1,$apellido2,$email,$password,$area_id,$puestos,$puesto_id,$areas,$rol,$roles;
     
 
     protected $rules = [
@@ -18,12 +21,20 @@ class CreateNewResguardante extends Component
         'apellido2' => 'nullable|max:50',
         //'email' => 'required|min:10|max:75|email|unique:users,email',
         //'password' => 'required|min:8|max:50',
-        'subdireccion' => 'required',
-        'puesto_id' => 'required'
+        'area_id' => 'required',
+        'puesto_id' => 'required',
+        'rol' => 'required',
     ];
 
     public function mount(){
         $this->puestos = Puesto::all();
+        $this->areas = AreaDeUso::all();
+        //$this->roles = Role::all();
+        $this->roles = Role::whereNotIn('name', [
+            'Director',
+            'Delegacion',
+            'Subdirector',
+        ])->get();
     }
 
     public function save(){
@@ -55,7 +66,7 @@ class CreateNewResguardante extends Component
             return;
         }
         //dd($this->subdireccion);
-        $emailFinal = $this->nombre1.$this->nombre2.$this->apellido1.$this->apellido2."@ieesspp.com";
+        $emailFinal = $this->nombre1.$this->nombre2.$this->apellido1.$this->apellido2;//."@ieesspp.com";
         $passwordFinal = $this->nombre1.$this->nombre2.$this->apellido1.$this->apellido2 . str_pad((string) random_int(0, 999), 3, '0', STR_PAD_LEFT);
         //dd($passwordFinal);
         
@@ -66,8 +77,9 @@ class CreateNewResguardante extends Component
             'apellido2' => $this->apellido2,
             'email' => $emailFinal,
             'password' => $passwordFinal,
-            'subdireccion' => $this->subdireccion,
-            'puesto_id' => $this->puesto_id
+            'area_id' => $this->area_id,
+            'puesto_id' => $this->puesto_id,
+            'rol' => $this->rol
         ];
 
 
@@ -80,7 +92,7 @@ class CreateNewResguardante extends Component
     public function resetForm()
     {
         $this->reset([
-            'nombre1','nombre2','apellido1','apellido2','email','password','subdireccion','puesto_id'
+            'nombre1','nombre2','apellido1','apellido2','email','password','area_id','puesto_id','rol'
         ]);
     }
 

@@ -340,7 +340,7 @@ class InventarioForm extends Component
             'resguardante_id' => $data['resguardante_id'],
             'puesto_id'=> $data['puesto_id'],
             'nserie' => $data['nserie'],
-            'institucion' => $data['institucion']
+            //'institucion' => $data['institucion']
         ]);
         $historial = HistorialResguardo::find($data['historial_resguardo_id']);
         $historial->update([

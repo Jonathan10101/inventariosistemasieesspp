@@ -44,7 +44,7 @@ return [
 
             <div class="intevi-brand-text">
                 <strong>INTEVI</strong>
-                <span>FROM ANED</span>
+                <span>V 1.1.0 alpha</span>
             </div>
         </div>
     ',
@@ -218,11 +218,13 @@ return [
             'url'  => 'inventario',
             'icon' => 'fas fa-boxes',
         ],
+        /*
         [
             'text' => 'Resguardos',
             'url'  => 'resguardos',
             'icon' => 'fas fa-file-signature',
         ],
+        */
         [
             'text' => 'Resguardantes',
             'url'  => 'resguardante',
@@ -252,17 +254,25 @@ return [
             'icon' => 'fas fa-map-marker-alt',
         ],
 
-        ['header' => 'ADMINISTRACIÓN'],
-
+        ['header' => 'ADMINISTRACIÓN', 'can' => 'viewPulse'],
+        /*
         [
             'text' => 'Usuarios',
             'url'  => 'usuarios',
             'icon' => 'fas fa-users-cog',
         ],
+        
         [
             'text' => 'Roles y permisos',
             'url'  => 'roles',
             'icon' => 'fas fa-user-lock',
+        ],
+        */
+        [
+            'text' => 'Monitor de sistema',
+            'url' => env('PULSE_PATH', 'pulse'),
+            'icon' => 'fas fa-fw fa-heartbeat',
+            'can' => 'viewPulse',
         ],
     ],
 
