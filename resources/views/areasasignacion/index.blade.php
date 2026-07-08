@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Ubicaciones > Áreas de asignación')
+@section('title', 'Áreas de asignación')
 
 @section('content_header')
     {{--

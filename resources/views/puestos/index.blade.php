@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Resguardantes > Puestos')
+@section('title', 'Puestos')
 
 @section('content_header')
     {{-- 

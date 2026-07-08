@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Ubicaciones > Ubicación física')
+@section('title', 'Ubicaciones físicas')
 
 @section('content_header')
     {{--
