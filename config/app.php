@@ -184,6 +184,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         //SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+        App\Providers\TenancyServiceProvider::class,
 
         /*
          * Package Service Providers...

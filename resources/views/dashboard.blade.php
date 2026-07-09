@@ -50,7 +50,7 @@
 
                 <div class="dash-status">
                     <span></span>
-                    V. 1.1.0 alpha
+                    V. 1.0.0
                 </div>
             </div>
         </div>

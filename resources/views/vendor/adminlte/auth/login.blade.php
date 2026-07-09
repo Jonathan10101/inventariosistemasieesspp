@@ -386,9 +386,7 @@
 @stop
 
 @section('auth_body')
-    <div class="login-title-bar">
-        LOGIN
-    </div>
+    
 
     <div class="login-top">
         <div class="intevi-brand">
@@ -396,7 +394,8 @@
         </div>
 
         <p class="login-subtitle">
-            Acceso seguro al control inteligente de inventarios
+            Gestión inteligente de resguardos e inventario de bienes institucionales.<br><br>
+            Ingresa tu usuario y contraseña para acceder.
         </p>
 
         <div class="tech-line"></div>
@@ -486,6 +485,7 @@
             </div>
         </div>
 
+        {{-- 
         <div class="login-options">
             <div class="icheck-primary">
                 <input type="checkbox" name="remember" id="remember">
@@ -498,6 +498,7 @@
                 </a>
             @endif
         </div>
+        --}}
 
         <button type="submit" class="btn btn-intevi-login btn-block w-100 text-white" id="loginButton">
             <span id="loginText">
@@ -513,9 +514,13 @@
     </form>
 
     <div class="login-footer">
-        <strong>INTEVI</strong> · Inventarios institucionales
+        <strong>INTEVI</strong> · Inventario Tecnológico Institucional
         <br>
-        Versión 1.1.0 alpha
+        Versión 1.0.0
+    </div>
+    
+    <div class="login-title-bar">
+        
     </div>
 
     <script>

@@ -1,5 +1,17 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
+foreach (config('tenancy.central_domains') as $domain) {
+    Route::domain($domain)->middleware(['web'])->group(function () {
+        Route::get('/', function () {
+            return 'CENTRAL INTEVI';
+        })->name('central.home');
+    });
+}
+
+
+/*
 use Illuminate\Support\Facades\{Route, Auth, Redirect};
 
 use App\Http\Controllers\{
@@ -51,3 +63,4 @@ Route::get('/etiqueta2/{codigo}', [Etiqueta2Controller::class, 'show'])
     ->middleware(['auth:sanctum', 'can:inventario.index']);
 
 Route::get('/export', [ExportController::class, 'export'])->name('export');
+*/
