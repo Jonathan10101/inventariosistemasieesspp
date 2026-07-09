@@ -8,7 +8,9 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
+use Illuminate\Support\Facades\Route;
 
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -27,11 +29,28 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
     
-
+        /*
         Paginator::useBootstrapFour();
         Gate::define('viewPulse', function (User $user): bool {
             return $user->email === config('services.pulse.admin_email');
         });
+        */
+          Gate::define('viewPulse', function (User $user): bool {
+            return $user->email === config('services.pulse.admin_email');
+        });
+        Livewire::setUpdateRoute(function ($handle) {
+            return Route::post('/livewire/update', $handle)
+                ->middleware([
+                    'web',
+                    InitializeTenancyByDomain::class,
+                ]);
+        });
 
+        FilePreviewController::$middleware = [
+            'web',
+            InitializeTenancyByDomain::class,
+        ];
     }
+
+    
 }

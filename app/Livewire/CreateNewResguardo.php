@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -164,7 +165,14 @@ class CreateNewResguardo extends Component
               
                 $pathImagen = $this->imagen ? $this->imagen->store('resguardos', 'public') : null;
                 $imagenEvidencia = $pathImagen;
-                $pathPdf = $this->resguardo_pdf ? $this->resguardo_pdf->store('resguardos/pdf', 'public') : null;
+                $pathPdf = null;
+
+                $pathPdf = null;
+
+                if ($this->resguardo_pdf instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
+                    $pathPdf = $this->resguardo_pdf->store('resguardos/pdf', 'public');
+                }
+                //$pathPdf = $this->resguardo_pdf ? $this->resguardo_pdf->store('resguardos/pdf', 'public') : null;
 
                 // si el usuario deja vacío el número de serie → poner "N/A"
                 $nserie = trim($this->nserie);

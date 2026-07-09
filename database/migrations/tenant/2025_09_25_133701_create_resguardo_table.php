@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('resguardos', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion');
+            $table->unsignedBigInteger("cantidad");
             $table->unsignedBigInteger('marca_id');
             $table->string('modelo');
             //$table->string('nserie')->unique();
