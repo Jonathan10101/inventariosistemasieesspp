@@ -17,11 +17,9 @@ return [
      * Only relevant if you're using the domain or subdomain identification middleware.
      */
     'central_domains' => [
-        //'127.0.0.1',
-        //'localhost',
-        'intevi.test',
+        'intevi.app',
+        'www.intevi.app',
     ],
-
     /**
      * Tenancy bootstrappers are executed when tenancy is initialized.
      * Their responsibility is making Laravel features tenant-aware.
@@ -98,46 +96,17 @@ return [
      * https://tenancyforlaravel.com/docs/v3/tenancy-bootstrappers/#filesystem-tenancy-boostrapper.
      */
     'filesystem' => [
-        /**
-         * Each disk listed in the 'disks' array will be suffixed by the suffix_base, followed by the tenant_id.
-         */
         'suffix_base' => 'tenant',
         'disks' => [
-            //'local',
-            //'public',
-            // 's3',
+            // 'local',
+            // 'public',
         ],
-
-        /**
-         * Use this for local disks.
-         *
-         * See https://tenancyforlaravel.com/docs/v3/tenancy-bootstrappers/#filesystem-tenancy-boostrapper
-         */
         'root_override' => [
-            // Disks whose roots should be overridden after storage_path() is suffixed.
-            'local' => '%storage_path%/app/',
-            'public' => '%storage_path%/app/public/',
+            // 'local' => '%storage_path%/app/',
+            // 'public' => '%storage_path%/app/public/',
         ],
-
-        /**
-         * Should storage_path() be suffixed.
-         *
-         * Note: Disabling this will likely break local disk tenancy. Only disable this if you're using an external file storage service like S3.
-         *
-         * For the vast majority of applications, this feature should be enabled. But in some
-         * edge cases, it can cause issues (like using Passport with Vapor - see #196), so
-         * you may want to disable this if you are experiencing these edge case issues.
-         */
         'suffix_storage_path' => true,
-
-        /**
-         * By default, asset() calls are made multi-tenant too. You can use global_asset() and mix()
-         * for global, non-tenant-specific assets. However, you might have some issues when using
-         * packages that use asset() calls inside the tenant app. To avoid such issues, you can
-         * disable asset() helper tenancy and explicitly use tenant_asset() calls in places
-         * where you want to use tenant-specific assets (product images, avatars, etc).
-         */
-        'asset_helper_tenancy' => false,
+        'asset_helper_tenancy' => true,
     ],
 
     /**
