@@ -17,6 +17,8 @@ return [
      * Only relevant if you're using the domain or subdomain identification middleware.
      */
     'central_domains' => [
+	'127.0.0.1',
+	'localhost',
         'intevi.app',
         'www.intevi.app',
     ],
@@ -106,7 +108,7 @@ return [
             // 'public' => '%storage_path%/app/public/',
         ],
         'suffix_storage_path' => true,
-        'asset_helper_tenancy' => true,
+        'asset_helper_tenancy' => false,
     ],
 
     /**

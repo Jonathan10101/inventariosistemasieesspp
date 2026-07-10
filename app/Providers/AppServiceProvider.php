@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
             return $user->email === config('services.pulse.admin_email');
         });
         */
-          Gate::define('viewPulse', function (User $user): bool {
+         Gate::define('viewPulse', function (User $user): bool {
             return $user->email === config('services.pulse.admin_email');
         });
         Livewire::setUpdateRoute(function ($handle) {
