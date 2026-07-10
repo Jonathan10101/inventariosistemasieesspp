@@ -2,14 +2,28 @@
 
 use Illuminate\Support\Facades\Route;
 
-foreach (config('tenancy.central_domains') as $domain) {
-    Route::domain($domain)->middleware(['web'])->group(function () {
-        Route::get('/', function () {
-            return 'CENTRAL INTEVI';
-        })->name('central.home');
-    });
-}
+/*
+|--------------------------------------------------------------------------
+| Landing page central de INTEVI
+|--------------------------------------------------------------------------
+|
+| Esta ruta únicamente se mostrará en los dominios centrales definidos
+| dentro de config/tenancy.php.
+|
+*/
 
+foreach (config('tenancy.central_domains') as $index => $domain) {
+    Route::domain($domain)
+        ->middleware(['web'])
+        ->group(function () use ($index) {
+            Route::view('/', 'central.home')
+                ->name(
+                    $index === 0
+                        ? 'central.home'
+                        : "central.home.{$index}"
+                );
+        });
+}
 
 /*
 use Illuminate\Support\Facades\{Route, Auth, Redirect};
