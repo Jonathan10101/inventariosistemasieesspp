@@ -23,7 +23,7 @@
     <div class="container mt-4">
         <div class="row justify-content-center">
             <div class="col-md-12">
-                @livewire('areadeasignacion-form')
+                @livewire('area-de-asignacion-form')
             </div>
         </div>
     </div>
