@@ -44,7 +44,7 @@
     >
 
     @php
-        $contactEmail = config('mail.from.address') ?: 'contacto@intevi.app';
+        $contactEmail =  'contacto.aned@gmail.com';
     @endphp
 
     <style>
@@ -281,54 +281,39 @@
         }
 
         .brand {
-            align-items: center;
             display: inline-flex;
-            gap: 12px;
-        }
-
-        .brand-symbol {
             align-items: center;
-            background: var(--primary);
-            color: white;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            width: 52px;
+            height: 52px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .brand-text {
             display: flex;
-            height: 42px;
-            justify-content: center;
-            position: relative;
-            width: 42px;
-        }
-
-        .brand-symbol::after {
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            content: "";
-            inset: 6px;
-            position: absolute;
-        }
-
-        .brand-symbol svg {
-            height: 23px;
-            position: relative;
-            width: 23px;
-            z-index: 1;
+            flex-direction: column;
+            line-height: 1.15;
         }
 
         .brand-name {
-            color: var(--primary);
             display: block;
-            font-family: 'Manrope', sans-serif;
-            font-size: 19px;
+            color: #171c63;
+            font-size: 1.25rem;
             font-weight: 800;
             letter-spacing: 0.08em;
-            line-height: 1;
         }
 
         .brand-description {
-            color: var(--muted);
             display: block;
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 0.075em;
-            margin-top: 5px;
-            text-transform: uppercase;
+            margin-top: 4px;
+            color: #64748b;
+            font-size: 0.76rem;
+            font-weight: 500;
         }
 
         .nav-area {
@@ -462,8 +447,8 @@
         .hero-grid {
             align-items: center;
             display: grid;
-            gap: 70px;
-            grid-template-columns: minmax(0, 0.92fr) minmax(520px, 1.08fr);
+            gap: 52px;
+            grid-template-columns: minmax(390px, 0.8fr) minmax(600px, 1.2fr);
         }
 
         .hero-copy {
@@ -541,30 +526,32 @@
 
         /*
         |--------------------------------------------------------------------------
-        | Dashboard preview
+        | Vista real del sistema
         |--------------------------------------------------------------------------
         */
 
         .product-preview {
             filter: drop-shadow(0 35px 70px rgba(22, 27, 67, 0.16));
             position: relative;
+            width: 108%;
             z-index: 2;
         }
 
         .preview-label {
             align-items: center;
             background: var(--primary);
+            box-shadow: 0 12px 30px rgba(23, 28, 99, 0.22);
             color: white;
             display: flex;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             gap: 8px;
-            left: -20px;
+            left: -18px;
             letter-spacing: 0.1em;
-            padding: 10px 15px;
+            padding: 11px 16px;
             position: absolute;
             text-transform: uppercase;
-            top: 42px;
+            top: 38px;
             z-index: 5;
         }
 
@@ -576,325 +563,151 @@
             width: 6px;
         }
 
-        .dashboard {
-            background: #f5f6f8;
-            border: 1px solid rgba(23, 28, 99, 0.1);
+        .system-browser {
+            background: #ffffff;
+            border: 1px solid rgba(23, 28, 99, 0.12);
+            box-shadow:
+                0 40px 90px rgba(22, 27, 67, 0.18),
+                0 12px 30px rgba(22, 27, 67, 0.08);
             overflow: hidden;
             position: relative;
         }
 
-        .dashboard-topbar {
+        .system-browser::after {
+            border: 1px solid rgba(255, 255, 255, 0.48);
+            content: "";
+            inset: 0;
+            pointer-events: none;
+            position: absolute;
+            z-index: 3;
+        }
+
+        .system-browser-bar {
             align-items: center;
-            background: white;
-            border-bottom: 1px solid #e8e9ed;
-            display: flex;
-            height: 57px;
-            justify-content: space-between;
-            padding: 0 20px;
-        }
-
-        .window-controls {
-            display: flex;
-            gap: 6px;
-        }
-
-        .window-controls span {
-            background: #e3e5e9;
-            border-radius: 50%;
-            height: 7px;
-            width: 7px;
-        }
-
-        .dashboard-identity {
-            align-items: center;
-            display: flex;
-            gap: 9px;
-        }
-
-        .dashboard-brand {
-            color: var(--primary);
-            font-family: 'Manrope', sans-serif;
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 0.09em;
-        }
-
-        .dashboard-avatar {
-            align-items: center;
-            background: var(--primary-soft);
-            border-radius: 50%;
-            color: var(--primary);
-            display: flex;
-            font-size: 9px;
-            font-weight: 800;
-            height: 28px;
-            justify-content: center;
-            width: 28px;
-        }
-
-        .dashboard-body {
+            background: linear-gradient(180deg, #ffffff 0%, #f7f8fb 100%);
+            border-bottom: 1px solid #e6e8ee;
             display: grid;
-            grid-template-columns: 156px 1fr;
-            min-height: 475px;
+            gap: 18px;
+            grid-template-columns: auto minmax(0, 1fr) auto;
+            min-height: 52px;
+            padding: 0 17px;
         }
 
-        .dashboard-sidebar {
-            background: var(--primary);
-            color: white;
-            padding: 24px 14px;
-        }
-
-        .sidebar-title {
-            color: rgba(255, 255, 255, 0.55);
-            font-size: 8px;
-            font-weight: 700;
-            letter-spacing: 0.11em;
-            margin: 8px 10px 11px;
-            text-transform: uppercase;
-        }
-
-        .sidebar-item {
+        .system-browser-controls {
             align-items: center;
-            border-left: 2px solid transparent;
-            color: rgba(255, 255, 255, 0.66);
+            display: flex;
+            gap: 7px;
+        }
+
+        .system-browser-controls span {
+            background: #d9dce4;
+            border-radius: 50%;
+            display: block;
+            height: 8px;
+            width: 8px;
+        }
+
+        .system-browser-controls span:nth-child(1) {
+            background: #c9cbd3;
+        }
+
+        .system-browser-controls span:nth-child(2) {
+            background: #d8d9df;
+        }
+
+        .system-browser-controls span:nth-child(3) {
+            background: #e3e4e8;
+        }
+
+        .system-browser-address {
+            align-items: center;
+            background: #f0f2f7;
+            color: #73798a;
             display: flex;
             font-size: 10px;
-            font-weight: 600;
-            gap: 9px;
-            margin-bottom: 4px;
-            padding: 10px 10px;
-        }
-
-        .sidebar-item.active {
-            background: rgba(255, 255, 255, 0.11);
-            border-left-color: var(--accent);
-            color: white;
-        }
-
-        .sidebar-icon {
-            border: 1px solid currentColor;
-            height: 12px;
-            opacity: 0.8;
-            width: 12px;
-        }
-
-        .dashboard-content {
-            padding: 25px;
-        }
-
-        .dashboard-welcome {
-            align-items: flex-start;
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 21px;
-        }
-
-        .dashboard-welcome small {
-            color: #9295a0;
-            display: block;
-            font-size: 8px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            margin-bottom: 4px;
-            text-transform: uppercase;
-        }
-
-        .dashboard-welcome strong {
-            color: #222534;
-            display: block;
-            font-family: 'Manrope', sans-serif;
-            font-size: 16px;
-        }
-
-        .dashboard-action {
-            align-items: center;
-            background: var(--primary);
-            color: white;
-            display: inline-flex;
-            font-size: 8px;
-            font-weight: 700;
-            height: 30px;
-            padding: 0 12px;
-        }
-
-        .metric-grid {
-            display: grid;
-            gap: 11px;
-            grid-template-columns: repeat(3, 1fr);
-        }
-
-        .metric {
-            background: white;
-            border: 1px solid #e8e9ed;
-            padding: 16px;
-        }
-
-        .metric-head {
-            align-items: center;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .metric-icon {
-            align-items: center;
-            background: var(--primary-soft);
-            color: var(--primary);
-            display: flex;
-            height: 25px;
-            justify-content: center;
-            width: 25px;
-        }
-
-        .metric-icon svg {
-            height: 13px;
-            width: 13px;
-        }
-
-        .metric small {
-            color: #8c909b;
-            display: block;
-            font-size: 8px;
-            margin-top: 13px;
-        }
-
-        .metric strong {
-            color: #252837;
-            display: block;
-            font-family: 'Manrope', sans-serif;
-            font-size: 19px;
-            line-height: 1.2;
-            margin-top: 2px;
-        }
-
-        .dashboard-panels {
-            display: grid;
-            gap: 12px;
-            grid-template-columns: 1.15fr 0.85fr;
-            margin-top: 12px;
-        }
-
-        .dashboard-panel {
-            background: white;
-            border: 1px solid #e8e9ed;
-            padding: 17px;
-        }
-
-        .panel-header {
-            align-items: center;
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 18px;
-        }
-
-        .panel-header strong {
-            color: #303342;
-            font-size: 9px;
-        }
-
-        .panel-header span {
-            color: var(--primary);
-            font-size: 7px;
-            font-weight: 700;
-        }
-
-        .chart {
-            align-items: flex-end;
-            display: flex;
-            gap: 8px;
-            height: 100px;
-            justify-content: space-between;
-        }
-
-        .chart-column {
-            align-items: center;
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            gap: 6px;
-            height: 100%;
-            justify-content: flex-end;
-        }
-
-        .chart-column span {
-            background: var(--primary);
-            min-height: 16px;
-            opacity: 0.82;
+            gap: 7px;
+            justify-self: center;
+            max-width: 340px;
+            min-height: 29px;
+            overflow: hidden;
+            padding: 0 13px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             width: 100%;
         }
 
-        .chart-column:nth-child(2n) span {
-            background: #7379bb;
-        }
-
-        .chart-column small {
-            color: #9a9da7;
-            font-size: 6px;
-        }
-
-        .status-list {
-            display: grid;
-            gap: 12px;
-        }
-
-        .status-item {
-            align-items: center;
-            display: flex;
-            gap: 9px;
-        }
-
-        .status-circle {
-            align-items: center;
-            background: var(--primary-soft);
-            border-radius: 50%;
-            color: var(--primary);
-            display: flex;
+        .system-browser-address svg {
+            color: #687083;
             flex: 0 0 auto;
-            height: 27px;
-            justify-content: center;
-            width: 27px;
-        }
-
-        .status-circle svg {
             height: 12px;
             width: 12px;
         }
 
-        .status-data {
-            flex: 1;
+        .system-browser-menu {
+            align-items: center;
+            display: flex;
+            gap: 3px;
         }
 
-        .status-data strong {
-            color: #363946;
+        .system-browser-menu span {
+            background: #7d8290;
+            border-radius: 50%;
             display: block;
-            font-size: 8px;
+            height: 3px;
+            width: 3px;
         }
 
-        .status-data small {
-            color: #9a9da7;
+        .system-screen {
+            aspect-ratio: 1915 / 920;
+            background: #edf0f5;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .system-screen::before {
+            background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.05),
+                transparent 18%
+            );
+            content: "";
+            inset: 0;
+            pointer-events: none;
+            position: absolute;
+            z-index: 2;
+        }
+
+        .system-screen img {
             display: block;
-            font-size: 7px;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            transition:
+                transform 500ms ease,
+                filter 500ms ease;
+            width: 100%;
         }
 
-        .status-number {
-            color: var(--primary);
-            font-size: 9px;
-            font-weight: 800;
+        .system-browser:hover .system-screen img {
+            filter: saturate(1.03) contrast(1.01);
+            transform: scale(1.008);
         }
 
         .product-floating-card {
-            background: white;
+            background: rgba(255, 255, 255, 0.97);
             border: 1px solid var(--border);
-            bottom: -27px;
-            box-shadow: var(--shadow-sm);
+            bottom: -28px;
+            box-shadow: 0 20px 50px rgba(22, 27, 67, 0.14);
             padding: 17px 20px;
             position: absolute;
-            right: -24px;
-            width: 205px;
-            z-index: 4;
+            right: -20px;
+            width: 215px;
+            z-index: 5;
         }
 
         .floating-card-label {
             color: var(--muted);
+            display: block;
             font-size: 9px;
             font-weight: 700;
             letter-spacing: 0.08em;
@@ -914,6 +727,7 @@
         .floating-card-value::before {
             background: var(--success);
             border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(20, 116, 90, 0.1);
             content: "";
             height: 7px;
             width: 7px;
@@ -1536,16 +1350,8 @@
 
         @media (max-width: 1100px) {
             .hero-grid {
-                gap: 45px;
-                grid-template-columns: minmax(0, 0.9fr) minmax(460px, 1.1fr);
-            }
-
-            .dashboard-body {
-                grid-template-columns: 128px 1fr;
-            }
-
-            .dashboard-content {
-                padding: 20px;
+                gap: 38px;
+                grid-template-columns: minmax(360px, 0.82fr) minmax(520px, 1.18fr);
             }
 
             .feature-card {
@@ -1741,34 +1547,6 @@
                 width: 100%;
             }
 
-            .dashboard-body {
-                grid-template-columns: 1fr;
-            }
-
-            .dashboard-sidebar {
-                display: none;
-            }
-
-            .dashboard-content {
-                padding: 17px;
-            }
-
-            .metric {
-                padding: 12px;
-            }
-
-            .metric strong {
-                font-size: 16px;
-            }
-
-            .dashboard-panels {
-                grid-template-columns: 1fr;
-            }
-
-            .dashboard-panels .dashboard-panel:last-child {
-                display: none;
-            }
-
             .preview-label {
                 left: -8px;
                 top: 28px;
@@ -1837,28 +1615,51 @@
                 grid-template-columns: 1fr;
             }
 
-            .dashboard-welcome {
-                gap: 12px;
-            }
-
-            .dashboard-action {
-                display: none;
-            }
-
-            .metric-grid {
-                gap: 7px;
-            }
-
-            .metric small {
-                font-size: 7px;
-            }
-
             .product-floating-card {
                 display: none;
             }
 
             .hero-note {
                 align-items: flex-start;
+            }
+        }
+
+
+        @media (max-width: 720px) {
+            .system-browser-bar {
+                gap: 10px;
+                grid-template-columns: auto minmax(0, 1fr);
+                min-height: 44px;
+                padding: 0 12px;
+            }
+
+            .system-browser-address {
+                font-size: 8px;
+                min-height: 25px;
+            }
+
+            .system-browser-menu {
+                display: none;
+            }
+
+            .system-browser-controls {
+                gap: 5px;
+            }
+
+            .system-browser-controls span {
+                height: 7px;
+                width: 7px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .system-browser-address {
+                padding-inline: 9px;
+            }
+
+            .system-browser-address span {
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
 
@@ -1882,28 +1683,22 @@
 <body>
 
 <header class="site-header">
-    <div class="container navbar">
-        <a href="#inicio" class="brand" aria-label="INTEVI, página de inicio">
-            <span class="brand-symbol">
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    aria-hidden="true"
-                >
-                    <path d="M5 5.5h14v13H5z"/>
-                    <path d="M8 9h8M8 12h8M8 15h5"/>
-                </svg>
-            </span>
+        <div class="container navbar">
+    <a href="{{ url('/') }}" class="brand">
+        <img
+            src="{{ asset('images/intevi logo.png') }}"
+            alt="Logo de INTEVI"
+            class="brand-logo"
+        >
 
-            <span>
-                <span class="brand-name">INTEVI</span>
-                <span class="brand-description">
-                    Inventario institucional
-                </span>
+        <span class="brand-text">
+            <span class="brand-name">INTEVI</span>
+
+            <span class="brand-description">
+                Inventario Tecnológico Institucional
             </span>
-        </a>
+        </span>
+    </a>
 
         <div class="nav-area" id="navigation">
             <ul class="nav-links">
@@ -2009,252 +1804,68 @@
                 </div>
             </div>
 
-            <div class="product-preview">
+            <div class="product-preview product-preview-real">
+
                 <div class="preview-label">
-                    Vista del sistema
+                    Plataforma INTEVI
                 </div>
 
-                <div class="dashboard">
-                    <div class="dashboard-topbar">
-                        <div class="window-controls">
+                <div class="system-browser">
+
+                    <div class="system-browser-bar">
+                        <div class="system-browser-controls">
                             <span></span>
                             <span></span>
                             <span></span>
                         </div>
 
-                        <div class="dashboard-identity">
-                            <span class="dashboard-brand">INTEVI</span>
-                            <span class="dashboard-avatar">JB</span>
+                        <div class="system-browser-address">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                aria-hidden="true"
+                            >
+                                <rect x="5" y="10" width="14" height="10" rx="2"/>
+                                <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+                            </svg>
+
+                            <span>
+                                tuinstitucion.intevi.app/inventario
+                            </span>
+                        </div>
+
+                        <div class="system-browser-menu">
+                            <span></span>
+                            <span></span>
+                            <span></span>
                         </div>
                     </div>
 
-                    <div class="dashboard-body">
-                        <aside class="dashboard-sidebar">
-                            <div class="sidebar-title">Principal</div>
-
-                            <div class="sidebar-item active">
-                                <span class="sidebar-icon"></span>
-                                Panel general
-                            </div>
-
-                            <div class="sidebar-item">
-                                <span class="sidebar-icon"></span>
-                                Inventario
-                            </div>
-
-                            <div class="sidebar-item">
-                                <span class="sidebar-icon"></span>
-                                Resguardos
-                            </div>
-
-                            <div class="sidebar-title">Administración</div>
-
-                            <div class="sidebar-item">
-                                <span class="sidebar-icon"></span>
-                                Responsables
-                            </div>
-
-                            <div class="sidebar-item">
-                                <span class="sidebar-icon"></span>
-                                Ubicaciones
-                            </div>
-
-                            <div class="sidebar-item">
-                                <span class="sidebar-icon"></span>
-                                Reportes
-                            </div>
-                        </aside>
-
-                        <div class="dashboard-content">
-                            <div class="dashboard-welcome">
-                                <div>
-                                    <small>Resumen institucional</small>
-                                    <strong>Control de inventario</strong>
-                                </div>
-
-                                <span class="dashboard-action">
-                                    + Registrar bien
-                                </span>
-                            </div>
-
-                            {{-- Datos ilustrativos de la interfaz --}}
-                            <div class="metric-grid">
-                                <div class="metric">
-                                    <div class="metric-head">
-                                        <div class="metric-icon">
-                                            <svg
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="1.8"
-                                            >
-                                                <path d="M4 7h16v13H4z"/>
-                                                <path d="m4 7 3-3h10l3 3"/>
-                                            </svg>
-                                        </div>
-                                    </div>
-
-                                    <small>Bienes registrados</small>
-                                    <strong>1,248</strong>
-                                </div>
-
-                                <div class="metric">
-                                    <div class="metric-head">
-                                        <div class="metric-icon">
-                                            <svg
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="1.8"
-                                            >
-                                                <circle cx="12" cy="8" r="3"/>
-                                                <path d="M5 20c0-4 3-7 7-7s7 3 7 7"/>
-                                            </svg>
-                                        </div>
-                                    </div>
-
-                                    <small>Resguardos activos</small>
-                                    <strong>836</strong>
-                                </div>
-
-                                <div class="metric">
-                                    <div class="metric-head">
-                                        <div class="metric-icon">
-                                            <svg
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="1.8"
-                                            >
-                                                <path d="M4 20V9l8-5 8 5v11"/>
-                                                <path d="M9 20v-6h6v6"/>
-                                            </svg>
-                                        </div>
-                                    </div>
-
-                                    <small>Áreas registradas</small>
-                                    <strong>32</strong>
-                                </div>
-                            </div>
-
-                            <div class="dashboard-panels">
-                                <div class="dashboard-panel">
-                                    <div class="panel-header">
-                                        <strong>Bienes por área</strong>
-                                        <span>Ver reporte</span>
-                                    </div>
-
-                                    <div class="chart">
-                                        <div class="chart-column">
-                                            <span style="height: 42%"></span>
-                                            <small>ADM</small>
-                                        </div>
-
-                                        <div class="chart-column">
-                                            <span style="height: 72%"></span>
-                                            <small>TI</small>
-                                        </div>
-
-                                        <div class="chart-column">
-                                            <span style="height: 55%"></span>
-                                            <small>DIR</small>
-                                        </div>
-
-                                        <div class="chart-column">
-                                            <span style="height: 88%"></span>
-                                            <small>OPE</small>
-                                        </div>
-
-                                        <div class="chart-column">
-                                            <span style="height: 63%"></span>
-                                            <small>RH</small>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="dashboard-panel">
-                                    <div class="panel-header">
-                                        <strong>Estado general</strong>
-                                        <span>Hoy</span>
-                                    </div>
-
-                                    <div class="status-list">
-                                        <div class="status-item">
-                                            <div class="status-circle">
-                                                <svg
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                >
-                                                    <path d="M20 6 9 17l-5-5"/>
-                                                </svg>
-                                            </div>
-
-                                            <div class="status-data">
-                                                <strong>Asignados</strong>
-                                                <small>Con resguardo vigente</small>
-                                            </div>
-
-                                            <span class="status-number">836</span>
-                                        </div>
-
-                                        <div class="status-item">
-                                            <div class="status-circle">
-                                                <svg
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                >
-                                                    <path d="M12 5v14M5 12h14"/>
-                                                </svg>
-                                            </div>
-
-                                            <div class="status-data">
-                                                <strong>Disponibles</strong>
-                                                <small>Sin responsable asignado</small>
-                                            </div>
-
-                                            <span class="status-number">304</span>
-                                        </div>
-
-                                        <div class="status-item">
-                                            <div class="status-circle">
-                                                <svg
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                >
-                                                    <path d="M12 8v4l3 2"/>
-                                                    <circle cx="12" cy="12" r="9"/>
-                                                </svg>
-                                            </div>
-
-                                            <div class="status-data">
-                                                <strong>En revisión</strong>
-                                                <small>Pendientes de actualizar</small>
-                                            </div>
-
-                                            <span class="status-number">108</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="system-screen">
+                        <img
+                            src="{{ asset('images/intevi-dashboard.webp') }}"
+                            alt="Vista del módulo de control de inventario de INTEVI"
+                            width="1915"
+                            height="920"
+                            loading="eager"
+                            fetchpriority="high"
+                        >
                     </div>
+
                 </div>
 
                 <div class="product-floating-card">
                     <span class="floating-card-label">
-                        Información actualizada
+                        Plataforma institucional
                     </span>
 
                     <span class="floating-card-value">
                         Inventario centralizado
                     </span>
                 </div>
+
             </div>
         </div>
     </section>
@@ -2823,7 +2434,6 @@
             <div class="cta-action">
                 <a
                     class="button button-light"
-                    href="mailto:{{ $contactEmail }}?subject=Solicitud%20de%20demostración%20de%20INTEVI&body=Hola,%20me%20interesa%20conocer%20INTEVI%20y%20solicitar%20una%20demostración."
                 >
                     Solicitar demostración
 
@@ -2838,7 +2448,7 @@
                 </a>
 
                 <a class="cta-email" href="mailto:{{ $contactEmail }}">
-                    {{ $contactEmail }}
+                    Solicita tu demostración enviando un correo a: {{ $contactEmail }}
                 </a>
             </div>
         </div>
@@ -2851,23 +2461,49 @@
         <div class="footer-grid">
             <div class="footer-brand">
                 <a href="#inicio" class="brand">
-                    <span class="brand-symbol">
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                        >
-                            <path d="M5 5.5h14v13H5z"/>
-                            <path d="M8 9h8M8 12h8M8 15h5"/>
-                        </svg>
-                    </span>
+                    <span class="brand-symbol" aria-hidden="true">
+                <svg
+                    viewBox="0 0 32 32"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M16 3.5 25 7v7.1c0 6.2-3.7 10.7-9 14.4-5.3-3.7-9-8.2-9-14.4V7l9-3.5Z"
+                        fill="currentColor"
+                        fill-opacity=".12"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linejoin="round"
+                    />
+                    <path
+                        d="M12.2 15.1v-2a3.8 3.8 0 0 1 7.6 0v2"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                    />
+                    <rect
+                        x="10.8"
+                        y="15"
+                        width="10.4"
+                        height="7.6"
+                        rx="2.1"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                    />
+                    <path
+                        d="M16 18.2v1.8"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                    />
+                </svg>
+            </span>
 
                     <span>
                         <span class="brand-name">INTEVI</span>
 
                         <span class="brand-description">
-                            Inventario institucional
+                            Inventario Tecnológico Institucional
                         </span>
                     </span>
                 </a>
@@ -2906,7 +2542,7 @@
                 <ul class="footer-links">
                     <li>
                         <a href="mailto:{{ $contactEmail }}">
-                            {{ $contactEmail }}
+                            Solicita tu demostración enviando un correo a: {{ $contactEmail }}
                         </a>
                     </li>
 

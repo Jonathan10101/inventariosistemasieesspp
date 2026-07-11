@@ -14,6 +14,12 @@
         <div class="dash-hero-content">
             <div class="dash-kicker">
                 <i class="fas fa-shield-alt"></i>
+                <div class="row">
+                    <div class="col d-flex justify-content-center">
+                        <img src="{{ asset('images/intevi logo.png') }}" alt="Logo de INTEVI" class="brand-logo">
+                    </div>
+                </div>
+            </div>
                 INTEVI · Sistema Integral de Inventarios
             </div>
 

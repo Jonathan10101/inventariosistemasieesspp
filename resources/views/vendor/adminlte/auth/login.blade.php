@@ -346,6 +346,35 @@
             font-size: 13px;
         }
 
+        .brand-logo {
+            width: 52px;
+            height: 52px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.15;
+        }
+
+        .brand-name {
+            display: block;
+            color: #171c63;
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+        }
+
+        .brand-description {
+            display: block;
+            margin-top: 4px;
+            color: #64748b;
+            font-size: 0.76rem;
+            font-weight: 500;
+        }
+
         @media (max-width: 480px) {
             .login-card-body {
                 padding: 0 20px 20px;
@@ -364,6 +393,14 @@
                 align-items: flex-start;
                 gap: 7px;
             }
+
+                    .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
         }
     </style>
 @stop
@@ -386,20 +423,40 @@
 @stop
 
 @section('auth_body')
-    
 
-    <div class="login-top">
-        <div class="intevi-brand">
-            <h1>INTEVI</h1>
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+                        <img
+                    src="{{ asset('images/intevi logo.png') }}"
+                    alt="Logo de INTEVI"
+                    class="brand-logo"
+                >
+            </div>
         </div>
 
-        <p class="login-subtitle">
-            Gestión inteligente de resguardos e inventario de bienes institucionales.<br><br>
-            Ingresa tu usuario y contraseña para acceder.
-        </p>
 
-        <div class="tech-line"></div>
-    </div>
+        <a href="{{ url('/') }}" class="brand d-flex justify-content-center w-100 mb-4">
+        
+            <span class="brand-text">
+                
+                <span class="brand-name text-center">INTEVI</span>
+                <!--
+                <span class="brand-description">
+                    Inventario Tecnológico Institucional
+                </span>
+                -->
+            </span>
+            <!--
+            <span class="brand-text">
+                <span class="brand-name">INTEVI</span>
+
+                <span class="brand-description">
+                    Inventario Tecnológico Institucional
+                </span>
+            </span>
+            -->
+        </a>
+        <p class="text-center font-weight-light">Introduce tus credenciales para continuar.</p>
 
     @if (session('status'))
         <div class="alert alert-success mb-3">
