@@ -2,31 +2,60 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\AreaDeUso;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class AreaDeAsignacionController extends Controller
 {
-    public $perPage = 5;
+    private int $perPage = 5;
 
-    public function index()
+    /**
+     * Mostrar el listado de áreas de asignación.
+     */
+    public function index(): View
     {
-        $areasDeAsignacion = AreaDeUso::paginate($this->perPage);
-        return view("areasasignacion/index",compact('areasDeAsignacion'));
+        $areasDeAsignacion = AreaDeUso::query()
+            ->orderBy('nombre')
+            ->paginate($this->perPage);
+
+        return view(
+            'areasasignacion.index',
+            compact('areasDeAsignacion')
+        );
     }
 
-    public function store(Request $request)
+    /**
+     * Registrar una nueva área de asignación.
+     */
+    public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'nombre' => 'required|string|max:100|min:2|unique:area_de_uso,nombre',
+        $datosValidados = $request->validate([
+            'nombre' => [
+                'required',
+                'string',
+                'min:2',
+                'max:100',
+                'unique:area_de_uso,nombre',
+            ],
+        ], [
+            'nombre.required' => 'El nombre del área es obligatorio.',
+            'nombre.string' => 'El nombre del área debe ser texto.',
+            'nombre.min' => 'El nombre debe tener al menos 2 caracteres.',
+            'nombre.max' => 'El nombre no puede superar los 100 caracteres.',
+            'nombre.unique' => 'Esta área de asignación ya está registrada.',
         ]);
 
-        // Guardar en la base de datos
         AreaDeUso::create([
-            'nombre' => $request->nombre
+            'nombre' => trim($datosValidados['nombre']),
         ]);
 
-        // Redirigir con mensaje
-        return redirect()->back()->with('success', 'Área de uso registrada correctamente.');
+        return redirect()
+            ->route('areadeasignacion.index')
+            ->with(
+                'success',
+                'Área de asignación registrada correctamente.'
+            );
     }
 }

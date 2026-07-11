@@ -3,26 +3,36 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 
 use App\Http\Controllers\{
-    MarcaController,
-    ResguardanteController,
-    PuestoController,
-    UbicacionFisicaController,
     AreaDeAsignacionController,
-    InventarioController,
-    UserController,
-    RolController,
-    EtiquetaController,
-    Etiqueta2Controller,
     DashboardController,
-    ExportController
+    Etiqueta2Controller,
+    EtiquetaController,
+    ExportController,
+    InventarioController,
+    MarcaController,
+    PuestoController,
+    ResguardanteController,
+    RolController,
+    UbicacionFisicaController,
+    UserController
 };
 
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
+
+/*
+|--------------------------------------------------------------------------
+| Rutas de los tenants
+|--------------------------------------------------------------------------
+|
+| Estas rutas funcionan para dominios como:
+|
+| https://ieesspp.intevi.app
+| https://demo.intevi.app
+|
+*/
 
 Route::middleware([
     'web',
@@ -30,11 +40,23 @@ Route::middleware([
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
 
-Route::get('/', function () {
-    return auth()->check()
-        ? redirect('/dashboard')
-        : redirect('/login');
-});
+    /*
+    |--------------------------------------------------------------------------
+    | Página principal del tenant
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/', function () {
+        return auth()->check()
+            ? redirect()->route('dashboard')
+            : redirect()->route('login');
+    })->name('tenant.home');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Rutas protegidas
+    |--------------------------------------------------------------------------
+    */
 
     Route::middleware([
         'auth:sanctum',
@@ -42,43 +64,168 @@ Route::get('/', function () {
         'verified',
     ])->group(function () {
 
-        Route::get('/dashboard', [DashboardController::class, 'index'])
-            ->name('dashboard');
+        /*
+        |--------------------------------------------------------------------------
+        | Dashboard
+        |--------------------------------------------------------------------------
+        */
 
-        Route::resource('inventario', InventarioController::class)
-            ->middleware(['auth:sanctum', 'can:inventario.index']);
+        Route::get('/dashboard', [
+            DashboardController::class,
+            'index',
+        ])->name('dashboard');
 
-        Route::resource('marcas', MarcaController::class)
-            ->middleware(['can:marcas.index']);
+        /*
+        |--------------------------------------------------------------------------
+        | Inventario
+        |--------------------------------------------------------------------------
+        */
 
-        Route::resource('resguardante', ResguardanteController::class)
-            ->middleware(['can:resguardante.index']);
+        Route::resource(
+            'inventario',
+            InventarioController::class
+        )->middleware('can:inventario.index');
 
-        Route::resource('puestos', PuestoController::class)
-            ->middleware(['can:puestos.create']);
+        /*
+        |--------------------------------------------------------------------------
+        | Marcas
+        |--------------------------------------------------------------------------
+        */
 
-        Route::resource('ubicacionfisica', UbicacionFisicaController::class)
-            ->middleware(['can:ubicacionfisica.index']);
+        Route::resource(
+            'marcas',
+            MarcaController::class
+        )->middleware('can:marcas.index');
 
-        Route::resource('areadeasignacion', AreaDeAsignacionController::class)
-            ->middleware(['can:areadeasignacion.create']);
+        /*
+        |--------------------------------------------------------------------------
+        | Resguardantes
+        |--------------------------------------------------------------------------
+        */
 
-        Route::resource('usuarios', UserController::class)
-            ->middleware(['can:puestos.create']);
+        Route::resource(
+            'resguardante',
+            ResguardanteController::class
+        )->middleware('can:resguardante.index');
 
-        Route::resource('roles', RolController::class)
-            ->middleware(['can:puestos.create']);
+        /*
+        |--------------------------------------------------------------------------
+        | Puestos
+        |--------------------------------------------------------------------------
+        */
 
-        Route::get('/etiqueta/{codigo}', [EtiquetaController::class, 'show'])
+        Route::resource(
+            'puestos',
+            PuestoController::class
+        )->middleware('can:puestos.create');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Ubicaciones físicas
+        |--------------------------------------------------------------------------
+        |
+        | El controlador solamente tiene los métodos:
+        |
+        | index()
+        | show()
+        |
+        */
+
+        Route::resource(
+            'ubicacionfisica',
+            UbicacionFisicaController::class
+        )
+            ->only([
+                'index',
+                'show',
+            ])
+            ->middleware('can:ubicacionfisica.index');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Áreas de asignación
+        |--------------------------------------------------------------------------
+        |
+        | El controlador solamente tiene los métodos:
+        |
+        | index()
+        | store()
+        |
+        */
+
+        Route::controller(AreaDeAsignacionController::class)
+            ->prefix('areadeasignacion')
+            ->name('areadeasignacion.')
+            ->group(function () {
+
+                Route::get('/', 'index')
+                    ->name('index')
+                    ->middleware('can:areadeasignacion.index');
+
+                Route::post('/', 'store')
+                    ->name('store')
+                    ->middleware('can:areadeasignacion.create');
+            });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Usuarios
+        |--------------------------------------------------------------------------
+        */
+
+        Route::resource(
+            'usuarios',
+            UserController::class
+        )->middleware('can:puestos.create');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Roles
+        |--------------------------------------------------------------------------
+        */
+
+        Route::resource(
+            'roles',
+            RolController::class
+        )->middleware('can:puestos.create');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Etiqueta principal
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/etiqueta/{codigo}', [
+            EtiquetaController::class,
+            'show',
+        ])
             ->name('etiquetas.show')
-            ->middleware(['can:inventario.index']);
+            ->middleware('can:inventario.index');
 
-        Route::get('/etiqueta2/{codigo}', [Etiqueta2Controller::class, 'show'])
+        /*
+        |--------------------------------------------------------------------------
+        | Segunda etiqueta
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/etiqueta2/{codigo}', [
+            Etiqueta2Controller::class,
+            'show',
+        ])
             ->name('etiquetas2.show')
-            ->middleware(['can:inventario.index']);
+            ->middleware('can:inventario.index');
 
-        Route::get('/export', [ExportController::class, 'export'])
-            ->name('export');
+        /*
+        |--------------------------------------------------------------------------
+        | Exportación
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/export', [
+            ExportController::class,
+            'export',
+        ])
+            ->name('export')
+            ->middleware('can:inventario.index');
     });
-
 });

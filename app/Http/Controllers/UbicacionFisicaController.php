@@ -3,106 +3,87 @@
 namespace App\Http\Controllers;
 
 use App\Models\UbicacionFisica;
-use App\Models\Resguardante;
-use Illuminate\Http\Request;
-use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
-
 
 class UbicacionFisicaController extends Controller
 {
-    use WithPagination;
-    public $perPage = 2;
+    private int $perPage = 2;
 
+    /**
+     * Mostrar el listado de ubicaciones físicas.
+     */
     public function index()
     {
-        return view('ubicaciones/index');
+        return view('ubicaciones.index');
     }
 
-    public function show($id)
+    /**
+     * Mostrar el detalle de una ubicación física.
+     */
+    public function show(UbicacionFisica $ubicacionFisica)
     {
-        $ubicacionFisica = UbicacionFisica::find($id);
-
-        if (!$ubicacionFisica) {
-            abort(404);
-        }
-
         $user = Auth::user();
 
-        /* ============================================================
-        🟦 ADMINISTRADOR — DIRECTOR — DELEGACION
-        ➤ Estos roles pueden ver TODO
-        ============================================================ */
-        if ($user->hasRole('Administrador') 
-            || $user->hasRole('Director') 
-            || $user->hasRole('Delegacion')) 
-        {
-            $historiales = $ubicacionFisica->historialResguardos()
+        /*
+        |--------------------------------------------------------------------------
+        | Administrador, Director y Delegación
+        |--------------------------------------------------------------------------
+        | Estos roles pueden consultar todos los resguardos activos.
+        */
+
+        if ($user->hasAnyRole([
+            'Administrador',
+            'Director',
+            'Delegacion',
+        ])) {
+            $historiales = $ubicacionFisica
+                ->historialResguardos()
                 ->whereNull('fecha_liberacion')
                 ->paginate($this->perPage);
 
-            return view("ubicaciones.show", [
-                'historiales' => $historiales,
-                'ubicacionFisica' => $ubicacionFisica
-            ]);
+            return view('ubicaciones.show', compact(
+                'ubicacionFisica',
+                'historiales'
+            ));
         }
 
-        /* ============================================================
-        🟩 SUBDIRECTOR — Solo puede ver su propia subdirección
-        ============================================================ */
-        if ($user->hasRole('Subdirector')) {
+        /*
+        |--------------------------------------------------------------------------
+        | Subdirector y usuarios normales
+        |--------------------------------------------------------------------------
+        | Solo pueden consultar registros de su propia subdirección.
+        */
 
-            // Validar si esta ubicación física pertenece a su subdirección
-            $puedeVer = $ubicacionFisica->historialResguardos()
-                ->whereNull('fecha_liberacion')
-                ->whereHas('resguardante.user', function ($q) use ($user) {
-                    $q->where('subdireccion', $user->subdireccion);
-                })
-                ->exists();
-
-            if (!$puedeVer) {
-                abort(403, 'No tienes permiso para ver esta ubicación física.');
-            }
-
-            // Cargar historial filtrado por su subdirección
-            $historiales = $ubicacionFisica->historialResguardos()
-                ->whereNull('fecha_liberacion')
-                ->whereHas('resguardante.user', function ($q) use ($user) {
-                    $q->where('subdireccion', $user->subdireccion);
-                })
-                ->paginate($this->perPage);
-
-            return view("ubicaciones.show", [
-                'historiales' => $historiales,
-                'ubicacionFisica' => $ubicacionFisica
-            ]);
+        if (empty($user->subdireccion)) {
+            abort(
+                403,
+                'Tu usuario no tiene una subdirección asignada.'
+            );
         }
 
-        /* ============================================================
-        🟧 USUARIO NORMAL — Solo ver su propia subdirección
-        ============================================================ */
-        $puedeVer = $ubicacionFisica->historialResguardos()
+        $historialesQuery = $ubicacionFisica
+            ->historialResguardos()
             ->whereNull('fecha_liberacion')
-            ->whereHas('resguardante.user', function ($q) use ($user) {
-                $q->where('subdireccion', $user->subdireccion);
-            })
-            ->exists();
+            ->whereHas('resguardante.user', function ($query) use ($user) {
+                $query->where(
+                    'subdireccion',
+                    $user->subdireccion
+                );
+            });
 
-        if (!$puedeVer) {
-            abort(403, 'No tienes permiso para ver esta ubicación física.');
+        if (!(clone $historialesQuery)->exists()) {
+            abort(
+                403,
+                'No tienes permiso para ver esta ubicación física.'
+            );
         }
 
-        $historiales = $ubicacionFisica->historialResguardos()
-            ->whereNull('fecha_liberacion')
-            ->whereHas('resguardante.user', function ($q) use ($user) {
-                $q->where('subdireccion', $user->subdireccion);
-            })
+        $historiales = $historialesQuery
             ->paginate($this->perPage);
 
-        return view("ubicaciones.show", [
-            'historiales' => $historiales,
-            'ubicacionFisica' => $ubicacionFisica
-        ]);
+        return view('ubicaciones.show', compact(
+            'ubicacionFisica',
+            'historiales'
+        ));
     }
-    
 }
