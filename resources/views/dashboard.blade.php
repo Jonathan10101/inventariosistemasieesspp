@@ -538,48 +538,38 @@
     }
 
     .dash-system-card {
-        width: 100%;
-        padding: 24px;
-        border-radius: 26px;
-        background:
-            linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-        border: 1px solid var(--dash-border);
-        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.07);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         text-align: center;
     }
 
     .dash-system-icon {
         width: 82px;
         height: 82px;
-        margin: 0 auto 18px;
+        margin: 14px auto 2px;
         display: flex;
         align-items: center;
         justify-content: center;
-        overflow: hidden;
-        background: transparent;
     }
 
     .dash-intevi-logo {
         display: block;
-        width: 52px;
-        height: 52px;
-        max-width: 100%;
+        width: 64px;
+        height: 64px;
         object-fit: contain;
     }
 
     .dash-system-card h3 {
         margin: 0;
-        color: var(--dash-text);
-        font-size: 22px;
-        font-weight: 950;
-        letter-spacing: -0.04em;
+        color: #171c63;
+        font-size: 24px;
+        font-weight: 800;
+        line-height: 1.1;
     }
 
     .dash-system-card p {
-        margin: 4px 0 15px;
-        color: var(--dash-muted);
-        font-size: 13px;
-        font-weight: 750;
+        margin: 7px 0 14px;
     }
 
     .dash-status {

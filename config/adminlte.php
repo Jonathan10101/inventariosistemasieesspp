@@ -40,7 +40,7 @@ return [
         <div class="intevi-brand">
             <div class="intevi-brand-mark">
                 <img
-                    src="/images/intevi-logo.png"
+                    src="/images/intevi logo.png"
                     alt="Logo de INTEVI"
                     style="
                         width: 36px;
