@@ -1026,6 +1026,56 @@
         }
     }
 
+    @media (max-width: 767.98px) {
+
+        .dash-hero-panel {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .dash-system-card {
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .dash-system-icon {
+            width: 82px;
+            height: 82px;
+            margin: 14px auto 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dash-intevi-logo {
+            display: block;
+            width: 64px;
+            height: 64px;
+            margin: 0 auto;
+            object-fit: contain;
+        }
+
+        .dash-system-card h3,
+        .dash-system-card p,
+        .dash-status {
+            width: 100%;
+            text-align: center;
+        }
+
+        .dash-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
     @media (max-width: 576px) {
         .intevi-dashboard {
             padding-top: 14px;
