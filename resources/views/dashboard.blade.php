@@ -206,7 +206,7 @@
                     <div id="collapseGestion" class="collapse show">
                         <div class="dash-accordion-body">
 
-                            <a href="{{ url('/inventarios') }}" class="dash-mini-link">
+                            <a href="{{ url('/inventario') }}" class="dash-mini-link">
                                 <i class="fas fa-boxes"></i>
                                 <div>
                                     <strong>Inventario</strong>
@@ -222,7 +222,7 @@
                                 </div>
                             </a>
                             -->
-                            <a href="{{ url('/resguardantes') }}" class="dash-mini-link">
+                            <a href="{{ url('/resguardante') }}" class="dash-mini-link">
                                 <i class="fas fa-user-shield"></i>
                                 <div>
                                     <strong>Resguardantes</strong>
@@ -271,7 +271,7 @@
                                 </div>
                             </a>
 
-                            <a href="{{ url('/areas-de-asignacion') }}" class="dash-mini-link">
+                            <a href="{{ url('/areadeasignacion') }}" class="dash-mini-link">
                                 <i class="fas fa-sitemap"></i>
                                 <div>
                                     <strong>Áreas de asignación</strong>
@@ -279,7 +279,7 @@
                                 </div>
                             </a>
 
-                            <a href="{{ url('/ubicaciones-fisicas') }}" class="dash-mini-link">
+                            <a href="{{ url('/ubicacionfisica') }}" class="dash-mini-link">
                                 <i class="fas fa-map-marker-alt"></i>
                                 <div>
                                     <strong>Ubicaciones físicas</strong>
