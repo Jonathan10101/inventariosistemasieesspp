@@ -37,7 +37,11 @@ return [
     */
 
     'logo' => '
-        <div class="intevi-brand">
+        <div class="intevi-brand">S
+            <div class="intevi-brand-mark">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+
             <div class="intevi-brand-text">
                 <strong>INTEVI</strong>
                 <span>V 1.0.0</span>

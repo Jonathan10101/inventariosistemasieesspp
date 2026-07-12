@@ -44,7 +44,15 @@
         <div class="dash-hero-panel">
             <div class="dash-system-card">
                 <div class="dash-system-icon">
-                    <i class="fas fa-cubes"></i>
+                    <div class="row">
+                        <div class="col d-flex justify-content-center">
+                                    <img
+                                src="{{ asset('images/intevi logo.png') }}"
+                                alt="Logo de INTEVI"
+                                class="brand-logo"
+                            >
+                        </div>
+                    </div>
                 </div>
 
                 <h3>INTEVI</h3>
