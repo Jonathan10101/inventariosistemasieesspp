@@ -207,7 +207,7 @@
                                     {{ $user->name }}
                                 </div>
                             </td>
-
+                            {{-- 
                             @hasanyrole('Administrador')
                                 <td class="text-center">
                                     <button
@@ -220,6 +220,7 @@
                                     </button>
                                 </td>
                             @endhasanyrole
+                            --}}
                         </tr>
                     @empty
                         <tr>

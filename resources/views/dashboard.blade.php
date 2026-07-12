@@ -139,7 +139,7 @@
                 </span>
             </a>
 
-            <a href="{{ url('/resguardos') }}" class="dash-module-card">
+            <a href="{{ url('/marcas') }}" class="dash-module-card">
                 <div class="dash-module-icon success">
                     <i class="fas fa-tags"></i>
                 </div>

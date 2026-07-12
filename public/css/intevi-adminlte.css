@@ -79,9 +79,9 @@ body {
     align-items: center;
     justify-content: center;
 
-    background: none !important;
+    background: transparent !important;
     background-color: transparent !important;
-    background-image: none !important;
+    background-image: transparent !important;
     border: none !important;
     border-radius: 0 !important;
     box-shadow: none !important;
@@ -97,6 +97,8 @@ body {
     padding: 0 !important;
     object-fit: contain;
     background: transparent !important;
+    background-color: transparent !important;
+    background-image: transparent !important;
     border: none !important;
     box-shadow: none !important;
 }
@@ -106,6 +108,9 @@ body {
     flex-direction: column;
     justify-content: center;
     line-height: 1;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: transparent !important;
 }
 
 .intevi-brand-text strong {
@@ -114,6 +119,9 @@ body {
     font-size: 17px;
     font-weight: 800;
     letter-spacing: 0.5px;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: transparent !important;
 }
 
 .intevi-brand-text span {
