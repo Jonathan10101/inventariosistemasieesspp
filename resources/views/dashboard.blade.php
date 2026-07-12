@@ -43,16 +43,13 @@
 
         <div class="dash-hero-panel">
             <div class="dash-system-card">
+
                 <div class="dash-system-icon">
-                    <div class="row">
-                        <div class="col d-flex justify-content-center">
-                                    <img
-                                src="{{ asset('images/intevi logo.png') }}"
-                                alt="Logo de INTEVI"
-                                class="brand-logo"
-                            >
-                        </div>
-                    </div>
+                    <img
+                        src="{{ asset('images/intevi logo.png') }}"
+                        alt="Logo de INTEVI"
+                        class="dash-intevi-logo"
+                    >
                 </div>
 
                 <h3>INTEVI</h3>
@@ -62,6 +59,7 @@
                     <span></span>
                     V. 1.0.0
                 </div>
+
             </div>
         </div>
     </section>
@@ -551,16 +549,22 @@
     }
 
     .dash-system-icon {
-        width: 74px;
-        height: 74px;
-        margin: 0 auto 15px;
-        border-radius: 25px;
-        background: rgba(23, 28, 99, 0.08);
-        color: var(--dash-primary);
+        width: 82px;
+        height: 82px;
+        margin: 0 auto 18px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 30px;
+        overflow: hidden;
+        background: transparent;
+    }
+
+    .dash-intevi-logo {
+        display: block;
+        width: 52px;
+        height: 52px;
+        max-width: 100%;
+        object-fit: contain;
     }
 
     .dash-system-card h3 {

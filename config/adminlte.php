@@ -37,9 +37,18 @@ return [
     */
 
     'logo' => '
-        <div class="intevi-brand">S
+        <div class="intevi-brand">
             <div class="intevi-brand-mark">
-                <i class="fas fa-shield-alt"></i>
+                <img
+                    src="/images/intevi-logo.png"
+                    alt="Logo de INTEVI"
+                    style="
+                        width: 36px;
+                        height: 36px;
+                        object-fit: contain;
+                        display: block;
+                    "
+                >
             </div>
 
             <div class="intevi-brand-text">
