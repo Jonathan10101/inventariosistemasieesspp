@@ -561,7 +561,7 @@
         </a>
 
         <p class="intevi-login-product">
-            Inventario Tecnológico Institucional
+            Inventario y resguardo institucional
         </p>
 
         <p class="intevi-login-description">
@@ -599,6 +599,7 @@
         </div>
     @endif
 
+    {{--
     @if ($errors->any())
         <div class="intevi-alert" role="alert">
             <span class="intevi-alert-icon">
@@ -613,6 +614,7 @@
             </div>
         </div>
     @endif
+    --}}
 
     <form
         action="{{ $login_url }}"
@@ -639,7 +641,7 @@
                     name="email"
                     class="intevi-field-input"
                     value="{{ old('email') }}"
-                    placeholder="nombre@institucion.gob.mx"
+                    placeholder="nombre@institucion.com"
                     autocomplete="email"
                     inputmode="email"
                     autofocus
@@ -701,6 +703,7 @@
             @enderror
         </div>
 
+        {{--
         <div class="intevi-login-options">
             <label for="remember" class="intevi-remember">
                 <input
@@ -721,6 +724,7 @@
                 </a>
             @endif
         </div>
+        --}}
 
         <button
             type="submit"
@@ -739,16 +743,8 @@
         </button>
     </form>
 
-    <div class="intevi-security-note">
-        <i class="fas fa-shield-alt"></i>
-        <span>Acceso seguro para personal autorizado</span>
-    </div>
-
     <div class="intevi-login-footer">
         <strong>INTEVI</strong>
-        · Inventario Tecnológico Institucional
-        <br>
-        Versión 1.0.0 · FROM ANED
     </div>
 
     <script>

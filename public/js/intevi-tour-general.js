@@ -239,7 +239,7 @@
 
         addStep(
             steps,
-            '.js-intevi-global-tour',
+            'a[href="#tutorial-general"], a[href$="#tutorial-general"]',
             'Tutorial general',
             'Puedes volver a iniciar este recorrido cuando lo necesites desde esta opción.',
             'right'
@@ -327,23 +327,23 @@
     /**
      * Escucha el botón del menú AdminLTE.
      */
-    document.addEventListener(
-        'click',
-        function (event) {
-            const button = event.target.closest(
-                '.js-intevi-global-tour'
-            );
+    document.addEventListener('click', function (event) {
+        const button = event.target.closest(
+            '.js-intevi-global-tour, ' +
+            '[data-global-tour-start], ' +
+            'a[href="#tutorial-general"], ' +
+            'a[href$="#tutorial-general"]'
+        );
 
-            if (!button) {
-                return;
-            }
-
-            event.preventDefault();
-            event.stopPropagation();
-
-            startGlobalTour();
+        if (!button) {
+            return;
         }
-    );
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        startGlobalTour();
+    });
 
     /**
      * Cierra el tour antes de navegar con Livewire.

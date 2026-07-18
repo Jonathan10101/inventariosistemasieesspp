@@ -188,7 +188,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'laravel_asset_bundling' => 'false',
+    'laravel_asset_bundling' => false,
     'laravel_css_path' => '',
     'laravel_js_path' => '',
 
@@ -285,9 +285,8 @@ return [
         ],
         [
             'text' => 'Tutorial general',
-            'url' => '#',
+            'url' => '#tutorial-general',
             'icon' => 'fas fa-graduation-cap',
-            'classes' => 'js-intevi-global-tour',
         ],
 
     ],
