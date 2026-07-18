@@ -188,9 +188,9 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'laravel_asset_bundling' => 'vite_js_only',
-    'laravel_css_path' => 'resources/css/app.css',
-    'laravel_js_path' => 'resources/js/app.js',
+    'laravel_asset_bundling' => 'false',
+    'laravel_css_path' => '',
+    'laravel_js_path' => '',
 
     /*
     |--------------------------------------------------------------------------
