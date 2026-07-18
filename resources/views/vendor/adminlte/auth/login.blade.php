@@ -560,15 +560,13 @@
             </h1>
         </a>
 
+        <!--
         <p class="intevi-login-product">
             Inventario y resguardo institucional
         </p>
+        -->
 
        
-    </div>
-
-    <div class="intevi-section-label">
-        Acceso al sistema
     </div>
 
     @if (session('status'))
@@ -739,6 +737,10 @@
                 Validando acceso...
             </span>
         </button>
+
+         <div class="intevi-login-footer">
+            <strong>Software as a service</strong>
+        </div>
     </form>
 
     <script>
