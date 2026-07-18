@@ -53,7 +53,6 @@ return [
 
             <div class="intevi-brand-text">
                 <strong>INTEVI</strong>
-                <span>Inventario y resguardo institucional</span>
             </div>
         </div>
     ',
