@@ -204,6 +204,8 @@ return [
 
     'js' => [
         'js/intevi-tour.js',
+        'js/intevi-tour-general.js',
+        //
     ],
 
     /*
@@ -218,7 +220,6 @@ return [
             'url'  => 'dashboard',
             'icon' => 'fas fa-tachometer-alt',
         ],
-
         ['header' => 'GESTIÓN PRINCIPAL'],
 
         [
@@ -226,7 +227,6 @@ return [
             'url'  => 'inventario',
             'icon' => 'fas fa-boxes',
         ],
-
         /*
         [
             'text' => 'Resguardos',
@@ -234,7 +234,6 @@ return [
             'icon' => 'fas fa-file-signature',
         ],
         */
-
         [
             'text' => 'Resguardantes',
             'url'  => 'resguardante',
@@ -248,50 +247,50 @@ return [
             'url'  => 'marcas',
             'icon' => 'fas fa-tags',
         ],
-
         [
             'text' => 'Puestos',
             'url'  => 'puestos',
             'icon' => 'fas fa-briefcase',
         ],
-
         [
             'text' => 'Áreas de asignación',
             'url'  => 'areadeasignacion',
             'icon' => 'fas fa-sitemap',
         ],
-
         [
             'text' => 'Ubicaciones físicas',
             'url'  => 'ubicacionfisica',
             'icon' => 'fas fa-map-marker-alt',
         ],
 
-        [
-            'header' => 'ADMINISTRACIÓN',
-            'can' => 'viewPulse',
-        ],
-
+        ['header' => 'ADMINISTRACIÓN', 'can' => 'viewPulse'],
         /*
         [
             'text' => 'Usuarios',
             'url'  => 'usuarios',
             'icon' => 'fas fa-users-cog',
         ],
-
+        
         [
             'text' => 'Roles y permisos',
             'url'  => 'roles',
             'icon' => 'fas fa-user-lock',
         ],
         */
-
         [
             'text' => 'Monitor de sistema',
             'url' => env('PULSE_PATH', 'pulse'),
             'icon' => 'fas fa-fw fa-heartbeat',
             'can' => 'viewPulse',
         ],
+        /*
+        [
+            'text' => 'Tutorial general',
+            'url' => '#tutorial-general',
+            'icon' => 'fas fa-graduation-cap',
+        ],
+        */
+
     ],
 
     /*
@@ -317,25 +316,40 @@ return [
     */
 
     'plugins' => [
-        'Datatables' => [
-            'active' => false,
+        'Datatables' => ['active' => false],
+        'Select2' => ['active' => false],
+        'Chartjs' => ['active' => false],
+        'Sweetalert2' => ['active' => false],
+        'Pace' => ['active' => false],
+        'DriverJs' => [
+            'active' => true,
+
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => 'https://cdn.jsdelivr.net/npm/driver.js@1.7.0/dist/driver.css',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'css/intevi-tour.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://cdn.jsdelivr.net/npm/driver.js@1.7.0/dist/driver.js.iife.js',
+                    'defer' => true,
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'js/intevi-tour.js',
+                    'defer' => true,
+                ],
+            ],
         ],
 
-        'Select2' => [
-            'active' => false,
-        ],
-
-        'Chartjs' => [
-            'active' => false,
-        ],
-
-        'Sweetalert2' => [
-            'active' => false,
-        ],
-
-        'Pace' => [
-            'active' => false,
-        ],
     ],
 
     /*
@@ -345,11 +359,7 @@ return [
     */
 
     'iframe' => [
-        'default_tab' => [
-            'url' => null,
-            'title' => null,
-        ],
-
+        'default_tab' => ['url' => null, 'title' => null],
         'options' => [
             'loading_screen' => 1000,
             'auto_show_new_tab' => true,
