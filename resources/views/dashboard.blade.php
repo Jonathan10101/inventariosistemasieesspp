@@ -60,11 +60,13 @@
                 </div>
 
                 <h3>INTEVI</h3>
-                <p>Control institucional activo</p>
+                <p>Inventario y resguardo institucional</p>
 
+                <!--
                 <div class="dash-status">
                     <span></span>
                 </div>
+                -->
 
             </div>
         </div>

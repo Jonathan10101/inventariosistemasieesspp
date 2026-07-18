@@ -37,21 +37,28 @@ return [
     */
 
     'logo' => '
-        <div class="intevi-sidebar-logo">
-            <img
-                src="/images/intevi logo.png"
-                alt="Logo de INTEVI"
-                class="intevi-sidebar-logo-img"
-            >
+        <div>
+            <div>
+                <img
+                    src="/images/intevi logo.png"
+                    alt="Logo de INTEVI"
+                    style="
+                        width: 36px;
+                        height: 36px;
+                        object-fit: contain;
+                        display: block;
+                    "
+                >
+            </div>
 
-            <div class="intevi-sidebar-logo-text">
+            <div class="intevi-brand-text">
                 <strong>INTEVI</strong>
+                <span>Inventario y resguardo institucional</span>
             </div>
         </div>
     ',
-
     'logo_img' => null,
-    'logo_img_class' => '',
+    'logo_img_class' => 'brand-image',
     'logo_img_alt' => '',
 
     /*
