@@ -189,7 +189,7 @@
         data-tour-step
         data-tour-order="3"
         data-tour-title="Buscar inventario"
-        data-tour-description="Busca por número de inventario, serie, equipo, marca o nombre del resguardante."
+        data-tour-description="Busca por número de inventario o nombre del resguardante."
         data-tour-side="bottom"
     >
         <div class="search-panel-header">
@@ -244,7 +244,7 @@
         data-tour-step
         data-tour-order="4"
         data-tour-title="Inventario registrado"
-        data-tour-description="Aquí aparecen los bienes, su estado, ubicación, resguardante y las acciones disponibles."
+        data-tour-description="Aquí aparecen los bienes, ubicación, resguardante y las acciones disponibles."
         data-tour-side="top"
     >
         <div class="table-card-header">

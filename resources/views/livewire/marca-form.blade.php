@@ -1,5 +1,13 @@
 <div class="container mt-4 marcas-page">
 
+    {{-- MARCADOR DEL TUTORIAL DEL MÓDULO --}}
+    <div
+        data-tour-page="marcas"
+        data-tour-version="1"
+        data-tour-autostart="false"
+        hidden
+    ></div>
+
     {{-- LOADING BAR --}}
     <div
         wire:loading.delay
@@ -33,7 +41,14 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>
 
     <!-- ENCABEZADO -->
-    <div class="marcas-header mb-4">
+    <div
+        class="marcas-header mb-4"
+        data-tour-step
+        data-tour-order="1"
+        data-tour-title="Módulo de marcas"
+        data-tour-description="Desde este módulo puedes consultar, registrar y actualizar las marcas utilizadas en el inventario institucional."
+        data-tour-side="bottom"
+    >
         <div>
             <div class="marcas-kicker">
                 <i class="fas fa-layer-group"></i>
@@ -49,16 +64,33 @@
             </p>
         </div>
 
-        @hasanyrole('Administrador|Delegacion|Subdirector')
+        <div class="header-actions">
             <button
                 type="button"
-                wire:click="showModalNewMarca"
-                class="btn btn-add-marca"
+                class="btn btn-tour-module"
+                data-tour-start
+                title="Ver tutorial de este módulo"
             >
-                <i class="fas fa-plus"></i>
-                <span>Agregar marca</span>
+                <i class="fas fa-circle-question"></i>
+                <span>Ver tutorial</span>
             </button>
-        @endhasanyrole
+
+            @hasanyrole('Administrador|Delegacion|Subdirector')
+                <button
+                    type="button"
+                    wire:click="showModalNewMarca"
+                    class="btn btn-add-marca"
+                    data-tour-step
+                    data-tour-order="2"
+                    data-tour-title="Agregar una marca"
+                    data-tour-description="Presiona este botón para registrar una nueva marca en el catálogo institucional."
+                    data-tour-side="left"
+                >
+                    <i class="fas fa-plus"></i>
+                    <span>Agregar marca</span>
+                </button>
+            @endhasanyrole
+        </div>
     </div>
 
     <!-- MODAL -->
@@ -115,7 +147,14 @@
     </div>
 
     <!-- BUSCADOR -->
-    <div class="search-panel mb-4">
+    <div
+        class="search-panel mb-4"
+        data-tour-step
+        data-tour-order="3"
+        data-tour-title="Buscar marcas"
+        data-tour-description="Escribe el nombre de una marca. La tabla se actualizará automáticamente mientras escribes."
+        data-tour-side="bottom"
+    >
         <div class="search-panel-header">
             <div>
                 <label for="searchid" class="search-title">
@@ -163,7 +202,14 @@
     </div>
 
     <!-- TABLA -->
-    <div class="table-card">
+    <div
+        class="table-card"
+        data-tour-step
+        data-tour-order="4"
+        data-tour-title="Marcas registradas"
+        data-tour-description="Aquí puedes consultar las marcas disponibles. Los usuarios autorizados también pueden editar cada registro."
+        data-tour-side="top"
+    >
         <div class="table-card-header">
             <div>
                 <h5 class="table-title">
@@ -244,7 +290,14 @@
     </div>
 
     <!-- PAGINACIÓN -->
-    <div class="pagination-wrapper mt-4">
+    <div
+        class="pagination-wrapper mt-4"
+        data-tour-step
+        data-tour-order="5"
+        data-tour-title="Cambiar de página"
+        data-tour-description="Utiliza estos controles para consultar los demás registros del catálogo de marcas."
+        data-tour-side="top"
+    >
         {{ $marcas->links() }}
     </div>
 
@@ -363,6 +416,38 @@
             margin: 6px 0 0;
             color: #64748b;
             font-size: 14px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-tour-module {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 44px;
+            padding: 0 16px;
+            border: 1px solid rgba(23, 28, 99, 0.22);
+            border-radius: 12px;
+            background: #ffffff;
+            color: #171C63;
+            font-weight: 800;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+            transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .btn-tour-module:hover,
+        .btn-tour-module:focus {
+            background: #171C63;
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 14px 28px rgba(23, 28, 99, 0.20);
         }
 
         .btn-add-marca {
@@ -721,7 +806,7 @@
         }
 
         @media (max-width: 768px) {
-            .resguardos-page {
+            .marcas-page {
                 margin-top: 12px !important;
                 padding-left: 12px !important;
                 padding-right: 12px !important;
@@ -787,20 +872,21 @@
                 box-shadow: 0 16px 30px rgba(23, 28, 99, 0.28);
             }
 
-            .resguardos-header {
+            .marcas-header {
                 margin-top: 4px;
             }
         }
 
         @media (max-width: 992px) {
-            .resguardos-header {
+            .marcas-header {
                 align-items: stretch;
                 flex-direction: column;
                 padding: 20px;
             }
 
             .header-actions,
-            .btn-add-resguardo {
+            .btn-tour-module,
+            .btn-add-marca {
                 width: 100%;
             }
 

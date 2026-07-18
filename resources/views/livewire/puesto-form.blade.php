@@ -1,5 +1,13 @@
 <div class="container mt-4 puestos-page">
 
+    {{-- MARCADOR DEL TUTORIAL DEL MÓDULO --}}
+    <div
+        data-tour-page="puestos"
+        data-tour-version="1"
+        data-tour-autostart="false"
+        hidden
+    ></div>
+
     {{-- LOADING BAR --}}
     <div
         wire:loading.delay
@@ -33,7 +41,15 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>
 
     <!-- ENCABEZADO -->
-    <div class="puestos-header mb-4">
+    <div
+        class="puestos-header mb-4"
+        data-tour-step
+        data-tour-order="1"
+        data-tour-title="Catálogo de puestos"
+        data-tour-description="En este módulo puedes consultar, registrar y actualizar los puestos institucionales utilizados para los resguardantes."
+        data-tour-side="bottom"
+        data-tour-align="center"
+    >
         <div>
             <div class="puestos-kicker">
                 <i class="fas fa-briefcase"></i>
@@ -49,16 +65,34 @@
             </p>
         </div>
 
-        @hasanyrole('Administrador')
+        <div class="header-actions">
             <button
                 type="button"
-                wire:click="showModalNewPuesto"
-                class="btn btn-add-puesto"
+                class="btn btn-tour-puesto"
+                data-tour-start
+                title="Ver tutorial del módulo"
             >
-                <i class="fas fa-plus"></i>
-                <span>Agregar puesto</span>
+                <i class="fas fa-circle-question"></i>
+                <span>Ver tutorial</span>
             </button>
-        @endhasanyrole
+
+            @hasanyrole('Administrador')
+                <button
+                    type="button"
+                    wire:click="showModalNewPuesto"
+                    class="btn btn-add-puesto"
+                    data-tour-step
+                    data-tour-order="2"
+                    data-tour-title="Agregar un puesto"
+                    data-tour-description="Presiona este botón para registrar un nuevo puesto institucional."
+                    data-tour-side="left"
+                    data-tour-align="center"
+                >
+                    <i class="fas fa-plus"></i>
+                    <span>Agregar puesto</span>
+                </button>
+            @endhasanyrole
+        </div>
     </div>
 
     <!-- MODAL -->
@@ -112,7 +146,15 @@
     </div>
 
     <!-- BUSCADOR -->
-    <div class="search-panel mb-4">
+    <div
+        class="search-panel mb-4"
+        data-tour-step
+        data-tour-order="3"
+        data-tour-title="Buscar puestos"
+        data-tour-description="Escribe el nombre del puesto y la lista se actualizará automáticamente. También puedes limpiar la búsqueda con el botón de cerrar."
+        data-tour-side="bottom"
+        data-tour-align="center"
+    >
         <div class="search-panel-header">
             <div>
                 <label for="searchid" class="search-title">
@@ -160,7 +202,15 @@
     </div>
 
     <!-- TABLA -->
-    <div class="table-card">
+    <div
+        class="table-card"
+        data-tour-step
+        data-tour-order="4"
+        data-tour-title="Puestos registrados"
+        data-tour-description="Aquí puedes consultar los puestos disponibles. Los administradores también pueden editar cada registro desde la columna de acciones."
+        data-tour-side="top"
+        data-tour-align="center"
+    >
         <div class="table-card-header">
             <div>
                 <h5 class="table-title">
@@ -253,7 +303,15 @@
     </div>
 
     <!-- PAGINACIÓN -->
-    <div class="pagination-wrapper mt-4">
+    <div
+        class="pagination-wrapper mt-4"
+        data-tour-step
+        data-tour-order="5"
+        data-tour-title="Cambiar de página"
+        data-tour-description="Utiliza estos controles para recorrer todas las páginas del catálogo de puestos."
+        data-tour-side="top"
+        data-tour-align="end"
+    >
         {{ $puestos->links() }}
     </div>
 
@@ -372,6 +430,38 @@
             margin: 6px 0 0;
             color: #64748b;
             font-size: 14px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-tour-puesto {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            min-height: 44px;
+            padding: 0 16px;
+            border: 1px solid rgba(23, 28, 99, 0.18);
+            border-radius: 12px;
+            background: #ffffff;
+            color: #171C63;
+            font-weight: 800;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07);
+            transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .btn-tour-puesto:hover,
+        .btn-tour-puesto:focus {
+            background: #171C63;
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 14px 28px rgba(23, 28, 99, 0.22);
         }
 
         .btn-add-puesto {
@@ -820,20 +910,21 @@
                 box-shadow: 0 16px 30px rgba(23, 28, 99, 0.28);
             }
 
-            .resguardos-header {
+            .puestos-header {
                 margin-top: 4px;
             }
         }
 
         @media (max-width: 992px) {
-            .resguardos-header {
+            .puestos-header {
                 align-items: stretch;
                 flex-direction: column;
                 padding: 20px;
             }
 
             .header-actions,
-            .btn-add-resguardo {
+            .btn-tour-puesto,
+            .btn-add-puesto {
                 width: 100%;
             }
 

@@ -1,5 +1,13 @@
 <div class="container mt-4 ubicaciones-page">
 
+    {{-- MARCADOR DEL TUTORIAL DEL MÓDULO --}}
+    <div
+        data-tour-page="ubicaciones-fisicas"
+        data-tour-version="1"
+        data-tour-autostart="false"
+        hidden
+    ></div>
+
     {{-- LOADING BAR --}}
     <div
         wire:loading.delay
@@ -33,7 +41,15 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>
 
     <!-- ENCABEZADO -->
-    <div class="ubicaciones-header mb-4">
+    <div
+        class="ubicaciones-header mb-4"
+        data-tour-step
+        data-tour-order="1"
+        data-tour-title="Ubicaciones físicas"
+        data-tour-description="En este módulo puedes registrar y consultar los espacios donde se encuentran los bienes institucionales."
+        data-tour-side="bottom"
+        data-tour-align="center"
+    >
         <div>
             <div class="ubicaciones-kicker">
                 <i class="fas fa-map-marker-alt"></i>
@@ -49,16 +65,33 @@
             </p>
         </div>
 
-        @hasanyrole('Administrador|Delegacion|Subdirector')
+        <div class="header-actions">
             <button
                 type="button"
-                wire:click="showModalNewUbicacionFisica"
-                class="btn btn-add-ubicacion"
+                class="btn btn-tour"
+                data-tour-start
             >
-                <i class="fas fa-plus"></i>
-                <span>Agregar ubicación física</span>
+                <i class="fas fa-circle-question"></i>
+                <span>Ver tutorial</span>
             </button>
-        @endhasanyrole
+
+            @hasanyrole('Administrador|Delegacion|Subdirector')
+                <button
+                    type="button"
+                    wire:click="showModalNewUbicacionFisica"
+                    class="btn btn-add-ubicacion"
+                    data-tour-step
+                    data-tour-order="2"
+                    data-tour-title="Agregar ubicación"
+                    data-tour-description="Presiona este botón para registrar un nuevo espacio físico y, cuando corresponda, agregar una fotografía."
+                    data-tour-side="left"
+                    data-tour-align="center"
+                >
+                    <i class="fas fa-plus"></i>
+                    <span>Agregar ubicación física</span>
+                </button>
+            @endhasanyrole
+        </div>
     </div>
 
     <!-- MODAL -->
@@ -112,7 +145,15 @@
     </div>
 
     <!-- BUSCADOR -->
-    <div class="search-panel mb-4">
+    <div
+        class="search-panel mb-4"
+        data-tour-step
+        data-tour-order="3"
+        data-tour-title="Buscar ubicaciones"
+        data-tour-description="Escribe el nombre o la descripción de una ubicación. Los resultados se actualizan automáticamente."
+        data-tour-side="bottom"
+        data-tour-align="center"
+    >
         <div class="search-panel-header">
             <div>
                 <label for="searchid" class="search-title">
@@ -160,7 +201,15 @@
     </div>
 
     <!-- TABLA -->
-    <div class="table-card">
+    <div
+        class="table-card"
+        data-tour-step
+        data-tour-order="4"
+        data-tour-title="Ubicaciones registradas"
+        data-tour-description="Aquí puedes consultar las ubicaciones, sus imágenes y las acciones disponibles para cada registro."
+        data-tour-side="top"
+        data-tour-align="center"
+    >
         <div class="table-card-header">
             <div>
                 <h5 class="table-title">
@@ -238,7 +287,15 @@
                             </td>
 
                             <td class="text-center">
-                                <div class="actions-group">
+                                <div
+                                    class="actions-group"
+                                    data-tour-step
+                                    data-tour-order="5"
+                                    data-tour-title="Acciones de ubicación"
+                                    data-tour-description="Desde estos botones puedes editar, descargar la etiqueta o consultar el inventario asociado a la ubicación."
+                                    data-tour-side="left"
+                                    data-tour-align="center"
+                                >
 
                                     @hasanyrole('Administrador')
                                         <button
@@ -294,7 +351,15 @@
     </div>
 
     <!-- PAGINACIÓN -->
-    <div class="pagination-wrapper mt-4">
+    <div
+        class="pagination-wrapper mt-4"
+        data-tour-step
+        data-tour-order="6"
+        data-tour-title="Navegar entre páginas"
+        data-tour-description="Utiliza estos controles para consultar las demás ubicaciones registradas."
+        data-tour-side="top"
+        data-tour-align="end"
+    >
         {{ $ubicacionesfisicas->links() }}
     </div>
 
@@ -413,6 +478,38 @@
             margin: 6px 0 0;
             color: #64748b;
             font-size: 14px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-tour {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            min-height: 44px;
+            padding: 0 18px;
+            border: 1px solid rgba(23, 28, 99, 0.18);
+            border-radius: 12px;
+            background: #ffffff;
+            color: #171C63;
+            font-weight: 800;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07);
+            transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .btn-tour:hover,
+        .btn-tour:focus {
+            color: #171C63;
+            border-color: rgba(23, 28, 99, 0.38);
+            transform: translateY(-1px);
+            box-shadow: 0 14px 28px rgba(23, 28, 99, 0.12);
         }
 
         .btn-add-ubicacion {
@@ -869,7 +966,7 @@
         }
 
         @media (max-width: 768px) {
-            .resguardos-page {
+            .ubicaciones-page {
                 margin-top: 12px !important;
                 padding-left: 12px !important;
                 padding-right: 12px !important;
@@ -935,20 +1032,25 @@
                 box-shadow: 0 16px 30px rgba(23, 28, 99, 0.28);
             }
 
-            .resguardos-header {
+            .ubicaciones-header {
                 margin-top: 4px;
             }
         }
 
         @media (max-width: 992px) {
-            .resguardos-header {
+            .ubicaciones-header {
                 align-items: stretch;
                 flex-direction: column;
                 padding: 20px;
             }
 
-            .header-actions,
-            .btn-add-resguardo {
+            .header-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .btn-tour,
+            .btn-add-ubicacion {
                 width: 100%;
             }
 

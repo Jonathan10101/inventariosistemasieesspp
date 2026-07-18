@@ -1,5 +1,13 @@
 <div class="container mt-4 areas-page">
 
+    {{-- MARCADOR DEL TUTORIAL DEL MÓDULO --}}
+    <div
+        data-tour-page="areas-de-asignacion"
+        data-tour-version="1"
+        data-tour-autostart="false"
+        hidden
+    ></div>
+
     {{-- LOADING BAR --}}
     <div
         wire:loading.delay
@@ -33,7 +41,15 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>
 
     <!-- ENCABEZADO -->
-    <div class="areas-header mb-4">
+    <div
+        class="areas-header mb-4"
+        data-tour-step
+        data-tour-order="1"
+        data-tour-title="Áreas de asignación"
+        data-tour-description="En este módulo puedes consultar y administrar las áreas institucionales utilizadas para asignar los bienes."
+        data-tour-side="bottom"
+        data-tour-align="center"
+    >
         <div>
             <div class="areas-kicker">
                 <i class="fas fa-sitemap"></i>
@@ -49,16 +65,33 @@
             </p>
         </div>
 
-        @can('areadeasignacion.create')
+        <div class="header-actions">
             <button
                 type="button"
-                wire:click="showModalNewAreaDeAsignacion"
-                class="btn btn-add-area"
+                class="btn btn-tour"
+                data-tour-start
             >
-                <i class="fas fa-plus"></i>
-                <span>Agregar área</span>
+                <i class="fas fa-circle-question"></i>
+                <span>Ver tutorial</span>
             </button>
-        @endcan
+
+            @can('areadeasignacion.create')
+                <button
+                    type="button"
+                    wire:click="showModalNewAreaDeAsignacion"
+                    class="btn btn-add-area"
+                    data-tour-step
+                    data-tour-order="2"
+                    data-tour-title="Agregar área"
+                    data-tour-description="Presiona este botón para registrar una nueva área de asignación."
+                    data-tour-side="left"
+                    data-tour-align="center"
+                >
+                    <i class="fas fa-plus"></i>
+                    <span>Agregar área</span>
+                </button>
+            @endcan
+        </div>
     </div>
 
     <!-- MODAL -->
@@ -112,7 +145,15 @@
     </div>
 
     <!-- BUSCADOR -->
-    <div class="search-panel mb-4">
+    <div
+        class="search-panel mb-4"
+        data-tour-step
+        data-tour-order="3"
+        data-tour-title="Buscar áreas"
+        data-tour-description="Escribe el nombre del área para filtrar los resultados automáticamente. También puedes limpiar la búsqueda con el botón de cerrar."
+        data-tour-side="bottom"
+        data-tour-align="center"
+    >
         <div class="search-panel-header">
             <div>
                 <label for="searchid" class="search-title">
@@ -160,7 +201,15 @@
     </div>
 
     <!-- TABLA -->
-    <div class="table-card">
+    <div
+        class="table-card"
+        data-tour-step
+        data-tour-order="4"
+        data-tour-title="Áreas registradas"
+        data-tour-description="Aquí aparece el listado general de áreas de asignación disponibles dentro de INTEVI."
+        data-tour-side="top"
+        data-tour-align="center"
+    >
         <div class="table-card-header">
             <div>
                 <h5 class="table-title">
@@ -278,7 +327,15 @@
     </div>
 
     <!-- PAGINACIÓN -->
-    <div class="pagination-wrapper mt-4">
+    <div
+        class="pagination-wrapper mt-4"
+        data-tour-step
+        data-tour-order="5"
+        data-tour-title="Navegar entre páginas"
+        data-tour-description="Utiliza estos controles cuando el listado tenga más registros de los que caben en una sola página."
+        data-tour-side="top"
+        data-tour-align="end"
+    >
         {{ $areasdeasignacion->links() }}
     </div>
 
@@ -397,6 +454,38 @@
             margin: 6px 0 0;
             color: #64748b;
             font-size: 14px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-tour {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            min-height: 44px;
+            padding: 0 18px;
+            border: 1px solid rgba(23, 28, 99, 0.18);
+            border-radius: 12px;
+            background: #ffffff;
+            color: #171C63;
+            font-weight: 800;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07);
+            transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .btn-tour:hover,
+        .btn-tour:focus {
+            color: #171C63;
+            border-color: rgba(23, 28, 99, 0.38);
+            transform: translateY(-1px);
+            box-shadow: 0 14px 28px rgba(23, 28, 99, 0.12);
         }
 
         .btn-add-area {
@@ -817,7 +906,7 @@
         }
 
         @media (max-width: 768px) {
-            .resguardos-page {
+            .areas-page {
                 margin-top: 12px !important;
                 padding-left: 12px !important;
                 padding-right: 12px !important;
@@ -883,20 +972,25 @@
                 box-shadow: 0 16px 30px rgba(23, 28, 99, 0.28);
             }
 
-            .resguardos-header {
+            .areas-header {
                 margin-top: 4px;
             }
         }
 
         @media (max-width: 992px) {
-            .resguardos-header {
+            .areas-header {
                 align-items: stretch;
                 flex-direction: column;
                 padding: 20px;
             }
 
-            .header-actions,
-            .btn-add-resguardo {
+            .header-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .btn-tour,
+            .btn-add-area {
                 width: 100%;
             }
 
