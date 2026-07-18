@@ -364,6 +364,8 @@ class InventarioForm extends Component
 
     #[On('saveFromComponentNewResguardo')] 
     public function saveNewResguardo($data){ 
+        app(\App\Services\TenantDatabaseStorage::class)->assertCanWrite();
+        
         $id_of_student = Resguardo::create([
             'descripcion' => $data['descripcion'],
             'marca_id' => $data['marca_id'],
