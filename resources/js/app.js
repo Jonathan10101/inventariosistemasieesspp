@@ -1,3 +1,3 @@
 import './bootstrap';
+import './intevi-tour';
 
-import './tours/intevi-tour';
