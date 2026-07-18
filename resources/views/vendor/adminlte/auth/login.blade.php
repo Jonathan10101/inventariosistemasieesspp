@@ -442,7 +442,7 @@
                 <span class="brand-name text-center">INTEVI</span>
                 <!--
                 <span class="brand-description">
-                    Inventario Tecnológico Institucional
+                    Inventario y resguardo institucional
                 </span>
                 -->
             </span>
@@ -451,7 +451,7 @@
                 <span class="brand-name">INTEVI</span>
 
                 <span class="brand-description">
-                    Inventario Tecnológico Institucional
+                    Inventario y resguardo institucional
                 </span>
             </span>
             -->
@@ -571,7 +571,7 @@
     </form>
 
     <div class="login-footer">
-        <strong>INTEVI</strong> · Inventario Tecnológico Institucional
+        <strong>INTEVI</strong> · Inventario y resguardo institucional
         <br>
         Versión 1.0.0
     </div>

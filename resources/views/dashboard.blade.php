@@ -9,6 +9,13 @@
 
 <div class="intevi-dashboard">
 
+    <div
+        data-tour-page="dashboard"
+        data-tour-version="1"
+        data-tour-autostart="true"
+        hidden
+    ></div>
+
     {{-- HERO PRINCIPAL --}}
     <section class="dash-hero">
         <div class="dash-hero-content">

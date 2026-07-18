@@ -37,8 +37,8 @@ return [
     */
 
     'logo' => '
-        <div class="intevi-brand" style="background-color:transparent;">
-            <div class="intevi-brand-mark" style="background-color:transparent;">
+        <div>
+            <div>
                 <img
                     src="/images/intevi logo.png"
                     alt="Logo de INTEVI"

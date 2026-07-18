@@ -15,7 +15,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>INTEVI | Resguardos e inventario institucional</title>
+    <title>INTEVI | Inventario y resguardo institucional</title>
 
     <meta
         name="description"
@@ -1716,7 +1716,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="brand-name">INTEVI</span>
 
             <span class="brand-description">
-                Inventario Tecnológico Institucional
+                Inventario y resguardo institucional
             </span>
         </span>
     </a>
@@ -2524,7 +2524,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <span class="brand-name">INTEVI</span>
 
                         <span class="brand-description">
-                            Inventario Tecnológico Institucional
+                            Inventario y resguardo institucional
                         </span>
                     </span>
                 </a>
@@ -2582,7 +2582,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </p>
 
             <p class="footer-signature">
-                Inventario Tecnológico Institucional
+                Inventario y resguardo institucional
             </p>
         </div>
     </div>

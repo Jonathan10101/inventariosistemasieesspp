@@ -1,0 +1,306 @@
+/*
+|--------------------------------------------------------------------------
+| Tour guiado institucional INTEVI
+|--------------------------------------------------------------------------
+*/
+
+.driver-popover.intevi-tour-popover {
+    --driver-popover-font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+    width: min(370px, calc(100vw - 32px));
+    max-width: calc(100vw - 32px);
+
+    padding: 22px;
+
+    background: #ffffff;
+    color: #161a2d;
+
+    border: 1px solid rgba(23, 28, 99, 0.12);
+    border-radius: 16px;
+
+    box-shadow:
+        0 24px 55px rgba(8, 11, 47, 0.24),
+        0 8px 20px rgba(8, 11, 47, 0.12);
+}
+
+/*
+|--------------------------------------------------------------------------
+| Título
+|--------------------------------------------------------------------------
+*/
+
+.driver-popover.intevi-tour-popover
+.driver-popover-title {
+    margin: 0;
+    padding-right: 28px;
+
+    color: #171c63;
+
+    font-size: 19px;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Descripción
+|--------------------------------------------------------------------------
+*/
+
+.driver-popover.intevi-tour-popover
+.driver-popover-description {
+    margin-top: 9px;
+
+    color: #52586f;
+
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.65;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Progreso
+|--------------------------------------------------------------------------
+*/
+
+.driver-popover.intevi-tour-popover
+.driver-popover-progress-text {
+    color: #74798d;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Pie del cuadro
+|--------------------------------------------------------------------------
+*/
+
+.driver-popover.intevi-tour-popover
+.driver-popover-footer {
+    margin-top: 20px;
+    gap: 12px;
+}
+
+.driver-popover.intevi-tour-popover
+.driver-popover-navigation-btns {
+    gap: 8px;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Botones generales
+|--------------------------------------------------------------------------
+*/
+
+.driver-popover.intevi-tour-popover
+.driver-popover-footer-btn {
+    min-height: 38px;
+
+    padding: 8px 14px;
+
+    border-radius: 9px;
+
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+
+    text-shadow: none;
+
+    transition:
+        background-color 160ms ease,
+        border-color 160ms ease,
+        color 160ms ease,
+        transform 160ms ease,
+        box-shadow 160ms ease;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Botón siguiente
+|--------------------------------------------------------------------------
+*/
+
+.driver-popover.intevi-tour-popover
+.driver-popover-next-btn {
+    background: #171c63;
+    color: #ffffff;
+
+    border: 1px solid #171c63;
+
+    box-shadow:
+        0 7px 16px rgba(23, 28, 99, 0.22);
+}
+
+.driver-popover.intevi-tour-popover
+.driver-popover-next-btn:hover,
+.driver-popover.intevi-tour-popover
+.driver-popover-next-btn:focus {
+    background: #0f144f;
+    color: #ffffff;
+
+    border-color: #0f144f;
+
+    transform: translateY(-1px);
+}
+
+/*
+|--------------------------------------------------------------------------
+| Botón anterior
+|--------------------------------------------------------------------------
+*/
+
+.driver-popover.intevi-tour-popover
+.driver-popover-prev-btn {
+    background: #f3f4fa;
+    color: #171c63;
+
+    border: 1px solid #dfe1ee;
+}
+
+.driver-popover.intevi-tour-popover
+.driver-popover-prev-btn:hover,
+.driver-popover.intevi-tour-popover
+.driver-popover-prev-btn:focus {
+    background: #e8eaf5;
+    color: #171c63;
+
+    border-color: #cfd2e4;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Botón cerrar
+|--------------------------------------------------------------------------
+*/
+
+.driver-popover.intevi-tour-popover
+.driver-popover-close-btn {
+    width: 32px;
+    height: 32px;
+
+    top: 12px;
+    right: 12px;
+
+    padding: 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #7d8296;
+
+    border-radius: 8px;
+
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.driver-popover.intevi-tour-popover
+.driver-popover-close-btn:hover {
+    background: #f1f2f7;
+    color: #171c63;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Flechas
+|--------------------------------------------------------------------------
+*/
+
+.driver-popover.intevi-tour-popover
+.driver-popover-arrow-side-left.driver-popover-arrow {
+    border-left-color: #ffffff;
+}
+
+.driver-popover.intevi-tour-popover
+.driver-popover-arrow-side-right.driver-popover-arrow {
+    border-right-color: #ffffff;
+}
+
+.driver-popover.intevi-tour-popover
+.driver-popover-arrow-side-top.driver-popover-arrow {
+    border-top-color: #ffffff;
+}
+
+.driver-popover.intevi-tour-popover
+.driver-popover-arrow-side-bottom.driver-popover-arrow {
+    border-bottom-color: #ffffff;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Elemento resaltado
+|--------------------------------------------------------------------------
+*/
+
+.driver-active-element {
+    position: relative;
+    z-index: 1000000001 !important;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Dispositivos pequeños
+|--------------------------------------------------------------------------
+*/
+
+@media (max-width: 575.98px) {
+    .driver-popover.intevi-tour-popover {
+        width: calc(100vw - 24px);
+        max-width: calc(100vw - 24px);
+
+        padding: 18px;
+
+        border-radius: 14px;
+    }
+
+    .driver-popover.intevi-tour-popover
+    .driver-popover-title {
+        font-size: 17px;
+    }
+
+    .driver-popover.intevi-tour-popover
+    .driver-popover-description {
+        font-size: 13px;
+    }
+
+    .driver-popover.intevi-tour-popover
+    .driver-popover-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .driver-popover.intevi-tour-popover
+    .driver-popover-navigation-btns {
+        width: 100%;
+    }
+
+    .driver-popover.intevi-tour-popover
+    .driver-popover-footer-btn {
+        flex: 1;
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
+| Accesibilidad: reducir movimiento
+|--------------------------------------------------------------------------
+*/
+
+@media (prefers-reduced-motion: reduce) {
+    .driver-popover.intevi-tour-popover
+    .driver-popover-footer-btn {
+        transition: none;
+    }
+}
