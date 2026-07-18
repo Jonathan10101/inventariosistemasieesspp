@@ -43,7 +43,14 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>
 
     <!-- ENCABEZADO -->
-    <div class="resguardos-header mb-4">
+    <div
+        class="resguardos-header mb-4"
+        data-tour-step
+        data-tour-order="1"
+        data-tour-title="Módulo de inventario"
+        data-tour-description="Desde aquí puedes administrar los bienes institucionales, consultar su ubicación y revisar sus resguardos."
+        data-tour-side="bottom"
+    >
         <div>
             <div class="resguardos-kicker">
                 <i class="fas fa-boxes-stacked"></i>
@@ -60,11 +67,26 @@
         </div>
 
         <div class="header-actions">
+            <button
+                type="button"
+                class="btn btn-tour-help"
+                data-tour-start
+                title="Ver tutorial del módulo"
+            >
+                <i class="fas fa-circle-question"></i>
+                <span>Ver tutorial</span>
+            </button>
+
             @hasanyrole('Administrador|Delegacion|Subdirector')
                 <button
                     type="button"
                     wire:click="showModalNewResguardo"
                     class="btn btn-add-resguardo"
+                    data-tour-step
+                    data-tour-order="2"
+                    data-tour-title="Agregar inventario"
+                    data-tour-description="Presiona este botón para registrar un nuevo bien y su información institucional."
+                    data-tour-side="left"
                 >
                     <i class="fas fa-plus"></i>
                     <span>Agregar inventario</span>
@@ -162,7 +184,14 @@
     </div>
 
     <!-- BUSCADOR -->
-    <div class="search-panel mb-4">
+    <div
+        class="search-panel mb-4"
+        data-tour-step
+        data-tour-order="3"
+        data-tour-title="Buscar inventario"
+        data-tour-description="Busca por número de inventario, serie, equipo, marca o nombre del resguardante."
+        data-tour-side="bottom"
+    >
         <div class="search-panel-header">
             <div>
                 <label for="searchid" class="search-title">
@@ -210,7 +239,14 @@
     </div>
 
     <!-- TABLA -->
-    <div class="table-card">
+    <div
+        class="table-card"
+        data-tour-step
+        data-tour-order="4"
+        data-tour-title="Inventario registrado"
+        data-tour-description="Aquí aparecen los bienes, su estado, ubicación, resguardante y las acciones disponibles."
+        data-tour-side="top"
+    >
         <div class="table-card-header">
             <div>
                 <h5 class="table-title">
@@ -472,7 +508,14 @@
     </div>
 
     <!-- CONTROLES INFERIORES -->
-    <div class="table-bottom-controls mt-4">
+    <div
+        class="table-bottom-controls mt-4"
+        data-tour-step
+        data-tour-order="5"
+        data-tour-title="Controles del listado"
+        data-tour-description="Selecciona cuántos registros deseas ver y exporta el inventario cuando tengas permiso."
+        data-tour-side="top"
+    >
         <div class="per-page-control">
             <label class="control-label">
                 Mostrar
@@ -654,6 +697,30 @@
             align-items: center;
             justify-content: flex-end;
             gap: 10px;
+        }
+
+        .btn-tour-help {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            min-height: 44px;
+            padding: 0 16px;
+            border: 1px solid rgba(23, 28, 99, 0.22);
+            border-radius: 12px;
+            background: #ffffff;
+            color: #171C63;
+            font-weight: 800;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+            transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .btn-tour-help:hover,
+        .btn-tour-help:focus {
+            background: #171C63;
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 14px 28px rgba(23, 28, 99, 0.20);
         }
 
         .btn-add-resguardo {
@@ -1379,7 +1446,12 @@
                 padding: 20px;
             }
 
-            .header-actions,
+            .header-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .btn-tour-help,
             .btn-add-resguardo {
                 width: 100%;
             }

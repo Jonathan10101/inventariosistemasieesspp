@@ -42,7 +42,14 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>
 
     <!-- ENCABEZADO -->
-    <div class="resguardantes-header mb-4">
+    <div
+        class="resguardantes-header mb-4"
+        data-tour-step
+        data-tour-order="1"
+        data-tour-title="Módulo de resguardantes"
+        data-tour-description="Desde aquí puedes consultar y administrar a las personas responsables de los bienes institucionales."
+        data-tour-side="bottom"
+    >
         <div>
             <div class="resguardantes-kicker">
                 <i class="fas fa-user-shield"></i>
@@ -58,16 +65,33 @@
             </p>
         </div>
 
-        @hasanyrole('Administrador')
+        <div class="header-actions">
             <button
                 type="button"
-                wire:click="showModalNewResguardante"
-                class="btn btn-add-resguardante"
+                class="btn btn-tour-help"
+                data-tour-start
+                title="Ver tutorial del módulo"
             >
-                <i class="fas fa-plus"></i>
-                <span>Agregar resguardante</span>
+                <i class="fas fa-circle-question"></i>
+                <span>Ver tutorial</span>
             </button>
-        @endhasanyrole
+
+            @hasanyrole('Administrador')
+                <button
+                    type="button"
+                    wire:click="showModalNewResguardante"
+                    class="btn btn-add-resguardante"
+                    data-tour-step
+                    data-tour-order="2"
+                    data-tour-title="Agregar resguardante"
+                    data-tour-description="Presiona aquí para registrar una nueva persona responsable de bienes institucionales."
+                    data-tour-side="left"
+                >
+                    <i class="fas fa-plus"></i>
+                    <span>Agregar resguardante</span>
+                </button>
+            @endhasanyrole
+        </div>
     </div>
 
     <!-- MODAL -->
@@ -121,7 +145,14 @@
     </div>
 
     <!-- BUSCADOR -->
-    <div class="search-panel mb-4">
+    <div
+        class="search-panel mb-4"
+        data-tour-step
+        data-tour-order="3"
+        data-tour-title="Buscar resguardante"
+        data-tour-description="Escribe el nombre de una persona para filtrar los resultados automáticamente."
+        data-tour-side="bottom"
+    >
         <div class="search-panel-header">
             <div>
                 <label for="searchid" class="search-title">
@@ -169,7 +200,14 @@
     </div>
 
     <!-- TABLA -->
-    <div class="table-card">
+    <div
+        class="table-card"
+        data-tour-step
+        data-tour-order="4"
+        data-tour-title="Resguardantes registrados"
+        data-tour-description="Consulta los responsables registrados, su rol, sus resguardos y las acciones disponibles."
+        data-tour-side="top"
+    >
         <div class="table-card-header">
             <div>
                 <h5 class="table-title">
@@ -297,7 +335,14 @@
     </div>
 
     <!-- PAGINACIÓN -->
-    <div class="pagination-wrapper mt-4">
+    <div
+        class="pagination-wrapper mt-4"
+        data-tour-step
+        data-tour-order="5"
+        data-tour-title="Paginación"
+        data-tour-description="Utiliza estos controles para recorrer todos los resguardantes registrados."
+        data-tour-side="top"
+    >
         {{ $resguardantes->links() }}
     </div>
 
@@ -416,6 +461,37 @@
             margin: 6px 0 0;
             color: #64748b;
             font-size: 14px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn-tour-help {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            min-height: 44px;
+            padding: 0 16px;
+            border: 1px solid rgba(23, 28, 99, 0.22);
+            border-radius: 12px;
+            background: #ffffff;
+            color: #171C63;
+            font-weight: 800;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+            transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .btn-tour-help:hover,
+        .btn-tour-help:focus {
+            background: #171C63;
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 14px 28px rgba(23, 28, 99, 0.20);
         }
 
         .btn-add-resguardante {
@@ -838,7 +914,7 @@
         }
 
         @media (max-width: 768px) {
-            .resguardos-page {
+            .resguardantes-page {
                 margin-top: 12px !important;
                 padding-left: 12px !important;
                 padding-right: 12px !important;
@@ -904,20 +980,25 @@
                 box-shadow: 0 16px 30px rgba(23, 28, 99, 0.28);
             }
 
-            .resguardos-header {
+            .resguardantes-header {
                 margin-top: 4px;
             }
         }
 
         @media (max-width: 992px) {
-            .resguardos-header {
+            .resguardantes-header {
                 align-items: stretch;
                 flex-direction: column;
                 padding: 20px;
             }
 
-            .header-actions,
-            .btn-add-resguardo {
+            .header-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .btn-tour-help,
+            .btn-add-resguardante {
                 width: 100%;
             }
 
