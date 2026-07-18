@@ -573,7 +573,6 @@
     <div class="login-footer">
         <strong>INTEVI</strong> · Inventario y resguardo institucional
         <br>
-        Versión 1.0.0
     </div>
     
     <div class="login-title-bar">

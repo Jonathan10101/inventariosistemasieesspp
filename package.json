@@ -20,7 +20,7 @@
     "dependencies": {
         "bootstrap-icons": "^1.11.3",
         "chart.js": "^4.4.7",
-        "driver.js": "^1.8.0",
+        "driver.js": "^1.4.0",
         "sweetalert2": "^11.14.5"
     }
 }
