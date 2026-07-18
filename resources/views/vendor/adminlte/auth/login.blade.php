@@ -739,7 +739,7 @@
         </button>
 
          <div class="intevi-login-footer">
-            <strong>Software as a service</strong>
+            <strong>Inventario y resguardo institucional</strong>
         </div>
     </form>
 

@@ -72,6 +72,8 @@
         </div>
     </section>
 
+    <x-tenant-storage-card :storage="$storage" />
+
     {{-- MÉTRICAS --}}
     <section class="dash-metrics">
 

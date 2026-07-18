@@ -16,7 +16,7 @@ foreach (config('tenancy.central_domains') as $index => $domain) {
     Route::domain($domain)
         ->middleware(['web'])
         ->group(function () use ($index) {
-            Route::view('/', 'central.home')
+            Route::view('/', 'central.home2')
                 ->name(
                     $index === 0
                         ? 'central.home2'
