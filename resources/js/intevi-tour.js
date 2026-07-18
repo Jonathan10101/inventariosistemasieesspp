@@ -1,38 +1,16 @@
-import { driver } from 'driver.js';
+import { driver as createDriver } from 'driver.js';
 import 'driver.js/dist/driver.css';
-import '../../css/intevi-tour.css';
-import { driver } from 'driver.js';
+import '../css/intevi-tour.css';
 
 console.log('✅ INTEVI: intevi-tour.js cargó correctamente');
 
 window.inteviTourLoaded = true;
 
-/*
-|--------------------------------------------------------------------------
-| Tour guiado reutilizable para INTEVI
-|--------------------------------------------------------------------------
-|
-| Para crear un tour en una vista:
-|
-| 1. Agrega un marcador:
-|
-|    <div
-|        data-tour-page="dashboard"
-|        data-tour-version="1"
-|        data-tour-autostart="true"
-|        hidden
-|    ></div>
-|
-| 2. Agrega data-tour-step a los elementos que quieras explicar.
-|
-*/
-
 let activeTour = null;
 let initializationTimer = null;
 
 /**
- * Obtiene el ID del usuario para que cada usuario
- * tenga su propio registro de recorridos vistos.
+ * Obtiene el ID del usuario.
  */
 function getCurrentUserId() {
     const meta = document.querySelector('meta[name="auth-user-id"]');
@@ -41,14 +19,14 @@ function getCurrentUserId() {
 }
 
 /**
- * Busca el marcador que identifica el tour de la página.
+ * Busca el marcador del tour.
  */
 function getTourPageMarker() {
     return document.querySelector('[data-tour-page]');
 }
 
 /**
- * Genera una clave única para localStorage.
+ * Genera la clave para localStorage.
  */
 function getStorageKey(marker) {
     const userId = getCurrentUserId();
@@ -59,7 +37,7 @@ function getStorageKey(marker) {
 }
 
 /**
- * Determina si el elemento realmente está visible.
+ * Comprueba si un elemento está visible.
  */
 function isElementVisible(element) {
     if (!element) {
@@ -76,7 +54,7 @@ function isElementVisible(element) {
 }
 
 /**
- * Valida la posición del cuadro informativo.
+ * Valida la posición del cuadro.
  */
 function getValidSide(value) {
     const allowed = ['top', 'right', 'bottom', 'left'];
@@ -85,7 +63,7 @@ function getValidSide(value) {
 }
 
 /**
- * Valida la alineación del cuadro informativo.
+ * Valida la alineación del cuadro.
  */
 function getValidAlign(value) {
     const allowed = ['start', 'center', 'end'];
@@ -94,40 +72,43 @@ function getValidAlign(value) {
 }
 
 /**
- * Construye automáticamente los pasos leyendo el HTML.
+ * Construye los pasos leyendo el HTML.
  */
 function buildTourSteps() {
     return Array.from(document.querySelectorAll('[data-tour-step]'))
         .filter(isElementVisible)
         .sort((firstElement, secondElement) => {
-            const firstOrder = Number(firstElement.dataset.tourOrder || 0);
-            const secondOrder = Number(secondElement.dataset.tourOrder || 0);
+            const firstOrder = Number(
+                firstElement.dataset.tourOrder || 0
+            );
+
+            const secondOrder = Number(
+                secondElement.dataset.tourOrder || 0
+            );
 
             return firstOrder - secondOrder;
         })
-        .map((element) => {
-            return {
-                element,
+        .map((element) => ({
+            element,
 
-                popover: {
-                    title:
-                        element.dataset.tourTitle ||
-                        'Información importante',
+            popover: {
+                title:
+                    element.dataset.tourTitle ||
+                    'Información importante',
 
-                    description:
-                        element.dataset.tourDescription ||
-                        'En esta sección puedes realizar acciones dentro del sistema.',
+                description:
+                    element.dataset.tourDescription ||
+                    'En esta sección puedes realizar acciones dentro del sistema.',
 
-                    side: getValidSide(element.dataset.tourSide),
+                side: getValidSide(element.dataset.tourSide),
 
-                    align: getValidAlign(element.dataset.tourAlign),
-                },
-            };
-        });
+                align: getValidAlign(element.dataset.tourAlign),
+            },
+        }));
 }
 
 /**
- * Consulta si el usuario ya vio el tour.
+ * Comprueba si el usuario ya vio el tour.
  */
 function userHasSeenTour(storageKey) {
     try {
@@ -143,7 +124,7 @@ function userHasSeenTour(storageKey) {
 }
 
 /**
- * Registra que el usuario ya vio o cerró el recorrido.
+ * Marca el tour como visto.
  */
 function markTourAsSeen(storageKey) {
     try {
@@ -157,7 +138,7 @@ function markTourAsSeen(storageKey) {
 }
 
 /**
- * Elimina de forma segura cualquier recorrido abierto.
+ * Cierra el tour activo.
  */
 function destroyActiveTour() {
     if (!activeTour) {
@@ -174,10 +155,7 @@ function destroyActiveTour() {
 }
 
 /**
- * Inicia el recorrido de la página actual.
- *
- * force = true permite repetir el recorrido aunque
- * el usuario ya lo haya visto.
+ * Inicia el tour.
  */
 export function startInteviTour(force = false) {
     const marker = getTourPageMarker();
@@ -204,19 +182,16 @@ export function startInteviTour(force = false) {
 
     destroyActiveTour();
 
-    activeTour = driver({
+    activeTour = createDriver({
         steps,
 
         animate: true,
-        duration: 350,
-
         smoothScroll: true,
-        allowScroll: true,
         allowClose: true,
+        allowKeyboardControl: true,
 
         overlayColor: '#080b2f',
         overlayOpacity: 0.76,
-        overlayClickBehavior: 'close',
 
         stagePadding: 10,
         stageRadius: 14,
@@ -231,12 +206,6 @@ export function startInteviTour(force = false) {
 
         popoverClass: 'intevi-tour-popover',
 
-        /*
-         * Si un elemento no existe en cierto rol o dispositivo,
-         * el recorrido continúa sin generar errores.
-         */
-        skipMissingElement: true,
-
         onDestroyed: () => {
             markTourAsSeen(storageKey);
             activeTour = null;
@@ -247,8 +216,7 @@ export function startInteviTour(force = false) {
 }
 
 /**
- * Inicializa automáticamente el tour cuando carga
- * una página o termina una navegación de Livewire.
+ * Inicializa automáticamente el tour.
  */
 function initializeCurrentPageTour() {
     window.clearTimeout(initializationTimer);
@@ -269,12 +237,9 @@ function initializeCurrentPageTour() {
     }, 450);
 }
 
-/*
-|--------------------------------------------------------------------------
-| Botón para repetir el recorrido
-|--------------------------------------------------------------------------
-*/
-
+/**
+ * Botón para repetir el recorrido.
+ */
 document.addEventListener('click', (event) => {
     const startButton = event.target.closest('[data-tour-start]');
 
@@ -287,27 +252,17 @@ document.addEventListener('click', (event) => {
     startInteviTour(true);
 });
 
-/*
-|--------------------------------------------------------------------------
-| Compatibilidad con wire:navigate
-|--------------------------------------------------------------------------
-|
-| livewire:navigated se ejecuta en la primera carga y también después
-| de navegar mediante wire:navigate.
-|
-*/
-
+/**
+ * Compatibilidad con Livewire.
+ */
 document.addEventListener(
     'livewire:navigated',
     initializeCurrentPageTour
 );
 
-/*
-|--------------------------------------------------------------------------
-| Respaldo para páginas sin wire:navigate
-|--------------------------------------------------------------------------
-*/
-
+/**
+ * Páginas sin wire:navigate.
+ */
 if (document.readyState === 'loading') {
     document.addEventListener(
         'DOMContentLoaded',
@@ -318,22 +273,16 @@ if (document.readyState === 'loading') {
     initializeCurrentPageTour();
 }
 
-/*
-|--------------------------------------------------------------------------
-| Cerrar el recorrido antes de cambiar de página
-|--------------------------------------------------------------------------
-*/
-
+/**
+ * Cierra el tour antes de navegar.
+ */
 document.addEventListener('livewire:navigating', () => {
     destroyActiveTour();
 });
 
-/*
-|--------------------------------------------------------------------------
-| Acceso opcional desde la consola o cualquier otro script
-|--------------------------------------------------------------------------
-*/
-
+/**
+ * Acceso global.
+ */
 window.INTEVITour = {
     start() {
         startInteviTour(true);
