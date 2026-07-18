@@ -203,6 +203,8 @@ return [
     ],
 
     'js' => [
+        'js/intevi-tour.js',
+        'js/intevi-tour-general.js',
         //
     ],
 
@@ -282,10 +284,10 @@ return [
             'can' => 'viewPulse',
         ],
         [
-            'text' => 'Ver tutorial',
+            'text' => 'Tutorial general',
             'url' => '#',
-            'icon' => 'fas fa-question-circle',
-            'classes' => 'js-intevi-tour',
+            'icon' => 'fas fa-graduation-cap',
+            'classes' => 'js-intevi-global-tour',
         ],
 
     ],
