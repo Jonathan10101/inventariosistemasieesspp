@@ -1,4 +1,13 @@
 <div class="container mt-4 resguardantes-page">
+    
+    {{-- MARCADOR DEL TUTORIAL DEL MÓDULO --}}
+    <div
+        data-tour-page="resguardantes"
+        data-tour-version="1"
+        data-tour-autostart="false"
+        hidden
+    ></div>
+
 
     {{-- LOADING BAR --}}
     <div

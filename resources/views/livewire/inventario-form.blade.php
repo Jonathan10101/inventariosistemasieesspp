@@ -1,5 +1,15 @@
 <div class="container-fluid mt-4 resguardos-page">
 
+
+    {{-- MARCADOR DEL TUTORIAL DEL MÓDULO --}}
+    <div
+        data-tour-page="inventario"
+        data-tour-version="1"
+        data-tour-autostart="false"
+        hidden
+    ></div>
+
+
     {{-- LOADING BAR --}}
     <div
         wire:loading.delay

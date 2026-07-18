@@ -281,9 +281,6 @@ return [
             'icon' => 'fas fa-fw fa-heartbeat',
             'can' => 'viewPulse',
         ],
-
-        ['header' => '¿CÓMO USAR INTEVI?'],
-
         [
             'text' => 'Ver tutorial',
             'url' => '#',
