@@ -564,9 +564,7 @@
             Inventario y resguardo institucional
         </p>
 
-        <p class="intevi-login-description">
-            Accede para administrar inventarios, resguardos y bienes institucionales.
-        </p>
+       
     </div>
 
     <div class="intevi-section-label">
@@ -742,10 +740,6 @@
             </span>
         </button>
     </form>
-
-    <div class="intevi-login-footer">
-        <strong>INTEVI</strong>
-    </div>
 
     <script>
         function mostrarCargandoLogin(event) {

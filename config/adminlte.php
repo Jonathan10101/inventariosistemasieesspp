@@ -204,7 +204,6 @@ return [
 
     'js' => [
         'js/intevi-tour.js',
-        'js/intevi-tour-general.js',
         //
     ],
 
