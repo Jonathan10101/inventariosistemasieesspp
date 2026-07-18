@@ -218,13 +218,6 @@ return [
             'url'  => 'dashboard',
             'icon' => 'fas fa-tachometer-alt',
         ],
-        [
-            'text' => 'Ver tutorial',
-            'url' => '#',
-            'icon' => 'fas fa-question-circle',
-            'classes' => 'js-intevi-tour',
-        ],
-
         ['header' => 'GESTIÓN PRINCIPAL'],
 
         [
@@ -288,6 +281,16 @@ return [
             'icon' => 'fas fa-fw fa-heartbeat',
             'can' => 'viewPulse',
         ],
+
+        ['header' => '¿CÓMO USAR INTEVI?'],
+
+        [
+            'text' => 'Ver tutorial',
+            'url' => '#',
+            'icon' => 'fas fa-question-circle',
+            'classes' => 'js-intevi-tour',
+        ],
+
     ],
 
     /*

@@ -174,7 +174,7 @@
                 popover: {
                     title: 'Tu cuenta',
                     description:
-                        'Desde aquí puedes consultar las opciones disponibles para tu usuario y cerrar sesión.',
+                        'Desde aquí puedes cerrar sesión.',
                     side: 'bottom',
                     align: 'end',
                 },
@@ -211,7 +211,7 @@
 
         if (!driverFactory) {
             console.error(
-                'INTEVI: Driver.js no pudo cargarse. Revisa la conexión al CDN.'
+                'INTEVI: TECNOLOGIADETUTORIAL.js no pudo cargarse. Revisa la conexión al CDN.'
             );
 
             return;
