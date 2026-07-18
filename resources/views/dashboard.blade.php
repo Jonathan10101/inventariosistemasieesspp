@@ -12,7 +12,7 @@
     <div
         data-tour-page="dashboard"
         data-tour-version="1"
-        data-tour-autostart="true"
+        data-tour-autostart="false"
         hidden
     ></div>
 

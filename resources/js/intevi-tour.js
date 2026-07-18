@@ -1,6 +1,5 @@
 import { driver as createDriver } from 'driver.js';
 import 'driver.js/dist/driver.css';
-import '../css/intevi-tour.css';
 
 console.log('✅ INTEVI: intevi-tour.js cargó correctamente');
 
