@@ -188,9 +188,9 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'laravel_asset_bundling' => "vite-js-only",
+    'laravel_asset_bundling' => 'vite_js_only',
     'laravel_css_path' => 'resources/css/app.css',
-    'laravel_js_path' => 'resource/js/app.js',
+    'laravel_js_path' => 'resources/js/app.js',
 
     /*
     |--------------------------------------------------------------------------
@@ -199,7 +199,7 @@ return [
     */
 
     'css' => [
-        'public/css/intevi-adminlte.css',
+        'css/intevi-adminlte.css',
     ],
 
     'js' => [
@@ -217,6 +217,12 @@ return [
             'text' => 'Panel de Control',
             'url'  => 'dashboard',
             'icon' => 'fas fa-tachometer-alt',
+        ],
+        [
+            'text' => 'Ver tutorial',
+            'url' => '#',
+            'icon' => 'fas fa-question-circle',
+            'classes' => 'js-intevi-tour',
         ],
 
         ['header' => 'GESTIÓN PRINCIPAL'],
@@ -312,6 +318,35 @@ return [
         'Chartjs' => ['active' => false],
         'Sweetalert2' => ['active' => false],
         'Pace' => ['active' => false],
+        'DriverJs' => [
+            'active' => true,
+
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => 'https://cdn.jsdelivr.net/npm/driver.js@1.7.0/dist/driver.css',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'css/intevi-tour.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://cdn.jsdelivr.net/npm/driver.js@1.7.0/dist/driver.js.iife.js',
+                    'defer' => true,
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'js/intevi-tour.js',
+                    'defer' => true,
+                ],
+            ],
+        ],
+
     ],
 
     /*
