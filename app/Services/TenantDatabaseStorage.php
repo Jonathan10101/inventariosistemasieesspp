@@ -97,7 +97,7 @@ class TenantDatabaseStorage
                 'storage' => 'El almacenamiento de esta institución está lleno. '
                     . 'Has utilizado ' . $this->formatBytes($usedBytes)
                     . ' de ' . $this->formatBytes($limitBytes)
-                    . '. Elimina información o solicita una ampliación de espacio.',
+                    . '. Solicita una ampliación de espacio.',
             ]);
         }
     }
