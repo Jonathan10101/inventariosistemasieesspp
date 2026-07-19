@@ -7,13 +7,35 @@ return [
     | Límite de almacenamiento por tenant
     |--------------------------------------------------------------------------
     |
-    | 4 GB = 4,294,967,296 bytes
+    | El valor se define en megabytes desde el archivo .env:
+    |
+    | TENANT_DATABASE_LIMIT_MB=4
+    |
+    | Ejemplos:
+    | 4    = 4 MB
+    | 50   = 50 MB
+    | 1024 = 1 GB
+    | 4096 = 4 GB
     |
     */
 
-    'tenant_database_limit_bytes' => (int) env(
-        'TENANT_DATABASE_LIMIT_BYTES',
-        4 * 1024 * 1024 * 1024
+    'tenant_database_limit_mb' => max(
+        1,
+        (int) env('TENANT_DATABASE_LIMIT_MB', 4096)
+    ),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Conexión de base de datos tenant
+    |--------------------------------------------------------------------------
+    |
+    | Stancl Tenancy normalmente utiliza la conexión "tenant".
+    |
+    */
+
+    'tenant_database_connection' => env(
+        'TENANT_DATABASE_CONNECTION',
+        'tenant'
     ),
 
 ];
