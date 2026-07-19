@@ -21,6 +21,10 @@ use App\Models\{
 };
 use App\Services\TenantDatabaseStorage;
 use App\Services\PdfCompressor;
+use Illuminate\Support\Facades\Storage as LaravelStorage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Validation\ValidationException;
 
 
 class CreateNewResguardo extends Component
@@ -515,7 +519,7 @@ class CreateNewResguardo extends Component
             /*
             * Guardar el archivo seleccionado en el disco public.
             */
-            $pdfSaved = Storage::disk('public')->put(
+            $pdfSaved = LaravelStorage::disk('public')->put(
                 $pathPdf,
                 File::get($pdfPathToSave)
             );
@@ -719,18 +723,18 @@ class CreateNewResguardo extends Component
 
             if (
                 $pathImagen
-                && Storage::disk('public')->exists($pathImagen)
+                && LaravelStorage::disk('public')->exists($pathImagen)
             ) {
-                Storage::disk('public')->delete(
+                LaravelStorage::disk('public')->delete(
                     $pathImagen
                 );
             }
 
             if (
                 $pathPdf
-                && Storage::disk('public')->exists($pathPdf)
+                && LaravelStorage::disk('public')->exists($pathPdf)
             ) {
-                Storage::disk('public')->delete(
+                LaravelStorage::disk('public')->delete(
                     $pathPdf
                 );
             }
