@@ -226,12 +226,12 @@ class CreateNewResguardo extends Component
         |
         */
 
-        $storageService = app(TenantDatabaseStorage::class);
 
         /*
         * Impide comenzar si la base ya alcanzó el límite.
         */
-        $storageService->assertCanWrite();
+        app(\App\Services\TenantDatabaseStorage::class)
+            ->assertCanWrite();
 
         /*
         |--------------------------------------------------------------------------
