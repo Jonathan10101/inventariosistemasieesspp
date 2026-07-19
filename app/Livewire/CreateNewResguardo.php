@@ -482,7 +482,7 @@ class CreateNewResguardo extends Component
             $pdfCompressor->compress(
                 inputPath: $originalPdfPath,
                 outputPath: $compressedPdfTempPath,
-                quality: 'ebook'
+                level: 'fuerte'
             );
 
             /*
