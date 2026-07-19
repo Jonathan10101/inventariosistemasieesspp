@@ -89,20 +89,15 @@ class TenantDatabaseStorage
      */
     public function assertCanWrite(int $incomingBytes = 0): void
     {
-        $summary = $this->summary();
+        $limitBytes = $this->limitBytes();
+        $usedBytes = $this->usedBytes();
 
-        $incomingBytes = max(0, $incomingBytes);
-
-        if (
-            $summary['is_full'] ||
-            ($summary['used_bytes'] + $incomingBytes) >= $summary['limit_bytes']
-        ) {
-            throw ValidationException::withMessages([
-                'storage' => sprintf(
-                    'El almacenamiento asignado está lleno. Se han utilizado %s de %s. Elimina información o solicita una ampliación.',
-                    $summary['used_formatted'],
-                    $summary['limit_formatted']
-                ),
+        if (($usedBytes + $incomingBytes) >= $limitBytes) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'storage' => 'El almacenamiento de esta institución está lleno. '
+                    . 'Has utilizado ' . $this->formatBytes($usedBytes)
+                    . ' de ' . $this->formatBytes($limitBytes)
+                    . '. Elimina información o solicita una ampliación de espacio.',
             ]);
         }
     }
