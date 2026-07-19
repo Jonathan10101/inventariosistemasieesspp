@@ -9,6 +9,7 @@
         "barryvdh/laravel-dompdf": "^3.0",
         "endroid/qr-code": "*",
         "guzzlehttp/guzzle": "^7.2",
+        "intervention/image-laravel": "^4.1",
         "jeroennoten/laravel-adminlte": "^3.14",
         "kwn/number-to-words": "^2.11",
         "laravel/framework": "^12.0",
