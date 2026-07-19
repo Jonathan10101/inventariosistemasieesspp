@@ -19,6 +19,7 @@ use App\Models\{
     HistorialResguardo,
     User
 };
+use App\Services\TenantDatabaseStorage;
 
 class CreateNewResguardo extends Component
 {
