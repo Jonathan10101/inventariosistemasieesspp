@@ -233,7 +233,8 @@ class CreateNewResguardo extends Component
             'imagen' => [
                 'nullable',
                 'image',
-                'max:4096',
+                'mimes:jpg,jpeg,png,webp',
+                'max:8192',
             ],
 
             'resguardo_pdf' => [
@@ -397,6 +398,9 @@ class CreateNewResguardo extends Component
             | De esta manera no se almacenan hasta 500 copias de la misma imagen.
             |
             */
+
+            
+
 
             if ($this->imagen) {
                 $pathImagen = $this->imagen->store(
