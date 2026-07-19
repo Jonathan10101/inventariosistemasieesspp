@@ -23,18 +23,26 @@ class TenantDatabaseStorage
      */
     public function usedBytes(): int
     {
-        /*
-         * Como Stancl Tenancy ya inicializó la conexión,
-         * Laravel devolverá el nombre de la base del tenant actual.
-         */
-        $databaseName = DB::connection()->getDatabaseName();
+        $connection = DB::connection();
 
-        $result = DB::selectOne(
+        $connection->statement(
+            'SET SESSION information_schema_stats_expiry = 0'
+        );
+
+        $databaseName = $connection->getDatabaseName();
+
+        $result = $connection->selectOne(
             '
-                SELECT
-                    COALESCE(SUM(DATA_LENGTH + INDEX_LENGTH), 0) AS used_bytes
-                FROM information_schema.TABLES
-                WHERE TABLE_SCHEMA = ?
+            SELECT
+                COALESCE(
+                    SUM(
+                        COALESCE(DATA_LENGTH, 0)
+                        + COALESCE(INDEX_LENGTH, 0)
+                    ),
+                    0
+                ) AS used_bytes
+            FROM information_schema.TABLES
+            WHERE TABLE_SCHEMA = ?
             ',
             [$databaseName]
         );

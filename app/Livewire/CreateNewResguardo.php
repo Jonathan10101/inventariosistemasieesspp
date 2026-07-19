@@ -112,6 +112,8 @@ class CreateNewResguardo extends Component
     /* =================== GUARDADO PRINCIPAL =================== */
     public function save()
     {        
+        app(\App\Services\TenantDatabaseStorage::class)->assertCanWrite();
+
         $this->validate([
             'descripcion' => 'required|string|max:255',
             'cantidad' => 'nullable|integer|min:1|max:500',
