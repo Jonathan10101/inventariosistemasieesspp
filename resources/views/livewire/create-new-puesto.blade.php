@@ -88,6 +88,57 @@
                     </div>
                 </div>
 
+                @error('storage')
+                    <div
+                        style="
+                            display: flex;
+                            align-items: flex-start;
+                            gap: 12px;
+                            padding: 16px 18px;
+                            margin-bottom: 20px;
+                            color: #8f1d1d;
+                            background: #fff1f1;
+                            border: 1px solid #f5baba;
+                            border-left: 5px solid #c62828;
+                            border-radius: 12px;
+                            box-shadow: 0 6px 18px rgba(198, 40, 40, 0.08);
+                        "
+                        role="alert"
+                    >
+                        <div
+                            style="
+                                display: flex;
+                                width: 38px;
+                                min-width: 38px;
+                                height: 38px;
+                                align-items: center;
+                                justify-content: center;
+                                color: #ffffff;
+                                background: #c62828;
+                                border-radius: 10px;
+                            "
+                        >
+                            <i class="fas fa-database"></i>
+                        </div>
+
+                        <div>
+                            <strong
+                                style="
+                                    display: block;
+                                    margin-bottom: 4px;
+                                    font-size: 15px;
+                                "
+                            >
+                                Almacenamiento lleno
+                            </strong>
+
+                            <span style="font-size: 14px;">
+                                {{ $message }}
+                            </span>
+                        </div>
+                    </div>
+                @enderror
+
                 {{-- ACCIONES --}}
                 <div class="angular-actions">
                     <button type="submit" class="btn angular-btn-save  text-white">

@@ -111,197 +111,309 @@ class CreateNewResguardo extends Component
 
     /* =================== GUARDADO PRINCIPAL =================== */
     public function save()
-    {        
-        app(\App\Services\TenantDatabaseStorage::class)->assertCanWrite();
+    {
+        /*
+        |--------------------------------------------------------------------------
+        | Normalizar la cantidad
+        |--------------------------------------------------------------------------
+        */
+
+        $cantidad = max(1, (int) ($this->cantidad ?: 1));
+        $esCargaMultiple = $cantidad > 1;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Reglas para el número de serie
+        |--------------------------------------------------------------------------
+        |
+        | Solo validamos que el número de serie sea único cuando se registra
+        | un solo bien y el número no está vacío ni contiene N/A.
+        |
+        */
+
+        $nserieNormalizada = trim((string) $this->nserie);
+
+        $reglasNumeroSerie = [
+            'nullable',
+            'string',
+            'max:255',
+        ];
+
+        if (
+            !$esCargaMultiple
+            && $nserieNormalizada !== ''
+            && strtoupper($nserieNormalizada) !== 'N/A'
+        ) {
+            $reglasNumeroSerie[] = Rule::unique(
+                'resguardos',
+                'nserie'
+            );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Validar formulario
+        |--------------------------------------------------------------------------
+        */
 
         $this->validate([
-            'descripcion' => 'required|string|max:255',
-            'cantidad' => 'nullable|integer|min:1|max:500',
-            'marca_id' => 'required|exists:marcas,id',
-            'modelo' => 'nullable|string|max:255',
-            'nserie' => [
+            'descripcion' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+
+            'cantidad' => [
+                'nullable',
+                'integer',
+                'min:1',
+                'max:500',
+            ],
+
+            'marca_id' => [
+                'required',
+                'exists:marcas,id',
+            ],
+
+            'modelo' => [
                 'nullable',
                 'string',
-                Rule::unique('resguardos', 'nserie')
-                    ->where(function ($query) {
-                        return $this->nserie !== 'N/A';
-                    })
+                'max:255',
             ],
-            'estado_uso_id' => 'required|exists:estado_uso,id',
-            'area_de_uso_id' => 'required|exists:area_de_uso,id',
-            'ubicacion_fisicas_id' => 'required|exists:ubicacion_fisicas,id',
-            'resguardante_id' => 'required|exists:resguardantes,id',
-            //'imagen' => $this->imagenBase64 ? 'nullable' : 'required|image|max:4096',
-            'imagen' => 'nullable|image|max:4096',
-            //'resguardo_pdf' => 'nullable|mimes:pdf|max:8192',
-            //'institucion' => 'required|in:IEESSPP,ARSPO',
-            'resguardo_pdf' => 'required|mimes:pdf|max:8192',
+
+            'nserie' => $reglasNumeroSerie,
+
+            'estado_uso_id' => [
+                'required',
+                'exists:estado_uso,id',
+            ],
+
+            'area_de_uso_id' => [
+                'required',
+                'exists:area_de_uso,id',
+            ],
+
+            'ubicacion_fisicas_id' => [
+                'required',
+                'exists:ubicacion_fisicas,id',
+            ],
+
+            'resguardante_id' => [
+                'required',
+                'exists:resguardantes,id',
+            ],
+
+            'imagen' => [
+                'nullable',
+                'image',
+                'max:4096',
+            ],
+
+            'resguardo_pdf' => [
+                'required',
+                'mimes:pdf',
+                'max:8192',
+            ],
         ]);
-        //dd("validate".$this->institucion);
 
-        $this->cantidad = (int)$this->cantidad;
-        if($this->cantidad == null){
-            $this->cantidad = 1;
-        }
-        
+        /*
+        |--------------------------------------------------------------------------
+        | Servicio de almacenamiento
+        |--------------------------------------------------------------------------
+        |
+        | Se crea una sola vez y se reutiliza durante toda la carga.
+        |
+        */
 
-        
-        if($this->cantidad > 1){
-            $contador = 0;
-            while($contador < $this->cantidad){
-                if ($this->imagenBase64) {
-                    $fileData = explode(',', $this->imagenBase64)[1];
-                    $fileName = 'resguardo_' . Str::random(8) . '.png';
-                    $tempPath = sys_get_temp_dir() . '/' . $fileName;
-                    file_put_contents($tempPath, base64_decode($fileData));
+        $storageService = app(TenantDatabaseStorage::class);
 
-                    $this->imagen = new UploadedFile(
-                        $tempPath,
-                        $fileName,
-                        'image/png',
-                        null,
-                        true
-                    );
-                }
+        /*
+        * Impide comenzar si la base ya alcanzó el límite.
+        */
+        $storageService->assertCanWrite();
 
-              
-                $pathImagen = $this->imagen ? $this->imagen->store('resguardos', 'public') : null;
-                $imagenEvidencia = $pathImagen;
-                $pathPdf = null;
+        /*
+        |--------------------------------------------------------------------------
+        | Preparar la imagen tomada desde cámara
+        |--------------------------------------------------------------------------
+        */
 
-                $pathPdf = null;
+        if ($this->imagenBase64) {
+            $partesImagen = explode(
+                ',',
+                $this->imagenBase64,
+                2
+            );
 
-                if ($this->resguardo_pdf instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
-                    $pathPdf = $this->resguardo_pdf->store('resguardos/pdf', 'public');
-                }
-                //$pathPdf = $this->resguardo_pdf ? $this->resguardo_pdf->store('resguardos/pdf', 'public') : null;
-
-                // si el usuario deja vacío el número de serie → poner "N/A"
-                $nserie = trim($this->nserie);
-                if ($nserie === '' || $nserie === null) {
-                    $nserie = 'N/A';
-                }
-
-                $modelo = trim($this->modelo);
-                if ($modelo === '' || $modelo === null) {
-                    $modelo = 'N/A';
-                }
-
-                $resguardante = Resguardante::find($this->resguardante_id);
-                $puesto_id = $resguardante->puesto_id;
-                if($resguardante->puesto_id == null){
-                    $puesto_id = 1;
-                }
-
-                //dd($puesto_id);
-
-                //dd((int)$this->cantidad);
-                $cantidadDentroDeWhile = 1;
-                $nserieDentroDeWhile = "N/A";
-            
-                $resguardo = Resguardo::create([
-                    'descripcion' => $this->descripcion,
-                    'cantidad' => $cantidadDentroDeWhile,
-                    'marca_id' => $this->marca_id,
-                    'modelo' => $modelo,
-                    'nserie' => $nserieDentroDeWhile,   // ← aquí ya va "N/A" si estaba vacío
-                    'resguardante_id' => $this->resguardante_id,
-                    'puesto_id' => $puesto_id,
-                    'imagen' => $pathImagen,
-                    'estado_actual' => 'asignado', // nuevo resguardo siempre inicia asignado
-                    //'institucion' => $this->institucion,
-                    'updated_at' => null, 
+            if (count($partesImagen) !== 2) {
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    'imagen' => 'La imagen capturada no tiene un formato válido.',
                 ]);
-                //dd($resguardo);
-
-               
-                $resguardo->update(['nresguardo' => $resguardo->id]);
-
-                //dd($resguardo);
-
-                
-                HistorialResguardo::registrarAsignacion($resguardo, $this->resguardante_id, $pathPdf,$imagenEvidencia,$this->estado_uso_id,$this->area_de_uso_id,$this->ubicacion_fisicas_id);
-
-                
-                $contador++;
-            }
-        }else{
-          
-            if ($this->imagenBase64) {
-                $fileData = explode(',', $this->imagenBase64)[1];
-                $fileName = 'resguardo_' . Str::random(8) . '.png';
-                $tempPath = sys_get_temp_dir() . '/' . $fileName;
-                file_put_contents($tempPath, base64_decode($fileData));
-
-                $this->imagen = new UploadedFile(
-                    $tempPath,
-                    $fileName,
-                    'image/png',
-                    null,
-                    true
-                );
             }
 
+            $contenidoImagen = base64_decode(
+                $partesImagen[1],
+                true
+            );
 
-            $pathImagen = $this->imagen ? $this->imagen->store('resguardos', 'public') : null;
-            $imagenEvidencia = $pathImagen;
-            $pathPdf = $this->resguardo_pdf ? $this->resguardo_pdf->store('resguardos/pdf', 'public') : null;
-
-            // si el usuario deja vacío el número de serie → poner "N/A"
-            $nserie = trim($this->nserie);
-            if ($nserie === '' || $nserie === null) {
-                $nserie = 'N/A';
+            if ($contenidoImagen === false) {
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    'imagen' => 'No fue posible procesar la imagen capturada.',
+                ]);
             }
 
-            $modelo = trim($this->modelo);
-            if ($modelo === '' || $modelo === null) {
-                $modelo = 'N/A';
+            $fileName = 'resguardo_' . Str::random(16) . '.png';
+
+            $tempPath = sys_get_temp_dir()
+                . DIRECTORY_SEPARATOR
+                . $fileName;
+
+            file_put_contents(
+                $tempPath,
+                $contenidoImagen
+            );
+
+            $this->imagen = new UploadedFile(
+                $tempPath,
+                $fileName,
+                'image/png',
+                null,
+                true
+            );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Guardar archivos una sola vez
+        |--------------------------------------------------------------------------
+        |
+        | Todos los registros creados en esta operación utilizarán las mismas
+        | rutas. Esto evita guardar 500 copias idénticas de la imagen y el PDF.
+        |
+        */
+
+        $pathImagen = null;
+
+        if ($this->imagen) {
+            $pathImagen = $this->imagen->store(
+                'resguardos',
+                'public'
+            );
+        }
+
+        $imagenEvidencia = $pathImagen;
+
+        $pathPdf = null;
+
+        if ($this->resguardo_pdf instanceof TemporaryUploadedFile) {
+            $pathPdf = $this->resguardo_pdf->store(
+                'resguardos/pdf',
+                'public'
+            );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Normalizar modelo y número de serie
+        |--------------------------------------------------------------------------
+        */
+
+        $modelo = trim((string) $this->modelo);
+
+        if ($modelo === '') {
+            $modelo = 'N/A';
+        }
+
+        if ($nserieNormalizada === '') {
+            $nserieNormalizada = 'N/A';
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Obtener el puesto del resguardante
+        |--------------------------------------------------------------------------
+        */
+
+        $resguardante = Resguardante::findOrFail(
+            $this->resguardante_id
+        );
+
+        $puestoId = $resguardante->puesto_id ?: 1;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Crear los resguardos
+        |--------------------------------------------------------------------------
+        */
+
+        $totalRegistros = $esCargaMultiple
+            ? $cantidad
+            : 1;
+
+        for ($indice = 0; $indice < $totalRegistros; $indice++) {
+
+            /*
+            * Verifica nuevamente el almacenamiento cada 10 registros.
+            *
+            * No se hace únicamente al comienzo porque una carga de 500
+            * registros podría superar el límite durante el proceso.
+            */
+            if ($indice > 0 && $indice % 10 === 0) {
+                $storageService->assertCanWrite();
             }
 
-            $resguardante = Resguardante::find($this->resguardante_id);
-            $puesto_id = $resguardante->puesto_id;
-            if($resguardante->puesto_id == null){
-                $puesto_id = 1;
-            }
+            /*
+            * Cuando la cantidad es mayor a uno, cada bien se registra
+            * individualmente con cantidad 1 y número de serie N/A.
+            */
+            $cantidadRegistro = $esCargaMultiple
+                ? 1
+                : $cantidad;
 
-            //dd($puesto_id);
-
-            //dd((int)$this->cantidad);
+            $numeroSerieRegistro = $esCargaMultiple
+                ? 'N/A'
+                : $nserieNormalizada;
 
             $resguardo = Resguardo::create([
                 'descripcion' => $this->descripcion,
-                'cantidad' => $this->cantidad,
+                'cantidad' => $cantidadRegistro,
                 'marca_id' => $this->marca_id,
                 'modelo' => $modelo,
-                'nserie' => $nserie,   // ← aquí ya va "N/A" si estaba vacío
+                'nserie' => $numeroSerieRegistro,
                 'resguardante_id' => $this->resguardante_id,
-                'puesto_id' => $puesto_id,
+                'puesto_id' => $puestoId,
                 'imagen' => $pathImagen,
-                'estado_actual' => 'asignado', // nuevo resguardo siempre inicia asignado
-                //'institucion' => $this->institucion,
-                'updated_at' => null, 
+                'estado_actual' => 'asignado',
             ]);
 
-            //dd("1 resguardo".$resguardo);
+            $resguardo->update([
+                'nresguardo' => $resguardo->id,
+            ]);
 
-            $resguardo->update(['nresguardo' => $resguardo->id]);
-
-            //dd($resguardo);
-
-
-            HistorialResguardo::registrarAsignacion($resguardo, $this->resguardante_id, $pathPdf,$imagenEvidencia,$this->estado_uso_id,$this->area_de_uso_id,$this->ubicacion_fisicas_id);
-
-  
-            
+            HistorialResguardo::registrarAsignacion(
+                $resguardo,
+                $this->resguardante_id,
+                $pathPdf,
+                $imagenEvidencia,
+                $this->estado_uso_id,
+                $this->area_de_uso_id,
+                $this->ubicacion_fisicas_id
+            );
         }
-        
 
+        /*
+        * Revisión final después de terminar la carga.
+        */
+        $storageService->assertCanWrite();
 
-        
-  
+        /*
+        |--------------------------------------------------------------------------
+        | Finalizar
+        |--------------------------------------------------------------------------
+        */
+
         $this->resetForm();
 
-        /* === Emitir evento al padre === */
         $this->dispatch('resguardoCreado');
     }
 

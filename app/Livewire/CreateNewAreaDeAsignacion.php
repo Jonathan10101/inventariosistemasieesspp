@@ -14,6 +14,8 @@ class CreateNewAreaDeAsignacion extends Component
     ];
 
     public function save(){
+        app(\App\Services\TenantDatabaseStorage::class)->assertCanWrite();
+
         $this->area_de_uso = preg_replace('/\s+/', ' ', trim(mb_strtoupper($this->area_de_uso)));
         $this->validate();
 
