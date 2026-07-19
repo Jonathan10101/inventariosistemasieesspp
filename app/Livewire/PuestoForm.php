@@ -51,8 +51,6 @@ class PuestoForm extends Component
 
     #[On('saveFromComponentNewPuesto')]
     public function saveNewPuesto($data){
-        app(\App\Services\TenantDatabaseStorage::class)->assertCanWrite();
-
         Puesto::create($data);
         $this->showModal = false;  
         $this->dispatch('alumno-created', 1);

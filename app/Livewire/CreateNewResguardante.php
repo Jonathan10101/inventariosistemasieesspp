@@ -38,6 +38,8 @@ class CreateNewResguardante extends Component
     }
 
     public function save(){
+        app(\App\Services\TenantDatabaseStorage::class)->assertCanWrite();
+
         // Normalizamos todo
         $this->nombre1   = trim(mb_strtolower($this->nombre1));
         $this->nombre2   = trim(mb_strtolower($this->nombre2));

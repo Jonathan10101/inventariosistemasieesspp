@@ -54,8 +54,6 @@ class ResguardanteForm extends Component
 
     #[On('saveFromComponentNewResguardante')]
     public function saveNewResguardante($data){
-        app(\App\Services\TenantDatabaseStorage::class)->assertCanWrite();
-
         $user_id = User::create([
             "name" => $data['nombre1'] . $data['nombre2'] . $data['apellido1'] . $data['apellido2'],
             //"email" => $data['nombre1'] . $data['nombre2'] . $data['apellido1'] . $data['apellido2'] . "@ieesspp.com",

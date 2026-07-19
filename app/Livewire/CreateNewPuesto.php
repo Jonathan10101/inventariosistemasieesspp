@@ -14,6 +14,8 @@ class CreateNewPuesto extends Component
     ];
 
     public function save(){
+        app(\App\Services\TenantDatabaseStorage::class)->assertCanWrite();
+
         // Normalizar antes de validar o buscar duplicados
         $this->puesto = preg_replace('/\s+/', ' ', trim(mb_strtoupper($this->puesto)));
         $this->validate();

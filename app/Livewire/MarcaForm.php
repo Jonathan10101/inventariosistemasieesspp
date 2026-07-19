@@ -51,8 +51,6 @@ class MarcaForm extends Component
 
     #[On('saveFromComponentNewMarca')]
     public function saveNewMarca($data){
-        app(\App\Services\TenantDatabaseStorage::class)->assertCanWrite();
-
         Marca::create($data);
         $this->showModal = false;  
         $this->dispatch('alumno-created', 1);

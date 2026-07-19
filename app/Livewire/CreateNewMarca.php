@@ -14,6 +14,8 @@ class CreateNewMarca extends Component
     ];
 
     public function save(){
+        app(\App\Services\TenantDatabaseStorage::class)->assertCanWrite();
+
         $this->marca = preg_replace('/\s+/', ' ', trim(mb_strtoupper($this->marca)));
         $this->validate();
 
