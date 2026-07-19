@@ -20,6 +20,8 @@ use App\Models\{
     User
 };
 use App\Services\TenantDatabaseStorage;
+use App\Services\PdfCompressor;
+
 
 class CreateNewResguardo extends Component
 {
