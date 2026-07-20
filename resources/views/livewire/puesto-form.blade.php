@@ -11,9 +11,8 @@
     {{-- LOADING BAR --}}
     <div
         wire:loading.delay
-        wire:target="showModalNewPuesto,cambiarAccion,searchPuestos,clearSearch"
-        class="ieesspp-loading-bar"
-    >
+        wire:target="showModalNewPuesto,showModalImportPuestos,archivoPuestos,importarPuestos,cambiarAccion,searchPuestos,clearSearch"          class="ieesspp-loading-bar"
+        >
         <div class="progress w-100 h-100 rounded-0">
             <div class="progress-bar progress-bar-striped progress-bar-animated w-100"></div>
         </div>
@@ -77,6 +76,30 @@
             </button>
 
             @hasanyrole('Administrador')
+              <button
+                type="button"
+                wire:click="showModalImportPuestos"
+                wire:loading.attr="disabled"
+                wire:target="showModalImportPuestos"
+                class="btn btn-import-puestos"
+                title="Importar puestos desde Excel"
+            >
+                <span
+                    wire:loading.remove
+                    wire:target="showModalImportPuestos"
+                >
+                    <i class="fas fa-file-excel"></i>
+                    Importar Excel
+                </span>
+
+                <span
+                    wire:loading
+                    wire:target="showModalImportPuestos"
+                >
+                    <i class="fas fa-spinner fa-spin"></i>
+                    Abriendo...
+                </span>
+            </button>
                 <button
                     type="button"
                     wire:click="showModalNewPuesto"
@@ -144,6 +167,230 @@
             </div>
         </div>
     </div>
+
+    @if($showImportModal)
+        <div
+            class="modal fade ieesspp-modal show d-block"
+            tabindex="-1"
+            role="dialog"
+            aria-modal="true"
+        >
+            <div
+                class="modal-dialog modal-lg modal-dialog-centered ieesspp-modal-dialog"
+                role="document"
+            >
+                <div class="modal-content ieesspp-modal-content">
+
+                    <div class="modal-header ieesspp-modal-header import-puestos-header">
+                        <div>
+                            <span class="modal-label">
+                                Carga masiva del catálogo
+                            </span>
+
+                            <h5 class="modal-title">
+                                Importar puestos desde Excel
+                            </h5>
+                        </div>
+
+                        <button
+                            type="button"
+                            class="modal-close-btn"
+                            wire:click="closeImportModal"
+                            wire:loading.attr="disabled"
+                            wire:target="importarPuestos"
+                        >
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <div class="import-puestos-body">
+
+                        <div class="import-puestos-info">
+                            <div class="import-puestos-icon">
+                                <i class="fas fa-file-excel"></i>
+                            </div>
+
+                            <div>
+                                <strong>Formato requerido</strong>
+
+                                <p>
+                                    La celda A1 debe llamarse exactamente
+                                    <b>nombre</b>.
+                                </p>
+                            </div>
+                        </div>
+
+                        <form wire:submit.prevent="importarPuestos">
+
+                            <label
+                                for="archivoPuestos"
+                                class="import-puestos-label"
+                            >
+                                Seleccionar archivo
+                            </label>
+
+                            <input
+                                type="file"
+                                id="archivoPuestos"
+                                wire:model="archivoPuestos"
+                                accept=".xlsx,.xls,.csv"
+                                class="form-control import-puestos-input"
+                            >
+
+                            <p class="import-puestos-help">
+                                Formatos permitidos: XLSX, XLS y CSV.
+                                Tamaño máximo: 10 MB.
+                            </p>
+
+                            @error('archivoPuestos')
+                                <div class="import-puestos-error">
+                                    <i class="fas fa-circle-exclamation"></i>
+                                    {{ $message }}
+                                </div>
+                            @enderror
+
+                            <div
+                                wire:loading
+                                wire:target="archivoPuestos"
+                                class="import-puestos-loading"
+                            >
+                                <i class="fas fa-spinner fa-spin"></i>
+                                Cargando archivo...
+                            </div>
+
+                            @if($archivoPuestos)
+                                <div class="import-puestos-selected">
+                                    <i class="fas fa-file-excel"></i>
+
+                                    <div>
+                                        <span>Archivo seleccionado</span>
+
+                                        <strong>
+                                            {{ $archivoPuestos->getClientOriginalName() }}
+                                        </strong>
+                                    </div>
+                                </div>
+                            @endif
+
+                            <div class="import-puestos-example">
+                                <div class="import-puestos-example-title">
+                                    Ejemplo del archivo
+                                </div>
+
+                                <table class="table table-sm mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>nombre</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr>
+                                            <td>DIRECTOR GENERAL</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>SUBDIRECTOR</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>JEFE DE DEPARTAMENTO</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>ANALISTA</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            @if(
+                                $puestosImportados > 0
+                                || $puestosDuplicados > 0
+                            )
+                                <div class="import-puestos-summary">
+                                    <div>
+                                        <span>Nuevos</span>
+                                        <strong>{{ $puestosImportados }}</strong>
+                                    </div>
+
+                                    <div>
+                                        <span>Duplicados</span>
+                                        <strong>{{ $puestosDuplicados }}</strong>
+                                    </div>
+                                </div>
+                            @endif
+
+                            @if(count($erroresImportacion) > 0)
+                                <div class="import-puestos-row-errors">
+                                    <strong>
+                                        Filas que no se importaron
+                                    </strong>
+
+                                    @foreach($erroresImportacion as $error)
+                                        <div class="import-puesto-row-error">
+                                            <div>
+                                                Fila {{ $error['fila'] }}
+
+                                                @if(!empty($error['valor']))
+                                                    — {{ $error['valor'] }}
+                                                @endif
+                                            </div>
+
+                                            <ul>
+                                                @foreach(
+                                                    $error['mensajes']
+                                                    as $mensaje
+                                                )
+                                                    <li>{{ $mensaje }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+
+                            <div class="import-puestos-actions">
+                                <button
+                                    type="button"
+                                    wire:click="closeImportModal"
+                                    wire:loading.attr="disabled"
+                                    wire:target="importarPuestos"
+                                    class="btn-cancel-puestos"
+                                >
+                                    Cancelar
+                                </button>
+
+                                <button
+                                    type="submit"
+                                    wire:loading.attr="disabled"
+                                    wire:target="archivoPuestos,importarPuestos"
+                                    class="btn-confirm-puestos"
+                                >
+                                    <span
+                                        wire:loading.remove
+                                        wire:target="importarPuestos"
+                                    >
+                                        <i class="fas fa-file-import"></i>
+                                        Importar puestos
+                                    </span>
+
+                                    <span
+                                        wire:loading
+                                        wire:target="importarPuestos"
+                                    >
+                                        <i class="fas fa-spinner fa-spin"></i>
+                                        Importando...
+                                    </span>
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 
     <!-- BUSCADOR -->
     <div
@@ -327,6 +574,48 @@
                 Livewire.on('refresh-page', function ($message) {
                     location.reload();
                 });
+
+                Livewire.on('limpiar-archivo-puestos', function () {
+                    const input = document.getElementById('archivoPuestos');
+
+                    if (input) {
+                        input.value = '';
+                    }
+                });
+
+                Livewire.on('puestos-importados', function (event) {
+                    Swal.fire({
+                        title: '¡Importación terminada!',
+                        text: event.mensaje ?? 'Los puestos fueron importados correctamente.',
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        customClass: {
+                            confirmButton: 'btn-ieesspp'
+                        },
+                        buttonsStyling: false
+                    });
+                });
+
+                Livewire.on(
+                    'puestos-importacion-advertencia',
+                    function (event) {
+                        Swal.fire({
+                            title: 'Importación finalizada',
+                            text: event.mensaje
+                                ?? 'Algunas filas no pudieron importarse.',
+                            icon: 'warning',
+                            confirmButtonText: 'Revisar',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            customClass: {
+                                confirmButton: 'btn-ieesspp'
+                            },
+                            buttonsStyling: false
+                        });
+                    }
+                );
 
                 Livewire.on('alumno-created', function ($message) {
                     Swal.fire({
@@ -950,6 +1239,278 @@
 
             .pagination-wrapper {
                 justify-content: center;
+            }
+        }
+
+        .btn-import-puestos {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            min-height: 44px;
+            padding: 0 18px;
+            border: 1px solid #15803d;
+            border-radius: 12px;
+            background: #ffffff;
+            color: #15803d;
+            font-weight: 800;
+            box-shadow: 0 10px 24px rgba(21, 128, 61, 0.10);
+        }
+
+        .btn-import-puestos span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-import-puestos:hover {
+            background: #15803d;
+            color: #ffffff;
+        }
+
+        .import-puestos-header {
+            background: linear-gradient(
+                135deg,
+                #14532d 0%,
+                #15803d 100%
+            );
+        }
+
+        .import-puestos-body {
+            padding: 24px;
+            background: #ffffff;
+        }
+
+        .import-puestos-info {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #bbf7d0;
+            border-radius: 13px;
+            background: #f0fdf4;
+        }
+
+        .import-puestos-info p {
+            margin: 4px 0 0;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .import-puestos-icon {
+            width: 46px;
+            height: 46px;
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: #dcfce7;
+            color: #15803d;
+            font-size: 20px;
+        }
+
+        .import-puestos-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #0f172a;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .import-puestos-input {
+            min-height: 48px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            background: #f8fafc;
+        }
+
+        .import-puestos-help {
+            margin: 8px 0 0;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .import-puestos-error {
+            margin-top: 10px;
+            padding: 11px 13px;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            background: #fef2f2;
+            color: #b91c1c;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .import-puestos-loading {
+            margin-top: 12px;
+            color: #171C63;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .import-puestos-selected {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 14px;
+            padding: 13px;
+            border: 1px solid #bbf7d0;
+            border-radius: 11px;
+            background: #f0fdf4;
+            color: #166534;
+        }
+
+        .import-puestos-selected > i {
+            font-size: 22px;
+        }
+
+        .import-puestos-selected span {
+            display: block;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .import-puestos-selected strong {
+            display: block;
+            margin-top: 2px;
+        }
+
+        .import-puestos-example {
+            overflow: hidden;
+            margin-top: 18px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+        }
+
+        .import-puestos-example-title {
+            padding: 11px 14px;
+            background: #f8fafc;
+            color: #334155;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .import-puestos-example th,
+        .import-puestos-example td {
+            padding: 9px 14px;
+            font-size: 12px;
+        }
+
+        .import-puestos-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .import-puestos-summary > div {
+            padding: 13px;
+            border-radius: 11px;
+            background: #f1f5f9;
+        }
+
+        .import-puestos-summary span {
+            display: block;
+            color: #64748b;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .import-puestos-summary strong {
+            display: block;
+            margin-top: 2px;
+            color: #171C63;
+            font-size: 20px;
+        }
+
+        .import-puestos-row-errors {
+            margin-top: 18px;
+            padding: 14px;
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+            background: #fef2f2;
+            color: #991b1b;
+        }
+
+        .import-puesto-row-error {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            background: #ffffff;
+            font-size: 12px;
+        }
+
+        .import-puesto-row-error ul {
+            margin: 6px 0 0;
+            padding-left: 18px;
+        }
+
+        .import-puestos-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 22px;
+            padding-top: 18px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .btn-cancel-puestos,
+        .btn-confirm-puestos {
+            min-height: 44px;
+            padding: 0 18px;
+            border-radius: 11px;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .btn-cancel-puestos {
+            border: 1px solid #cbd5e1;
+            background: #ffffff;
+            color: #475569;
+        }
+
+        .btn-confirm-puestos {
+            border: none;
+            background: linear-gradient(
+                135deg,
+                #15803d,
+                #16a34a
+            );
+            color: #ffffff;
+        }
+
+        .btn-confirm-puestos span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        @media (max-width: 992px) {
+            .btn-import-puestos {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .import-puestos-body {
+                padding: 18px;
+            }
+
+            .import-puestos-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .import-puestos-actions {
+                flex-direction: column-reverse;
+            }
+
+            .btn-cancel-puestos,
+            .btn-confirm-puestos {
+                width: 100%;
             }
         }
     </style>
