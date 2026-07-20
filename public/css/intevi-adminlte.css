@@ -73,43 +73,18 @@ body {
 ========================================================= */
 
 .main-sidebar .brand-link {
-    width: 100% !important;
-    min-height: 64px !important;
-
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-
-    padding: 8px 0 !important;
-    margin: 0 !important;
-
-    background: #ffffff !important;
-    border-bottom: 1px solid rgba(15, 23, 42, 0.07) !important;
-    box-shadow: none !important;
-
-    text-align: center !important;
+    width: 100% !important;
+    min-height: 82px !important;
+    padding: 8px 10px !important;
     white-space: normal !important;
-    overflow: hidden !important;
 }
 
-/*
- AdminLTE coloca el contenido configurado en "logo"
- dentro de un elemento .brand-text.
-*/
 .main-sidebar .brand-link .brand-text {
     width: 100% !important;
-    max-width: 100% !important;
-
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-
-    float: none !important;
-    text-align: center !important;
-    line-height: normal !important;
+    margin-left: 0 !important;
 }
 
 /* Bloque completo del logo */
