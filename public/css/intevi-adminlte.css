@@ -357,65 +357,71 @@ body {
 
     /* INTENTAR PONER LOGO CENTRADO */
     /* Centrar completamente la marca de INTEVI */
-    .main-sidebar .brand-link {
-        width: 100% !important;
-        min-height: 70px !important;
+  /* Contenedor principal de AdminLTE */
+.main-sidebar .brand-link {
+    width: 100% !important;
+    height: 64px !important;
 
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 
-        padding: 10px 0 !important;
-        margin: 0 !important;
-        text-align: center !important;
-    }
+    padding: 0 !important;
+    margin: 0 !important;
+    text-align: center !important;
+}
 
-    /* Quitar el desplazamiento que agrega AdminLTE */
-    .main-sidebar .brand-link .brand-text {
-        width: 100% !important;
+/* Contenedor que AdminLTE agrega alrededor del logo */
+.main-sidebar .brand-link .brand-text {
+    width: 100% !important;
 
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 
-        margin: 0 !important;
-        padding: 0 !important;
-        float: none !important;
-    }
+    margin: 0 !important;
+    padding: 0 !important;
+    float: none !important;
+}
 
-    /* Contenedor del icono y texto */
-    .intevi-logo-container {
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
+/* Icono a la izquierda y texto a la derecha */
+.intevi-brand {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
 
-        gap: 9px;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
+    gap: 10px;
+    margin: 0 !important;
+    padding: 0 !important;
+}
 
-    /* Icono */
-    .intevi-logo-icon {
-        width: 38px;
-        height: 38px;
-        object-fit: contain;
-        display: block;
-        flex-shrink: 0;
-        margin: 0 !important;
-    }
+/* Logo */
+.intevi-brand-logo {
+    width: 38px;
+    height: 38px;
 
-    /* Texto */
-    .intevi-logo-text {
-        display: block;
-        margin: 0 !important;
-        padding: 0 !important;
+    display: block;
+    object-fit: contain;
+    flex-shrink: 0;
 
-        color: #171c63;
-        font-size: 20px;
-        font-weight: 900;
-        line-height: 1;
-        letter-spacing: 0.8px;
-    }
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Texto */
+.intevi-brand-name {
+    display: block;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    color: #171c63;
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 1px;
+}
 
 /* Responsive */
 @media (max-width: 768px) {
