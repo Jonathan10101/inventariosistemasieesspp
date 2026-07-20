@@ -1,6 +1,8 @@
 <div class="container mt-4 marcas-page">
 
-    {{-- MARCADOR DEL TUTORIAL DEL MÓDULO --}}
+    {{-- ========================================================= --}}
+    {{-- MARCADOR DEL TUTORIAL DEL MÓDULO                          --}}
+    {{-- ========================================================= --}}
     <div
         data-tour-page="marcas"
         data-tour-version="1"
@@ -8,18 +10,34 @@
         hidden
     ></div>
 
-    {{-- LOADING BAR --}}
+    {{-- ========================================================= --}}
+    {{-- BARRA SUPERIOR DE CARGA                                   --}}
+    {{-- ========================================================= --}}
     <div
         wire:loading.delay
-        wire:target="showModalNewMarca,editar,searchMarcas,clearSearch,cambiarAccion"
+        wire:target="
+            showModalNewMarca,
+            showModalImportMarcas,
+            closeImportModal,
+            importarMarcas,
+            archivoMarcas,
+            editar,
+            searchMarcas,
+            clearSearch,
+            cambiarAccion
+        "
         class="ieesspp-loading-bar"
     >
         <div class="progress w-100 h-100 rounded-0">
-            <div class="progress-bar progress-bar-striped progress-bar-animated w-100"></div>
+            <div
+                class="progress-bar progress-bar-striped progress-bar-animated w-100"
+            ></div>
         </div>
     </div>
 
-    {{-- BARRA MÓVIL --}}
+    {{-- ========================================================= --}}
+    {{-- BARRA DE NAVEGACIÓN MÓVIL                                 --}}
+    {{-- ========================================================= --}}
     <div class="mobile-page-nav">
         <button
             type="button"
@@ -30,23 +48,34 @@
             <span>Atrás</span>
         </button>
 
-        <a href="{{ url('/dashboard') }}" class="mobile-nav-btn primary">
+        <a
+            href="{{ url('/dashboard') }}"
+            class="mobile-nav-btn primary"
+        >
             <i class="fas fa-tachometer-alt"></i>
             <span>Dashboard</span>
         </a>
     </div>
 
-    <!-- SweetAlert2 -->
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.css" rel="stylesheet">
+    {{-- ========================================================= --}}
+    {{-- SWEETALERT2                                               --}}
+    {{-- ========================================================= --}}
+    <link
+        href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.css"
+        rel="stylesheet"
+    >
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>
 
-    <!-- ENCABEZADO -->
+    {{-- ========================================================= --}}
+    {{-- ENCABEZADO PRINCIPAL                                      --}}
+    {{-- ========================================================= --}}
     <div
         class="marcas-header mb-4"
         data-tour-step
         data-tour-order="1"
         data-tour-title="Módulo de marcas"
-        data-tour-description="Desde este módulo puedes consultar, registrar y actualizar las marcas utilizadas en el inventario institucional."
+        data-tour-description="Desde este módulo puedes consultar, registrar, importar y actualizar las marcas utilizadas en el inventario institucional."
         data-tour-side="bottom"
     >
         <div>
@@ -60,11 +89,14 @@
             </h2>
 
             <p class="marcas-subtitle">
-                Administra, consulta y actualiza las marcas registradas en el sistema.
+                Administra, consulta, importa y actualiza las marcas
+                registradas en el sistema.
             </p>
         </div>
 
         <div class="header-actions">
+
+            {{-- BOTÓN DEL TUTORIAL --}}
             <button
                 type="button"
                 class="btn btn-tour-module"
@@ -76,9 +108,39 @@
             </button>
 
             @hasanyrole('Administrador|Delegacion|Subdirector')
+
+                {{-- BOTÓN IMPORTAR EXCEL --}}
+                <button
+                    type="button"
+                    wire:click="showModalImportMarcas"
+                    wire:loading.attr="disabled"
+                    wire:target="showModalImportMarcas"
+                    class="btn btn-import-marcas"
+                    title="Importar marcas desde Excel"
+                >
+                    <span
+                        wire:loading.remove
+                        wire:target="showModalImportMarcas"
+                    >
+                        <i class="fas fa-file-excel"></i>
+                        <span>Importar Excel</span>
+                    </span>
+
+                    <span
+                        wire:loading
+                        wire:target="showModalImportMarcas"
+                    >
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <span>Abriendo...</span>
+                    </span>
+                </button>
+
+                {{-- BOTÓN AGREGAR MARCA --}}
                 <button
                     type="button"
                     wire:click="showModalNewMarca"
+                    wire:loading.attr="disabled"
+                    wire:target="showModalNewMarca"
                     class="btn btn-add-marca"
                     data-tour-step
                     data-tour-order="2"
@@ -86,67 +148,445 @@
                     data-tour-description="Presiona este botón para registrar una nueva marca en el catálogo institucional."
                     data-tour-side="left"
                 >
-                    <i class="fas fa-plus"></i>
-                    <span>Agregar marca</span>
+                    <span
+                        wire:loading.remove
+                        wire:target="showModalNewMarca"
+                    >
+                        <i class="fas fa-plus"></i>
+                        <span>Agregar marca</span>
+                    </span>
+
+                    <span
+                        wire:loading
+                        wire:target="showModalNewMarca"
+                    >
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <span>Abriendo...</span>
+                    </span>
                 </button>
+
             @endhasanyrole
         </div>
     </div>
 
-    <!-- MODAL -->
-    <div
-        class="modal fade @if($showModal) show @endif"
-        style="display: @if($showModal) block @else none @endif;"
-        tabindex="-1"
-        role="dialog"
-    >
-        <div class="modal-backdrop-custom"></div>
+    {{-- ========================================================= --}}
+    {{-- MODAL PARA REGISTRAR O EDITAR MARCA                       --}}
+    {{-- ========================================================= --}}
+    @if($showModal)
+        <div
+            class="modal fade show marca-modal-wrapper"
+            style="display: block;"
+            tabindex="-1"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="marcaModalTitle"
+        >
+            <div
+                class="modal-backdrop-custom"
+                wire:click="closeModal"
+            ></div>
 
-        <div class="modal-dialog modal-lg {{ $accionPrincipal === 'editar' ? 'modal-dialog-centered' : '' }} ieesspp-modal-dialog" role="document">
-            <div class="modal-content ieesspp-modal-content">
+            <div
+                class="modal-dialog modal-lg modal-dialog-centered ieesspp-modal-dialog"
+                role="document"
+            >
+                <div class="modal-content ieesspp-modal-content">
 
-                <div class="modal-header ieesspp-modal-header">
-                    <div>
-                        <span class="modal-label">
-                            {{ $accionPrincipal === 'editar' ? 'Edición de registro' : 'Nuevo registro' }}
-                        </span>
+                    {{-- ENCABEZADO --}}
+                    <div class="modal-header ieesspp-modal-header">
+                        <div>
+                            <span class="modal-label">
+                                {{ $accionPrincipal === 'editar'
+                                    ? 'Edición de registro'
+                                    : 'Nuevo registro' }}
+                            </span>
 
-                        <h5 class="modal-title" id="studentModalLabel">
-                            {{ $tituloModalPrincipal }}
-                        </h5>
+                            <h5
+                                class="modal-title"
+                                id="marcaModalTitle"
+                            >
+                                {{ $tituloModalPrincipal }}
+                            </h5>
+                        </div>
+
+                        <button
+                            type="button"
+                            class="modal-close-btn"
+                            wire:click="closeModal"
+                            aria-label="Cerrar"
+                        >
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
 
-                    <button
-                        type="button"
-                        class="modal-close-btn"
-                        wire:click="closeModal"
-                        aria-label="Cerrar"
-                    >
-                        <i class="fas fa-times"></i>
-                    </button>
+                    {{-- CONTENIDO --}}
+                    <div class="ieesspp-modal-body">
+                        @switch($accionPrincipal)
+
+                            {{-- EDITAR MARCA --}}
+                            @case('editar')
+                                @livewire(
+                                    'update-marca',
+                                    [
+                                        'data' => $data_external_component
+                                    ],
+                                    key(
+                                        'update-marca-'
+                                        . $data_external_component
+                                    )
+                                )
+                            @break
+
+                            {{-- CREAR NUEVA MARCA --}}
+                            @default
+                                @livewire(
+                                    'create-new-marca',
+                                    [],
+                                    key('create-new-marca')
+                                )
+                            @break
+
+                        @endswitch
+                    </div>
+
                 </div>
-
-                <div class="ieesspp-modal-body">
-                    @switch($accionPrincipal)
-
-                        {{-- EDITAR MARCA --}}
-                        @case("editar")
-                            @livewire('update-marca', ['data' => $data_external_component])
-                        @break
-
-                        {{-- CREAR NUEVA MARCA --}}
-                        @default
-                            @livewire('create-new-marca')
-                        @break
-
-                    @endswitch
-                </div>
-
             </div>
         </div>
-    </div>
+    @endif
 
-    <!-- BUSCADOR -->
+    {{-- ========================================================= --}}
+    {{-- MODAL PARA IMPORTAR MARCAS DESDE EXCEL                    --}}
+    {{-- ========================================================= --}}
+    @if($showImportModal)
+        <div
+            class="modal fade show marca-modal-wrapper"
+            style="display: block;"
+            tabindex="-1"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="importarMarcasModalTitle"
+        >
+            <div
+                class="modal-backdrop-custom"
+                wire:click="closeImportModal"
+            ></div>
+
+            <div
+                class="modal-dialog modal-lg modal-dialog-centered ieesspp-modal-dialog"
+                role="document"
+            >
+                <div class="modal-content ieesspp-modal-content">
+
+                    {{-- ENCABEZADO --}}
+                    <div class="modal-header ieesspp-modal-header import-modal-header">
+                        <div>
+                            <span class="modal-label">
+                                Carga masiva del catálogo
+                            </span>
+
+                            <h5
+                                class="modal-title"
+                                id="importarMarcasModalTitle"
+                            >
+                                Importar marcas desde Excel
+                            </h5>
+                        </div>
+
+                        <button
+                            type="button"
+                            class="modal-close-btn"
+                            wire:click="closeImportModal"
+                            wire:loading.attr="disabled"
+                            wire:target="importarMarcas"
+                            aria-label="Cerrar"
+                        >
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    {{-- CONTENIDO --}}
+                    <div class="import-marcas-body">
+
+                        {{-- INFORMACIÓN DEL FORMATO --}}
+                        <div class="import-instructions">
+                            <div class="import-instructions-icon">
+                                <i class="fas fa-file-excel"></i>
+                            </div>
+
+                            <div>
+                                <h6>
+                                    Formato requerido
+                                </h6>
+
+                                <p>
+                                    La primera fila del archivo debe contener
+                                    una columna llamada exactamente
+                                    <strong>nombre</strong>.
+                                </p>
+                            </div>
+                        </div>
+
+                        <form wire:submit.prevent="importarMarcas">
+
+                            {{-- SELECTOR DE ARCHIVO --}}
+                            <div class="import-field">
+                                <label
+                                    for="archivoMarcas"
+                                    class="import-label"
+                                >
+                                    Seleccionar archivo
+                                </label>
+
+                                <div class="import-file-wrapper">
+                                    <input
+                                        type="file"
+                                        id="archivoMarcas"
+                                        wire:model="archivoMarcas"
+                                        accept=".xlsx,.xls,.csv"
+                                        class="form-control import-file-input"
+                                    >
+                                </div>
+
+                                <p class="import-help">
+                                    Formatos permitidos: XLSX, XLS y CSV.
+                                    Tamaño máximo permitido: 10 MB.
+                                </p>
+
+                                @error('archivoMarcas')
+                                    <div class="import-validation-error">
+                                        <i class="fas fa-circle-exclamation"></i>
+
+                                        <span>
+                                            {{ $message }}
+                                        </span>
+                                    </div>
+                                @enderror
+                            </div>
+
+                            {{-- PROGRESO AL SUBIR ARCHIVO --}}
+                            <div
+                                wire:loading
+                                wire:target="archivoMarcas"
+                                class="import-loading"
+                            >
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <span>Cargando archivo...</span>
+                            </div>
+
+                            {{-- ARCHIVO SELECCIONADO --}}
+                            @if($archivoMarcas)
+                                <div class="selected-file">
+                                    <div class="selected-file-icon">
+                                        <i class="fas fa-file-excel"></i>
+                                    </div>
+
+                                    <div class="selected-file-info">
+                                        <span>
+                                            Archivo seleccionado
+                                        </span>
+
+                                        <strong>
+                                            {{ $archivoMarcas->getClientOriginalName() }}
+                                        </strong>
+                                    </div>
+
+                                    <div class="selected-file-check">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                </div>
+                            @endif
+
+                            {{-- EJEMPLO DEL EXCEL --}}
+                            <div class="import-example">
+                                <div class="import-example-header">
+                                    <div>
+                                        <div class="import-example-title">
+                                            Estructura del archivo
+                                        </div>
+
+                                        <p>
+                                            No coloques títulos, instrucciones
+                                            o filas vacías antes del encabezado.
+                                        </p>
+                                    </div>
+
+                                    <span class="excel-badge">
+                                        Excel
+                                    </span>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table import-example-table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>nombre</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr>
+                                                <td>DELL</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>HP</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>LENOVO</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>APPLE</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            {{-- RESUMEN DE IMPORTACIÓN --}}
+                            @if(
+                                $marcasImportadas > 0
+                                || $marcasDuplicadas > 0
+                            )
+                                <div class="import-summary">
+                                    <div class="import-summary-item success">
+                                        <div class="import-summary-icon">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+
+                                        <div>
+                                            <span>
+                                                Nuevas marcas
+                                            </span>
+
+                                            <strong>
+                                                {{ $marcasImportadas }}
+                                            </strong>
+                                        </div>
+                                    </div>
+
+                                    <div class="import-summary-item warning">
+                                        <div class="import-summary-icon">
+                                            <i class="fas fa-copy"></i>
+                                        </div>
+
+                                        <div>
+                                            <span>
+                                                Duplicadas
+                                            </span>
+
+                                            <strong>
+                                                {{ $marcasDuplicadas }}
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+
+                            {{-- FILAS CON ERRORES --}}
+                            @if(count($erroresImportacion) > 0)
+                                <div class="import-row-errors">
+                                    <div class="import-row-errors-title">
+                                        <i class="fas fa-triangle-exclamation"></i>
+
+                                        <div>
+                                            <strong>
+                                                Filas que no se importaron
+                                            </strong>
+
+                                            <span>
+                                                Revisa los siguientes registros
+                                                y vuelve a cargar el archivo.
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="import-errors-list">
+                                        @foreach(
+                                            $erroresImportacion as $error
+                                        )
+                                            <div class="import-row-error">
+                                                <div class="import-row-error-header">
+                                                    <strong>
+                                                        Fila
+                                                        {{ $error['fila'] }}
+                                                    </strong>
+
+                                                    @if(!empty($error['valor']))
+                                                        <span>
+                                                            {{ $error['valor'] }}
+                                                        </span>
+                                                    @endif
+                                                </div>
+
+                                                <ul>
+                                                    @foreach(
+                                                        $error['mensajes']
+                                                        as $mensaje
+                                                    )
+                                                        <li>
+                                                            {{ $mensaje }}
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+
+                            {{-- ACCIONES DEL MODAL --}}
+                            <div class="import-modal-actions">
+                                <button
+                                    type="button"
+                                    wire:click="closeImportModal"
+                                    wire:loading.attr="disabled"
+                                    wire:target="importarMarcas"
+                                    class="btn-cancel-import"
+                                >
+                                    <i class="fas fa-times"></i>
+                                    <span>Cancelar</span>
+                                </button>
+
+                                <button
+                                    type="submit"
+                                    wire:loading.attr="disabled"
+                                    wire:target="
+                                        archivoMarcas,
+                                        importarMarcas
+                                    "
+                                    class="btn-confirm-import"
+                                >
+                                    <span
+                                        wire:loading.remove
+                                        wire:target="importarMarcas"
+                                    >
+                                        <i class="fas fa-file-import"></i>
+                                        Importar marcas
+                                    </span>
+
+                                    <span
+                                        wire:loading
+                                        wire:target="importarMarcas"
+                                    >
+                                        <i class="fas fa-spinner fa-spin"></i>
+                                        Importando marcas...
+                                    </span>
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    @endif
+
+    {{-- ========================================================= --}}
+    {{-- BUSCADOR                                                  --}}
+    {{-- ========================================================= --}}
     <div
         class="search-panel mb-4"
         data-tour-step
@@ -157,16 +597,24 @@
     >
         <div class="search-panel-header">
             <div>
-                <label for="searchid" class="search-title">
+                <label
+                    for="searchid"
+                    class="search-title"
+                >
                     Buscar marca
                 </label>
 
                 <p class="search-description">
-                    Escribe el nombre de la marca. Los resultados se actualizan automáticamente.
+                    Escribe el nombre de la marca. Los resultados
+                    se actualizan automáticamente.
                 </p>
             </div>
 
-            <div class="search-status" wire:loading wire:target="searchMarcas">
+            <div
+                class="search-status"
+                wire:loading
+                wire:target="searchMarcas"
+            >
                 <i class="fas fa-spinner fa-spin"></i>
                 Buscando
             </div>
@@ -201,7 +649,9 @@
         </div>
     </div>
 
-    <!-- TABLA -->
+    {{-- ========================================================= --}}
+    {{-- TABLA                                                     --}}
+    {{-- ========================================================= --}}
     <div
         class="table-card"
         data-tour-step
@@ -222,7 +672,10 @@
             </div>
 
             <div class="table-counter">
-                {{ $marcas->total() }} registros
+                {{ $marcas->total() }}
+                {{ $marcas->total() === 1
+                    ? 'registro'
+                    : 'registros' }}
             </div>
         </div>
 
@@ -230,18 +683,28 @@
             <table class="table marcas-table mb-0">
                 <thead>
                     <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Marca</th>
+                        <th scope="col">
+                            ID
+                        </th>
+
+                        <th scope="col">
+                            Marca
+                        </th>
 
                         @hasanyrole('Administrador')
-                            <th scope="col" class="text-center">Acciones</th>
+                            <th
+                                scope="col"
+                                class="text-center"
+                            >
+                                Acciones
+                            </th>
                         @endhasanyrole
                     </tr>
                 </thead>
 
                 <tbody>
-                    @forelse ($marcas as $marca)
-                        <tr>
+                    @forelse($marcas as $marca)
+                        <tr wire:key="marca-{{ $marca->id }}">
                             <td>
                                 <span class="id-badge">
                                     #{{ $marca->id }}
@@ -259,7 +722,19 @@
                                     <button
                                         type="button"
                                         class="btn-action-edit"
-                                        wire:click="cambiarAccion('editar', {{ $marca->id }})"
+                                        wire:click="
+                                            cambiarAccion(
+                                                'editar',
+                                                {{ $marca->id }}
+                                            )
+                                        "
+                                        wire:loading.attr="disabled"
+                                        wire:target="
+                                            cambiarAccion(
+                                                'editar',
+                                                {{ $marca->id }}
+                                            )
+                                        "
                                         title="Editar marca"
                                     >
                                         <i class="fas fa-pen"></i>
@@ -275,11 +750,26 @@
                                         <i class="fas fa-search"></i>
                                     </div>
 
-                                    <h6>No se encontraron marcas</h6>
+                                    <h6>
+                                        No se encontraron marcas
+                                    </h6>
 
                                     <p>
-                                        Intenta con otro nombre o limpia la búsqueda para ver todos los registros.
+                                        Intenta con otro nombre o limpia
+                                        la búsqueda para ver todos los
+                                        registros.
                                     </p>
+
+                                    @if($search)
+                                        <button
+                                            type="button"
+                                            wire:click="clearSearch"
+                                            class="btn-empty-clear"
+                                        >
+                                            <i class="fas fa-times"></i>
+                                            Limpiar búsqueda
+                                        </button>
+                                    @endif
                                 </div>
                             </td>
                         </tr>
@@ -289,7 +779,9 @@
         </div>
     </div>
 
-    <!-- PAGINACIÓN -->
+    {{-- ========================================================= --}}
+    {{-- PAGINACIÓN                                                --}}
+    {{-- ========================================================= --}}
     <div
         class="pagination-wrapper mt-4"
         data-tour-step
@@ -301,67 +793,194 @@
         {{ $marcas->links() }}
     </div>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/ieessppformtable.css') }}">
+    {{-- ========================================================= --}}
+    {{-- ESTILOS EXTERNOS                                          --}}
+    {{-- ========================================================= --}}
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
 
+    <link
+        rel="stylesheet"
+        href="{{ asset('css/ieessppformtable.css') }}"
+    >
+
+    {{-- ========================================================= --}}
+    {{-- JAVASCRIPT                                                --}}
+    {{-- ========================================================= --}}
     @push('js')
         @livewireScripts
 
         <script>
-            document.addEventListener('livewire:initialized', function () {
+            document.addEventListener(
+                'livewire:initialized',
+                function () {
 
-                Livewire.on('refresh-page', function ($message) {
-                    location.reload();
-                });
-
-                Livewire.on('alumno-created', function ($message) {
-                    Swal.fire({
-                        title: '¡Éxito!',
-                        text: '!Marca registrada con éxito!',
-                        icon: 'success',
-                        confirmButtonText: 'Ok',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                        allowEnterKey: false,
-                        customClass: {
-                            confirmButton: 'btn-ieesspp'
-                        },
-                        buttonsStyling: false
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.reload();
-                        }
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Recargar página
+                    |--------------------------------------------------------------------------
+                    */
+                    Livewire.on('refresh-page', function () {
+                        location.reload();
                     });
-                });
 
-                Livewire.on('alumno-updated', function ($message) {
-                    Swal.fire({
-                        title: '¡Éxito!',
-                        text: '!Marca actualizada con éxito!',
-                        icon: 'success',
-                        confirmButtonText: 'Ok',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                        allowEnterKey: false,
-                        customClass: {
-                            confirmButton: 'btn-ieesspp'
-                        },
-                        buttonsStyling: false
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.reload();
-                        }
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Marca registrada
+                    |--------------------------------------------------------------------------
+                    */
+                    Livewire.on('alumno-created', function () {
+                        Swal.fire({
+                            title: '¡Éxito!',
+                            text: '¡Marca registrada con éxito!',
+                            icon: 'success',
+                            confirmButtonText: 'Aceptar',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            allowEnterKey: false,
+                            customClass: {
+                                confirmButton: 'btn-ieesspp'
+                            },
+                            buttonsStyling: false
+                        }).then(function (result) {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
                     });
-                });
 
-            });
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Marca actualizada
+                    |--------------------------------------------------------------------------
+                    */
+                    Livewire.on('alumno-updated', function () {
+                        Swal.fire({
+                            title: '¡Éxito!',
+                            text: '¡Marca actualizada con éxito!',
+                            icon: 'success',
+                            confirmButtonText: 'Aceptar',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            allowEnterKey: false,
+                            customClass: {
+                                confirmButton: 'btn-ieesspp'
+                            },
+                            buttonsStyling: false
+                        }).then(function (result) {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+                    });
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Limpiar selector de archivo
+                    |--------------------------------------------------------------------------
+                    */
+                    Livewire.on(
+                        'limpiar-archivo-marcas',
+                        function () {
+                            const input = document.getElementById(
+                                'archivoMarcas'
+                            );
+
+                            if (input) {
+                                input.value = '';
+                            }
+                        }
+                    );
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Importación correcta
+                    |--------------------------------------------------------------------------
+                    */
+                    Livewire.on(
+                        'marcas-importadas',
+                        function (event) {
+                            const mensaje =
+                                event && event.mensaje
+                                    ? event.mensaje
+                                    : 'Las marcas fueron importadas correctamente.';
+
+                            Swal.fire({
+                                title: '¡Importación terminada!',
+                                text: mensaje,
+                                icon: 'success',
+                                confirmButtonText: 'Aceptar',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                                allowEnterKey: false,
+                                customClass: {
+                                    confirmButton: 'btn-ieesspp'
+                                },
+                                buttonsStyling: false
+                            });
+                        }
+                    );
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Importación con advertencias
+                    |--------------------------------------------------------------------------
+                    */
+                    Livewire.on(
+                        'marcas-importacion-advertencia',
+                        function (event) {
+                            const mensaje =
+                                event && event.mensaje
+                                    ? event.mensaje
+                                    : 'La importación terminó con algunas filas rechazadas.';
+
+                            Swal.fire({
+                                title: 'Importación finalizada',
+                                text: mensaje,
+                                icon: 'warning',
+                                confirmButtonText: 'Revisar',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                                allowEnterKey: false,
+                                customClass: {
+                                    confirmButton: 'btn-ieesspp'
+                                },
+                                buttonsStyling: false
+                            });
+                        }
+                    );
+
+                }
+            );
         </script>
     @endpush
 
+    {{-- ========================================================= --}}
+    {{-- ESTILOS                                                   --}}
+    {{-- ========================================================= --}}
     <style>
+        /*
+        |--------------------------------------------------------------------------
+        | BASE
+        |--------------------------------------------------------------------------
+        */
+
         .marcas-page {
             color: #111827;
         }
+
+        button:disabled {
+            cursor: wait !important;
+            opacity: 0.68;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | BARRA DE CARGA
+        |--------------------------------------------------------------------------
+        */
 
         .ieesspp-loading-bar {
             position: fixed;
@@ -373,8 +992,19 @@
         }
 
         .ieesspp-loading-bar .progress-bar {
-            background: linear-gradient(90deg, #171C63, #2563eb, #06b6d4);
+            background: linear-gradient(
+                90deg,
+                #171C63,
+                #2563eb,
+                #06b6d4
+            );
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | ENCABEZADO
+        |--------------------------------------------------------------------------
+        */
 
         .marcas-header {
             display: flex;
@@ -382,8 +1012,16 @@
             justify-content: space-between;
             gap: 20px;
             background:
-                radial-gradient(circle at top left, rgba(23, 28, 99, 0.12), transparent 35%),
-                linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+                radial-gradient(
+                    circle at top left,
+                    rgba(23, 28, 99, 0.12),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    135deg,
+                    #ffffff 0%,
+                    #f8fafc 100%
+                );
             border: 1px solid rgba(226, 232, 240, 0.9);
             border-radius: 18px;
             padding: 24px;
@@ -426,6 +1064,12 @@
             flex-wrap: wrap;
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | BOTÓN TUTORIAL
+        |--------------------------------------------------------------------------
+        */
+
         .btn-tour-module {
             display: inline-flex;
             align-items: center;
@@ -439,7 +1083,11 @@
             color: #171C63;
             font-weight: 800;
             box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
-            transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+            transition:
+                transform 0.18s ease,
+                background 0.18s ease,
+                color 0.18s ease,
+                box-shadow 0.18s ease;
         }
 
         .btn-tour-module:hover,
@@ -450,6 +1098,52 @@
             box-shadow: 0 14px 28px rgba(23, 28, 99, 0.20);
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | BOTÓN IMPORTAR EXCEL
+        |--------------------------------------------------------------------------
+        */
+
+        .btn-import-marcas {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            min-height: 44px;
+            padding: 0 18px;
+            border: 1px solid #15803d;
+            border-radius: 12px;
+            background: #ffffff;
+            color: #15803d;
+            font-weight: 800;
+            box-shadow: 0 10px 24px rgba(21, 128, 61, 0.10);
+            transition:
+                transform 0.18s ease,
+                background 0.18s ease,
+                color 0.18s ease,
+                box-shadow 0.18s ease;
+        }
+
+        .btn-import-marcas > span {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .btn-import-marcas:hover,
+        .btn-import-marcas:focus {
+            background: #15803d;
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 14px 28px rgba(21, 128, 61, 0.22);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | BOTÓN AGREGAR
+        |--------------------------------------------------------------------------
+        */
+
         .btn-add-marca {
             display: inline-flex;
             align-items: center;
@@ -459,11 +1153,24 @@
             padding: 0 18px;
             border: none;
             border-radius: 12px;
-            background: linear-gradient(135deg, #171C63 0%, #26318f 100%);
+            background: linear-gradient(
+                135deg,
+                #171C63 0%,
+                #26318f 100%
+            );
             color: #ffffff;
             font-weight: 700;
             box-shadow: 0 14px 28px rgba(23, 28, 99, 0.22);
-            transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+            transition:
+                transform 0.18s ease,
+                box-shadow 0.18s ease,
+                filter 0.18s ease;
+        }
+
+        .btn-add-marca > span {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
         }
 
         .btn-add-marca:hover {
@@ -473,15 +1180,30 @@
             box-shadow: 0 18px 34px rgba(23, 28, 99, 0.28);
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | MODALES
+        |--------------------------------------------------------------------------
+        */
+
+        .marca-modal-wrapper {
+            position: fixed;
+            inset: 0;
+            z-index: 1050;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
         .modal-backdrop-custom {
             position: fixed;
             inset: 0;
-            background: rgba(15, 23, 42, 0.58);
+            z-index: 1050;
+            background: rgba(15, 23, 42, 0.62);
             backdrop-filter: blur(5px);
-            z-index: -1;
         }
 
         .ieesspp-modal-dialog {
+            position: relative;
             z-index: 1055;
         }
 
@@ -500,9 +1222,31 @@
             padding: 18px 22px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.12);
             background:
-                radial-gradient(circle at top left, rgba(255, 255, 255, 0.20), transparent 35%),
-                linear-gradient(135deg, #171C63 0%, #0f143f 100%);
+                radial-gradient(
+                    circle at top left,
+                    rgba(255, 255, 255, 0.20),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    135deg,
+                    #171C63 0%,
+                    #0f143f 100%
+                );
             color: #ffffff;
+        }
+
+        .import-modal-header {
+            background:
+                radial-gradient(
+                    circle at top left,
+                    rgba(255, 255, 255, 0.18),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    135deg,
+                    #14532d 0%,
+                    #15803d 100%
+                );
         }
 
         .ieesspp-modal-header .modal-title {
@@ -528,7 +1272,9 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.18s ease, transform 0.18s ease;
+            transition:
+                background 0.18s ease,
+                transform 0.18s ease;
         }
 
         .modal-close-btn:hover {
@@ -539,6 +1285,454 @@
         .ieesspp-modal-body {
             background: #ffffff;
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | MODAL DE IMPORTACIÓN
+        |--------------------------------------------------------------------------
+        */
+
+        .import-marcas-body {
+            padding: 24px;
+            background: #ffffff;
+        }
+
+        .import-instructions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 22px;
+            padding: 16px;
+            border: 1px solid #dbeafe;
+            border-radius: 14px;
+            background: #f8fafc;
+        }
+
+        .import-instructions-icon {
+            width: 48px;
+            height: 48px;
+            flex: 0 0 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 13px;
+            background: #dcfce7;
+            color: #15803d;
+            font-size: 21px;
+        }
+
+        .import-instructions h6 {
+            margin: 0;
+            color: #0f172a;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .import-instructions p {
+            margin: 4px 0 0;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .import-field {
+            margin-bottom: 16px;
+        }
+
+        .import-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #0f172a;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .import-file-wrapper {
+            padding: 5px;
+            border: 1px solid #cbd5e1;
+            border-radius: 13px;
+            background: #f8fafc;
+            transition:
+                border-color 0.18s ease,
+                background 0.18s ease,
+                box-shadow 0.18s ease;
+        }
+
+        .import-file-wrapper:focus-within {
+            border-color: rgba(23, 28, 99, 0.45);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(23, 28, 99, 0.09);
+        }
+
+        .import-file-input {
+            min-height: 46px;
+            padding: 10px 12px;
+            border: none !important;
+            border-radius: 10px;
+            background: transparent;
+            box-shadow: none !important;
+        }
+
+        .import-file-input::file-selector-button {
+            margin-right: 12px;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 9px;
+            background: #171C63;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .import-help {
+            margin: 8px 0 0;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .import-validation-error {
+            display: flex;
+            align-items: flex-start;
+            gap: 7px;
+            margin-top: 9px;
+            padding: 10px 12px;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            background: #fef2f2;
+            color: #b91c1c;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .import-validation-error i {
+            margin-top: 2px;
+        }
+
+        .import-loading {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 12px 0;
+            padding: 11px 13px;
+            border-radius: 10px;
+            background: rgba(23, 28, 99, 0.07);
+            color: #171C63;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .selected-file {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 15px 0;
+            padding: 14px;
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+            background: #f0fdf4;
+            color: #166534;
+        }
+
+        .selected-file-icon {
+            width: 42px;
+            height: 42px;
+            flex: 0 0 42px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 11px;
+            background: #dcfce7;
+            color: #15803d;
+            font-size: 20px;
+        }
+
+        .selected-file-info {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .selected-file-info span {
+            display: block;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .selected-file-info strong {
+            display: block;
+            overflow: hidden;
+            margin-top: 2px;
+            color: #14532d;
+            font-size: 13px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .selected-file-check {
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            background: #16a34a;
+            color: #ffffff;
+            font-size: 12px;
+        }
+
+        .import-example {
+            overflow: hidden;
+            margin-top: 18px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+        }
+
+        .import-example-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 13px 15px;
+            border-bottom: 1px solid #e2e8f0;
+            background: #f8fafc;
+        }
+
+        .import-example-title {
+            color: #334155;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .import-example-header p {
+            margin: 3px 0 0;
+            color: #64748b;
+            font-size: 11px;
+        }
+
+        .excel-badge {
+            padding: 5px 9px;
+            border-radius: 999px;
+            background: #dcfce7;
+            color: #15803d;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .import-example-table th {
+            padding: 10px 14px;
+            background: #f1f5f9;
+            color: #334155;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .import-example-table td {
+            padding: 9px 14px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #475569;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .import-example-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .import-summary {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .import-summary-item {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 13px;
+            border-radius: 12px;
+        }
+
+        .import-summary-item.success {
+            border: 1px solid #bbf7d0;
+            background: #f0fdf4;
+            color: #166534;
+        }
+
+        .import-summary-item.warning {
+            border: 1px solid #fde68a;
+            background: #fffbeb;
+            color: #92400e;
+        }
+
+        .import-summary-icon {
+            width: 36px;
+            height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.75);
+        }
+
+        .import-summary-item span {
+            display: block;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .import-summary-item strong {
+            display: block;
+            margin-top: 2px;
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .import-row-errors {
+            margin-top: 18px;
+            padding: 15px;
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+            background: #fef2f2;
+        }
+
+        .import-row-errors-title {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            color: #991b1b;
+        }
+
+        .import-row-errors-title i {
+            margin-top: 3px;
+        }
+
+        .import-row-errors-title strong {
+            display: block;
+            font-size: 14px;
+            font-weight: 900;
+        }
+
+        .import-row-errors-title span {
+            display: block;
+            margin-top: 3px;
+            color: #b91c1c;
+            font-size: 11px;
+        }
+
+        .import-errors-list {
+            max-height: 230px;
+            overflow-y: auto;
+            margin-top: 12px;
+            padding-right: 4px;
+        }
+
+        .import-row-error {
+            margin-bottom: 9px;
+            padding: 11px;
+            border: 1px solid #fee2e2;
+            border-radius: 9px;
+            background: #ffffff;
+            color: #7f1d1d;
+            font-size: 12px;
+        }
+
+        .import-row-error:last-child {
+            margin-bottom: 0;
+        }
+
+        .import-row-error-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .import-row-error-header span {
+            overflow: hidden;
+            color: #64748b;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .import-row-error ul {
+            margin: 7px 0 0;
+            padding-left: 19px;
+        }
+
+        .import-modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 22px;
+            padding-top: 18px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .btn-cancel-import,
+        .btn-confirm-import {
+            min-height: 44px;
+            padding: 0 18px;
+            border-radius: 11px;
+            font-size: 14px;
+            font-weight: 800;
+            transition:
+                transform 0.18s ease,
+                box-shadow 0.18s ease,
+                background 0.18s ease;
+        }
+
+        .btn-cancel-import {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: 1px solid #cbd5e1;
+            background: #ffffff;
+            color: #475569;
+        }
+
+        .btn-cancel-import:hover {
+            background: #f8fafc;
+            color: #0f172a;
+        }
+
+        .btn-confirm-import {
+            border: none;
+            background: linear-gradient(
+                135deg,
+                #15803d 0%,
+                #16a34a 100%
+            );
+            color: #ffffff;
+            box-shadow: 0 12px 24px rgba(21, 128, 61, 0.22);
+        }
+
+        .btn-confirm-import span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-confirm-import:hover {
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 16px 30px rgba(21, 128, 61, 0.28);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | BUSCADOR
+        |--------------------------------------------------------------------------
+        */
 
         .search-panel {
             background: #ffffff;
@@ -591,7 +1785,10 @@
             border: 1px solid transparent;
             border-radius: 14px;
             overflow: hidden;
-            transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+            transition:
+                background 0.18s ease,
+                border-color 0.18s ease,
+                box-shadow 0.18s ease;
         }
 
         .search-box:focus-within {
@@ -636,13 +1833,21 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.18s ease, color 0.18s ease;
+            transition:
+                background 0.18s ease,
+                color 0.18s ease;
         }
 
         .btn-clear-search:hover {
             background: #fee2e2;
             color: #dc2626;
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | TABLA
+        |--------------------------------------------------------------------------
+        */
 
         .table-card {
             background: #ffffff;
@@ -659,7 +1864,11 @@
             gap: 16px;
             padding: 18px 20px;
             border-bottom: 1px solid #edf2f7;
-            background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+            background: linear-gradient(
+                180deg,
+                #ffffff 0%,
+                #fbfdff 100%
+            );
         }
 
         .table-title {
@@ -710,7 +1919,9 @@
         }
 
         .marcas-table tbody tr {
-            transition: background 0.16s ease, transform 0.16s ease;
+            transition:
+                background 0.16s ease,
+                transform 0.16s ease;
         }
 
         .marcas-table tbody tr:hover {
@@ -746,7 +1957,11 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+            transition:
+                transform 0.18s ease,
+                background 0.18s ease,
+                color 0.18s ease,
+                box-shadow 0.18s ease;
         }
 
         .btn-action-edit:hover {
@@ -755,6 +1970,12 @@
             transform: translateY(-1px);
             box-shadow: 0 10px 20px rgba(249, 115, 22, 0.24);
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | ESTADO VACÍO
+        |--------------------------------------------------------------------------
+        */
 
         .empty-state {
             padding: 34px 20px;
@@ -787,10 +2008,37 @@
             font-size: 13px;
         }
 
+        .btn-empty-clear {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            margin-top: 14px;
+            padding: 9px 14px;
+            border: 1px solid rgba(23, 28, 99, 0.20);
+            border-radius: 10px;
+            background: #ffffff;
+            color: #171C63;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | PAGINACIÓN
+        |--------------------------------------------------------------------------
+        */
+
         .pagination-wrapper {
             display: flex;
             justify-content: flex-end;
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | SWEETALERT
+        |--------------------------------------------------------------------------
+        */
 
         .btn-ieesspp {
             background: #171C63 !important;
@@ -801,9 +2049,55 @@
             font-weight: 700 !important;
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | NAVEGACIÓN MÓVIL
+        |--------------------------------------------------------------------------
+        */
+
         .mobile-page-nav {
             display: none;
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | RESPONSIVE TABLET
+        |--------------------------------------------------------------------------
+        */
+
+        @media (max-width: 992px) {
+            .marcas-header {
+                align-items: stretch;
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .header-actions,
+            .btn-tour-module,
+            .btn-import-marcas,
+            .btn-add-marca {
+                width: 100%;
+            }
+
+            .search-panel-header {
+                flex-direction: column;
+            }
+
+            .table-card-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .pagination-wrapper {
+                justify-content: center;
+            }
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | RESPONSIVE MÓVIL
+        |--------------------------------------------------------------------------
+        */
 
         @media (max-width: 768px) {
             .marcas-page {
@@ -815,7 +2109,7 @@
             .mobile-page-nav {
                 position: sticky;
                 top: 8px;
-                z-index: 1050;
+                z-index: 1040;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
@@ -859,7 +2153,11 @@
             }
 
             .mobile-nav-btn.primary {
-                background: linear-gradient(135deg, #171C63 0%, #26318f 100%);
+                background: linear-gradient(
+                    135deg,
+                    #171C63 0%,
+                    #26318f 100%
+                );
                 border-color: #171C63;
                 color: #ffffff !important;
                 box-shadow: 0 12px 24px rgba(23, 28, 99, 0.22);
@@ -875,43 +2173,63 @@
             .marcas-header {
                 margin-top: 4px;
             }
+
+            .ieesspp-modal-dialog {
+                margin: 12px;
+            }
+
+            .import-summary {
+                grid-template-columns: 1fr;
+            }
         }
 
-        @media (max-width: 992px) {
+        /*
+        |--------------------------------------------------------------------------
+        | RESPONSIVE MÓVIL PEQUEÑO
+        |--------------------------------------------------------------------------
+        */
+
+        @media (max-width: 576px) {
             .marcas-header {
-                align-items: stretch;
-                flex-direction: column;
-                padding: 20px;
+                padding: 18px;
+                border-radius: 15px;
             }
 
-            .header-actions,
-            .btn-tour-module,
-            .btn-add-marca {
-                width: 100%;
+            .marcas-title {
+                font-size: 23px;
             }
 
-            .search-panel-header {
-                flex-direction: column;
+            .import-marcas-body {
+                padding: 18px;
             }
 
-            .table-card-header {
+            .import-instructions {
                 align-items: flex-start;
+                padding: 14px;
+            }
+
+            .import-example-header {
                 flex-direction: column;
             }
 
-            .table-bottom-controls {
-                align-items: stretch;
-                flex-direction: column;
+            .import-modal-actions {
+                flex-direction: column-reverse;
             }
 
-            .per-page-control,
-            .btn-export-inventory {
+            .btn-cancel-import,
+            .btn-confirm-import {
                 width: 100%;
                 justify-content: center;
             }
 
-            .pagination-wrapper {
-                justify-content: center;
+            .selected-file-check {
+                display: none;
+            }
+
+            .marcas-table thead th,
+            .marcas-table tbody td {
+                padding-left: 14px;
+                padding-right: 14px;
             }
         }
     </style>
