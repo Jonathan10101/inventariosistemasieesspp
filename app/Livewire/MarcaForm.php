@@ -11,7 +11,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Throwable;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Excel as ExcelFormat;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 
@@ -167,12 +167,6 @@ public function importarMarcas(): void
     $this->marcasDuplicadas = 0;
     $this->erroresImportacion = [];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Validar archivo
-    |--------------------------------------------------------------------------
-    */
-
     $this->validate(
         [
             'archivoMarcas' => [
@@ -197,10 +191,12 @@ public function importarMarcas(): void
         ]
     );
 
+    $rutaGuardada = null;
+
     try {
         /*
         |--------------------------------------------------------------------------
-        | Detectar el formato original
+        | Conservar la extensión original
         |--------------------------------------------------------------------------
         */
 
@@ -208,57 +204,57 @@ public function importarMarcas(): void
             $this->archivoMarcas->getClientOriginalExtension()
         );
 
-        $tipoArchivo = match ($extension) {
-            'xlsx' => ExcelFormat::XLSX,
-            'xls'  => ExcelFormat::XLS,
-            'csv'  => ExcelFormat::CSV,
-
-            default => throw new \RuntimeException(
-                'El formato del archivo no es compatible.'
-            ),
-        };
-
-        /*
-        |--------------------------------------------------------------------------
-        | Obtener la ruta temporal real de Livewire
-        |--------------------------------------------------------------------------
-        */
-
-        $rutaTemporal = $this->archivoMarcas->getRealPath();
-
-        if (
-            empty($rutaTemporal)
-            || !is_file($rutaTemporal)
-        ) {
+        if (!in_array($extension, ['xlsx', 'xls', 'csv'], true)) {
             throw new \RuntimeException(
-                'Livewire no pudo localizar el archivo temporal.'
+                'El formato del archivo no es compatible.'
             );
         }
 
         /*
         |--------------------------------------------------------------------------
-        | Ejecutar importación
+        | Guardar temporalmente el archivo con extensión real
         |--------------------------------------------------------------------------
+        */
+
+        $nombreArchivo =
+            'marcas-' . Str::uuid() . '.' . $extension;
+
+        $rutaGuardada = $this->archivoMarcas->storeAs(
+            'imports',
+            $nombreArchivo,
+            'local'
+        );
+
+        if (
+            !$rutaGuardada
+            || !Storage::disk('local')->exists($rutaGuardada)
+        ) {
+            throw new \RuntimeException(
+                'No fue posible guardar temporalmente el archivo.'
+            );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Importar
+        |--------------------------------------------------------------------------
+        |
+        | No usamos ExcelFormat.
+        | Laravel Excel detectará el formato por la extensión del archivo.
+        |
         */
 
         $importacion = new MarcasImport();
 
-        DB::transaction(function () use (
+        Excel::import(
             $importacion,
-            $rutaTemporal,
-            $tipoArchivo
-        ) {
-            Excel::import(
-                $importacion,
-                $rutaTemporal,
-                null,
-                $tipoArchivo
-            );
-        });
+            $rutaGuardada,
+            'local'
+        );
 
         /*
         |--------------------------------------------------------------------------
-        | Recuperar resultados
+        | Resultados
         |--------------------------------------------------------------------------
         */
 
@@ -273,7 +269,7 @@ public function importarMarcas(): void
 
         /*
         |--------------------------------------------------------------------------
-        | Actualizar tabla
+        | Actualizar la tabla
         |--------------------------------------------------------------------------
         */
 
@@ -284,12 +280,6 @@ public function importarMarcas(): void
         $this->reset('archivoMarcas');
 
         $this->dispatch('limpiar-archivo-marcas');
-
-        /*
-        |--------------------------------------------------------------------------
-        | Resultado con errores de algunas filas
-        |--------------------------------------------------------------------------
-        */
 
         if (count($this->erroresImportacion) > 0) {
             $this->dispatch(
@@ -303,12 +293,6 @@ public function importarMarcas(): void
             return;
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Resultado correcto
-        |--------------------------------------------------------------------------
-        */
-
         $this->showImportModal = false;
 
         $this->dispatch(
@@ -318,22 +302,25 @@ public function importarMarcas(): void
                 . "y se ignoraron {$this->marcasDuplicadas} duplicadas."
         );
     } catch (Throwable $e) {
-        /*
-         * Guarda el error completo en storage/logs/laravel.log.
-         */
         report($e);
-
-        /*
-         * Mientras corregimos el problema, mostramos el error real.
-         */
-        $mensajeReal = config('app.debug')
-            ? $e->getMessage()
-            : 'Consulta storage/logs/laravel.log para conocer el error.';
 
         $this->addError(
             'archivoMarcas',
-            'No se pudo importar: ' . $mensajeReal
+            'No se pudo importar: ' . $e->getMessage()
         );
+    } finally {
+        /*
+        |--------------------------------------------------------------------------
+        | Eliminar archivo temporal
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            $rutaGuardada
+            && Storage::disk('local')->exists($rutaGuardada)
+        ) {
+            Storage::disk('local')->delete($rutaGuardada);
+        }
     }
 }
 
