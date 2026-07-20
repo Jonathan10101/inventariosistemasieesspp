@@ -1,13 +1,10 @@
 /* =========================================================
    INTEVI - ADMINLTE THEME
-   Laravel 12 + AdminLTE
-   Fácil de implementar
+   Laravel 12 + AdminLTE 3
 ========================================================= */
-body {
-    background: 8px solid red !important;
-}
+
 :root {
-    --intevi-primary: #171C63;
+    --intevi-primary: #171c63;
     --intevi-primary-2: #26318f;
     --intevi-bg: #f5f7fb;
     --intevi-text: #0f172a;
@@ -15,21 +12,43 @@ body {
     --intevi-border: #e2e8f0;
 }
 
-/* Fondo general */
+/* =========================================================
+   CONFIGURACIÓN GENERAL
+========================================================= */
+
+html,
+body {
+    min-height: 100%;
+}
+
 body {
     background: var(--intevi-bg) !important;
     color: var(--intevi-text);
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-/* Wrapper principal */
+/* =========================================================
+   WRAPPER PRINCIPAL
+========================================================= */
+
 .content-wrapper {
     background:
-        radial-gradient(circle at top left, rgba(23, 28, 99, 0.08), transparent 32%),
-        linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%) !important;
+        radial-gradient(
+            circle at top left,
+            rgba(23, 28, 99, 0.08),
+            transparent 32%
+        ),
+        linear-gradient(
+            180deg,
+            #f8fafc 0%,
+            #eef2f7 100%
+        ) !important;
 }
 
-/* Navbar superior */
+/* =========================================================
+   NAVBAR SUPERIOR
+========================================================= */
+
 .main-header.navbar {
     min-height: 64px;
     background: rgba(255, 255, 255, 0.92) !important;
@@ -47,92 +66,122 @@ body {
     color: var(--intevi-primary) !important;
 }
 
-/* Logo / marca */
-/* =====================================================
-   LOGO PRINCIPAL DE INTEVI EN ADMINLTE
-   ===================================================== */
+/* =========================================================
+   LOGO PRINCIPAL DE INTEVI
+   Icono izquierda + texto derecha
+   Todo el conjunto centrado
+========================================================= */
 
-.brand-link {
+.main-sidebar .brand-link {
+    width: 100% !important;
+    min-height: 64px !important;
+
     display: flex !important;
     align-items: center !important;
-    min-height: 58px;
-    padding: 7px 12px !important;
+    justify-content: center !important;
+
+    padding: 8px 0 !important;
+    margin: 0 !important;
+
     background: #ffffff !important;
-    background-color: #ffffff !important;
     border-bottom: 1px solid rgba(15, 23, 42, 0.07) !important;
+    box-shadow: none !important;
+
+    text-align: center !important;
+    white-space: normal !important;
+    overflow: hidden !important;
+}
+
+/*
+ AdminLTE coloca el contenido configurado en "logo"
+ dentro de un elemento .brand-text.
+*/
+.main-sidebar .brand-link .brand-text {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    float: none !important;
+    text-align: center !important;
+    line-height: normal !important;
+}
+
+/* Bloque completo del logo */
+.intevi-brand {
+    width: auto !important;
+    max-width: calc(100% - 20px) !important;
+
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 9px !important;
+
+    margin: 0 auto !important;
+    padding: 0 !important;
+
+    background: transparent !important;
+    border: none !important;
     box-shadow: none !important;
 }
 
-.intevi-brand {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-}
+/* Imagen del logo */
+.intevi-brand-logo {
+    width: 38px !important;
+    height: 38px !important;
 
-.intevi-brand-mark {
-    width: 38px;
-    height: 38px;
-    flex: 0 0 38px;
-    
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    min-width: 38px !important;
+    max-width: 38px !important;
+    max-height: 38px !important;
+
+    display: block !important;
+    flex: 0 0 38px !important;
+
+    object-fit: contain !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    float: none !important;
 
     background: transparent !important;
-    background-color: transparent !important;
-    background-image: transparent !important;
     border: none !important;
     border-radius: 0 !important;
     box-shadow: none !important;
 }
 
-.intevi-brand-mark img {
-    display: block;
-    width: 36px !important;
-    height: 36px !important;
-    max-width: 36px !important;
-    max-height: 36px !important;
+/* Texto INTEVI */
+.intevi-brand-name {
+    display: block !important;
+
     margin: 0 !important;
     padding: 0 !important;
-    object-fit: contain;
+
+    color: var(--intevi-primary) !important;
+
+    font-size: 19px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: 0.8px !important;
+
+    white-space: nowrap !important;
+
     background: transparent !important;
-    background-color: transparent !important;
-    background-image: transparent !important;
     border: none !important;
     box-shadow: none !important;
 }
 
-.intevi-brand-text {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    line-height: 1;
-    background: transparent !important;
-    background-color: transparent !important;
-    background-image: transparent !important;
-}
+/* =========================================================
+   SIDEBAR
+========================================================= */
 
-.intevi-brand-text strong {
-    margin: 0;
-    color: #171c63;
-    font-size: 17px;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    background: transparent !important;
-    background-color: transparent !important;
-    background-image: transparent !important;
-}
-
-.intevi-brand-text span {
-    margin-top: 5px;
-    color: #6b7280;
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.7px;
-}
-
-/* Sidebar */
 .main-sidebar {
     background: #ffffff !important;
     border-right: 1px solid rgba(226, 232, 240, 0.95);
@@ -143,13 +192,27 @@ body {
     padding-top: 14px;
 }
 
-/* Usuario / panel */
+/* =========================================================
+   PANEL DEL USUARIO
+========================================================= */
+
 .user-panel {
     margin: 0 10px 14px !important;
     padding: 13px !important;
+
     border-radius: 18px;
-    background: linear-gradient(135deg, rgba(23, 28, 99, 0.08), rgba(37, 99, 235, 0.05));
+
+    background: linear-gradient(
+        135deg,
+        rgba(23, 28, 99, 0.08),
+        rgba(37, 99, 235, 0.05)
+    );
+
     border: 1px solid rgba(226, 232, 240, 0.95);
+}
+
+.user-panel .info {
+    overflow: hidden;
 }
 
 .user-panel .info a {
@@ -157,7 +220,10 @@ body {
     font-weight: 900;
 }
 
-/* Menú */
+/* =========================================================
+   MENÚ DEL SIDEBAR
+========================================================= */
+
 .nav-sidebar {
     padding: 0 10px;
 }
@@ -168,175 +234,303 @@ body {
 
 .nav-sidebar .nav-link {
     min-height: 44px;
+
+    display: flex;
+    align-items: center;
+
     border-radius: 14px !important;
+
     color: #475569 !important;
+
     font-size: 14px;
     font-weight: 800;
-    transition: all 0.16s ease;
+
+    transition:
+        background-color 0.16s ease,
+        color 0.16s ease,
+        transform 0.16s ease,
+        box-shadow 0.16s ease;
 }
 
-.nav-sidebar .nav-link i {
+.nav-sidebar .nav-link p {
+    margin-bottom: 0;
+}
+
+.nav-sidebar .nav-link i,
+.nav-sidebar .nav-link .nav-icon {
     color: #64748b !important;
-    transition: all 0.16s ease;
+    transition: color 0.16s ease;
 }
 
 .nav-sidebar .nav-link:hover {
     background: rgba(23, 28, 99, 0.07) !important;
     color: var(--intevi-primary) !important;
+
     transform: translateX(2px);
 }
 
-.nav-sidebar .nav-link:hover i {
+.nav-sidebar .nav-link:hover i,
+.nav-sidebar .nav-link:hover .nav-icon {
     color: var(--intevi-primary) !important;
 }
 
 /* Menú activo */
 .nav-sidebar .nav-link.active {
-    background: linear-gradient(135deg, var(--intevi-primary), var(--intevi-primary-2)) !important;
+    background: linear-gradient(
+        135deg,
+        var(--intevi-primary),
+        var(--intevi-primary-2)
+    ) !important;
+
     color: #ffffff !important;
+
     box-shadow: 0 12px 24px rgba(23, 28, 99, 0.22);
 }
 
-.nav-sidebar .nav-link.active i {
+.nav-sidebar .nav-link.active i,
+.nav-sidebar .nav-link.active .nav-icon {
     color: #ffffff !important;
 }
 
-/* Submenús */
+/* =========================================================
+   SUBMENÚS
+========================================================= */
+
 .nav-treeview {
     padding-left: 7px;
 }
 
 .nav-treeview .nav-link {
     min-height: 38px;
+
     font-size: 13px;
+
     border-radius: 12px !important;
 }
 
 .nav-treeview .nav-link.active {
-    background: rgba(23, 28, 99, 0.10) !important;
+    background: rgba(23, 28, 99, 0.1) !important;
+
     color: var(--intevi-primary) !important;
-    box-shadow: none;
+
+    box-shadow: none !important;
 }
 
-.nav-treeview .nav-link.active i {
+.nav-treeview .nav-link.active i,
+.nav-treeview .nav-link.active .nav-icon {
     color: var(--intevi-primary) !important;
 }
 
-/* Headers */
+/* =========================================================
+   ENCABEZADOS
+========================================================= */
+
 .content-header {
     padding: 18px 1rem 0.5rem;
 }
 
 .content-header h1 {
+    margin-bottom: 0;
+
     color: var(--intevi-text);
-    font-weight: 950;
+
+    font-weight: 900;
     letter-spacing: -0.04em;
 }
 
-/* Cards AdminLTE */
+/* =========================================================
+   CARDS ADMINLTE
+========================================================= */
+
 .card {
+    overflow: hidden;
+
     border: 1px solid rgba(226, 232, 240, 0.95) !important;
     border-radius: 22px !important;
+
     box-shadow: 0 16px 38px rgba(15, 23, 42, 0.06) !important;
-    overflow: hidden;
 }
 
 .card-header {
-    background: #ffffff !important;
-    border-bottom: 1px solid rgba(226, 232, 240, 0.95) !important;
     padding: 17px 20px;
+
+    background: #ffffff !important;
+
+    border-bottom: 1px solid rgba(226, 232, 240, 0.95) !important;
 }
 
 .card-title {
     color: var(--intevi-text);
-    font-weight: 950;
+
+    font-weight: 900;
 }
 
-/* Botones */
+/* =========================================================
+   BOTONES
+========================================================= */
+
+.btn {
+    transition:
+        transform 0.16s ease,
+        box-shadow 0.16s ease,
+        background-color 0.16s ease;
+}
+
 .btn-primary {
-    background: linear-gradient(135deg, var(--intevi-primary), var(--intevi-primary-2)) !important;
+    background: linear-gradient(
+        135deg,
+        var(--intevi-primary),
+        var(--intevi-primary-2)
+    ) !important;
+
     border-color: var(--intevi-primary) !important;
-    color: #ffffff !important;
     border-radius: 13px !important;
+
+    color: #ffffff !important;
+
     font-weight: 900 !important;
-    box-shadow: 0 12px 24px rgba(23, 28, 99, 0.20);
+
+    box-shadow: 0 12px 24px rgba(23, 28, 99, 0.2);
 }
 
-.btn-primary:hover {
+.btn-primary:hover,
+.btn-primary:focus {
+    background: linear-gradient(
+        135deg,
+        #121650,
+        #202a7c
+    ) !important;
+
+    border-color: #121650 !important;
+
+    color: #ffffff !important;
+
     transform: translateY(-1px);
+
     box-shadow: 0 16px 30px rgba(23, 28, 99, 0.28);
 }
 
-/* Tablas */
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* =========================================================
+   TABLAS
+========================================================= */
+
 .table {
     color: #334155;
 }
 
 .table thead th {
     background: #f8fafc;
+
     color: #475569;
+
     border-bottom: 1px solid var(--intevi-border);
+
     font-size: 12px;
-    font-weight: 950;
+    font-weight: 900;
+
     text-transform: uppercase;
     letter-spacing: 0.06em;
 }
 
 .table td {
     vertical-align: middle;
+
     border-top: 1px solid #edf2f7;
+
     font-size: 13px;
     font-weight: 650;
 }
 
-/* Forms */
-.form-control {
-    border-radius: 13px !important;
+/* =========================================================
+   FORMULARIOS
+========================================================= */
+
+.form-control,
+.custom-select {
     border: 1px solid #dbe3ef !important;
+    border-radius: 13px !important;
+
     background: #f8fafc !important;
+
     color: #0f172a !important;
+
     font-weight: 700;
 }
 
-.form-control:focus {
+.form-control:focus,
+.custom-select:focus {
     background: #ffffff !important;
+
     border-color: rgba(23, 28, 99, 0.48) !important;
+
     box-shadow: 0 0 0 4px rgba(23, 28, 99, 0.09) !important;
 }
 
-/* Modales */
+.form-control::placeholder {
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+/* =========================================================
+   MODALES
+========================================================= */
+
 .modal-content {
+    overflow: hidden;
+
     border: none !important;
     border-radius: 22px !important;
-    overflow: hidden;
+
     box-shadow: 0 30px 80px rgba(15, 23, 42, 0.22) !important;
 }
 
 .modal-header {
-    background: linear-gradient(135deg, var(--intevi-primary), var(--intevi-primary-2)) !important;
+    background: linear-gradient(
+        135deg,
+        var(--intevi-primary),
+        var(--intevi-primary-2)
+    ) !important;
+
     color: #ffffff !important;
+
     border-bottom: none !important;
 }
 
 .modal-title {
-    font-weight: 950 !important;
+    font-weight: 900 !important;
 }
 
 .modal-header .close {
     color: #ffffff !important;
+
     opacity: 1 !important;
+
+    text-shadow: none !important;
 }
 
-/* Footer */
+/* =========================================================
+   FOOTER
+========================================================= */
+
 .main-footer {
     background: #ffffff !important;
+
     border-top: 1px solid rgba(226, 232, 240, 0.95) !important;
+
     color: #64748b !important;
+
     font-size: 13px;
     font-weight: 700;
 }
 
-/* Scrollbar */
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
 ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -348,6 +542,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
     background: #cbd5e1;
+
     border-radius: 999px;
 }
 
@@ -355,25 +550,32 @@ body {
     background: #94a3b8;
 }
 
-/* INTENTAR PONER LOGO CENTRADO */
+/* =========================================================
+   RESPONSIVE
+========================================================= */
 
-.main-sidebar .brand-link {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 100% !important;
-    padding-left: 10px !important;
-    padding-right: 10px !important;
-}
-
-/* Responsive */
 @media (max-width: 768px) {
     .main-header.navbar {
         min-height: 58px;
     }
 
-    .brand-link {
-        min-height: 58px;
+    .main-sidebar .brand-link {
+        min-height: 58px !important;
+    }
+
+    .intevi-brand-logo {
+        width: 34px !important;
+        height: 34px !important;
+
+        min-width: 34px !important;
+        max-width: 34px !important;
+        max-height: 34px !important;
+
+        flex-basis: 34px !important;
+    }
+
+    .intevi-brand-name {
+        font-size: 17px !important;
     }
 
     .content-header h1 {
