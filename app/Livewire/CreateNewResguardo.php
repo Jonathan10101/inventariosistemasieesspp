@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Storage as LaravelStorage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Validation\ValidationException;
+use App\Services\ImageCompressor;
 
 
 class CreateNewResguardo extends Component
@@ -260,8 +261,9 @@ class CreateNewResguardo extends Component
             'ubicacion_fisicas_id.required' => 'Selecciona la ubicación física.',
             'resguardante_id.required' => 'Selecciona un resguardante.',
 
-            'imagen.image' => 'La evidencia debe ser una imagen.',
-            'imagen.max' => 'La imagen no puede superar los 4 MB.',
+            'imagen.image' => 'La evidencia debe ser una imagen válida.',
+            'imagen.mimes' => 'La imagen debe ser JPG, JPEG, PNG o WebP.',
+            'imagen.max' => 'La imagen original no puede superar los 8 MB.',
 
             'resguardo_pdf.required' => 'Debes seleccionar el PDF del resguardo.',
             'resguardo_pdf.file' => 'El archivo del resguardo no es válido.',
@@ -291,6 +293,11 @@ class CreateNewResguardo extends Component
 
         $pdfCompressor = app(
             PdfCompressor::class
+        );
+
+
+        $imageCompressor = app(
+            ImageCompressor::class
         );
 
         /*
@@ -403,16 +410,23 @@ class CreateNewResguardo extends Component
 
 
             if ($this->imagen) {
-                $pathImagen = $this->imagen->store(
-                    'resguardos',
-                    'public'
+                /*
+                * La imagen se reduce a un máximo de 1600 x 1600 píxeles,
+                * conserva su proporción y se convierte a WebP.
+                *
+                * Calidad recomendada:
+                * 70 = menor peso.
+                * 75 = equilibrio recomendado.
+                * 80 = mayor calidad.
+                */
+                $pathImagen = $imageCompressor->store(
+                    file: $this->imagen,
+                    directory: 'resguardos',
+                    disk: 'public',
+                    maxWidth: 1600,
+                    maxHeight: 1600,
+                    quality: 75
                 );
-
-                if (!$pathImagen) {
-                    throw new RuntimeException(
-                        'No fue posible guardar la imagen del resguardo.'
-                    );
-                }
             }
 
             $imagenEvidencia = $pathImagen;
@@ -760,7 +774,7 @@ class CreateNewResguardo extends Component
             * una pantalla completa de error.
             */
             throw ValidationException::withMessages([
-                'formulario' => 'No fue posible guardar el resguardo. Revisa el archivo PDF e inténtalo nuevamente.',
+                'formulario' => 'No fue posible guardar el resguardo. Revisa la imagen y el archivo PDF e inténtalo nuevamente.',
             ]);
         } finally {
             /*
