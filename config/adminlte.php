@@ -35,40 +35,17 @@ return [
     | Admin Panel Logo
     |--------------------------------------------------------------------------
     */
-
     'logo' => '
-        <div style="
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            gap: 4px;
-        ">
+        <div class="intevi-brand">
             <img
                 src="/images/intevi logo.png"
                 alt="Logo de INTEVI"
-                style="
-                    width: 38px;
-                    height: 38px;
-                    object-fit: contain;
-                    display: block;
-                    margin: 0 auto;
-                "
+                class="intevi-brand-logo"
             >
 
-            <strong style="
-                display: block;
-                margin: 0;
-                color: #171C63;
-                font-size: 17px;
-                font-weight: 900;
-                line-height: 1;
-                letter-spacing: 1px;
-            ">
+            <span class="intevi-brand-name">
                 INTEVI
-            </strong>
+            </span>
         </div>
     ',
     'logo_img' => null,
