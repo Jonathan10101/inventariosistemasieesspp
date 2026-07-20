@@ -37,22 +37,39 @@ return [
     */
 
     'logo' => '
-        <div>
-            <div>
-                <img
-                    src="/images/intevi logo.png"
-                    alt="Logo de INTEVI"
-                    style="
-                        width: 36px;
-                        height: 36px;
-                        object-fit: contain;
-                        display: block;
-                    "
-                >
-            </div>
+        <div style="
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-align: center;
+        ">
+            <img
+                src="/images/intevi logo.png"
+                alt="Logo de INTEVI"
+                style="
+                    width: 36px;
+                    height: 36px;
+                    object-fit: contain;
+                    display: block;
+                    margin: 0;
+                "
+            >
 
-            <div class="intevi-brand-text">
-                <strong>INTEVI</strong>
+            <div style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            ">
+                <strong style="
+                    font-size: 20px;
+                    font-weight: 900;
+                    line-height: 1;
+                    color: #171C63;
+                ">
+                    INTEVI
+                </strong>
             </div>
         </div>
     ',

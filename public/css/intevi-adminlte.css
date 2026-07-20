@@ -355,6 +355,17 @@ body {
     background: #94a3b8;
 }
 
+/* INTENTAR PONER LOGO CENTRADO */
+
+.main-sidebar .brand-link {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .main-header.navbar {

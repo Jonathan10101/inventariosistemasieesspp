@@ -1800,6 +1800,684 @@ body.has-intevi-alert .hero {
                 transition-duration: 0.01ms !important;
             }
         }
+
+         .intevi-testimonios {
+        position: relative;
+        overflow: hidden;
+        padding: 100px 20px;
+        background:
+            radial-gradient(
+                circle at 10% 10%,
+                rgba(23, 28, 99, 0.09),
+                transparent 32%
+            ),
+            linear-gradient(180deg, #ffffff 0%, #f7f8fc 100%);
+    }
+
+    .intevi-testimonios::before {
+        content: "";
+        position: absolute;
+        top: -180px;
+        right: -180px;
+        width: 380px;
+        height: 380px;
+        border-radius: 50%;
+        background: rgba(23, 28, 99, 0.04);
+        pointer-events: none;
+    }
+
+    .intevi-testimonios-container {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 1180px;
+        margin: 0 auto;
+    }
+
+    .intevi-testimonios-header {
+        max-width: 760px;
+        margin: 0 auto 54px;
+        text-align: center;
+    }
+
+    .intevi-testimonios-label {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 34px;
+        margin-bottom: 18px;
+        padding: 7px 15px;
+        border: 1px solid rgba(23, 28, 99, 0.14);
+        border-radius: 999px;
+        background: rgba(23, 28, 99, 0.06);
+        color: #171c63;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+    }
+
+    .intevi-testimonios-header h2 {
+        margin: 0;
+        color: #11152f;
+        font-size: clamp(34px, 5vw, 55px);
+        font-weight: 850;
+        line-height: 1.08;
+        letter-spacing: -0.04em;
+    }
+
+    .intevi-testimonios-header p {
+        max-width: 670px;
+        margin: 22px auto 0;
+        color: #62697b;
+        font-size: 18px;
+        line-height: 1.75;
+    }
+
+    .intevi-testimonios-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 26px;
+    }
+
+    .intevi-testimonio-card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-height: 410px;
+        padding: 34px;
+        overflow: hidden;
+        border: 1px solid rgba(17, 21, 47, 0.09);
+        border-radius: 26px;
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow:
+            0 22px 60px rgba(23, 28, 99, 0.08),
+            0 4px 14px rgba(17, 21, 47, 0.04);
+        transition:
+            transform 0.25s ease,
+            box-shadow 0.25s ease,
+            border-color 0.25s ease;
+    }
+
+    .intevi-testimonio-card::after {
+        content: "";
+        position: absolute;
+        right: -80px;
+        bottom: -100px;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: rgba(23, 28, 99, 0.035);
+        pointer-events: none;
+    }
+
+    .intevi-testimonio-card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(23, 28, 99, 0.18);
+        box-shadow:
+            0 30px 75px rgba(23, 28, 99, 0.13),
+            0 5px 18px rgba(17, 21, 47, 0.05);
+    }
+
+    .intevi-testimonio-top {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 17px;
+    }
+
+    .intevi-testimonio-logo {
+        flex: 0 0 62px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 62px;
+        height: 62px;
+        border-radius: 18px;
+        background: #171c63;
+        color: #ffffff;
+        box-shadow: 0 13px 30px rgba(23, 28, 99, 0.22);
+        font-size: 20px;
+        font-weight: 900;
+        letter-spacing: -0.03em;
+    }
+
+    .intevi-testimonio-logo-red {
+        background: #a71930;
+        box-shadow: 0 13px 30px rgba(167, 25, 48, 0.2);
+    }
+
+    .intevi-testimonio-tipo {
+        display: block;
+        margin-bottom: 6px;
+        color: #7a8192;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+    }
+
+    .intevi-testimonio-top h3 {
+        margin: 0;
+        color: #171a2f;
+        font-size: 19px;
+        font-weight: 800;
+        line-height: 1.3;
+    }
+
+    .intevi-testimonio-quote {
+        position: relative;
+        z-index: 1;
+        flex: 1;
+        margin-top: 35px;
+        padding: 29px 25px 25px;
+        border: 1px solid rgba(23, 28, 99, 0.07);
+        border-radius: 19px;
+        background: #f8f9fd;
+    }
+
+    .intevi-comillas {
+        position: absolute;
+        top: -19px;
+        left: 20px;
+        color: #171c63;
+        font-family: Georgia, serif;
+        font-size: 63px;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .intevi-testimonio-quote p {
+        margin: 0;
+        color: #444b5e;
+        font-size: 16px;
+        line-height: 1.8;
+    }
+
+    .intevi-testimonio-footer {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 18px;
+        margin-top: 28px;
+    }
+
+    .intevi-testimonio-footer strong,
+    .intevi-testimonio-footer span {
+        display: block;
+    }
+
+    .intevi-testimonio-footer strong {
+        margin-bottom: 4px;
+        color: #171a2f;
+        font-size: 14px;
+        font-weight: 850;
+    }
+
+    .intevi-testimonio-footer > div > span {
+        color: #818798;
+        font-size: 12px;
+        line-height: 1.45;
+    }
+
+    .intevi-testimonio-verificado {
+        display: inline-flex !important;
+        align-items: center;
+        flex: 0 0 auto;
+        gap: 7px;
+        color: #171c63;
+        font-size: 11px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .intevi-testimonio-verificado svg {
+        width: 21px;
+        height: 21px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .intevi-testimonios-nota {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 13px;
+        max-width: 760px;
+        margin: 38px auto 0;
+        padding: 18px 22px;
+        border: 1px solid rgba(23, 28, 99, 0.1);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.82);
+    }
+
+    .intevi-testimonios-nota-icono {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        background: rgba(23, 28, 99, 0.08);
+        color: #171c63;
+    }
+
+    .intevi-testimonios-nota-icono svg {
+        width: 22px;
+        height: 22px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .intevi-testimonios-nota p {
+        margin: 0;
+        color: #5d6475;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .tachado-equis {
+    position: relative;
+    display: inline-block;
+    background: 
+        linear-gradient(to top left, transparent 45%, rgba(255, 0, 0, 0.35) 45%, rgba(255, 0, 0, 0.35) 55%, transparent 55%),
+        linear-gradient(to top right, transparent 45%, rgba(255, 0, 0, 0.35) 45%, rgba(255, 0, 0, 0.35) 55%, transparent 55%);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    }
+
+    .og-garantia {
+        position: relative;
+        overflow: hidden;
+        padding: 90px 24px;
+        background:
+            radial-gradient(
+                circle at 10% 50%,
+                rgba(254, 213, 36, 0.12),
+                transparent 31%
+            ),
+            linear-gradient(
+                135deg,
+                #0d103a 0%,
+                #101447 48%,
+                #171c63 100%
+            );
+    }
+
+    .og-garantia::before {
+        content: "";
+        position: absolute;
+        top: -180px;
+        right: -120px;
+        width: 420px;
+        height: 420px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 50%;
+    }
+
+    .og-garantia::after {
+        content: "";
+        position: absolute;
+        right: 30px;
+        bottom: -260px;
+        width: 500px;
+        height: 500px;
+        border-radius: 50%;
+        background: rgba(254, 213, 36, 0.035);
+    }
+
+    .og-garantia-container {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: minmax(280px, 1fr) minmax(0, 2fr);
+        align-items: center;
+        gap: clamp(45px, 7vw, 95px);
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Logo — aproximadamente 1/3
+    |--------------------------------------------------------------------------
+    */
+
+    .og-garantia-visual {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .og-garantia-sello {
+        position: relative;
+        width: 100%;
+        max-width: 360px;
+        padding: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.13);
+        border-radius: 50%;
+        background: #ffffff;
+        box-shadow:
+            0 30px 70px rgba(0, 0, 0, 0.3),
+            0 0 0 10px rgba(255, 255, 255, 0.035);
+    }
+
+    .og-garantia-sello::before {
+        content: "";
+        position: absolute;
+        inset: -17px;
+        z-index: -1;
+        border: 1px dashed rgba(254, 213, 36, 0.28);
+        border-radius: 50%;
+    }
+
+    .og-garantia-sello img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 50%;
+        object-fit: contain;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Contenido — aproximadamente 2/3
+    |--------------------------------------------------------------------------
+    */
+
+    .og-garantia-contenido {
+        max-width: 720px;
+    }
+
+    .og-garantia-etiqueta {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        margin-bottom: 18px;
+        padding: 7px 15px;
+        border: 1px solid rgba(254, 213, 36, 0.28);
+        border-radius: 999px;
+        background: rgba(254, 213, 36, 0.09);
+        color: #fed524;
+        font-size: 12px;
+        font-weight: 850;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+
+    .og-garantia-contenido h2 {
+        max-width: 680px;
+        margin: 0;
+        color: #ffffff;
+        font-size: clamp(36px, 5vw, 60px);
+        font-weight: 850;
+        line-height: 1.08;
+        letter-spacing: -0.045em;
+    }
+
+    .og-garantia-contenido h2 span {
+        color: #fed524;
+    }
+
+    .og-garantia-descripcion {
+        max-width: 650px;
+        margin: 24px 0 0;
+        color: rgba(255, 255, 255, 0.77);
+        font-size: 18px;
+        line-height: 1.75;
+    }
+
+    .og-garantia-beneficio {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        margin-top: 30px;
+        padding: 21px 22px;
+        border: 1px solid rgba(255, 255, 255, 0.11);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.07);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+
+    .og-garantia-check {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: #fed524;
+        color: #101447;
+        box-shadow: 0 10px 25px rgba(254, 213, 36, 0.2);
+    }
+
+    .og-garantia-check svg {
+        width: 23px;
+        height: 23px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .og-garantia-beneficio p {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.88);
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .og-garantia-beneficio strong {
+        color: #ffffff;
+        font-weight: 850;
+    }
+
+    .og-garantia-mensaje {
+        margin: 25px 0 0;
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 16px;
+        line-height: 1.65;
+    }
+
+    .og-garantia-mensaje strong {
+        color: #ffffff;
+    }
+
+    .og-garantia-boton {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-height: 56px;
+        margin-top: 28px;
+        padding: 15px 25px;
+        border: 1px solid #fed524;
+        border-radius: 12px;
+        background: #fed524;
+        color: #101447;
+        box-shadow: 0 14px 32px rgba(254, 213, 36, 0.2);
+        font-size: 15px;
+        font-weight: 850;
+        text-decoration: none;
+        transition:
+            transform 0.22s ease,
+            background-color 0.22s ease,
+            box-shadow 0.22s ease;
+    }
+
+    .og-garantia-boton svg {
+        width: 21px;
+        height: 21px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        transition: transform 0.22s ease;
+    }
+
+    .og-garantia-boton:hover {
+        transform: translateY(-3px);
+        background: #ffe35c;
+        color: #101447;
+        box-shadow: 0 18px 38px rgba(254, 213, 36, 0.27);
+        text-decoration: none;
+    }
+
+    .og-garantia-boton:hover svg {
+        transform: translateX(4px);
+    }
+
+    .og-garantia-terminos {
+        display: block;
+        max-width: 620px;
+        margin-top: 18px;
+        color: rgba(255, 255, 255, 0.48);
+        font-size: 11px;
+        line-height: 1.6;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Responsive
+    |--------------------------------------------------------------------------
+    */
+
+    @media (max-width: 900px) {
+        .og-garantia {
+            padding: 75px 20px;
+        }
+
+        .og-garantia-container {
+            grid-template-columns: 1fr;
+            gap: 50px;
+        }
+
+        .og-garantia-sello {
+            max-width: 310px;
+        }
+
+        .og-garantia-contenido {
+            max-width: 760px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .og-garantia-descripcion,
+        .og-garantia-contenido h2,
+        .og-garantia-terminos {
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .og-garantia-beneficio {
+            max-width: 680px;
+            margin-right: auto;
+            margin-left: auto;
+            text-align: left;
+        }
+    }
+
+    @media (max-width: 560px) {
+        .og-garantia {
+            padding: 60px 16px;
+        }
+
+        .og-garantia-container {
+            gap: 38px;
+        }
+
+        .og-garantia-sello {
+            max-width: 255px;
+            padding: 12px;
+        }
+
+        .og-garantia-contenido h2 {
+            font-size: 36px;
+        }
+
+        .og-garantia-descripcion {
+            font-size: 16px;
+        }
+
+        .og-garantia-beneficio {
+            padding: 18px;
+        }
+
+        .og-garantia-boton {
+            width: 100%;
+        }
+    }
+
+
+
+    @media (max-width: 850px) {
+        .intevi-testimonios {
+            padding: 78px 18px;
+        }
+
+        .intevi-testimonios-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .intevi-testimonio-card {
+            min-height: auto;
+        }
+    }
+
+    @media (max-width: 560px) {
+        .intevi-testimonios {
+            padding: 65px 15px;
+        }
+
+        .intevi-testimonios-header {
+            margin-bottom: 38px;
+        }
+
+        .intevi-testimonios-header p {
+            font-size: 16px;
+        }
+
+        .intevi-testimonio-card {
+            padding: 24px;
+            border-radius: 22px;
+        }
+
+        .intevi-testimonio-top {
+            align-items: flex-start;
+        }
+
+        .intevi-testimonio-logo {
+            flex-basis: 54px;
+            width: 54px;
+            height: 54px;
+            border-radius: 15px;
+            font-size: 17px;
+        }
+
+        .intevi-testimonio-footer {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .intevi-testimonios-nota {
+            align-items: flex-start;
+        }
+    }
     
 
         /* ================================================================
@@ -2038,6 +2716,7 @@ body.has-intevi-alert .hero {
 
 <main>
     {{-- 1. CAPTAR LA ATENCIÓN --}}
+    {{-- 
     <section class="og-hero" id="inicio">
         <div class="container og-hero-grid">
             <div class="og-hero-copy">
@@ -2068,7 +2747,9 @@ body.has-intevi-alert .hero {
             </div>
 
             <div class="og-browser">
+                <!--
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/jNQXAC9IVRw?si=z7OVEJo5EyEY0zv-&amp;start=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                -->
                 <!--
                 <span class="og-browser-label">Vista real de INTEVI</span>
                 <div class="og-browser-frame">
@@ -2083,6 +2764,84 @@ body.has-intevi-alert .hero {
                 </div>
                 <div class="og-float"><small>Información institucional</small><strong>Inventario centralizado</strong></div>
                 -->
+            </div>
+        </div>
+    </section>
+    --}}
+
+    <section class="og-hero" id="inicio" style="width:100%;">
+        <div class="og-hero-grid"
+            style="
+                display:block;
+                width:100%;
+                max-width:100%;
+                margin:0 auto;
+                padding-left:5%;
+                padding-right:5%;
+            ">
+
+            <div class="og-hero-copy"
+                style="
+                    width:100%;
+                    max-width:1300px;
+                    margin:0 auto;
+                    text-align:center;
+                ">
+
+                <h1 style="
+                    width:100%;
+                    max-width:none;
+                    margin-left:auto;
+                    margin-right:auto;
+                    font-size:clamp(32px, 4vw, 52px);
+                    line-height:1.15;
+                ">
+                    Cómo llevar control de tus resguardos ahorrando
+                    <span style="color:red;">tiempo, esfuerzo y estrés</span>
+                    desde <span style="color:red;">el primer mes</span>,
+                    utilizando un sistema sin importar si sabes usar una computadora,
+                    <span style="color:red;">comenzando desde cero.</span>
+                </h1>
+
+                <p class="og-hero-lead"
+                style="
+                        max-width:900px;
+                        margin-left:auto;
+                        margin-right:auto;
+                ">
+                    Esto funciona incluso si no eres un experto usando sistemas o no sabes usar bien una computadora.
+                </p>
+
+                <div class="og-actions"
+                    style="
+                        display:flex;
+                        justify-content:center;
+                        width:100%;
+                    ">
+                    <a class="button button-primary"
+                    style="background:red;"
+                    href="#contacto">
+
+                        SOLICITAR UNA DEMOSTRACIÓN GRATIS
+
+                        <svg viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M5 12h14M13 6l6 6-6 6"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <p class="og-note"
+                style="
+                        max-width:850px;
+                        margin-left:auto;
+                        margin-right:auto;
+                ">
+                    Conoce primero la plataforma. Después evalúa si responde a las necesidades de tu institución. Sin compromiso de contratación.
+                </p>
+
             </div>
         </div>
     </section>
@@ -2210,31 +2969,157 @@ body.has-intevi-alert .hero {
                 </div>
             </div>
     </div>
-
+{{--    
     <section class="og-impact" style="background:red;">
         <div class="container og-impact-grid">
             <span class="og-impact-label"></span>
             <p style="font-size:30px;">Yo sé que todo lo que te he mostrado suena muy bueno para ser cierto, pero no quiero que te limites a creer mi palabra. Simplemente echa un vistazo a esto...</p>
         </div>
     </section>
-    <section>
-        <p>EVIDENCIA DE PRUEBAS</p>
-    </section>
+
+
+<section class="intevi-testimonios" id="testimonios">
+    <div class="intevi-testimonios-container">
+
+        <div class="intevi-testimonios-header">
+            <span class="intevi-testimonios-label">
+                Evidencia de pruebas institucionales
+            </span>
+
+            <h2>
+                INTEVI probado en entornos reales
+            </h2>
+
+            <p>
+                Instituciones han conocido y probado la plataforma para evaluar
+                su funcionamiento en procesos de inventario, control de bienes
+                y generación de resguardos.
+            </p>
+        </div>
+
+        <div class="intevi-testimonios-grid">
+
+            <!-- TESTIMONIO IIH -->
+            <article class="intevi-testimonio-card">
+                <div class="intevi-testimonio-top">
+                    <div class="intevi-testimonio-logo">
+                        IIH
+                    </div>
+
+                    <div>
+                        <span class="intevi-testimonio-tipo">
+                            Prueba institucional
+                        </span>
+
+                        <h3>Instituto de Investigaciones Históricas (UMSNH)</h3>
+                    </div>
+                </div>
+
+                <div class="intevi-testimonio-quote">
+                    <span class="intevi-comillas" aria-hidden="true">“</span>
+
+                    <p>
+                        INTEVI nos permitió conocer una alternativa más clara
+                        para organizar la información de los bienes, sus
+                        ubicaciones y las personas responsables de cada
+                        resguardo.
+                    </p>
+                </div>
+
+                <div class="intevi-testimonio-footer">
+                    <div>
+                        <strong>IIH</strong>
+                        <span>Instituto de Investigaciones Históricas</span>
+                    </div>
+
+                    <span class="intevi-testimonio-verificado">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M9 12.75 11.25 15 15.5 9.75"/>
+                            <circle cx="12" cy="12" r="9"/>
+                        </svg>
+
+                        Experiencia de prueba
+                    </span>
+                </div>
+            </article>
+
+            <!-- TESTIMONIO ACADEMIA DE POLICÍA -->
+            <article class="intevi-testimonio-card">
+                <div class="intevi-testimonio-top">
+                    <div class="intevi-testimonio-logo intevi-testimonio-logo-red">
+                        AP
+                    </div>
+
+                    <div>
+                        <span class="intevi-testimonio-tipo">
+                            Validación operativa
+                        </span>
+
+                        <h3>Academia de Policía (GOBIERNO DE MICHOACÁN)</h3>
+                    </div>
+                </div>
+
+                <div class="intevi-testimonio-quote">
+                    <span class="intevi-comillas" aria-hidden="true">“</span>
+
+                    <p>
+                        La plataforma presenta de manera ordenada la información
+                        del inventario y facilita la consulta de resguardos,
+                        responsables, áreas y ubicaciones institucionales.
+                    </p>
+                </div>
+
+                <div class="intevi-testimonio-footer">
+                    <div>
+                        <strong>Academia de Policía</strong>
+                        <span>Institución de formación policial</span>
+                    </div>
+
+                    <span class="intevi-testimonio-verificado">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M9 12.75 11.25 15 15.5 9.75"/>
+                            <circle cx="12" cy="12" r="9"/>
+                        </svg>
+
+                        Experiencia de prueba
+                    </span>
+                </div>
+            </article>
+
+        </div>
+
+        <div class="intevi-testimonios-nota">
+            <div class="intevi-testimonios-nota-icono">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 3 4.5 6v5.25c0 4.64 3.2 8.94 7.5 9.75 4.3-.81 7.5-5.11 7.5-9.75V6L12 3Z"/>
+                    <path d="m9 12 2 2 4-4"/>
+                </svg>
+            </div>
+
+            <p>
+                Cada implementación de INTEVI se adapta a la estructura,
+                áreas, ubicaciones y procesos internos de la institución.
+            </p>
+        </div>
+
+    </div>
+</section>
+--}}
 
     <section class="og-impact" style="background:red;">
-            <p style="font-size:20px;text-align: center;">AQUÍ HAY UN RESUMEN DE</p>
-            <p style="font-size:30px;text-align: center;">TODO LO QUE OBTENDRÁS</p>
-            <p style="font-size:20px;text-align: center;">UNA VEZ INGRESES A INTEVI</p>
+            <p style="font-size:25px;text-align: center;">AQUÍ HAY UN RESUMEN DE</p>
+            <p style="font-size:40px;text-align: center;"><b>TODO LO QUE OBTENDRÁS</b></p>
+            <p style="font-size:25px;text-align: center;">UNA VEZ INGRESES A INTEVI</p>
     </section>
-    <section class="og-impact" style="background:black;">
-            <p style="font-size:20px;text-align: center;">AQUÍ HAY UN RESUMEN DE</p>
-            <p style="font-size:30px;text-align: center;color:red;">Acceso inmediato a todo</p>
-            <p style="font-size:20px;text-align: center;">UNA VEZ INGRESES A INTEVI</p>
-    </section>
-    <section class="og-impact" style="background:black;">
-            <p style="font-size:20px;text-align: center;">AQUÍ HAY UN RESUMEN DE</p>
-            <p style="font-size:30px;text-align: center;color:red;">Acceso inmediato a todo</p>
-            <p style="font-size:20px;text-align: center;">UNA VEZ INGRESES A INTEVI</p>
+    <section class="og-impact" style="background:black; padding:80px;">
+            <p style="font-size:40px;text-align: center;color:#FED524;"><b>!Solucionar tu Problema Garantizado!</b></p>
+            <p style="font-size:20px;text-align: center;">
+                Para llevar el control de los resguardos institucionales se necesitan estrategias y herramientas de control<br>
+                profesionales, se necesita de una plataforma de alta calidad. Aqui tenemos todo lo que se<br>
+                necesita.
+            </p>
+            <p style="font-size:30px;text-align: center;color:#E9231C;">Acceso inmediato a todo en menos de 72 horas</p>
+            <p style="font-size:20px;text-align: center;">Mira todo los beneficios que encontrarás en esta solución</p>
     </section>
     <div class="container">
             <div class="og-browser">
@@ -2260,15 +3145,131 @@ body.has-intevi-alert .hero {
                 </div>
             </div>
             <div class="og-center">
-                <p style="font-size:32px; margin-top:35px;" class="og-title og-title-sm">•PLATAFORMA INTEVI <span style="font-weight:bold;color:red;">($4000)</span></p>
-                <p style="font-size:37px; margin-top:55px;" class="og-title og-title-sm">•TOTAL VALOR<span style="font-weight:bold;color:red;text-decoration:underline;">($4000)</span></p>
+                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•PLATAFORMA INTEVI <span style="font-weight:bold;color:red;">($3600) USD LICENCIA ANUAL</span></p>
+                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•ASISTENTE VIRTUAL (GPT) <span style="font-weight:bold;color:red;">($100) USD</span></p>
+                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•PROGRAMA RESGUARDOS FÁCILES<br> DE CONTROLAR 5X <span style="font-weight:bold;color:red;">($1997) USD</span></p>
 
+                <p style="font-size:37px; margin-top:55px;" class="og-title og-title-sm">TOTAL VALOR: <span class="tachado-equis" style="color:red;">$5697 USD</span></p>
+                <p style="font-size:47px; margin-top:55px;" class="og-title og-title-sm">PRECIO OFERTA: <span style="font-weight:bold;color:red;">$499 USD (ANUAL)</span></p>
+                 <a class="button button-primary" style="background:red; margin-top:40px;" href="#contacto">
+                        QUIERO ENTRAR A INTEVI
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </a>
             </div>
     </div>
-    <section class="og-impact" style="background:#101447;">
-            <p style="font-size:40px;text-align: center;color:#E2C58C;">!PRODUCTO GARANTIZADO!</p>
-            <p style="font-size:30px;text-align: center;"><b>La inversión está segura a un 100% con una Garantía Total de 30 días</b></p>
+    <section class="og-impact" style="background:red; padding:10px;">
+            <p style="font-size:40px;text-align: center;"><b>BONUS MÁGICOS</b></p>
     </section>
+    <div class="container">
+            <div class="og-browser">
+                <div class="og-browser-screen">
+                    <img
+                        src="{{ asset('images/lo que obtendras.png') }}"
+                        alt="Vista real del sistema INTEVI"
+                        width="1915"
+                        height="920"
+                        loading="eager"s
+                        fetchpriority="high"
+                        style="
+                            display: block !important;
+                            width: 100% !important;
+                            max-width: 1100px !important;
+                            height: auto !important;
+                            max-height: none !important;
+                            margin: 0 auto !important;
+                            object-fit: contain !important;
+                            object-position: center !important;
+                        "
+                    >
+                </div>
+            </div>
+            <div class="og-center">
+                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•PLATAFORMA INTEVI <span style="font-weight:bold;color:red;">($3600) USD LICENCIA ANUAL</span></p>
+                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•ASISTENTE VIRTUAL (GPT) <span style="font-weight:bold;color:red;">($100) USD</span></p>
+                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•PROGRAMA RESGUARDOS FÁCILES<br> DE CONTROLAR 5X <span style="font-weight:bold;color:red;">($1997) USD</span></p>
+                <p style="font-size:47px; margin-top:55px;font-style: italic;" class="og-title og-title-sm">BONUS MÁGICOS</p>
+                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•CONSULTORIA<span style="font-weight:bold;color:red;">($500) USD</span></p>
+
+                <p style="font-size:37px; margin-top:55px;" class="og-title og-title-sm">TOTAL VALOR: <span class="tachado-equis" style="color:red;">$6197 USD</span></p>
+                <p style="font-size:47px; margin-top:55px;" class="og-title og-title-sm">PRECIO OFERTA: <span style="font-weight:bold;color:red;">$499 USD (ANUAL)</span></p>
+                 <a class="button button-primary" style="background:red; margin-top:40px;" href="#contacto">
+                        QUIERO ENTRAR A INTEVI
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </a>
+            </div>
+    </div>
+
+    <section class="og-garantia" id="garantia">
+    <div class="og-garantia-container">
+
+        <!-- LADO IZQUIERDO: 1/3 -->
+        <div class="og-garantia-visual">
+            <div class="og-garantia-sello">
+                <img
+                    src="{{ asset('images/garantia-30-dias.png') }}"
+                    alt="Garantía de devolución durante 30 días"
+                    loading="lazy"
+                    width="700"
+                    height="700"
+                >
+            </div>
+        </div>
+
+        <!-- LADO DERECHO: 2/3 -->
+        <div class="og-garantia-contenido">
+
+            <span class="og-garantia-etiqueta">
+                Compra protegida
+            </span>
+
+            <h2>
+                Tu inversión está segura a un 100% con una 
+                <span>Garantía Total de 30 días</span>
+            </h2>
+
+            <p class="og-garantia-descripcion">
+                Queremos que conozcas INTEVI con tranquilidad y tengas la
+                seguridad de estar tomando una buena decisión para tu
+                institución.
+            </p>
+
+            <div class="og-garantia-beneficio">
+                <div class="og-garantia-check">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="m5 12 4 4L19 6"></path>
+                    </svg>
+                </div>
+
+                <p>
+                    Si durante los primeros <strong>30 días</strong> la plataforma
+                    no cumple con las condiciones acordadas, podrás solicitar la
+                    devolución conforme a los términos de la garantía.
+                </p>
+            </div>
+
+            <p class="og-garantia-mensaje">
+                Sin riesgos innecesarios. Sin decisiones apresuradas.
+                <strong>Prueba INTEVI con mayor confianza.</strong>
+            </p>
+
+            <a href="#contacto" class="og-garantia-boton">
+                Solicitar una demostración
+
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M5 12h14"></path>
+                    <path d="m13 6 6 6-6 6"></path>
+                </svg>
+            </a>
+
+            <small class="og-garantia-terminos">
+                Garantía aplicable conforme a las condiciones establecidas
+                en la propuesta comercial y contrato de servicio.
+            </small>
+
+        </div>
+
+    </div>
+</section>
 
 
 
@@ -2410,9 +3411,14 @@ body.has-intevi-alert .hero {
                 @endforeach
             </div>
         </div>
-        <div style="text-align:center;">
-            <p><b>PD:</b> Si has llegado hasta aquí Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat culpa eos reprehenderit facilis deleniti rem delectus blanditiis excepturi harum, tempora necessitatibus impedit, unde doloremque dignissimos architecto. Sequi aspernatur provident voluptates!</p>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id architecto delectus tenetur alias quam quia facere, eligendi veritatis, et accusamus, laborum amet. Ipsam, assumenda? Earum quae rerum perferendis ex sit.</p>
+        <div style="text-align:center; margin-top:40px;">
+            <p><b>PD:</b> Si has llegado hasta aquí es porque todo lo que te  he mostrado interesa y sabes que necesitas un vehículo que funcione de verdad.</p>
+            <p>Este producto premium tiene un precio regularmente de $3600 dólares, pero puedes obtenerlo hoy por sólo $499, cómpralo ahora antes que se vaya.</p>
+            <p>¿No te gustaría llevar un mejor control de tus resguados desde el primer mes? !Actúa Ahora!, satisfacción garantizada.</p>
+            <p>Sé que tienes dudas en este momento, si la inversión merecerá la pena, si tu producto puede beneficiarte entre otras muchas cosas.</p>
+            <p>Por eso te digo que la mejor forma de despejar dudas es probar, analizar y ver si funciona desde dentro. Entra y comprueba si todo lo que digo es</p>
+            <p>real, no pierdes nada, tienes una garantía total si no estás satisfecho.</p>
+            <p>Te prometo que, si sigues un buen ritmo, cruzarás el otro lado del puente sin riesgo alguno. </p>
         </div>
     </section>
 
