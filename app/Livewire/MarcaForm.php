@@ -4,15 +4,16 @@ namespace App\Livewire;
 
 
 use Livewire\WithFileUploads;
-
-
 use App\Imports\MarcasImport;
 use App\Models\Marca;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Maatwebsite\Excel\Facades\Excel;
 use Throwable;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Excel as ExcelFormat;
+
+
 
 class MarcaForm extends Component
 {
