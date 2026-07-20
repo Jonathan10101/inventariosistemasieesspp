@@ -40,37 +40,35 @@ return [
         <div style="
             width: 100%;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 10px;
             text-align: center;
+            gap: 4px;
         ">
             <img
                 src="/images/intevi logo.png"
                 alt="Logo de INTEVI"
                 style="
-                    width: 36px;
-                    height: 36px;
+                    width: 38px;
+                    height: 38px;
                     object-fit: contain;
                     display: block;
-                    margin: 0;
+                    margin: 0 auto;
                 "
             >
 
-            <div style="
-                display: flex;
-                align-items: center;
-                justify-content: center;
+            <strong style="
+                display: block;
+                margin: 0;
+                color: #171C63;
+                font-size: 17px;
+                font-weight: 900;
+                line-height: 1;
+                letter-spacing: 1px;
             ">
-                <strong style="
-                    font-size: 20px;
-                    font-weight: 900;
-                    line-height: 1;
-                    color: #171C63;
-                ">
-                    INTEVI
-                </strong>
-            </div>
+                INTEVI
+            </strong>
         </div>
     ',
     'logo_img' => null,
