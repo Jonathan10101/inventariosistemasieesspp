@@ -48,6 +48,7 @@ return [
             </span>
         </div>
     ',
+
     'logo_img' => null,
     'logo_img_class' => 'brand-image',
     'logo_img_alt' => '',
