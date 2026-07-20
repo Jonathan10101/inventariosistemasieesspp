@@ -158,126 +158,183 @@ class MarcaForm extends Component
     |--------------------------------------------------------------------------
     */
 
-    public function importarMarcas(): void
-    {
-        $this->resetValidation();
+public function importarMarcas(): void
+{
+    $this->resetValidation();
 
-        $this->marcasImportadas = 0;
-        $this->marcasDuplicadas = 0;
-        $this->erroresImportacion = [];
+    $this->marcasImportadas = 0;
+    $this->marcasDuplicadas = 0;
+    $this->erroresImportacion = [];
 
-        $this->validate(
-            [
-                'archivoMarcas' => [
-                    'required',
-                    'file',
-                    'mimes:xlsx,xls,csv',
-                    'max:10240',
-                ],
+    /*
+    |--------------------------------------------------------------------------
+    | Validar archivo
+    |--------------------------------------------------------------------------
+    */
+
+    $this->validate(
+        [
+            'archivoMarcas' => [
+                'required',
+                'file',
+                'mimes:xlsx,xls,csv',
+                'max:10240',
             ],
-            [
-                'archivoMarcas.required' =>
-                    'Selecciona el archivo que deseas importar.',
+        ],
+        [
+            'archivoMarcas.required' =>
+                'Selecciona el archivo que deseas importar.',
 
-                'archivoMarcas.file' =>
-                    'El archivo seleccionado no es válido.',
+            'archivoMarcas.file' =>
+                'El archivo seleccionado no es válido.',
 
-                'archivoMarcas.mimes' =>
-                    'Solamente se permiten archivos XLSX, XLS o CSV.',
+            'archivoMarcas.mimes' =>
+                'Solamente se permiten archivos XLSX, XLS o CSV.',
 
-                'archivoMarcas.max' =>
-                    'El archivo no puede superar los 10 MB.',
-            ]
+            'archivoMarcas.max' =>
+                'El archivo no puede superar los 10 MB.',
+        ]
+    );
+
+    try {
+        /*
+        |--------------------------------------------------------------------------
+        | Detectar el formato original
+        |--------------------------------------------------------------------------
+        */
+
+        $extension = strtolower(
+            $this->archivoMarcas->getClientOriginalExtension()
         );
 
-        try {
-            $totalAntes = Marca::count();
+        $tipoArchivo = match ($extension) {
+            'xlsx' => ExcelFormat::XLSX,
+            'xls'  => ExcelFormat::XLS,
+            'csv'  => ExcelFormat::CSV,
 
-            $importacion = new MarcasImport();
+            default => throw new \RuntimeException(
+                'El formato del archivo no es compatible.'
+            ),
+        };
 
-            Excel::import(
-                $importacion,
-                $this->archivoMarcas
-            );
+        /*
+        |--------------------------------------------------------------------------
+        | Obtener la ruta temporal real de Livewire
+        |--------------------------------------------------------------------------
+        */
 
-            $totalDespues = Marca::count();
+        $rutaTemporal = $this->archivoMarcas->getRealPath();
 
-            /*
-             * Nuevas marcas insertadas.
-             */
-            $this->marcasImportadas = max(
-                0,
-                $totalDespues - $totalAntes
-            );
-
-            /*
-             * Marcas válidas que no se insertaron
-             * porque ya existían.
-             */
-            $this->marcasDuplicadas = max(
-                0,
-                $importacion->getFilasProcesadas()
-                    - $this->marcasImportadas
-            );
-
-            /*
-             * Filas rechazadas por validación.
-             */
-            foreach ($importacion->failures() as $failure) {
-                $this->erroresImportacion[] = [
-                    'fila' => $failure->row(),
-
-                    'campo' => $failure->attribute(),
-
-                    'valor' =>
-                        $failure->values()['nombre'] ?? '',
-
-                    'mensajes' => $failure->errors(),
-                ];
-            }
-
-            /*
-             * Limpiamos la búsqueda para que se vean
-             * inmediatamente las marcas importadas.
-             */
-            $this->search = '';
-
-            $this->resetPage();
-
-            $this->reset('archivoMarcas');
-
-            $this->dispatch('limpiar-archivo-marcas');
-
-            if (count($this->erroresImportacion) > 0) {
-                $this->dispatch(
-                    'marcas-importacion-advertencia',
-                    mensaje:
-                        "Se importaron {$this->marcasImportadas} marcas. "
-                        . "Se ignoraron {$this->marcasDuplicadas} duplicadas "
-                        . 'y algunas filas contenían errores.'
-                );
-
-                return;
-            }
-
-            $this->showImportModal = false;
-
-            $this->dispatch(
-                'marcas-importadas',
-                mensaje:
-                    "Se importaron {$this->marcasImportadas} marcas nuevas. "
-                    . "Se ignoraron {$this->marcasDuplicadas} duplicadas."
-            );
-        } catch (Throwable $e) {
-            report($e);
-
-            $this->addError(
-                'archivoMarcas',
-                'No fue posible importar el archivo. '
-                . 'Verifica que la primera columna se llame nombre.'
+        if (
+            empty($rutaTemporal)
+            || !is_file($rutaTemporal)
+        ) {
+            throw new \RuntimeException(
+                'Livewire no pudo localizar el archivo temporal.'
             );
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Ejecutar importación
+        |--------------------------------------------------------------------------
+        */
+
+        $importacion = new MarcasImport();
+
+        DB::transaction(function () use (
+            $importacion,
+            $rutaTemporal,
+            $tipoArchivo
+        ) {
+            Excel::import(
+                $importacion,
+                $rutaTemporal,
+                null,
+                $tipoArchivo
+            );
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Recuperar resultados
+        |--------------------------------------------------------------------------
+        */
+
+        $this->marcasImportadas =
+            $importacion->getMarcasImportadas();
+
+        $this->marcasDuplicadas =
+            $importacion->getMarcasDuplicadas();
+
+        $this->erroresImportacion =
+            $importacion->getErrores();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Actualizar tabla
+        |--------------------------------------------------------------------------
+        */
+
+        $this->search = '';
+
+        $this->resetPage();
+
+        $this->reset('archivoMarcas');
+
+        $this->dispatch('limpiar-archivo-marcas');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Resultado con errores de algunas filas
+        |--------------------------------------------------------------------------
+        */
+
+        if (count($this->erroresImportacion) > 0) {
+            $this->dispatch(
+                'marcas-importacion-advertencia',
+                mensaje:
+                    "Se registraron {$this->marcasImportadas} marcas, "
+                    . "se ignoraron {$this->marcasDuplicadas} duplicadas "
+                    . 'y algunas filas contenían errores.'
+            );
+
+            return;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Resultado correcto
+        |--------------------------------------------------------------------------
+        */
+
+        $this->showImportModal = false;
+
+        $this->dispatch(
+            'marcas-importadas',
+            mensaje:
+                "Se registraron {$this->marcasImportadas} marcas nuevas "
+                . "y se ignoraron {$this->marcasDuplicadas} duplicadas."
+        );
+    } catch (Throwable $e) {
+        /*
+         * Guarda el error completo en storage/logs/laravel.log.
+         */
+        report($e);
+
+        /*
+         * Mientras corregimos el problema, mostramos el error real.
+         */
+        $mensajeReal = config('app.debug')
+            ? $e->getMessage()
+            : 'Consulta storage/logs/laravel.log para conocer el error.';
+
+        $this->addError(
+            'archivoMarcas',
+            'No se pudo importar: ' . $mensajeReal
+        );
     }
+}
 
     /*
     |--------------------------------------------------------------------------
