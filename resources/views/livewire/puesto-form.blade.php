@@ -81,7 +81,7 @@
                 wire:click="showModalImportPuestos"
                 wire:loading.attr="disabled"
                 wire:target="showModalImportPuestos"
-                class="btn btn-import-puestos"
+                class="btn btn-import-excel"
                 title="Importar puestos desde Excel"
             >
                 <span
