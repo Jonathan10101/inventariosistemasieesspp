@@ -106,9 +106,6 @@ class UbicacionesFisicasImport implements ToCollection, SkipsEmptyRows
             $ubicacion = UbicacionFisica::firstOrCreate(
                 [
                     'descripcion' => $descripcion,
-                ],
-                [
-                    'imagen' => null,
                 ]
             );
 
