@@ -995,7 +995,7 @@
                 box-shadow 0.18s ease;
         }
 
-        .btn-tour-ubicacion,
+       
         .btn-import-ubicacion {
             border: 1px solid #15803d;
             background: #ffffff;
