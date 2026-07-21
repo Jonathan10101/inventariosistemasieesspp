@@ -557,3 +557,72 @@ body {
         font-size: 23px;
     }
 }
+
+
+
+
+
+
+
+/* =========================================================
+   INTEVI - TODOS LOS BOTONES IMPORTAR EXCEL IGUALES
+========================================================= */
+
+button[class*="btn-import"],
+a[class*="btn-import"] {
+    display: inline-flex !important;
+    min-height: 44px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 9px !important;
+    padding: 0 18px !important;
+
+    border: 1px solid #15803d !important;
+    border-radius: 12px !important;
+
+    background: #ffffff !important;
+    color: #15803d !important;
+
+    font-size: 14px !important;
+    font-weight: 800 !important;
+
+    box-shadow: 0 10px 24px rgba(21, 128, 61, 0.10) !important;
+
+    transition: all 0.18s ease !important;
+}
+
+button[class*="btn-import"] span,
+a[class*="btn-import"] span {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+}
+
+button[class*="btn-import"]:hover,
+button[class*="btn-import"]:focus,
+a[class*="btn-import"]:hover,
+a[class*="btn-import"]:focus {
+    border-color: #15803d !important;
+    background: #15803d !important;
+    color: #ffffff !important;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 14px 28px rgba(21, 128, 61, 0.22) !important;
+}
+
+button[class*="btn-import"]:disabled {
+    border-color: #cbd5e1 !important;
+    background: #f8fafc !important;
+    color: #94a3b8 !important;
+    box-shadow: none !important;
+    opacity: 0.70 !important;
+}
+
+@media (max-width: 992px) {
+    button[class*="btn-import"],
+    a[class*="btn-import"] {
+        width: 100% !important;
+    }
+}
