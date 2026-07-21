@@ -78,6 +78,31 @@
             @hasanyrole('Administrador|Delegacion|Subdirector')
                 <button
                     type="button"
+                    wire:click="showModalImportUbicaciones"
+                    wire:loading.attr="disabled"
+                    wire:target="showModalImportUbicaciones"
+                    class="btn btn-import-ubicaciones"
+                >
+                    <span
+                        wire:loading.remove
+                        wire:target="showModalImportUbicaciones"
+                    >
+                        <i class="fas fa-file-excel"></i>
+                        Importar Excel
+                    </span>
+
+                    <span
+                        wire:loading
+                        wire:target="showModalImportUbicaciones"
+                    >
+                        <i class="fas fa-spinner fa-spin"></i>
+                        Abriendo...
+                    </span>
+                </button>
+            
+                
+                <button
+                    type="button"
                     wire:click="showModalNewUbicacionFisica"
                     class="btn btn-add-ubicacion"
                     data-tour-step
@@ -143,6 +168,244 @@
             </div>
         </div>
     </div>
+
+        @if($showImportModal)
+        <div
+            class="modal fade show d-block ubicaciones-import-modal"
+            tabindex="-1"
+            role="dialog"
+            aria-modal="true"
+        >
+            <div
+                class="modal-dialog modal-lg modal-dialog-centered"
+                role="document"
+            >
+                <div class="modal-content import-modal-content">
+
+                    <div class="import-modal-header">
+                        <div>
+                            <span>Carga masiva del catálogo</span>
+
+                            <h5>
+                                Importar ubicaciones físicas
+                            </h5>
+                        </div>
+
+                        <button
+                            type="button"
+                            wire:click="closeImportModal"
+                            wire:loading.attr="disabled"
+                            wire:target="importarUbicacionesFisicas"
+                            class="import-modal-close"
+                        >
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <div class="import-modal-body">
+
+                        <div class="import-information">
+                            <div class="import-information-icon">
+                                <i class="fas fa-file-excel"></i>
+                            </div>
+
+                            <div>
+                                <strong>Formato requerido</strong>
+
+                                <p>
+                                    La primera celda debe llamarse
+                                    exactamente
+                                    <b>descripcion</b>.
+                                </p>
+                            </div>
+                        </div>
+
+                        <form
+                            wire:submit.prevent="importarUbicacionesFisicas"
+                        >
+                            <label
+                                for="archivoUbicaciones"
+                                class="import-label"
+                            >
+                                Seleccionar archivo
+                            </label>
+
+                            <input
+                                type="file"
+                                id="archivoUbicaciones"
+                                wire:model="archivoUbicaciones"
+                                accept=".xlsx,.xls,.csv"
+                                class="form-control import-file-input"
+                            >
+
+                            <p class="import-help">
+                                Formatos permitidos: XLSX, XLS y CSV.
+                                Tamaño máximo: 10 MB.
+                            </p>
+
+                            @error('archivoUbicaciones')
+                                <div class="import-file-error">
+                                    <i class="fas fa-circle-exclamation"></i>
+                                    {{ $message }}
+                                </div>
+                            @enderror
+
+                            <div
+                                wire:loading
+                                wire:target="archivoUbicaciones"
+                                class="import-file-loading"
+                            >
+                                <i class="fas fa-spinner fa-spin"></i>
+                                Cargando archivo...
+                            </div>
+
+                            @if($archivoUbicaciones)
+                                <div class="import-selected-file">
+                                    <i class="fas fa-file-excel"></i>
+
+                                    <div>
+                                        <span>
+                                            Archivo seleccionado
+                                        </span>
+
+                                        <strong>
+                                            {{ $archivoUbicaciones->getClientOriginalName() }}
+                                        </strong>
+                                    </div>
+                                </div>
+                            @endif
+
+                            <div class="import-example">
+                                <div class="import-example-title">
+                                    Ejemplo del archivo
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-sm mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>descripcion</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr>
+                                                <td>ALMACÉN GENERAL</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>SALA DE JUNTAS</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>OFICINA DE DIRECCIÓN</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>LABORATORIO DE CÓMPUTO</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            @if(
+                                $ubicacionesImportadas > 0
+                                || $ubicacionesDuplicadas > 0
+                            )
+                                <div class="import-summary">
+                                    <div class="import-summary-item success">
+                                        <span>Nuevas</span>
+
+                                        <strong>
+                                            {{ $ubicacionesImportadas }}
+                                        </strong>
+                                    </div>
+
+                                    <div class="import-summary-item warning">
+                                        <span>Duplicadas</span>
+
+                                        <strong>
+                                            {{ $ubicacionesDuplicadas }}
+                                        </strong>
+                                    </div>
+                                </div>
+                            @endif
+
+                            @if(count($erroresImportacion) > 0)
+                                <div class="import-errors">
+                                    <strong>
+                                        Filas que no se importaron
+                                    </strong>
+
+                                    @foreach(
+                                        $erroresImportacion as $error
+                                    )
+                                        <div class="import-error-row">
+                                            <div>
+                                                Fila {{ $error['fila'] }}
+
+                                                @if(!empty($error['valor']))
+                                                    — {{ $error['valor'] }}
+                                                @endif
+                                            </div>
+
+                                            <ul>
+                                                @foreach(
+                                                    $error['mensajes']
+                                                    as $mensaje
+                                                )
+                                                    <li>
+                                                        {{ $mensaje }}
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+
+                            <div class="import-actions">
+                                <button
+                                    type="button"
+                                    wire:click="closeImportModal"
+                                    wire:loading.attr="disabled"
+                                    wire:target="importarUbicacionesFisicas"
+                                    class="btn-cancel-import"
+                                >
+                                    Cancelar
+                                </button>
+
+                                <button
+                                    type="submit"
+                                    wire:loading.attr="disabled"
+                                    wire:target="archivoUbicaciones,importarUbicacionesFisicas"
+                                    class="btn-confirm-import"
+                                >
+                                    <span
+                                        wire:loading.remove
+                                        wire:target="importarUbicacionesFisicas"
+                                    >
+                                        <i class="fas fa-file-import"></i>
+                                        Importar ubicaciones
+                                    </span>
+
+                                    <span
+                                        wire:loading
+                                        wire:target="importarUbicacionesFisicas"
+                                    >
+                                        <i class="fas fa-spinner fa-spin"></i>
+                                        Importando...
+                                    </span>
+                                </button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 
     <!-- BUSCADOR -->
     <div
@@ -415,6 +678,51 @@
                         }
                     });
                 });
+
+                Livewire.on('limpiar-archivo-ubicaciones', function () {
+                    const input = document.getElementById(
+                        'archivoUbicaciones'
+                    );
+
+                    if (input) {
+                        input.value = '';
+                    }
+                });
+
+                Livewire.on('ubicaciones-importadas', function (event) {
+                    Swal.fire({
+                        title: '¡Importación terminada!',
+                        text: event.mensaje
+                            ?? 'Las ubicaciones fueron importadas correctamente.',
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        customClass: {
+                            confirmButton: 'btn-ieesspp'
+                        },
+                        buttonsStyling: false
+                    });
+                });
+
+                Livewire.on(
+                    'ubicaciones-importacion-advertencia',
+                    function (event) {
+                        Swal.fire({
+                            title: 'Importación finalizada',
+                            text: event.mensaje
+                                ?? 'Algunas filas no pudieron importarse.',
+                            icon: 'warning',
+                            confirmButtonText: 'Revisar',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            customClass: {
+                                confirmButton: 'btn-ieesspp'
+                            },
+                            buttonsStyling: false
+                        });
+                    }
+                );
 
             });
         </script>
@@ -1078,6 +1386,316 @@
                 justify-content: center;
             }
         }
-    </style>
 
+        .btn-import-ubicaciones {
+            display: inline-flex;
+            min-height: 44px;
+            align-items: center;
+            justify-content: center;
+            padding: 0 18px;
+            border: 1px solid #15803d;
+            border-radius: 12px;
+            background: #ffffff;
+            color: #15803d;
+            font-weight: 800;
+        }
+
+        .btn-import-ubicaciones span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-import-ubicaciones:hover {
+            background: #15803d;
+            color: #ffffff;
+        }
+
+        .ubicaciones-import-modal {
+            background: rgba(15, 23, 42, 0.62);
+            backdrop-filter: blur(5px);
+        }
+
+        .import-modal-content {
+            overflow: hidden;
+            border: none;
+            border-radius: 18px;
+            box-shadow: 0 28px 70px rgba(15, 23, 42, 0.28);
+        }
+
+        .import-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 22px;
+            background: linear-gradient(
+                135deg,
+                #14532d,
+                #15803d
+            );
+            color: #ffffff;
+        }
+
+        .import-modal-header span {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 12px;
+        }
+
+        .import-modal-header h5 {
+            margin: 3px 0 0;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .import-modal-close {
+            display: inline-flex;
+            width: 36px;
+            height: 36px;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+        }
+
+        .import-modal-body {
+            padding: 24px;
+            background: #ffffff;
+        }
+
+        .import-information {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #bbf7d0;
+            border-radius: 13px;
+            background: #f0fdf4;
+        }
+
+        .import-information-icon {
+            display: inline-flex;
+            width: 46px;
+            height: 46px;
+            flex-shrink: 0;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: #dcfce7;
+            color: #15803d;
+            font-size: 20px;
+        }
+
+        .import-information p {
+            margin: 4px 0 0;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .import-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #0f172a;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .import-file-input {
+            min-height: 48px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            background: #f8fafc;
+        }
+
+        .import-help {
+            margin: 8px 0 0;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .import-file-error {
+            margin-top: 10px;
+            padding: 11px 13px;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            background: #fef2f2;
+            color: #b91c1c;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .import-file-loading {
+            margin-top: 12px;
+            color: #171C63;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .import-selected-file {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 14px;
+            padding: 13px;
+            border: 1px solid #bbf7d0;
+            border-radius: 11px;
+            background: #f0fdf4;
+            color: #166534;
+        }
+
+        .import-selected-file > i {
+            font-size: 22px;
+        }
+
+        .import-selected-file span {
+            display: block;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .import-selected-file strong {
+            display: block;
+            margin-top: 2px;
+        }
+
+        .import-example {
+            overflow: hidden;
+            margin-top: 18px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+        }
+
+        .import-example-title {
+            padding: 11px 14px;
+            background: #f8fafc;
+            color: #334155;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .import-example th,
+        .import-example td {
+            padding: 9px 14px;
+            font-size: 12px;
+        }
+
+        .import-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .import-summary-item {
+            padding: 13px;
+            border-radius: 11px;
+        }
+
+        .import-summary-item.success {
+            background: #f0fdf4;
+            color: #166534;
+        }
+
+        .import-summary-item.warning {
+            background: #fffbeb;
+            color: #92400e;
+        }
+
+        .import-summary-item span {
+            display: block;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .import-summary-item strong {
+            display: block;
+            margin-top: 2px;
+            font-size: 20px;
+        }
+
+        .import-errors {
+            margin-top: 18px;
+            padding: 14px;
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+            background: #fef2f2;
+            color: #991b1b;
+        }
+
+        .import-error-row {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            background: #ffffff;
+            font-size: 12px;
+        }
+
+        .import-error-row ul {
+            margin: 6px 0 0;
+            padding-left: 18px;
+        }
+
+        .import-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 22px;
+            padding-top: 18px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .btn-cancel-import,
+        .btn-confirm-import {
+            min-height: 44px;
+            padding: 0 18px;
+            border-radius: 11px;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .btn-cancel-import {
+            border: 1px solid #cbd5e1;
+            background: #ffffff;
+            color: #475569;
+        }
+
+        .btn-confirm-import {
+            border: none;
+            background: linear-gradient(
+                135deg,
+                #15803d,
+                #16a34a
+            );
+            color: #ffffff;
+        }
+
+        .btn-confirm-import span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        @media (max-width: 576px) {
+            .import-modal-body {
+                padding: 18px;
+            }
+
+            .import-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .import-actions {
+                flex-direction: column-reverse;
+            }
+
+            .btn-cancel-import,
+            .btn-confirm-import {
+                width: 100%;
+            }
+        }
+    </style>
 </div>
