@@ -976,7 +976,32 @@
             flex-wrap: wrap;
         }
 
-        .btn-tour-ubicacion,
+        .btn-tour-ubicacion{
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            min-height: 44px;
+            padding: 0 16px;
+            border: 1px solid rgba(23, 28, 99, 0.18);
+            border-radius: 12px;
+            background: #ffffff;
+            color: #171C63;
+            font-weight: 800;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07);
+            transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        
+        .btn-tour-ubicacion:hover,
+        .btn-tour-ubicacion:focus {
+            background: #171C63;
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 14px 28px rgba(23, 28, 99, 0.22);
+        }
+
+
         .btn-import-ubicacion,
         .btn-add-ubicacion {
             display: inline-flex;
@@ -1002,11 +1027,7 @@
             color: #15803d;
         }
 
-        .btn-tour-ubicacion:hover{
-            background: #15803d;
-            color: #ffffff;
-        }
-
+      
         .btn-tour-ubicacion span,
         .btn-import-ubicacion span,
         .btn-add-ubicacion span {
@@ -1513,11 +1534,10 @@
             border: none;
             background: linear-gradient(
                 135deg,
-                #171C63,
-                #26318f
+                #15803d,
+                #16a34a
             );
             color: #ffffff;
-            box-shadow: 0 12px 24px rgba(23, 28, 99, 0.22);
         }
 
         .btn-confirm-import span {
