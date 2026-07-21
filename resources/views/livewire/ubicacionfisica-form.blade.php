@@ -997,21 +997,14 @@
 
         .btn-tour-ubicacion,
         .btn-import-ubicacion {
-            border: 1px solid rgba(23, 28, 99, 0.20);
+            border: 1px solid #15803d;
             background: #ffffff;
-            color: #171C63;
-            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07);
+            color: #15803d;
         }
 
-        .btn-tour-ubicacion:hover,
-        .btn-tour-ubicacion:focus,
-        .btn-import-ubicacion:hover,
-        .btn-import-ubicacion:focus {
-            border-color: #171C63;
-            background: #171C63;
+        .btn-tour-ubicacion:hover{
+            background: #15803d;
             color: #ffffff;
-            transform: translateY(-1px);
-            box-shadow: 0 14px 28px rgba(23, 28, 99, 0.18);
         }
 
         .btn-tour-ubicacion span,
@@ -1128,21 +1121,21 @@
             gap: 13px;
             margin-bottom: 20px;
             padding: 15px;
-            border: 1px solid rgba(23, 28, 99, 0.16);
+            border: 1px solid #bbf7d0;
             border-radius: 13px;
-            background: rgba(23, 28, 99, 0.05);
+            background: #f0fdf4;
         }
 
         .import-info-icon {
             display: inline-flex;
             width: 46px;
             height: 46px;
-            flex: 0 0 46px;
+            flex-shrink: 0;
             align-items: center;
             justify-content: center;
             border-radius: 12px;
-            background: rgba(23, 28, 99, 0.10);
-            color: #171C63;
+            background: #dcfce7;
+            color: #15803d;
             font-size: 20px;
         }
 
