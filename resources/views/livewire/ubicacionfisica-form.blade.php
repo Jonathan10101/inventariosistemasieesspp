@@ -1423,114 +1423,81 @@
             box-shadow: 0 28px 70px rgba(15, 23, 42, 0.28);
         }
 
+        /* =========================================================
+        INTEVI - UNIFICAR MODAL DE IMPORTACIÓN
+        Color institucional: #171C63
+        ========================================================= */
+
         .import-modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 18px 22px;
-            background: linear-gradient(
-                135deg,
-                #14532d,
-                #15803d
-            );
+            background:
+                radial-gradient(
+                    circle at top left,
+                    rgba(255, 255, 255, 0.20),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    135deg,
+                    #171C63 0%,
+                    #0f143f 100%
+                ) !important;
             color: #ffffff;
         }
 
-        .import-modal-header span {
-            color: rgba(255, 255, 255, 0.75);
-            font-size: 12px;
+        .btn-import-ubicaciones {
+            border: 1px solid rgba(23, 28, 99, 0.25) !important;
+            background: #ffffff !important;
+            color: #171C63 !important;
+            box-shadow: 0 10px 24px rgba(23, 28, 99, 0.10);
         }
 
-        .import-modal-header h5 {
-            margin: 3px 0 0;
-            font-size: 18px;
-            font-weight: 800;
-        }
-
-        .import-modal-close {
-            display: inline-flex;
-            width: 36px;
-            height: 36px;
-            align-items: center;
-            justify-content: center;
-            border: none;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.15);
-            color: #ffffff;
-        }
-
-        .import-modal-body {
-            padding: 24px;
-            background: #ffffff;
+        .btn-import-ubicaciones:hover,
+        .btn-import-ubicaciones:focus {
+            border-color: #171C63 !important;
+            background: #171C63 !important;
+            color: #ffffff !important;
+            box-shadow: 0 14px 28px rgba(23, 28, 99, 0.22);
         }
 
         .import-information {
-            display: flex;
-            align-items: center;
-            gap: 13px;
-            margin-bottom: 20px;
-            padding: 15px;
-            border: 1px solid #bbf7d0;
-            border-radius: 13px;
-            background: #f0fdf4;
+            border: 1px solid rgba(23, 28, 99, 0.16) !important;
+            background: rgba(23, 28, 99, 0.05) !important;
         }
 
         .import-information-icon {
-            display: inline-flex;
-            width: 46px;
-            height: 46px;
-            flex-shrink: 0;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            background: #dcfce7;
-            color: #15803d;
-            font-size: 20px;
+            background: rgba(23, 28, 99, 0.10) !important;
+            color: #171C63 !important;
         }
 
-        .import-information p {
-            margin: 4px 0 0;
-            color: #64748b;
-            font-size: 13px;
+        .import-selected-file {
+            border: 1px solid rgba(23, 28, 99, 0.18) !important;
+            background: rgba(23, 28, 99, 0.06) !important;
+            color: #171C63 !important;
         }
 
-        .import-label {
-            display: block;
-            margin-bottom: 8px;
-            color: #0f172a;
-            font-size: 14px;
-            font-weight: 800;
+        .import-selected-file > i {
+            color: #171C63 !important;
         }
 
-        .import-file-input {
-            min-height: 48px;
-            border: 1px solid #cbd5e1;
-            border-radius: 12px;
-            background: #f8fafc;
+        .btn-confirm-import {
+            border: none !important;
+            background: linear-gradient(
+                135deg,
+                #171C63 0%,
+                #26318f 100%
+            ) !important;
+            color: #ffffff !important;
+            box-shadow: 0 12px 24px rgba(23, 28, 99, 0.22);
         }
 
-        .import-help {
-            margin: 8px 0 0;
-            color: #64748b;
-            font-size: 12px;
-        }
-
-        .import-file-error {
-            margin-top: 10px;
-            padding: 11px 13px;
-            border: 1px solid #fecaca;
-            border-radius: 10px;
-            background: #fef2f2;
-            color: #b91c1c;
-            font-size: 13px;
-            font-weight: 700;
+        .btn-confirm-import:hover,
+        .btn-confirm-import:focus {
+            color: #ffffff !important;
+            transform: translateY(-1px);
+            box-shadow: 0 16px 30px rgba(23, 28, 99, 0.28);
         }
 
         .import-file-loading {
-            margin-top: 12px;
-            color: #171C63;
-            font-size: 13px;
-            font-weight: 800;
+            color: #171C63 !important;
         }
 
         .import-selected-file {
