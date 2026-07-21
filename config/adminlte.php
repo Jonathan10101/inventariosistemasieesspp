@@ -215,6 +215,7 @@ return [
 
     'css' => [
         'css/intevi-adminlte.css',
+        //'css/intevi-componentes.css',
     ],
 
     'js' => [

@@ -809,10 +809,12 @@
     {{-- ========================================================= --}}
     {{-- ESTILOS EXTERNOS                                          --}}
     {{-- ========================================================= --}}
+    <!--
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
     >
+    -->
 
     <link
         rel="stylesheet"
@@ -1156,31 +1158,20 @@
             border: 1px solid rgba(23, 28, 99, 0.25);
             border-radius: 12px;
             background: #ffffff;
-            color: #171C63;
+            color: #15803d;
             font-weight: 800;
-            box-shadow: 0 10px 24px rgba(23, 28, 99, 0.10);
-            transition:
-                transform 0.18s ease,
-                background 0.18s ease,
-                border-color 0.18s ease,
-                color 0.18s ease,
-                box-shadow 0.18s ease;
+            box-shadow: 0 10px 24px rgba(21, 128, 61, 0.10);
         }
 
         .btn-import-ubicaciones span {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
             gap: 8px;
         }
 
-        .btn-import-ubicaciones:hover,
-        .btn-import-ubicaciones:focus {
-            border-color: #171C63;
-            background: #171C63;
+        .btn-import-ubicaciones:hover{
+            background: #15803d;
             color: #ffffff;
-            transform: translateY(-1px);
-            box-shadow: 0 14px 28px rgba(23, 28, 99, 0.22);
         }
 
         /*
@@ -1342,24 +1333,11 @@
         }
 
         .import-modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            padding: 18px 22px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-            background:
-                radial-gradient(
-                    circle at top left,
-                    rgba(255, 255, 255, 0.20),
-                    transparent 35%
-                ),
-                linear-gradient(
+            background: linear-gradient(
                     135deg,
-                    #171C63 0%,
-                    #0f143f 100%
-                );
-            color: #ffffff;
+                    #14532d 0%,
+                    #15803d 100%
+            );
         }
 
         .import-modal-header > div > span {
