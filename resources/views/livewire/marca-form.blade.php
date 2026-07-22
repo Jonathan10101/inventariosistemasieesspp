@@ -2076,7 +2076,8 @@
             .header-actions,
             .btn-tour-module,
             .btn-import-marcas,
-            .btn-add-marca {
+            .btn-add-marca,
+            .btn-outline-success{
                 width: 100%;
             }
 

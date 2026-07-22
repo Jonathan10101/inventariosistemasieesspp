@@ -1214,7 +1214,8 @@
 
             .header-actions,
             .btn-tour-puesto,
-            .btn-add-puesto {
+            .btn-add-puesto,
+            .btn-outline-success {
                 width: 100%;
             }
 
