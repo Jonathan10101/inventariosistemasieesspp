@@ -103,7 +103,7 @@
                     wire:click="showModalImportAreas"
                     wire:loading.attr="disabled"
                     wire:target="showModalImportAreas"
-                    class="btn btn-import-excel"
+                    class="btn btn-outline-success"
                 >
                     <span
                         wire:loading.remove
