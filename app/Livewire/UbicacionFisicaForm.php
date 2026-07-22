@@ -375,7 +375,7 @@ class UbicacionfisicaForm extends Component
 
             $rutaImagen = $imageCompressor->store(
                 file: $data['imagen'],
-                directory: 'ubicaciones-fisicas',
+                directory: 'ubicaciones',
                 disk: 'public',
                 maxWidth: 1600,
                 maxHeight: 1600,
@@ -428,7 +428,7 @@ class UbicacionfisicaForm extends Component
 
             $nuevaRutaImagen = $imageCompressor->store(
                 file: $data['imagen'],
-                directory: 'ubicaciones-fisicas',
+                directory: 'ubicaciones',
                 disk: 'public',
                 maxWidth: 1600,
                 maxHeight: 1600,
