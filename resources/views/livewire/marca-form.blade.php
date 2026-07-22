@@ -537,6 +537,7 @@
 
                             {{-- ACCIONES DEL MODAL --}}
                             <div class="import-modal-actions">
+                                <!--
                                 <button
                                     type="button"
                                     wire:click="closeImportModal"
@@ -547,6 +548,7 @@
                                     <i class="fas fa-times"></i>
                                     <span>Cancelar</span>
                                 </button>
+                                -->
 
                                 <button
                                     type="submit"
