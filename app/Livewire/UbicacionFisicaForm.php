@@ -354,14 +354,19 @@ class UbicacionfisicaForm extends Component
     */
 
     #[On('saveFromComponentNewUbicacionFisica')]
-    public function saveNewUbicacionFisica($data): void
+    public function saveNewUbicacionFisica(array $data): void
     {
-        $data['descripcion'] = mb_strtolower(
+        // Solo modificar descripcion.
+        $data['descripcion'] = mb_strtoupper(
             trim((string) $data['descripcion']),
             'UTF-8'
         );
 
-        UbicacionFisica::create($data);
+        // No modificar $data['imagen'].
+        UbicacionFisica::create([
+            'descripcion' => $data['descripcion'],
+            'imagen' => $data['imagen'] ?? null,
+        ]);
 
         $this->showModal = false;
 

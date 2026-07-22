@@ -634,22 +634,15 @@
                             </td>
 
                             <td>
-                                @if (!empty($ubicacion->imagen))
+                                @if ($ubicacion->imagen)
                                     <a
-                                        href="{{ Storage::url($ubicacion->imagen) }}"
+                                        href="{{ asset('storage/' . $ubicacion->imagen) }}"
                                         target="_blank"
-                                        title="Ver imagen completa"
                                     >
                                         <img
-                                            src="{{ Storage::url($ubicacion->imagen) }}"
+                                            src="{{ asset('storage/' . $ubicacion->imagen) }}"
                                             alt="Imagen de {{ $ubicacion->descripcion }}"
-                                            style="
-                                                width: 70px;
-                                                height: 70px;
-                                                object-fit: cover;
-                                                border-radius: 8px;
-                                                display: block;
-                                            "
+                                            class="ubicacion-image"
                                         >
                                     </a>
                                 @else
