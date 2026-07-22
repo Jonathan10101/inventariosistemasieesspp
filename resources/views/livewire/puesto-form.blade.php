@@ -233,7 +233,7 @@
                                 id="archivoPuestos"
                                 wire:model="archivoPuestos"
                                 accept=".xlsx,.xls,.csv"
-                                class="form-control import-puestos-input"
+                                class="btn btn-secondary"
                             >
 
                             <p class="import-puestos-help">

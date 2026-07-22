@@ -301,6 +301,7 @@
                                     id="archivoUbicaciones"
                                     wire:model="archivoUbicaciones"
                                     accept=".xlsx,.xls,.csv"
+                                    class="btn btn-secondary"
                                 >
 
                                 <p class="import-help">
