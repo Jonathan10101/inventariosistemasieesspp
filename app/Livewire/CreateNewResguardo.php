@@ -425,7 +425,7 @@ class CreateNewResguardo extends Component
                     disk: 'public',
                     maxWidth: 1600,
                     maxHeight: 1600,
-                    quality: 75
+                    quality: 70
                 );
             }
 
