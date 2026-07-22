@@ -115,7 +115,7 @@
                     wire:click="showModalImportMarcas"
                     wire:loading.attr="disabled"
                     wire:target="showModalImportMarcas"
-                    class="btn btn-import-marcas"
+                    class="btn btn-import-excel"
                     title="Importar marcas desde Excel"
                 >
                     <span
@@ -343,7 +343,6 @@
                                         id="archivoMarcas"
                                         wire:model="archivoMarcas"
                                         accept=".xlsx,.xls,.csv"
-                                        class="form-control import-file-input"
                                     >
                                 </div>
 
