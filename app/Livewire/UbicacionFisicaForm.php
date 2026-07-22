@@ -10,7 +10,7 @@ use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Throwable;
 use App\Services\ImageCompressor;
-use Livewire\TemporaryUploadedFile;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Illuminate\Support\Facades\Storage as LaravelStorage;
 
 
@@ -360,13 +360,21 @@ class UbicacionfisicaForm extends Component
     #[On('saveFromComponentNewUbicacionFisica')]
     public function saveNewUbicacionFisica(array $data): void
     {
-        $data['descripcion'] = mb_strtoupper(
+        $descripcion = mb_strtoupper(
             trim((string) ($data['descripcion'] ?? '')),
             'UTF-8'
         );
 
         $rutaImagen = null;
 
+        /*
+        |--------------------------------------------------------------------------
+        | Comprimir imagen
+        |--------------------------------------------------------------------------
+        |
+        | Solo se procesa cuando realmente llega un archivo temporal de Livewire.
+        |
+        */
         if (
             isset($data['imagen'])
             && $data['imagen'] instanceof TemporaryUploadedFile
@@ -383,8 +391,13 @@ class UbicacionfisicaForm extends Component
             );
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Registrar ubicación
+        |--------------------------------------------------------------------------
+        */
         UbicacionFisica::create([
-            'descripcion' => $data['descripcion'],
+            'descripcion' => $descripcion,
             'imagen' => $rutaImagen,
         ]);
 
@@ -404,6 +417,9 @@ class UbicacionfisicaForm extends Component
     {
         $ubicacion = UbicacionFisica::findOrFail($data['id']);
 
+        $imagenAnterior = $ubicacion->imagen;
+        $nuevaRutaImagen = null;
+
         $datosActualizar = [
             'descripcion' => mb_strtoupper(
                 trim((string) ($data['descripcion'] ?? '')),
@@ -413,11 +429,11 @@ class UbicacionfisicaForm extends Component
 
         /*
         |--------------------------------------------------------------------------
-        | Comprimir y reemplazar imagen
+        | Comprimir nueva imagen
         |--------------------------------------------------------------------------
         |
-        | Solo entra cuando el usuario seleccionó una imagen nueva.
-        | Si no seleccionó ninguna, conserva la imagen actual.
+        | Solo reemplaza la imagen cuando realmente llega un archivo nuevo.
+        | Si no llega una imagen, conserva la anterior.
         |
         */
         if (
@@ -435,26 +451,32 @@ class UbicacionfisicaForm extends Component
                 quality: 75
             );
 
-            /*
-            |--------------------------------------------------------------------------
-            | Eliminar imagen anterior
-            |--------------------------------------------------------------------------
-            |
-            | Se elimina únicamente después de que la nueva imagen fue procesada
-            | correctamente.
-            |
-            */
-            if (
-                !empty($ubicacion->imagen)
-                && LaravelStorage::disk('public')->exists($ubicacion->imagen)
-            ) {
-                LaravelStorage::disk('public')->delete($ubicacion->imagen);
-            }
-
             $datosActualizar['imagen'] = $nuevaRutaImagen;
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Actualizar primero la base de datos
+        |--------------------------------------------------------------------------
+        */
         $ubicacion->update($datosActualizar);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Eliminar imagen anterior
+        |--------------------------------------------------------------------------
+        |
+        | Se elimina únicamente después de guardar correctamente la nueva ruta.
+        |
+        */
+        if (
+            $nuevaRutaImagen !== null
+            && !empty($imagenAnterior)
+            && $imagenAnterior !== $nuevaRutaImagen
+            && LaravelStorage::disk('public')->exists($imagenAnterior)
+        ) {
+            LaravelStorage::disk('public')->delete($imagenAnterior);
+        }
 
         $this->dispatch('alumno-updated', 1);
 
