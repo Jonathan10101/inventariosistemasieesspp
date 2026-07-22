@@ -283,7 +283,6 @@
                                 id="archivoAreas"
                                 wire:model="archivoAreas"
                                 accept=".xlsx,.xls,.csv"
-                                class="form-control import-input"
                             >
 
                             <p class="import-help">

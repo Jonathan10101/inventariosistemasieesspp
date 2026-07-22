@@ -343,7 +343,6 @@
                                         id="archivoMarcas"
                                         wire:model="archivoMarcas"
                                         accept=".xlsx,.xls,.csv"
-                                        class="form-control import-file-input"
                                     >
                                 </div>
 
