@@ -9,6 +9,10 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Throwable;
+use App\Services\ImageCompressor;
+use Livewire\TemporaryUploadedFile;
+use Illuminate\Support\Facades\Storage as LaravelStorage;
+
 
 class UbicacionfisicaForm extends Component
 {
@@ -356,16 +360,32 @@ class UbicacionfisicaForm extends Component
     #[On('saveFromComponentNewUbicacionFisica')]
     public function saveNewUbicacionFisica(array $data): void
     {
-        // Solo modificar descripcion.
         $data['descripcion'] = mb_strtoupper(
-            trim((string) $data['descripcion']),
+            trim((string) ($data['descripcion'] ?? '')),
             'UTF-8'
         );
 
-        // No modificar $data['imagen'].
+        $rutaImagen = null;
+
+        if (
+            isset($data['imagen'])
+            && $data['imagen'] instanceof TemporaryUploadedFile
+        ) {
+            $imageCompressor = app(ImageCompressor::class);
+
+            $rutaImagen = $imageCompressor->store(
+                file: $data['imagen'],
+                directory: 'ubicaciones-fisicas',
+                disk: 'public',
+                maxWidth: 1600,
+                maxHeight: 1600,
+                quality: 75
+            );
+        }
+
         UbicacionFisica::create([
             'descripcion' => $data['descripcion'],
-            'imagen' => $data['imagen'] ?? null,
+            'imagen' => $rutaImagen,
         ]);
 
         $this->showModal = false;
@@ -380,21 +400,58 @@ class UbicacionfisicaForm extends Component
     */
 
     #[On('saveUpdateUbicacionFisicaFromAnotherComponent')]
-    public function saveUpdateUbicacionFisica($data): void
+    public function saveUpdateUbicacionFisica(array $data): void
     {
-        $ubicacion = UbicacionFisica::findOrFail(
-            $data['id']
-        );
+        $ubicacion = UbicacionFisica::findOrFail($data['id']);
 
         $datosActualizar = [
             'descripcion' => mb_strtoupper(
-                trim((string) $data['descripcion']),
+                trim((string) ($data['descripcion'] ?? '')),
                 'UTF-8'
             ),
         ];
 
-        if (!empty($data['imagen'])) {
-            $datosActualizar['imagen'] = $data['imagen'];
+        /*
+        |--------------------------------------------------------------------------
+        | Comprimir y reemplazar imagen
+        |--------------------------------------------------------------------------
+        |
+        | Solo entra cuando el usuario seleccionó una imagen nueva.
+        | Si no seleccionó ninguna, conserva la imagen actual.
+        |
+        */
+        if (
+            isset($data['imagen'])
+            && $data['imagen'] instanceof TemporaryUploadedFile
+        ) {
+            $imageCompressor = app(ImageCompressor::class);
+
+            $nuevaRutaImagen = $imageCompressor->store(
+                file: $data['imagen'],
+                directory: 'ubicaciones-fisicas',
+                disk: 'public',
+                maxWidth: 1600,
+                maxHeight: 1600,
+                quality: 75
+            );
+
+            /*
+            |--------------------------------------------------------------------------
+            | Eliminar imagen anterior
+            |--------------------------------------------------------------------------
+            |
+            | Se elimina únicamente después de que la nueva imagen fue procesada
+            | correctamente.
+            |
+            */
+            if (
+                !empty($ubicacion->imagen)
+                && LaravelStorage::disk('public')->exists($ubicacion->imagen)
+            ) {
+                LaravelStorage::disk('public')->delete($ubicacion->imagen);
+            }
+
+            $datosActualizar['imagen'] = $nuevaRutaImagen;
         }
 
         $ubicacion->update($datosActualizar);
