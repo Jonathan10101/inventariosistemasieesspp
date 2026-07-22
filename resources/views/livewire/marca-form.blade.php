@@ -115,7 +115,7 @@
                     wire:click="showModalImportMarcas"
                     wire:loading.attr="disabled"
                     wire:target="showModalImportMarcas"
-                    class="btn btn-import-excel"
+                    class="btn btn-secondary"
                     title="Importar marcas desde Excel"
                 >
                     <span
