@@ -350,6 +350,7 @@
                             @endif
 
                             <div class="import-puestos-actions">
+                                <!--
                                 <button
                                     type="button"
                                     wire:click="closeImportModal"
@@ -359,6 +360,7 @@
                                 >
                                     Cancelar
                                 </button>
+                                -->
 
                                 <button
                                     type="submit"

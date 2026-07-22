@@ -471,6 +471,7 @@
                             @endif
 
                             <div class="import-actions">
+                                <!--
                                 <button
                                     type="button"
                                     wire:click="closeImportModal"
@@ -481,6 +482,7 @@
                                     <i class="fas fa-times"></i>
                                     Cancelar
                                 </button>
+                                -->
 
                                 <button
                                     type="submit"
