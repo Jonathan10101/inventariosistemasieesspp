@@ -356,7 +356,7 @@ class UbicacionfisicaForm extends Component
     #[On('saveFromComponentNewUbicacionFisica')]
     public function saveNewUbicacionFisica($data): void
     {
-        $data['descripcion'] = mb_strtoupper(
+        $data['descripcion'] = mb_strtolower(
             trim((string) $data['descripcion']),
             'UTF-8'
         );
