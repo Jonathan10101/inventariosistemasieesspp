@@ -1,4 +1,7 @@
 <div class="container mt-4 ubicaciones-page">
+    @php
+        use Illuminate\Support\Facades\Storage;
+    @endphp
 
     {{-- ========================================================= --}}
     {{-- MARCADOR DEL TUTORIAL                                     --}}
@@ -631,17 +634,22 @@
                             </td>
 
                             <td>
-                                @if($ubicacion->imagen)
+                                @if (!empty($ubicacion->imagen))
                                     <a
-                                        href="{{ asset('storage/' . $ubicacion->imagen) }}"
+                                        href="{{ Storage::url($ubicacion->imagen) }}"
                                         target="_blank"
-                                        class="ubicacion-image-link"
-                                        title="Ver imagen"
+                                        title="Ver imagen completa"
                                     >
                                         <img
-                                            src="{{ asset('storage/' . $ubicacion->imagen) }}"
+                                            src="{{ Storage::url($ubicacion->imagen) }}"
                                             alt="Imagen de {{ $ubicacion->descripcion }}"
-                                            class="ubicacion-image"
+                                            style="
+                                                width: 70px;
+                                                height: 70px;
+                                                object-fit: cover;
+                                                border-radius: 8px;
+                                                display: block;
+                                            "
                                         >
                                     </a>
                                 @else
