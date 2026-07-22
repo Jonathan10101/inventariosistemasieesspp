@@ -17,37 +17,55 @@ class CreateNewUbicacionfisica extends Component
         'imagen' => 'nullable|image|max:2048', // máximo 2MB
     ];
 
-    public function save(){
+    public function save(): void
+    {
         app(\App\Services\TenantDatabaseStorage::class)->assertCanWrite();
 
-        $this->ubicacionfisica = preg_replace('/\s+/', ' ', trim(mb_strtolower($this->ubicacionfisica)));
+        $this->ubicacionfisica = preg_replace(
+            '/\s+/',
+            ' ',
+            trim(mb_strtoupper($this->ubicacionfisica, 'UTF-8'))
+        );
+
         $this->validate();
 
-        $ubicacionfisicaComparacion = str_replace(' ', '', $this->ubicacionfisica);
+        $ubicacionfisicaComparacion = str_replace(
+            ' ',
+            '',
+            $this->ubicacionfisica
+        );
 
-        $existe = UbicacionFisica::whereRaw("REPLACE(descripcion, ' ', '') = ?", [$ubicacionfisicaComparacion])->exists();
+        $existe = UbicacionFisica::whereRaw(
+            "REPLACE(descripcion, ' ', '') = ?",
+            [$ubicacionfisicaComparacion]
+        )->exists();
 
         if ($existe) {
-            $this->addError('ubicacionfisica', 'Esta ubicación física ya existe aunque escrito diferente.');
+            $this->addError(
+                'ubicacionfisica',
+                'Esta ubicación física ya existe aunque esté escrita diferente.'
+            );
+
             return;
         }
 
-        
         $path = null;
+
         if ($this->imagen) {
-            // Guarda la imagen en storage/app/public/ubicaciones
+            // No convertir esta ruta a mayúsculas.
             $path = $this->imagen->store('ubicaciones', 'public');
         }
 
-
-
         $data = [
             'descripcion' => $this->ubicacionfisica,
-            'imagen' => $path, // ✅ enviamos la ruta o null si no hay imagen
-
+            'imagen' => $path,
         ];
 
-        $this->dispatch('saveFromComponentNewUbicacionFisica',$data);        
+        $this->dispatch(
+            'saveFromComponentNewUbicacionFisica',
+            data: $data
+        );
+
         $this->resetForm();
     }
 
