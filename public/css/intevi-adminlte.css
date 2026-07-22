@@ -78,8 +78,10 @@ body {
     justify-content: center !important;
     width: 100% !important;
     min-height: 82px !important;
-    padding: 8px 10px !important;
     white-space: normal !important;
+    padding: 0px !important;    
+    text-decoration: none !important;
+
 }
 
 .main-sidebar .brand-link .brand-text {
