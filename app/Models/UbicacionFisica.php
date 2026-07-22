@@ -16,16 +16,26 @@ class UbicacionFisica extends Model
 
     public function setAttribute($key, $value)
     {
-        // Si el atributo es fillable y es string, lo convierte en mayúsculas
-        if (in_array($key, $this->fillable) && is_string($value)) {
-            $value = strtoupper($value);
+        /*
+         * Solamente convierte la descripción a mayúsculas.
+         * Nunca modifica la ruta de la imagen.
+         */
+        if ($key === 'descripcion' && is_string($value)) {
+            $value = mb_strtoupper(
+                trim($value),
+                'UTF-8'
+            );
         }
+
         return parent::setAttribute($key, $value);
     }
 
     public function historialResguardos()
     {
-        return $this->hasMany(HistorialResguardo::class, 'ubicacion_fisicas_id');
+        return $this->hasMany(
+            HistorialResguardo::class,
+            'ubicacion_fisicas_id'
+        );
     }
 
 
