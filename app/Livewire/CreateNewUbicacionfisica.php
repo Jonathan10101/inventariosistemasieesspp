@@ -20,7 +20,7 @@ class CreateNewUbicacionfisica extends Component
     public function save(){
         app(\App\Services\TenantDatabaseStorage::class)->assertCanWrite();
 
-        $this->ubicacionfisica = preg_replace('/\s+/', ' ', trim(mb_strtoupper($this->ubicacionfisica)));
+        $this->ubicacionfisica = preg_replace('/\s+/', ' ', trim(mb_strtolower($this->ubicacionfisica)));
         $this->validate();
 
         $ubicacionfisicaComparacion = str_replace(' ', '', $this->ubicacionfisica);
