@@ -1784,7 +1784,8 @@
         .btn-tour,
         .btn-tour-area,
         .btn-import-areas,
-        .btn-add-area {
+        .btn-add-area,
+        .btn-outline-success {
             width: 100%;
         }
 

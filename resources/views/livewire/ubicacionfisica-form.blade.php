@@ -2072,7 +2072,8 @@
         .header-actions,
         .btn-tour-ubicacion,
         .btn-import-ubicacion,
-        .btn-add-ubicacion {
+        .btn-add-ubicacion,
+        .btn-outline-success {
             width: 100%;
         }
 
