@@ -96,8 +96,8 @@
                     wire:click="showModalImportUbicaciones"
                     wire:loading.attr="disabled"
                     wire:target="showModalImportUbicaciones"
-                    class="btn btn-import-excel"
                     title="Importar ubicaciones desde Excel"
+                    class="btn btn-outline-success"
                 >
                     <span
                         wire:loading.remove
@@ -301,7 +301,6 @@
                                     id="archivoUbicaciones"
                                     wire:model="archivoUbicaciones"
                                     accept=".xlsx,.xls,.csv"
-                                    class="btn btn-secondary"
                                 >
 
                                 <p class="import-help">

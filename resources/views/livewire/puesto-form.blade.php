@@ -82,6 +82,7 @@
                 wire:loading.attr="disabled"
                 wire:target="showModalImportPuestos"
                 title="Importar puestos desde Excel"
+                class="btn btn-outline-success"    
             >
                 <span
                     wire:loading.remove
@@ -233,7 +234,6 @@
                                 id="archivoPuestos"
                                 wire:model="archivoPuestos"
                                 accept=".xlsx,.xls,.csv"
-                                class="btn btn-secondary"
                             >
 
                             <p class="import-puestos-help">
