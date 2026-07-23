@@ -131,10 +131,18 @@ Route::middleware([
         |
         */
         Route::get(
+            '/ubicacionfisica',
+            [UbicacionFisicaController::class, 'index']
+        )->name('ubicaciones.show')
+         ->middleware('can:ubicacionfisica.index');
+         
+        Route::get(
             '/ubicacionfisica/{ubicacionfisica}',
             [UbicacionFisicaController::class, 'show']
         )->name('ubicaciones.show')
          ->middleware('can:ubicacionfisica.index');
+
+
 
         /*
         |--------------------------------------------------------------------------
