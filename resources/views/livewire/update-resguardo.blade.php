@@ -394,6 +394,7 @@
         
 
                 {{-- PDF OPCIONAL: SOLO FUNCIONA SI TU COMPONENTE TIENE public $resguardo_pdf --}}
+                {{-- 
                 @if(property_exists($this, 'resguardo_pdf'))
                     <div class="angular-section mb-4">
                         <div class="angular-section-header">
@@ -479,6 +480,7 @@
                         @enderror
                     </div>
                 @endif
+                --}}
 
                 {{-- ACCIONES --}}
                 <div class="angular-actions">
