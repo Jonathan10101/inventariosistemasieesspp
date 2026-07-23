@@ -2,29 +2,16 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
-use App\Models\Marca;
-use App\Models\EstadoUso;
-use App\Models\AreaDeUso;
-use App\Models\UbicacionFisica;
-use App\Models\Resguardante;
-use App\Models\Puesto;
-use Illuminate\Validation\Rule;
-
-use App\Models\Cursos;
-use App\Models\Grupos;
-use App\Models\Sedes;
-use App\Models\Adscripciones;
-use App\Models\Generaciones;
-use App\Models\Escolaridad;
-use App\Models\Municipio;
-use App\Models\Estudiante;
-use App\Livewire\Forms\StudentCreateForm;
-use Livewire\WithFileUploads;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Str;
 use App\Models\Resguardo;
-use Illuminate\Support\Facades\Storage;
+use App\Models\Resguardante;
+use App\Services\ImageCompressor;
+use App\Services\PdfCompressor;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage as LaravelStorage;
+use Illuminate\Support\Str;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Livewire\WithFileUploads;
 
 
 class UpdateResguardo extends Component
@@ -52,11 +39,13 @@ class UpdateResguardo extends Component
 
     public $ubicacion_img_url = null;
 
+    public $imagenActual;
+
+    public $resguardo_pdf_actual;
+
 
 
     public function mount($data){
-        
-     
         $resguardo = Resguardo::find($data);
         $this->historial_resguardo_id = $resguardo->historial->last()->id;
         $this->resguardo_id = $resguardo->id;
@@ -81,26 +70,14 @@ class UpdateResguardo extends Component
         $this->marcas = Marca::all();
         $this->estadosdeuso = EstadoUso::all();
         $this->areasdeasignacion = AreaDeUso::all();
-        //$this->institucion = $resguardo->institucion;
+
+        $this->imagenActual = $resguardo->imagen;
+        $this->imagen = null;
+
+        $this->resguardo_pdf_actual = $resguardo->resguardo_pdf;
+        $this->resguardo_pdf = null;
     }
 
-    /*
-    public function updatedUbicacionFisicasId($value)
-    {
-        $this->ubicacion_img_url = null;
-
-        if (!$value) return;
-
-        $u = UbicacionFisica::find($value);
-        //dd($u);
-
-        // Cambia "imagen" por el nombre real de tu campo en la tabla
-        if ($u && $u->imagen) {
-            $this->ubicacion_img_url = Storage::url($u->imagen);
-        }
-    }
-    */
-    
     public function resetImagenes()
     {
         $this->imagen = null;
@@ -148,15 +125,12 @@ class UpdateResguardo extends Component
                     }
                 },
             ],
-            //'institucion' => 'required',
         ]);
-        
         $resguardante = Resguardante::find($this->resguardante_id);
         $puesto_id = $resguardante->puesto_id;
         if($resguardante->puesto_id == null){
             $puesto_id = 1;
         }
-
         $data = [
             'descripcion' => $this->descripcion,
             'marca_id' => $this->marca_id,
@@ -170,8 +144,6 @@ class UpdateResguardo extends Component
             'nserie' => $this->nserie,
             //'institucion' => $this->institucion,
         ];
-               //dd($data);
-        //dd($data);
         $this->dispatch('updateUbicacionFromComponentResguardo',$data);        
         $this->resetForm();
     }

@@ -30,6 +30,7 @@ use App\Models\User;
 use Carbon\Carbon;
 
 use App\Models\HistorialResguardo;
+use App\Services\TenantDatabaseStorage;
 
 
 
@@ -135,6 +136,8 @@ class AddNewResguardo extends Component
    
     public function save()
     {
+        app(TenantDatabaseStorage::class)->assertCanWrite();
+
         $this->validate([
             'descripcion' => 'required',
             'marca_id' => 'required',

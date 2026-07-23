@@ -371,7 +371,7 @@ class AreaDeAsignacionForm extends Component
     |--------------------------------------------------------------------------
     */
 
-    #[On('saveUpdateAreaDeAsignacionFromAnotherComponent')]
+    #[On('saveUpdateAreaDeUsoFromAnotherComponent')]
     public function saveUpdateAreaDeAsignacion($data): void
     {
         $area = AreaDeUso::findOrFail($data['id']);
