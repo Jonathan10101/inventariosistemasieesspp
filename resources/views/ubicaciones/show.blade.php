@@ -18,8 +18,8 @@
             @if($ubicacionFisica->imagen)
                 <img src="{{ asset('storage/' . $ubicacionFisica->imagen) }}" 
                      alt="Imagen de ubicación"
-                     class="rounded-1 border"
-                     style="max-width: 280px;">
+                     class="rounded-1 border ubicacion-imagen"
+                     >
             @else
                 <p class="text-muted fst-italic">Sin imagen de ubicación</p>
             @endif
@@ -144,6 +144,18 @@
     .form-control:focus {
         border-color: #171C63;
         box-shadow: 0 0 0 0.2rem rgba(23, 28, 99, 0.25);
+    }
+
+    .ubicacion-imagen {
+        width: 100%;
+        max-width: 220px;
+        height: 150px;
+        object-fit: cover;
+        object-position: center;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        background-color: #f8f9fa;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
     }
 </style>
 @stop

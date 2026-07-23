@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
+
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 
 
@@ -50,6 +51,8 @@ class AppServiceProvider extends ServiceProvider
             'web',
             InitializeTenancyByDomain::class,
         ];
+        Paginator::useBootstrapFour();
+
     }
 
     
