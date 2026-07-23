@@ -181,52 +181,15 @@ class AddNewResguardo extends Component
         $pdfPath = $this->resguardo_pdf 
             ? $this->resguardo_pdf->store('resguardos/pdf', 'public')
             : null;
-
-
         $this->fecha_asignacion = now();
-
-
-        
         $resguardo = Resguardo::find($this->resguardo_id);
-
         $ultimoHistorial = $resguardo->historial()->get()->last();
-
-        
-
         if ($ultimoHistorial) {
             $ultimoHistorial->update([
                 'fecha_liberacion' => now()
             ]);
         }
-
         HistorialResguardo::registrarAsignacion($resguardo, $this->resguardante_id, $pdfPath,$imagenEvidencia,$this->estado_uso_id,$this->area_de_uso_id,$this->ubicacion_fisicas_id);
-
-        /*
-        $resguardo->historial()->create([
-            'resguardo_id'=> $this->resguardo_id,
-            'resguardante_id' => $this->resguardante_id,
-            'resguardo_pdf' => $this->resguardo_pdf ,
-            'fecha_asignacion' => now(),
-            'fecha_liberacion' => null,
-            'imagen_evidencia' => $imagenEvidencia, // ← aquí guardas la foto o evidencia
-            'tipo_evento'       => 'asignacion',
-            'descripcion_evento'=> 'Equipo asignado al resguardante.',
-            'estado_uso_id' => $this->estado_uso_id,
-            'area_de_uso_id' => $this->area_de_uso_id,
-            'ubicacion_fisicas_id' => $this->ubicacion_fisicas_id,
-        ]);
-        */
-
-
-
-
-
-
-        //HistorialResguardo::registrarAsignacion($this->resguardo, $this->resguardante_id, $pdfPath,$imagenEvidencia);
-        //HistorialResguardo::registrarAsignacion($this->resguardo, $this->resguardante_id, $pdfPath,$imagenEvidencia,$this->estado_uso_id,$this->area_de_uso_id,$this->ubicacion_fisicas_id);
-
-
-        //$this->dispatch('saveFromComponentNewHistorialResguardo',$data);        
         $this->dispatch('saveFromComponentAddNewHistorialResguardo');        
         $this->resetForm();
     }

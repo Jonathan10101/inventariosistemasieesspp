@@ -4,6 +4,8 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\AreaDeUso;
+use App\Services\TenantDatabaseStorage;
+
 
 class CreateNewAreaDeAsignacion extends Component
 {
