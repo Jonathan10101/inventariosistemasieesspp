@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\UbicacionFisica;
 use Illuminate\Support\Facades\Auth;
 
+
 class UbicacionFisicaController extends Controller
 {
     private int $perPage = 2;
@@ -22,13 +23,52 @@ class UbicacionFisicaController extends Controller
      */
     public function show(UbicacionFisica $ubicacionFisica)
     {
+        /*
+        |--------------------------------------------------------------------------
+        | Protección adicional de multitenancy
+        |--------------------------------------------------------------------------
+        |
+        | Aunque la ruta ya debe estar protegida por InitializeTenancyByDomain,
+        | verificamos que realmente exista un tenant inicializado.
+        |
+        */
+
+        abort_if(
+            !tenant(),
+            404,
+            'No se encontró el tenant correspondiente.'
+        );
+
         $user = Auth::user();
+
+        abort_if(
+            !$user,
+            401,
+            'Debes iniciar sesión para consultar esta información.'
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Consulta base
+        |--------------------------------------------------------------------------
+        |
+        | Esta consulta se ejecuta automáticamente sobre la base de datos
+        | del tenant actual.
+        |
+        */
+
+        $historialesQuery = $ubicacionFisica
+            ->historialResguardos()
+            ->whereNull('fecha_liberacion');
 
         /*
         |--------------------------------------------------------------------------
         | Administrador, Director y Delegación
         |--------------------------------------------------------------------------
-        | Estos roles pueden consultar todos los resguardos activos.
+        |
+        | Pueden consultar todos los resguardos activos de esta ubicación,
+        | pero únicamente dentro del tenant actual.
+        |
         */
 
         if ($user->hasAnyRole([
@@ -36,10 +76,9 @@ class UbicacionFisicaController extends Controller
             'Director',
             'Delegacion',
         ])) {
-            $historiales = $ubicacionFisica
-                ->historialResguardos()
-                ->whereNull('fecha_liberacion')
-                ->paginate($this->perPage);
+            $historiales = $historialesQuery
+                ->paginate($this->perPage)
+                ->withQueryString();
 
             return view('ubicaciones.show', compact(
                 'ubicacionFisica',
@@ -51,7 +90,6 @@ class UbicacionFisicaController extends Controller
         |--------------------------------------------------------------------------
         | Subdirector y usuarios normales
         |--------------------------------------------------------------------------
-        | Solo pueden consultar registros de su propia subdirección.
         */
 
         if (empty($user->subdireccion)) {
@@ -61,29 +99,48 @@ class UbicacionFisicaController extends Controller
             );
         }
 
-        $historialesQuery = $ubicacionFisica
-            ->historialResguardos()
-            ->whereNull('fecha_liberacion')
-            ->whereHas('resguardante.user', function ($query) use ($user) {
+        /*
+        |--------------------------------------------------------------------------
+        | Filtrar por subdirección
+        |--------------------------------------------------------------------------
+        */
+
+        $historialesQuery->whereHas(
+            'resguardante.user',
+            function ($query) use ($user) {
                 $query->where(
                     'subdireccion',
                     $user->subdireccion
                 );
-            });
+            }
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Verificar permiso
+        |--------------------------------------------------------------------------
+        |
+        | La ubicación sí pertenece al tenant actual, pero el usuario solamente
+        | podrá abrirla si tiene algún resguardo relacionado con su subdirección.
+        |
+        */
 
         if (!(clone $historialesQuery)->exists()) {
             abort(
                 403,
-                'No tienes permiso para ver esta ubicación física.'
+                'No tienes permiso para ver los resguardos de esta ubicación física.'
             );
         }
 
         $historiales = $historialesQuery
-            ->paginate($this->perPage);
+            ->paginate($this->perPage)
+            ->withQueryString();
 
         return view('ubicaciones.show', compact(
             'ubicacionFisica',
             'historiales'
         ));
     }
+
+    
 }
