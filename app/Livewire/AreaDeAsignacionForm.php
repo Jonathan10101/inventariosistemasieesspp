@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use App\Imports\AreasDeAsignacionImport;
 use App\Models\AreaDeUso;
-use Livewire\Attributes\On;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
@@ -14,6 +14,8 @@ class AreaDeAsignacionForm extends Component
 {
     use WithPagination;
     use WithFileUploads;
+
+    protected $paginationTheme = 'bootstrap';
 
     /*
     |--------------------------------------------------------------------------
@@ -27,15 +29,21 @@ class AreaDeAsignacionForm extends Component
 
     public bool $showImportModal = false;
 
-    public string $accionPrincipal = '';
+    public string $accionPrincipal = 'registrar';
 
     public string $search = '';
 
     public int $perPage = 5;
 
-    public $data_external_component = null;
+    /*
+    |--------------------------------------------------------------------------
+    | Propiedades del formulario
+    |--------------------------------------------------------------------------
+    */
 
-    public $areadeasignacion = null;
+    public ?int $areaId = null;
+
+    public string $nombre = '';
 
     public bool $isEditing = false;
 
@@ -78,7 +86,7 @@ class AreaDeAsignacionForm extends Component
 
     /*
     |--------------------------------------------------------------------------
-    | Modal registrar y editar
+    | Modal registrar
     |--------------------------------------------------------------------------
     */
 
@@ -86,28 +94,202 @@ class AreaDeAsignacionForm extends Component
     {
         $this->resetForm();
 
+        $this->accionPrincipal = 'registrar';
+
         $this->tituloModalPrincipal = 'REGISTRAR';
-        $this->accionPrincipal = '';
+
         $this->showModal = true;
     }
 
-    public function closeModal(): void
+    /*
+    |--------------------------------------------------------------------------
+    | Modal editar
+    |--------------------------------------------------------------------------
+    */
+
+    public function cambiarAccion(
+        string $nuevaAccion,
+        int $id
+    ): void {
+        if ($nuevaAccion !== 'editar') {
+            return;
+        }
+
+        $this->edit($id);
+    }
+
+    public function edit(int $id): void
     {
         $this->resetForm();
 
+        $area = AreaDeUso::findOrFail($id);
+
+        $this->areaId = $area->id;
+
+        $this->nombre = (string) $area->nombre;
+
+        $this->isEditing = true;
+
+        $this->accionPrincipal = 'editar';
+
+        $this->tituloModalPrincipal = 'EDITAR';
+
+        $this->showModal = true;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cerrar modal
+    |--------------------------------------------------------------------------
+    */
+
+    public function closeModal(): void
+    {
         $this->showModal = false;
 
-        $this->dispatch('refresh-page');
+        $this->resetForm();
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Limpiar formulario
+    |--------------------------------------------------------------------------
+    */
 
     public function resetForm(): void
     {
-        $this->reset([
-            'areadeasignacion',
-            'data_external_component',
-            'accionPrincipal',
-            'isEditing',
+        $this->resetValidation();
+
+        $this->areaId = null;
+
+        $this->nombre = '';
+
+        $this->isEditing = false;
+
+        $this->accionPrincipal = 'registrar';
+
+        $this->tituloModalPrincipal = 'REGISTRAR';
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Validaciones
+    |--------------------------------------------------------------------------
+    */
+
+    protected function rules(): array
+    {
+        return [
+            'nombre' => [
+                'required',
+                'string',
+                'min:2',
+                'max:150',
+
+                function (
+                    string $attribute,
+                    $value,
+                    \Closure $fail
+                ): void {
+                    $nombreNormalizado = mb_strtoupper(
+                        trim((string) $value),
+                        'UTF-8'
+                    );
+
+                    $query = AreaDeUso::query()
+                        ->where('nombre', $nombreNormalizado);
+
+                    if (
+                        $this->isEditing
+                        && $this->areaId !== null
+                    ) {
+                        $query->where(
+                            'id',
+                            '!=',
+                            $this->areaId
+                        );
+                    }
+
+                    if ($query->exists()) {
+                        $fail(
+                            'Esta área de asignación ya está registrada.'
+                        );
+                    }
+                },
+            ],
+        ];
+    }
+
+    protected function messages(): array
+    {
+        return [
+            'nombre.required' =>
+                'El nombre del área de asignación es obligatorio.',
+
+            'nombre.string' =>
+                'El nombre del área de asignación no es válido.',
+
+            'nombre.min' =>
+                'El nombre debe contener al menos 2 caracteres.',
+
+            'nombre.max' =>
+                'El nombre no puede superar los 150 caracteres.',
+        ];
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Registrar o actualizar
+    |--------------------------------------------------------------------------
+    */
+
+    public function saveArea(): void
+    {
+        $this->nombre = mb_strtoupper(
+            trim($this->nombre),
+            'UTF-8'
+        );
+
+        $this->validate();
+
+        if (
+            $this->isEditing
+            && $this->areaId !== null
+        ) {
+            $area = AreaDeUso::findOrFail(
+                $this->areaId
+            );
+
+            $area->update([
+                'nombre' => $this->nombre,
+            ]);
+
+            $this->showModal = false;
+
+            $this->resetForm();
+
+            $this->resetPage();
+
+            $this->dispatch(
+                'alumno-updated'
+            );
+
+            return;
+        }
+
+        AreaDeUso::create([
+            'nombre' => $this->nombre,
         ]);
+
+        $this->showModal = false;
+
+        $this->resetForm();
+
+        $this->resetPage();
+
+        $this->dispatch(
+            'alumno-created'
+        );
     }
 
     /*
@@ -121,13 +303,18 @@ class AreaDeAsignacionForm extends Component
         $this->resetValidation();
 
         $this->archivoAreas = null;
+
         $this->areasImportadas = 0;
+
         $this->areasDuplicadas = 0;
+
         $this->erroresImportacion = [];
 
         $this->showImportModal = true;
 
-        $this->dispatch('limpiar-archivo-areas');
+        $this->dispatch(
+            'limpiar-archivo-areas'
+        );
     }
 
     public function closeImportModal(): void
@@ -141,9 +328,13 @@ class AreaDeAsignacionForm extends Component
             'erroresImportacion',
         ]);
 
-        $this->resetValidation('archivoAreas');
+        $this->resetValidation(
+            'archivoAreas'
+        );
 
-        $this->dispatch('limpiar-archivo-areas');
+        $this->dispatch(
+            'limpiar-archivo-areas'
+        );
     }
 
     /*
@@ -157,7 +348,9 @@ class AreaDeAsignacionForm extends Component
         $this->resetValidation();
 
         $this->areasImportadas = 0;
+
         $this->areasDuplicadas = 0;
+
         $this->erroresImportacion = [];
 
         $this->validate(
@@ -187,27 +380,22 @@ class AreaDeAsignacionForm extends Component
         $rutaGuardada = null;
 
         try {
-            /*
-            |--------------------------------------------------------------------------
-            | Verificar extensión
-            |--------------------------------------------------------------------------
-            */
-
             $extension = strtolower(
-                $this->archivoAreas->getClientOriginalExtension()
+                $this->archivoAreas
+                    ->getClientOriginalExtension()
             );
 
-            if (!in_array($extension, ['xlsx', 'xls', 'csv'], true)) {
+            if (
+                !in_array(
+                    $extension,
+                    ['xlsx', 'xls', 'csv'],
+                    true
+                )
+            ) {
                 throw new \RuntimeException(
                     'El formato del archivo no es compatible.'
                 );
             }
-
-            /*
-            |--------------------------------------------------------------------------
-            | Crear nombre temporal
-            |--------------------------------------------------------------------------
-            */
 
             $nombreTemporal =
                 'areas-'
@@ -217,17 +405,12 @@ class AreaDeAsignacionForm extends Component
                 . '.'
                 . $extension;
 
-            /*
-            |--------------------------------------------------------------------------
-            | Guardar archivo temporal
-            |--------------------------------------------------------------------------
-            */
-
-            $rutaGuardada = $this->archivoAreas->storeAs(
-                'imports',
-                $nombreTemporal,
-                'local'
-            );
+            $rutaGuardada =
+                $this->archivoAreas->storeAs(
+                    'imports',
+                    $nombreTemporal,
+                    'local'
+                );
 
             if (!$rutaGuardada) {
                 throw new \RuntimeException(
@@ -236,7 +419,7 @@ class AreaDeAsignacionForm extends Component
             }
 
             if (
-                !\Illuminate\Support\Facades\Storage::disk('local')
+                !Storage::disk('local')
                     ->exists($rutaGuardada)
             ) {
                 throw new \RuntimeException(
@@ -244,25 +427,14 @@ class AreaDeAsignacionForm extends Component
                 );
             }
 
-            /*
-            |--------------------------------------------------------------------------
-            | Ejecutar importación
-            |--------------------------------------------------------------------------
-            */
-
-            $importacion = new AreasDeAsignacionImport();
+            $importacion =
+                new AreasDeAsignacionImport();
 
             \Maatwebsite\Excel\Facades\Excel::import(
                 $importacion,
                 $rutaGuardada,
                 'local'
             );
-
-            /*
-            |--------------------------------------------------------------------------
-            | Recuperar resultados
-            |--------------------------------------------------------------------------
-            */
 
             $this->areasImportadas =
                 $importacion->getAreasImportadas();
@@ -273,27 +445,21 @@ class AreaDeAsignacionForm extends Component
             $this->erroresImportacion =
                 $importacion->getErrores();
 
-            /*
-            |--------------------------------------------------------------------------
-            | Actualizar tabla
-            |--------------------------------------------------------------------------
-            */
-
             $this->search = '';
 
             $this->resetPage();
 
-            $this->reset('archivoAreas');
+            $this->reset(
+                'archivoAreas'
+            );
 
-            $this->dispatch('limpiar-archivo-areas');
+            $this->dispatch(
+                'limpiar-archivo-areas'
+            );
 
-            /*
-            |--------------------------------------------------------------------------
-            | Importación con errores parciales
-            |--------------------------------------------------------------------------
-            */
-
-            if (count($this->erroresImportacion) > 0) {
+            if (
+                count($this->erroresImportacion) > 0
+            ) {
                 $this->dispatch(
                     'areas-importacion-advertencia',
                     mensaje:
@@ -304,12 +470,6 @@ class AreaDeAsignacionForm extends Component
 
                 return;
             }
-
-            /*
-            |--------------------------------------------------------------------------
-            | Importación correcta
-            |--------------------------------------------------------------------------
-            */
 
             $this->showImportModal = false;
 
@@ -324,21 +484,16 @@ class AreaDeAsignacionForm extends Component
 
             $this->addError(
                 'archivoAreas',
-                'No se pudo importar: ' . $e->getMessage()
+                'No se pudo importar: '
+                . $e->getMessage()
             );
         } finally {
-            /*
-            |--------------------------------------------------------------------------
-            | Eliminar archivo temporal
-            |--------------------------------------------------------------------------
-            */
-
             if (
                 $rutaGuardada
-                && \Illuminate\Support\Facades\Storage::disk('local')
+                && Storage::disk('local')
                     ->exists($rutaGuardada)
             ) {
-                \Illuminate\Support\Facades\Storage::disk('local')
+                Storage::disk('local')
                     ->delete($rutaGuardada);
             }
         }
@@ -346,110 +501,7 @@ class AreaDeAsignacionForm extends Component
 
     /*
     |--------------------------------------------------------------------------
-    | Registrar área desde componente hijo
-    |--------------------------------------------------------------------------
-    */
-
-    #[On('saveFromComponentNewAreaDeAsignacion')]
-    public function saveNewAreaDeAsignacion($data): void
-    {
-        AreaDeUso::create([
-            'nombre' => mb_strtoupper(
-                trim((string) $data['nombre']),
-                'UTF-8'
-            ),
-        ]);
-
-        $this->showModal = false;
-
-        $this->dispatch('alumno-created', 1);
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Actualizar área desde componente hijo
-    |--------------------------------------------------------------------------
-    */
-
-    #[On('saveUpdateAreaDeUsoFromAnotherComponent')]
-    public function saveUpdateAreaDeAsignacion($data): void
-    {
-        $area = AreaDeUso::findOrFail($data['id']);
-
-        $area->update([
-            'nombre' => mb_strtoupper(
-                trim((string) $data['nombre']),
-                'UTF-8'
-            ),
-        ]);
-
-        $this->showModal = false;
-
-        $this->dispatch('alumno-updated', 1);
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Acciones
-    |--------------------------------------------------------------------------
-    */
-
-    public function cambiarAccion(
-        $nuevaAccion,
-        $id
-    ): void {
-        $this->accionPrincipal = $nuevaAccion;
-
-        $this->changeModalTitle(
-            $this->accionPrincipal
-        );
-
-        $this->accionEjecutada(
-            $this->accionPrincipal,
-            $id
-        );
-    }
-
-    public function changeModalTitle($accion): void
-    {
-        switch ($accion) {
-            case 'editar':
-                $this->tituloModalPrincipal = 'Editar';
-                break;
-
-            default:
-                $this->tituloModalPrincipal = 'Registrar';
-                break;
-        }
-    }
-
-    public function accionEjecutada(
-        $accion,
-        $id
-    ): void {
-        switch ($accion) {
-            case 'editar':
-                $this->edit($id);
-                break;
-        }
-    }
-
-    public function edit($id): void
-    {
-        $this->areadeasignacion =
-            AreaDeUso::findOrFail($id);
-
-        $this->showModal = true;
-
-        $this->isEditing = true;
-
-        $this->data_external_component =
-            $this->areadeasignacion->id;
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Vista principal
+    | Vista
     |--------------------------------------------------------------------------
     */
 
