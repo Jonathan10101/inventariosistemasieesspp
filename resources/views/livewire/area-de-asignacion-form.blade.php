@@ -172,7 +172,7 @@
                                 {{ $tituloModalPrincipal }}
                             </h5>
                         </div>
-                        <!--
+                        
                         <button
                             type="button"
                             class="modal-close-btn"
@@ -183,7 +183,7 @@
                         >
                             <i class="fas fa-times"></i>
                         </button>
-                        -->
+                        
                     </div>
 
                     {{-- ========================================================= --}}
