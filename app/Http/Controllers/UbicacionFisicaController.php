@@ -23,18 +23,18 @@ class UbicacionFisicaController extends Controller
      */
     public function show($id)
     {
-        $ubicacionfisica = UbicacionFisica::find($id);
-        if (!$ubicacionfisica) {
+        $ubicacionFisica = UbicacionFisica::find($id);
+        if (!$ubicacionFisica) {
             abort(404);
         }
-        $historiales = $ubicacionfisica
+        $historiales = $ubicacionFisica
             ->historialResguardos()
             ->whereNull('fecha_liberacion')
             ->whereNull('fecha_baja')
             ->paginate($this->perPage);
 
         return view('ubicaciones.show', compact(
-            'ubicacionfisica',
+            'ubicacionFisica',
             'historiales'
         ));
     }
