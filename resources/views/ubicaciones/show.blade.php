@@ -1,3 +1,4 @@
+```blade
 @extends('adminlte::page')
 
 @section('title', 'Resguardos por ubicación')
@@ -40,40 +41,69 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     @forelse($historiales as $historial)
-                        @php $resguardo = $historial->resguardo; @endphp
+                        @php
+                            $resguardo = $historial->resguardo;
+                        @endphp
+
                         <tr>
                             <td>{{ $historial->id }}</td>
+
                             <td>
                                 @if($historial->imagen_evidencia)
                                     <a href="{{ asset('storage/' . $historial->imagen_evidencia) }}" target="_blank">
                                         <img src="{{ asset('storage/' . $historial->imagen_evidencia) }}" 
                                              alt="Evidencia"
-                                             class="img-thumbnail border zoom-image" width="90">
+                                             class="img-thumbnail border zoom-image"
+                                             width="90">
                                     </a>
                                 @else
-                                    <span class="text-muted fst-italic">Sin imagen</span>
+                                    <span class="text-muted fst-italic">
+                                        Sin imagen
+                                    </span>
                                 @endif
                             </td>
-                            <td>{{ $resguardo->descripcion ?? 'Sin descripción' }}</td>
-                            <td>{{ $resguardo->marca->nombre ?? 'Sin marca' }}</td>
-                            <td>{{ $resguardo->modelo ?? 'Sin modelo' }}</td>
-                            <td>{{ $resguardo->nserie ?? 'N/A' }}</td>
-                            <td>{{ $resguardo->nresguardo ?? 'N/A' }}</td>
-                            <td>{{ $historial->fecha_asignacion_formatted ?? 'No registrada' }}</td>
+
+                            <td>
+                                {{ $resguardo->descripcion ?? 'Sin descripción' }}
+                            </td>
+
+                            <td>
+                                {{ $resguardo->marca->nombre ?? 'Sin marca' }}
+                            </td>
+
+                            <td>
+                                {{ $resguardo->modelo ?? 'Sin modelo' }}
+                            </td>
+
+                            <td>
+                                {{ $resguardo->nserie ?? 'N/A' }}
+                            </td>
+
+                            <td>
+                                {{ $resguardo->nresguardo ?? 'N/A' }}
+                            </td>
+
+                            <td>
+                                {{ $historial->fecha_asignacion_formatted ?? 'No registrada' }}
+                            </td>
+
                             <td>
                                 <a href="{{ route('inventario.index', ['search' => $resguardo->id]) }}" 
                                    class="btn btn-sm text-white"
                                    style="background-color:#171C63;">
-                                    <i class="fas fa-eye"></i> Ver
+                                    <i class="fas fa-eye"></i>
+                                    Ver
                                 </a>
                             </td>
                         </tr>
                     @empty
                         <tr>
                             <td colspan="9" class="text-muted py-4">
-                                <i class="fas fa-info-circle me-1"></i> No hay resguardos asignados en esta ubicación.
+                                <i class="fas fa-info-circle me-1"></i>
+                                No hay resguardos asignados en esta ubicación.
                             </td>
                         </tr>
                     @endforelse
@@ -81,7 +111,7 @@
             </table>
         </div>
 
-        <div class="mt-3 d-flex justify-content-end">
+        <div class="mt-3 paginacion-responsive">
             {{ $historiales->links() }}
         </div>
     </div>
@@ -90,9 +120,12 @@
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/ieessppformtable.css') }}">
+
 <style>
     /* General */
-    body { background-color: #f7f9fc; }
+    body {
+        background-color: #f7f9fc;
+    }
 
     .table th {
         vertical-align: middle;
@@ -137,6 +170,46 @@
         border-color: #171C63;
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Paginación responsive
+    |--------------------------------------------------------------------------
+    */
+
+    .paginacion-responsive {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding-bottom: 4px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .paginacion-responsive nav {
+        max-width: 100%;
+    }
+
+    .paginacion-responsive .pagination {
+        margin-bottom: 0;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+    }
+
+    .paginacion-responsive .page-item {
+        flex: 0 0 auto;
+    }
+
+    .paginacion-responsive .page-link {
+        min-width: 38px;
+        min-height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.45rem 0.7rem;
+        text-align: center;
+    }
+
     .modal-content {
         border-radius: 12px;
     }
@@ -156,6 +229,29 @@
         border-radius: 8px;
         background-color: #f8f9fa;
         box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Dispositivos móviles
+    |--------------------------------------------------------------------------
+    */
+
+    @media (max-width: 575.98px) {
+        .paginacion-responsive {
+            justify-content: flex-start;
+        }
+
+        .paginacion-responsive .pagination {
+            width: max-content;
+        }
+
+        .paginacion-responsive .page-link {
+            min-width: 34px;
+            min-height: 34px;
+            padding: 0.35rem 0.55rem;
+            font-size: 13px;
+        }
     }
 </style>
 @stop

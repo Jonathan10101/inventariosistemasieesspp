@@ -1,7 +1,10 @@
 @extends('adminlte::auth.auth-page', ['auth_type' => 'login'])
 
 @section('adminlte_css_pre')
-    <link rel="stylesheet" href="{{ asset('vendor/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+    <link
+        rel="stylesheet"
+        href="{{ asset('vendor/icheck-bootstrap/icheck-bootstrap.min.css') }}"
+    >
 
     <style>
         :root {
@@ -19,20 +22,63 @@
             --intevi-success: #047857;
         }
 
-        * {
+        html {
+            min-height: 100%;
+        }
+
+        *,
+        *::before,
+        *::after {
             box-sizing: border-box;
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Contenedor principal
+        |--------------------------------------------------------------------------
+        |
+        | AdminLTE utiliza Flexbox con dirección en columna.
+        | Se centra horizontalmente con align-items y verticalmente
+        | con justify-content.
+        |
+        */
+
         body.login-page,
         body.register-page {
-            min-height: 100vh;
+            width: 100%;
+            min-width: 100%;
+            min-height: 100vh !important;
+            min-height: 100dvh !important;
+            height: auto !important;
+            margin: 0;
             padding: 24px;
-            background:
-                radial-gradient(circle at 12% 12%, rgba(37, 99, 235, 0.20), transparent 28%),
-                radial-gradient(circle at 90% 15%, rgba(22, 184, 155, 0.16), transparent 26%),
-                linear-gradient(135deg, #080b24 0%, #171c63 48%, #090d2f 100%) !important;
+
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+
             position: relative;
             overflow-x: hidden;
+            overflow-y: auto;
+
+            background:
+                radial-gradient(
+                    circle at 12% 12%,
+                    rgba(37, 99, 235, 0.20),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 15%,
+                    rgba(22, 184, 155, 0.16),
+                    transparent 26%
+                ),
+                linear-gradient(
+                    135deg,
+                    #080b24 0%,
+                    #171c63 48%,
+                    #090d2f 100%
+                ) !important;
         }
 
         body.login-page::before,
@@ -40,12 +86,26 @@
             content: "";
             position: fixed;
             inset: 0;
+            z-index: 0;
             pointer-events: none;
+
             background-image:
-                linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+                linear-gradient(
+                    rgba(255, 255, 255, 0.035) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(255, 255, 255, 0.035) 1px,
+                    transparent 1px
+                );
+
             background-size: 42px 42px;
-            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.85), transparent 90%);
+            mask-image: linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0.85),
+                transparent 90%
+            );
         }
 
         body.login-page::after,
@@ -56,15 +116,24 @@
             height: 440px;
             right: -180px;
             bottom: -190px;
+            z-index: 0;
             border-radius: 50%;
             background: rgba(22, 184, 155, 0.13);
             filter: blur(70px);
             pointer-events: none;
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Caja del login
+        |--------------------------------------------------------------------------
+        */
+
         .login-box {
-            width: 430px;
-            max-width: 100%;
+            width: 430px !important;
+            max-width: 100% !important;
+            margin: auto !important;
+            flex: 0 0 auto;
             position: relative;
             z-index: 2;
         }
@@ -74,21 +143,28 @@
             display: none !important;
         }
 
-        .card {
+        .login-box .card {
+            width: 100%;
+            margin: 0;
             border: 1px solid rgba(255, 255, 255, 0.20);
             border-radius: 20px;
             background: rgba(255, 255, 255, 0.98);
+
             box-shadow:
                 0 32px 80px rgba(2, 6, 23, 0.45),
                 0 8px 24px rgba(2, 6, 23, 0.18);
+
             overflow: hidden;
             backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
         }
 
-        .card::before {
+        .login-box .card::before {
             content: "";
             display: block;
+            width: 100%;
             height: 5px;
+
             background: linear-gradient(
                 90deg,
                 var(--intevi-accent) 0%,
@@ -98,13 +174,29 @@
         }
 
         .login-card-body {
+            width: 100%;
             padding: 34px 34px 28px;
+            border-radius: 0;
             background: transparent;
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Encabezado
+        |--------------------------------------------------------------------------
+        */
+
         .intevi-login-header {
+            width: 100%;
             margin-bottom: 28px;
             text-align: center;
+        }
+
+        .intevi-login-header > a {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .intevi-logo-shell {
@@ -112,13 +204,21 @@
             height: 78px;
             margin: 0 auto 15px;
             padding: 10px;
+
             display: flex;
             align-items: center;
             justify-content: center;
+
             border: 1px solid rgba(23, 28, 99, 0.10);
             border-radius: 22px;
+
             background:
-                linear-gradient(145deg, #ffffff, #f1f5f9);
+                linear-gradient(
+                    145deg,
+                    #ffffff,
+                    #f1f5f9
+                );
+
             box-shadow:
                 0 16px 35px rgba(23, 28, 99, 0.14),
                 inset 0 1px 0 rgba(255, 255, 255, 0.95);
@@ -138,6 +238,7 @@
             font-weight: 900;
             letter-spacing: 0.09em;
             line-height: 1;
+            text-align: center;
         }
 
         .intevi-login-product {
@@ -156,34 +257,27 @@
             line-height: 1.55;
         }
 
-        .intevi-section-label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 0 0 18px;
-            color: var(--intevi-text);
-            font-size: 13px;
-            font-weight: 800;
-        }
-
-        .intevi-section-label::after {
-            content: "";
-            height: 1px;
-            flex: 1;
-            background: #e8edf4;
-        }
+        /*
+        |--------------------------------------------------------------------------
+        | Alertas
+        |--------------------------------------------------------------------------
+        */
 
         .intevi-alert {
             display: flex;
             align-items: flex-start;
             gap: 11px;
+
             margin-bottom: 18px;
             padding: 13px 14px;
+
             border: 1px solid #fecdd3;
             border-left: 4px solid var(--intevi-danger);
             border-radius: 12px;
+
             background: var(--intevi-danger-soft);
             color: #991b1b;
+
             animation: inteviAlertIn 0.24s ease both;
         }
 
@@ -198,9 +292,11 @@
             width: 28px;
             height: 28px;
             flex: 0 0 28px;
+
             display: inline-flex;
             align-items: center;
             justify-content: center;
+
             border-radius: 9px;
             background: rgba(220, 38, 38, 0.10);
             color: var(--intevi-danger);
@@ -237,7 +333,14 @@
             }
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Formulario
+        |--------------------------------------------------------------------------
+        */
+
         .intevi-form-group {
+            width: 100%;
             margin-bottom: 18px;
         }
 
@@ -249,23 +352,18 @@
             font-weight: 800;
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Campo unificado estilo Angular Material
-        |--------------------------------------------------------------------------
-        |
-        | Icono, input y botón forman una sola pieza visual.
-        |
-        */
-
         .intevi-field {
+            width: 100%;
             min-height: 54px;
+
             display: flex;
             align-items: center;
+
             border: 1px solid var(--intevi-border);
             border-radius: 12px;
             background: var(--intevi-surface);
             overflow: hidden;
+
             transition:
                 border-color 0.18s ease,
                 box-shadow 0.18s ease,
@@ -279,6 +377,7 @@
         .intevi-field:focus-within {
             border-color: var(--intevi-primary);
             background: #ffffff;
+
             box-shadow:
                 0 0 0 4px rgba(23, 28, 99, 0.09),
                 0 10px 24px rgba(15, 23, 42, 0.06);
@@ -293,13 +392,16 @@
             width: 52px;
             min-width: 52px;
             align-self: stretch;
+
             display: flex;
             align-items: center;
             justify-content: center;
+
+            border-right: 1px solid #edf1f6;
             background: var(--intevi-surface-soft);
             color: #667085;
             font-size: 15px;
-            border-right: 1px solid #edf1f6;
+
             transition:
                 color 0.18s ease,
                 background-color 0.18s ease;
@@ -317,15 +419,22 @@
 
         .intevi-field-input {
             min-width: 0;
+            width: 100%;
             height: 52px;
             flex: 1;
+
             padding: 0 14px;
+
             border: 0 !important;
             outline: 0 !important;
+            border-radius: 0 !important;
+
             background: transparent !important;
             color: var(--intevi-text);
+
             font-size: 14px;
             font-weight: 600;
+
             box-shadow: none !important;
         }
 
@@ -339,16 +448,21 @@
             min-width: 50px;
             height: 52px;
             padding: 0;
-            border: 0;
-            border-left: 1px solid #edf1f6;
-            outline: 0 !important;
-            background: transparent;
-            color: #667085;
-            cursor: pointer;
+
             display: inline-flex;
             align-items: center;
             justify-content: center;
+
+            border: 0;
+            border-left: 1px solid #edf1f6;
+            outline: 0 !important;
+
+            background: transparent;
+            color: #667085;
+            cursor: pointer;
+
             box-shadow: none !important;
+
             transition:
                 color 0.18s ease,
                 background-color 0.18s ease;
@@ -376,6 +490,12 @@
             font-weight: 700;
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Opciones de sesión
+        |--------------------------------------------------------------------------
+        */
+
         .intevi-login-options {
             display: flex;
             align-items: center;
@@ -388,7 +508,9 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+
             margin: 0;
+
             color: var(--intevi-muted);
             font-size: 12.5px;
             font-weight: 600;
@@ -414,16 +536,26 @@
             text-decoration: underline;
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Botón
+        |--------------------------------------------------------------------------
+        */
+
         .intevi-login-button {
             width: 100%;
             min-height: 50px;
+
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 9px;
+
             padding: 0 18px;
+
             border: 0;
             border-radius: 12px;
+
             background:
                 linear-gradient(
                     135deg,
@@ -431,11 +563,15 @@
                     #222d86 55%,
                     var(--intevi-primary-dark) 100%
                 );
+
             color: #ffffff;
             font-size: 14px;
             font-weight: 900;
             letter-spacing: 0.01em;
-            box-shadow: 0 15px 30px rgba(23, 28, 99, 0.27);
+
+            box-shadow:
+                0 15px 30px rgba(23, 28, 99, 0.27);
+
             transition:
                 transform 0.18s ease,
                 box-shadow 0.18s ease,
@@ -447,7 +583,9 @@
             color: #ffffff;
             transform: translateY(-1px);
             filter: brightness(1.04);
-            box-shadow: 0 19px 36px rgba(23, 28, 99, 0.34);
+
+            box-shadow:
+                0 19px 36px rgba(23, 28, 99, 0.34);
         }
 
         .intevi-login-button:disabled {
@@ -457,25 +595,18 @@
             filter: none;
         }
 
-        .intevi-security-note {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 7px;
-            margin-top: 14px;
-            color: #7c8799;
-            font-size: 11.5px;
-            font-weight: 600;
-        }
-
-        .intevi-security-note i {
-            color: var(--intevi-accent);
-        }
+        /*
+        |--------------------------------------------------------------------------
+        | Pie del formulario
+        |--------------------------------------------------------------------------
+        */
 
         .intevi-login-footer {
             margin-top: 24px;
             padding-top: 18px;
+
             border-top: 1px solid #e9edf3;
+
             color: var(--intevi-muted);
             text-align: center;
             font-size: 11.5px;
@@ -487,21 +618,57 @@
             font-weight: 900;
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Teléfonos móviles
+        |--------------------------------------------------------------------------
+        */
+
         @media (max-width: 575.98px) {
             body.login-page,
             body.register-page {
-                padding: 14px;
-                align-items: flex-start !important;
-                padding-top: 28px;
+                width: 100% !important;
+                min-height: 100vh !important;
+                min-height: 100dvh !important;
+                height: auto !important;
+
+                padding-top: calc(16px + env(safe-area-inset-top));
+                padding-right: calc(14px + env(safe-area-inset-right));
+                padding-bottom: calc(16px + env(safe-area-inset-bottom));
+                padding-left: calc(14px + env(safe-area-inset-left));
+
+                align-items: center !important;
+                justify-content: center !important;
+
+                overflow-x: hidden;
+                overflow-y: auto;
+            }
+
+            .login-box {
+                width: 100% !important;
+                max-width: 430px !important;
+                margin: auto !important;
+            }
+
+            .login-box .card {
+                width: 100%;
+                margin: 0;
+                border-radius: 17px;
             }
 
             .login-card-body {
+                width: 100%;
                 padding: 27px 20px 23px;
+            }
+
+            .intevi-login-header {
+                margin-bottom: 24px;
             }
 
             .intevi-logo-shell {
                 width: 70px;
                 height: 70px;
+                margin-bottom: 13px;
                 border-radius: 19px;
             }
 
@@ -514,27 +681,127 @@
                 font-size: 26px;
             }
 
+            .intevi-field {
+                min-height: 52px;
+            }
+
+            .intevi-field-icon {
+                width: 48px;
+                min-width: 48px;
+            }
+
+            .intevi-field-input {
+                height: 50px;
+                padding-right: 11px;
+                padding-left: 11px;
+                font-size: 13.5px;
+            }
+
+            .intevi-password-toggle {
+                width: 46px;
+                min-width: 46px;
+                height: 50px;
+            }
+
             .intevi-login-options {
                 align-items: flex-start;
                 flex-direction: column;
                 gap: 10px;
             }
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Pantallas pequeñas con poca altura
+        |--------------------------------------------------------------------------
+        |
+        | Cuando el contenido no cabe, se coloca naturalmente desde arriba
+        | mediante los márgenes automáticos y se permite hacer scroll.
+        |
+        */
+
+        @media (max-width: 575.98px) and (max-height: 680px) {
+            body.login-page,
+            body.register-page {
+                justify-content: flex-start !important;
+            }
+
+            .login-box {
+                margin-top: auto !important;
+                margin-bottom: auto !important;
+            }
+
+            .login-card-body {
+                padding-top: 23px;
+                padding-bottom: 20px;
+            }
+
+            .intevi-login-header {
+                margin-bottom: 20px;
+            }
+
+            .intevi-logo-shell {
+                width: 64px;
+                height: 64px;
+                margin-bottom: 11px;
+            }
+
+            .intevi-logo {
+                width: 47px;
+                height: 47px;
+            }
+
+            .intevi-form-group {
+                margin-bottom: 15px;
+            }
+
+            .intevi-login-footer {
+                margin-top: 20px;
+                padding-top: 15px;
+            }
+        }
     </style>
 @stop
 
-@php($login_url = View::getSection('login_url') ?? config('adminlte.login_url', 'login'))
-@php($register_url = View::getSection('register_url') ?? config('adminlte.register_url', 'register'))
-@php($password_reset_url = View::getSection('password_reset_url') ?? config('adminlte.password_reset_url', 'password/reset'))
+@php
+    $login_url = View::getSection('login_url')
+        ?? config('adminlte.login_url', 'login');
+
+    $register_url = View::getSection('register_url')
+        ?? config('adminlte.register_url', 'register');
+
+    $password_reset_url = View::getSection('password_reset_url')
+        ?? config('adminlte.password_reset_url', 'password/reset');
+@endphp
 
 @if (config('adminlte.use_route_url', false))
-    @php($login_url = $login_url ? route($login_url) : '')
-    @php($register_url = $register_url ? route($register_url) : '')
-    @php($password_reset_url = $password_reset_url ? route($password_reset_url) : '')
+    @php
+        $login_url = $login_url
+            ? route($login_url)
+            : '';
+
+        $register_url = $register_url
+            ? route($register_url)
+            : '';
+
+        $password_reset_url = $password_reset_url
+            ? route($password_reset_url)
+            : '';
+    @endphp
 @else
-    @php($login_url = $login_url ? url($login_url) : '')
-    @php($register_url = $register_url ? url($register_url) : '')
-    @php($password_reset_url = $password_reset_url ? url($password_reset_url) : '')
+    @php
+        $login_url = $login_url
+            ? url($login_url)
+            : '';
+
+        $register_url = $register_url
+            ? url($register_url)
+            : '';
+
+        $password_reset_url = $password_reset_url
+            ? url($password_reset_url)
+            : '';
+    @endphp
 @endif
 
 @section('auth_header')
@@ -559,58 +826,49 @@
                 INTEVI
             </h1>
         </a>
-
-        <!--
-        <p class="intevi-login-product">
-            Inventario y resguardo institucional
-        </p>
-        -->
-
-       
     </div>
 
     @if (session('status'))
-        <div class="intevi-alert success" role="status">
+        <div
+            class="intevi-alert success"
+            role="status"
+        >
             <span class="intevi-alert-icon">
                 <i class="fas fa-check"></i>
             </span>
 
             <div>
-                <strong>Operación completada</strong>
-                <span>{{ session('status') }}</span>
+                <strong>
+                    Operación completada
+                </strong>
+
+                <span>
+                    {{ session('status') }}
+                </span>
             </div>
         </div>
     @endif
 
     @if (session('error'))
-        <div class="intevi-alert" role="alert">
+        <div
+            class="intevi-alert"
+            role="alert"
+        >
             <span class="intevi-alert-icon">
                 <i class="fas fa-exclamation"></i>
             </span>
 
             <div>
-                <strong>No se pudo iniciar sesión</strong>
-                <span>{{ session('error') }}</span>
-            </div>
-        </div>
-    @endif
+                <strong>
+                    No se pudo iniciar sesión
+                </strong>
 
-    {{--
-    @if ($errors->any())
-        <div class="intevi-alert" role="alert">
-            <span class="intevi-alert-icon">
-                <i class="fas fa-exclamation"></i>
-            </span>
-
-            <div>
-                <strong>Credenciales incorrectas</strong>
                 <span>
-                    {{ $errors->first('email') ?: $errors->first('password') ?: 'Verifica tu correo electrónico y contraseña.' }}
+                    {{ session('error') }}
                 </span>
             </div>
         </div>
     @endif
-    --}}
 
     <form
         action="{{ $login_url }}"
@@ -622,12 +880,21 @@
         @csrf
 
         <div class="intevi-form-group">
-            <label for="email" class="intevi-field-label">
+            <label
+                for="email"
+                class="intevi-field-label"
+            >
                 Correo electrónico
             </label>
 
-            <div class="intevi-field @error('email') has-error @enderror">
-                <span class="intevi-field-icon" aria-hidden="true">
+            <div
+                class="intevi-field
+                    @error('email') has-error @enderror"
+            >
+                <span
+                    class="intevi-field-icon"
+                    aria-hidden="true"
+                >
                     <i class="fas fa-envelope"></i>
                 </span>
 
@@ -640,9 +907,16 @@
                     placeholder="nombre@institucion.com"
                     autocomplete="email"
                     inputmode="email"
+                    autocapitalize="none"
+                    spellcheck="false"
                     autofocus
                     required
-                    oninput="this.value = this.value.trimStart().toLowerCase()"
+                    oninput="
+                        this.value =
+                            this.value
+                                .trimStart()
+                                .toLowerCase()
+                    "
                 >
             </div>
 
@@ -658,12 +932,21 @@
         </div>
 
         <div class="intevi-form-group">
-            <label for="password" class="intevi-field-label">
+            <label
+                for="password"
+                class="intevi-field-label"
+            >
                 Contraseña
             </label>
 
-            <div class="intevi-field @error('password') has-error @enderror">
-                <span class="intevi-field-icon" aria-hidden="true">
+            <div
+                class="intevi-field
+                    @error('password') has-error @enderror"
+            >
+                <span
+                    class="intevi-field-icon"
+                    aria-hidden="true"
+                >
                     <i class="fas fa-lock"></i>
                 </span>
 
@@ -684,7 +967,10 @@
                     aria-label="Mostrar contraseña"
                     aria-pressed="false"
                 >
-                    <i class="fas fa-eye" id="togglePasswordIcon"></i>
+                    <i
+                        class="fas fa-eye"
+                        id="togglePasswordIcon"
+                    ></i>
                 </button>
             </div>
 
@@ -699,29 +985,6 @@
             @enderror
         </div>
 
-        {{--
-        <div class="intevi-login-options">
-            <label for="remember" class="intevi-remember">
-                <input
-                    type="checkbox"
-                    name="remember"
-                    id="remember"
-                    {{ old('remember') ? 'checked' : '' }}
-                >
-                <span>Mantener sesión iniciada</span>
-            </label>
-
-            @if ($password_reset_url)
-                <a
-                    href="{{ $password_reset_url }}"
-                    class="intevi-recovery-link"
-                >
-                    Recuperar acceso
-                </a>
-            @endif
-        </div>
-        --}}
-
         <button
             type="submit"
             class="intevi-login-button"
@@ -732,17 +995,27 @@
                 Entrar al sistema
             </span>
 
-            <span id="loginLoading" style="display: none;">
+            <span
+                id="loginLoading"
+                style="display: none;"
+            >
                 <i class="fas fa-spinner fa-spin mr-1"></i>
                 Validando acceso...
             </span>
         </button>
 
-         <div class="intevi-login-footer">
-            <strong>Inventario y resguardo institucional</strong>
+        <div class="intevi-login-footer">
+            <strong>
+                Inventario y resguardo institucional
+            </strong>
         </div>
     </form>
+@stop
 
+@section('auth_footer')
+@stop
+
+@section('adminlte_js')
     <script>
         function mostrarCargandoLogin(event) {
             event.preventDefault();
@@ -752,7 +1025,12 @@
             const loginText = document.getElementById('loginText');
             const loginLoading = document.getElementById('loginLoading');
 
-            if (!form || !button || !loginText || !loginLoading) {
+            if (
+                !form ||
+                !button ||
+                !loginText ||
+                !loginLoading
+            ) {
                 return true;
             }
 
@@ -767,6 +1045,7 @@
             loginText.style.display = 'none';
             loginLoading.style.display = 'inline-flex';
             loginLoading.style.alignItems = 'center';
+            loginLoading.style.justifyContent = 'center';
 
             window.setTimeout(function () {
                 form.submit();
@@ -775,50 +1054,65 @@
             return false;
         }
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const passwordInput = document.getElementById('password');
-            const togglePassword = document.getElementById('togglePassword');
-            const togglePasswordIcon = document.getElementById('togglePasswordIcon');
+        document.addEventListener(
+            'DOMContentLoaded',
+            function () {
+                const passwordInput =
+                    document.getElementById('password');
 
-            if (!passwordInput || !togglePassword || !togglePasswordIcon) {
-                return;
+                const togglePassword =
+                    document.getElementById('togglePassword');
+
+                const togglePasswordIcon =
+                    document.getElementById('togglePasswordIcon');
+
+                if (
+                    !passwordInput ||
+                    !togglePassword ||
+                    !togglePasswordIcon
+                ) {
+                    return;
+                }
+
+                togglePassword.addEventListener(
+                    'click',
+                    function () {
+                        const passwordIsHidden =
+                            passwordInput.type === 'password';
+
+                        passwordInput.type =
+                            passwordIsHidden
+                                ? 'text'
+                                : 'password';
+
+                        togglePasswordIcon.classList.toggle(
+                            'fa-eye',
+                            !passwordIsHidden
+                        );
+
+                        togglePasswordIcon.classList.toggle(
+                            'fa-eye-slash',
+                            passwordIsHidden
+                        );
+
+                        togglePassword.setAttribute(
+                            'aria-label',
+                            passwordIsHidden
+                                ? 'Ocultar contraseña'
+                                : 'Mostrar contraseña'
+                        );
+
+                        togglePassword.setAttribute(
+                            'aria-pressed',
+                            passwordIsHidden
+                                ? 'true'
+                                : 'false'
+                        );
+
+                        passwordInput.focus();
+                    }
+                );
             }
-
-            togglePassword.addEventListener('click', function () {
-                const passwordIsHidden = passwordInput.type === 'password';
-
-                passwordInput.type = passwordIsHidden ? 'text' : 'password';
-
-                togglePasswordIcon.classList.toggle(
-                    'fa-eye',
-                    !passwordIsHidden
-                );
-
-                togglePasswordIcon.classList.toggle(
-                    'fa-eye-slash',
-                    passwordIsHidden
-                );
-
-                togglePassword.setAttribute(
-                    'aria-label',
-                    passwordIsHidden
-                        ? 'Ocultar contraseña'
-                        : 'Mostrar contraseña'
-                );
-
-                togglePassword.setAttribute(
-                    'aria-pressed',
-                    passwordIsHidden ? 'true' : 'false'
-                );
-
-                passwordInput.focus();
-            });
-        });
+        );
     </script>
-@stop
-
-@section('auth_footer')
-@stop
-
-@section('adminlte_js')
 @stop
