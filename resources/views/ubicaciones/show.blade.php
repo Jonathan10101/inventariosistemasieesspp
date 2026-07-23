@@ -193,6 +193,11 @@
         border-color: #171C63;
     }
 
+    .mobile-page-nav {
+        display: none;
+    }
+
+
     /*
     |--------------------------------------------------------------------------
     | Paginación responsive
@@ -276,5 +281,98 @@
             font-size: 13px;
         }
     }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | RESPONSIVE MÓVIL
+        |--------------------------------------------------------------------------
+        */
+
+        @media (max-width: 768px) {
+            .marcas-page {
+                margin-top: 12px !important;
+                padding-left: 12px !important;
+                padding-right: 12px !important;
+            }
+
+            .mobile-page-nav {
+                position: sticky;
+                top: 8px;
+                z-index: 1040;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 10px;
+                margin-bottom: 14px;
+                padding: 10px;
+                border-radius: 18px;
+                background: rgba(255, 255, 255, 0.92);
+                border: 1px solid rgba(226, 232, 240, 0.95);
+                box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12);
+                backdrop-filter: blur(12px);
+            }
+
+            .mobile-nav-btn {
+                min-height: 42px;
+                flex: 1;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                border: 1px solid #e2e8f0;
+                border-radius: 14px;
+                background: #f8fafc;
+                color: #334155;
+                font-size: 13px;
+                font-weight: 900;
+                text-decoration: none !important;
+                outline: none !important;
+                transition: all 0.18s ease;
+            }
+
+            .mobile-nav-btn i {
+                font-size: 13px;
+            }
+
+            .mobile-nav-btn:hover,
+            .mobile-nav-btn:focus {
+                background: #ffffff;
+                color: #171C63;
+                border-color: rgba(23, 28, 99, 0.25);
+            }
+
+            .mobile-nav-btn.primary {
+                background: linear-gradient(
+                    135deg,
+                    #171C63 0%,
+                    #26318f 100%
+                );
+                border-color: #171C63;
+                color: #ffffff !important;
+                box-shadow: 0 12px 24px rgba(23, 28, 99, 0.22);
+            }
+
+            .mobile-nav-btn.primary:hover,
+            .mobile-nav-btn.primary:focus {
+                color: #ffffff !important;
+                transform: translateY(-1px);
+                box-shadow: 0 16px 30px rgba(23, 28, 99, 0.28);
+            }
+
+            .marcas-header {
+                margin-top: 4px;
+            }
+
+            .ieesspp-modal-dialog {
+                margin: 12px;
+            }
+
+            .import-summary {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
 </style>
 @stop

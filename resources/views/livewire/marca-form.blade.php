@@ -968,10 +968,6 @@
         |--------------------------------------------------------------------------
         */
 
-        .marcas-page {
-            color: #111827;
-        }
-
         button:disabled {
             cursor: wait !important;
             opacity: 0.68;
