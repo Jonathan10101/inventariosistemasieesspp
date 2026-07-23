@@ -9,6 +9,8 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Throwable;
+use App\Services\TenantDatabaseStorage;
+
 
 class AreaDeAsignacionForm extends Component
 {
@@ -245,6 +247,8 @@ class AreaDeAsignacionForm extends Component
 
     public function saveArea(): void
     {
+        app(\App\Services\TenantDatabaseStorage::class)->assertCanWrite();
+
         $this->nombre = mb_strtoupper(
             trim($this->nombre),
             'UTF-8'
