@@ -24,6 +24,10 @@ use Livewire\WithFileUploads;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Illuminate\Support\Number;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Validation\ValidationException;
+use Livewire\TemporaryUploadedFile;
 
 use App\Models\Resguardo;
 use App\Models\User;
@@ -135,57 +139,173 @@ class AddNewResguardo extends Component
     }
 
 
-
-   
     public function save()
     {
-        app(TenantDatabaseStorage::class)->assertCanWrite();
+        /*
+        |--------------------------------------------------------------------------
+        | Validar formulario
+        |--------------------------------------------------------------------------
+        */
 
         $this->validate([
-            'descripcion' => 'required',
-            'marca_id' => 'required',
-            'modelo' => 'required',
-            'nserie' => 'required',
-            'estado_uso_id' => 'required',
-            'area_de_uso_id' => 'required',
-            'ubicacion_fisicas_id' => 'required',
-            'resguardante_id' => 'required',
+            'descripcion' => [
+                'required',
+            ],
 
-            'imagen' => $this->imagenBase64
-                ? 'sometimes'
-                : 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'marca_id' => [
+                'required',
+            ],
 
-            // 8192 KB equivalen a 8 MB
-            'resguardo_pdf' => 'nullable|file|mimes:pdf|max:8192',
+            'modelo' => [
+                'required',
+            ],
+
+            'nserie' => [
+                'required',
+            ],
+
+            'estado_uso_id' => [
+                'required',
+            ],
+
+            'area_de_uso_id' => [
+                'required',
+            ],
+
+            'ubicacion_fisicas_id' => [
+                'required',
+            ],
+
+            'resguardante_id' => [
+                'required',
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | Imagen opcional
+            |--------------------------------------------------------------------------
+            |
+            | Cuando existe imagenBase64, la imagen todavía no es un archivo de
+            | Livewire, por eso no se aplica la regla image en ese momento.
+            |
+            */
+
+            'imagen' => !empty($this->imagenBase64)
+                ? [
+                    'nullable',
+                ]
+                : [
+                    'nullable',
+                    'image',
+                    'mimes:jpg,jpeg,png,webp',
+                    'max:8192',
+                ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | PDF opcional
+            |--------------------------------------------------------------------------
+            */
+
+            'resguardo_pdf' => [
+                'nullable',
+                'file',
+                'mimes:pdf',
+                'max:8192',
+            ],
         ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Obtener los servicios existentes
+        |--------------------------------------------------------------------------
+        */
+
+        $storageService = app(
+            TenantDatabaseStorage::class
+        );
+
+        $imageCompressor = app(
+            ImageCompressor::class
+        );
+
+        $pdfCompressor = app(
+            PdfCompressor::class
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Comprobar almacenamiento
+        |--------------------------------------------------------------------------
+        */
+
+        $storageService->assertCanWrite();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Variables de archivos
+        |--------------------------------------------------------------------------
+        */
 
         $tempImagePath = null;
         $compressedPdfTempPath = null;
 
+        $imagenEvidencia = null;
+        $pdfPath = null;
+
         try {
             /*
             |--------------------------------------------------------------------------
-            | Convertir la fotografía Base64 a UploadedFile
+            | Convertir imagen Base64 a UploadedFile
             |--------------------------------------------------------------------------
             */
 
-            if ($this->imagenBase64) {
-                $fileData = Str::after($this->imagenBase64, ',');
+            if (!empty($this->imagenBase64)) {
+                $partesImagen = explode(
+                    ',',
+                    $this->imagenBase64,
+                    2
+                );
 
-                $fileName = 'resguardo_' . Str::random(10) . '.png';
+                if (count($partesImagen) !== 2) {
+                    throw ValidationException::withMessages([
+                        'imagen' => 'La imagen capturada no tiene un formato válido.',
+                    ]);
+                }
+
+                $contenidoImagen = base64_decode(
+                    $partesImagen[1],
+                    true
+                );
+
+                if ($contenidoImagen === false) {
+                    throw ValidationException::withMessages([
+                        'imagen' => 'No fue posible procesar la imagen capturada.',
+                    ]);
+                }
+
+                $imageFileName = 'resguardo_'
+                    . Str::random(16)
+                    . '.png';
 
                 $tempImagePath = sys_get_temp_dir()
                     . DIRECTORY_SEPARATOR
-                    . $fileName;
+                    . $imageFileName;
 
-                file_put_contents(
+                $bytesWritten = file_put_contents(
                     $tempImagePath,
-                    base64_decode($fileData)
+                    $contenidoImagen
                 );
+
+                if ($bytesWritten === false) {
+                    throw ValidationException::withMessages([
+                        'imagen' => 'No fue posible guardar temporalmente la imagen.',
+                    ]);
+                }
 
                 $this->imagen = new UploadedFile(
                     $tempImagePath,
-                    $fileName,
+                    $imageFileName,
                     'image/png',
                     null,
                     true
@@ -198,16 +318,14 @@ class AddNewResguardo extends Component
             |--------------------------------------------------------------------------
             */
 
-            $imagenEvidencia = null;
-
             if ($this->imagen) {
-                $imagenEvidencia = app(ImageCompressor::class)->store(
+                $imagenEvidencia = $imageCompressor->store(
                     file: $this->imagen,
                     directory: 'resguardos',
                     disk: 'public',
                     maxWidth: 1600,
                     maxHeight: 1600,
-                    quality: 75
+                    quality: 70
                 );
             }
 
@@ -217,86 +335,180 @@ class AddNewResguardo extends Component
             |--------------------------------------------------------------------------
             */
 
-            $pdfPath = null;
-
             if ($this->resguardo_pdf) {
-                $originalPdfPath = $this->resguardo_pdf->getRealPath();
+                if (
+                    !$this->resguardo_pdf
+                    instanceof TemporaryUploadedFile
+                ) {
+                    throw ValidationException::withMessages([
+                        'resguardo_pdf' => 'No se recibió correctamente el archivo PDF.',
+                    ]);
+                }
 
-                $compressedPdfTempPath = sys_get_temp_dir()
-                    . DIRECTORY_SEPARATOR
-                    . 'resguardo_pdf_'
-                    . Str::uuid()
+                $pdfFileName = 'resguardo_'
+                    . now()->format('Ymd_His')
+                    . '_'
+                    . Str::random(16)
                     . '.pdf';
 
-                app(PdfCompressor::class)->compress(
+                $pdfTempDirectory = storage_path(
+                    'app/pdf-temp'
+                );
+
+                File::ensureDirectoryExists(
+                    $pdfTempDirectory
+                );
+
+                $compressedPdfTempPath = $pdfTempDirectory
+                    . DIRECTORY_SEPARATOR
+                    . $pdfFileName;
+
+                /*
+                * Ruta temporal creada por Livewire.
+                */
+                $originalPdfPath = $this
+                    ->resguardo_pdf
+                    ->getRealPath();
+
+                if (
+                    !$originalPdfPath
+                    || !File::exists($originalPdfPath)
+                ) {
+                    throw ValidationException::withMessages([
+                        'resguardo_pdf' => 'No fue posible localizar el PDF temporal.',
+                    ]);
+                }
+
+                /*
+                * Utilizar el mismo compresor que funciona en el otro componente.
+                */
+                $pdfCompressor->compress(
                     inputPath: $originalPdfPath,
                     outputPath: $compressedPdfTempPath,
                     level: 'fuerte'
                 );
 
                 /*
-                * Usar el PDF comprimido solamente si:
-                * 1. Se generó correctamente.
-                * 2. No está vacío.
-                * 3. Pesa menos que el archivo original.
+                * Comparar el original con el comprimido y guardar el menor.
                 */
-
-                $pdfToStore = $originalPdfPath;
-
-                if (
-                    file_exists($compressedPdfTempPath)
-                    && filesize($compressedPdfTempPath) > 0
-                    && filesize($compressedPdfTempPath) < filesize($originalPdfPath)
-                ) {
-                    $pdfToStore = $compressedPdfTempPath;
-                }
-
-                $pdfName = 'resguardo_' . Str::uuid() . '.pdf';
-
-                $pdfPath = 'resguardos/pdf/' . $pdfName;
-
-                LaravelStorage::disk('public')->put(
-                    $pdfPath,
-                    file_get_contents($pdfToStore)
+                $originalPdfSize = File::size(
+                    $originalPdfPath
                 );
+
+                $compressedPdfSize = File::size(
+                    $compressedPdfTempPath
+                );
+
+                $pdfPathToSave = $compressedPdfSize < $originalPdfSize
+                    ? $compressedPdfTempPath
+                    : $originalPdfPath;
+
+                $pdfPath = 'resguardos/pdf/'
+                    . $pdfFileName;
+
+                $pdfSaved = LaravelStorage::disk('public')->put(
+                    $pdfPath,
+                    File::get($pdfPathToSave)
+                );
+
+                if (!$pdfSaved) {
+                    throw new \RuntimeException(
+                        'No fue posible guardar el PDF del resguardo.'
+                    );
+                }
             }
 
             /*
             |--------------------------------------------------------------------------
-            | Registrar la nueva asignación
+            | Actualizar el historial dentro de una transacción
             |--------------------------------------------------------------------------
             */
 
-            $this->fecha_asignacion = now();
-
-            $resguardo = Resguardo::findOrFail($this->resguardo_id);
-
-            $ultimoHistorial = $resguardo
-                ->historial()
-                ->latest('id')
-                ->first();
-
-            if ($ultimoHistorial) {
-                $ultimoHistorial->update([
-                    'fecha_liberacion' => now(),
-                ]);
-            }
-
-            HistorialResguardo::registrarAsignacion(
-                $resguardo,
-                $this->resguardante_id,
-                $pdfPath,
+            DB::transaction(function () use (
                 $imagenEvidencia,
-                $this->estado_uso_id,
-                $this->area_de_uso_id,
-                $this->ubicacion_fisicas_id
-            );
+                $pdfPath
+            ) {
+                $resguardo = Resguardo::findOrFail(
+                    $this->resguardo_id
+                );
+
+                /*
+                * Buscar solamente el historial que sigue activo.
+                */
+                $ultimoHistorial = $resguardo
+                    ->historial()
+                    ->whereNull('fecha_liberacion')
+                    ->latest('id')
+                    ->first();
+
+                if ($ultimoHistorial) {
+                    $ultimoHistorial->update([
+                        'fecha_liberacion' => now(),
+                    ]);
+                }
+
+                $this->fecha_asignacion = now();
+
+                HistorialResguardo::registrarAsignacion(
+                    $resguardo,
+                    $this->resguardante_id,
+                    $pdfPath,
+                    $imagenEvidencia,
+                    $this->estado_uso_id,
+                    $this->area_de_uso_id,
+                    $this->ubicacion_fisicas_id
+                );
+            });
+
+            /*
+            |--------------------------------------------------------------------------
+            | Terminar correctamente
+            |--------------------------------------------------------------------------
+            */
 
             $this->dispatch(
                 'saveFromComponentAddNewHistorialResguardo'
             );
 
             $this->resetForm();
+        } catch (\Throwable $exception) {
+            /*
+            |--------------------------------------------------------------------------
+            | Eliminar archivos si falla la base de datos
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                $imagenEvidencia
+                && LaravelStorage::disk('public')->exists(
+                    $imagenEvidencia
+                )
+            ) {
+                LaravelStorage::disk('public')->delete(
+                    $imagenEvidencia
+                );
+            }
+
+            if (
+                $pdfPath
+                && LaravelStorage::disk('public')->exists(
+                    $pdfPath
+                )
+            ) {
+                LaravelStorage::disk('public')->delete(
+                    $pdfPath
+                );
+            }
+
+            report($exception);
+
+            if ($exception instanceof ValidationException) {
+                throw $exception;
+            }
+
+            throw ValidationException::withMessages([
+                'formulario' => 'No fue posible guardar la nueva asignación. Revisa la imagen y el PDF e inténtalo nuevamente.',
+            ]);
         } finally {
             /*
             |--------------------------------------------------------------------------
@@ -305,21 +517,24 @@ class AddNewResguardo extends Component
             */
 
             if (
-                $tempImagePath
-                && file_exists($tempImagePath)
+                $compressedPdfTempPath
+                && File::exists($compressedPdfTempPath)
             ) {
-                @unlink($tempImagePath);
+                File::delete(
+                    $compressedPdfTempPath
+                );
             }
 
             if (
-                $compressedPdfTempPath
-                && file_exists($compressedPdfTempPath)
+                $tempImagePath
+                && File::exists($tempImagePath)
             ) {
-                @unlink($compressedPdfTempPath);
+                File::delete(
+                    $tempImagePath
+                );
             }
         }
     }
-
 
     public function resetForm()
     {
