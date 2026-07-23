@@ -81,7 +81,7 @@ body {
     white-space: normal !important;
     padding: 0px !important;    
     text-decoration: none !important;
-
+    padding-right:16px !important;
 }
 
 .main-sidebar .brand-link .brand-text {
