@@ -628,3 +628,18 @@ button[class*="btn-import"]:disabled {
         width: 100% !important;
     }
 }
+
+
+
+/* CORREGIR CENTRADO DEL LOGO ADMINLTE */
+.main-sidebar .brand-link .brand-text {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.main-sidebar .brand-link img {
+    margin: 0 !important;
+}
