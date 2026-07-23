@@ -365,6 +365,7 @@
                                 {{-- ================================================= --}}
                                 {{-- INDICADOR DE GUARDADO                             --}}
                                 {{-- ================================================= --}}
+                                <!--
                                 <div
                                     wire:loading
                                     wire:target="saveArea"
@@ -383,6 +384,7 @@
                                         ? 'Actualizando área...'
                                         : 'Registrando área...' }}
                                 </div>
+                                -->
 
                                 {{-- ================================================= --}}
                                 {{-- BOTONES                                           --}}
@@ -444,8 +446,8 @@
                                             <i class="fas fa-spinner fa-spin mr-1"></i>
 
                                             {{ $accionPrincipal === 'editar'
-                                                ? 'Actualizando...'
-                                                : 'Registrando...' }}
+                                                ? 'Guardando...'
+                                                : 'Guardando...' }}
                                         </span>
                                     </button>
                                 </div>
