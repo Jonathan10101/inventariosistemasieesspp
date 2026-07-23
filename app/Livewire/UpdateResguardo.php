@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage as LaravelStorage;
 use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
+use App\Models\UbicacionFisica;
 
 
 class UpdateResguardo extends Component
