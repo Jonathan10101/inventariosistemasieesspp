@@ -302,6 +302,7 @@
                 </div>
 
                 {{-- DESPLEGABLE 3 --}}
+                {{--
                 <div class="dash-accordion-item">
                     <button
                         class="dash-accordion-button collapsed"
@@ -342,11 +343,13 @@
                         </div>
                     </div>
                 </div>
+                --}}
 
             </div>
         </div>
 
         {{-- ACTIVIDAD RECIENTE --}}
+        {{--
         <div class="col-lg-7 mb-4">
             <div class="dash-card h-100">
 
@@ -415,6 +418,7 @@
 
             </div>
         </div>
+        --}}
 
     </div>
 
