@@ -139,7 +139,7 @@ Route::middleware([
         Route::get(
             '/ubicacionfisica/{ubicacionfisica}',
             [UbicacionFisicaController::class, 'show']
-        )->name('ubicaciones.show')
+        )->name('ubicacionfisica.show')
          ->middleware('can:ubicacionfisica.index');
 
 
