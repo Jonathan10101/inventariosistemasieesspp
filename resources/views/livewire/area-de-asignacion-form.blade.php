@@ -172,7 +172,7 @@
                                 {{ $tituloModalPrincipal }}
                             </h5>
                         </div>
-
+                        <!--
                         <button
                             type="button"
                             class="modal-close-btn"
@@ -183,6 +183,7 @@
                         >
                             <i class="fas fa-times"></i>
                         </button>
+                        -->
                     </div>
 
                     {{-- ========================================================= --}}
@@ -393,6 +394,7 @@
                                         border-top: 1px solid #e2e8f0;
                                     "
                                 >
+                                    <!--                                
                                     <button
                                         type="button"
                                         wire:click="closeModal"
@@ -409,6 +411,7 @@
                                         <i class="fas fa-times mr-1"></i>
                                         Cancelar
                                     </button>
+                                    -->
 
                                     <button
                                         type="submit"
