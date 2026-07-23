@@ -41,6 +41,12 @@ use Illuminate\Support\Facades\Storage as LaravelStorage;
 
 
 
+
+use Illuminate\Validation\Rule;
+
+
+
+
 class AddNewResguardo extends Component
 {
     use WithFileUploads;
