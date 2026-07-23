@@ -14,7 +14,10 @@ use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
 use App\Models\UbicacionFisica;
-
+use App\Models\Puesto;
+use App\Models\Marca;
+use App\Models\EstadoUso;
+use App\Models\AreaDeUso;
 
 class UpdateResguardo extends Component
 {
