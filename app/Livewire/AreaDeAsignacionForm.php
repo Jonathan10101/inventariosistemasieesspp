@@ -10,7 +10,7 @@ use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Throwable;
 use App\Services\TenantDatabaseStorage;
-
+use Illuminate\Validation\ValidationException;
 
 class AreaDeAsignacionForm extends Component
 {
@@ -247,7 +247,44 @@ class AreaDeAsignacionForm extends Component
 
     public function saveArea(): void
     {
-        app(\App\Services\TenantDatabaseStorage::class)->assertCanWrite();
+        /*
+        |--------------------------------------------------------------------------
+        | Limpiar mensaje anterior
+        |--------------------------------------------------------------------------
+        */
+
+        $this->resetValidation('storage');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Comprobar almacenamiento
+        |--------------------------------------------------------------------------
+        */
+
+        try {
+            app(TenantDatabaseStorage::class)
+                ->assertCanWrite();
+        } catch (\Illuminate\Validation\ValidationException $e) {
+
+            $mensaje = $e->errors()['storage'][0]
+                ?? 'El almacenamiento de esta institución está lleno.';
+
+            $this->addError(
+                'storage',
+                $mensaje
+            );
+
+            /*
+            * Detiene el método y mantiene abierto el modal.
+            */
+            return;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Normalizar y validar
+        |--------------------------------------------------------------------------
+        */
 
         $this->nombre = mb_strtoupper(
             trim($this->nombre),
@@ -255,6 +292,12 @@ class AreaDeAsignacionForm extends Component
         );
 
         $this->validate();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Editar
+        |--------------------------------------------------------------------------
+        */
 
         if (
             $this->isEditing
@@ -280,6 +323,12 @@ class AreaDeAsignacionForm extends Component
 
             return;
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Registrar
+        |--------------------------------------------------------------------------
+        */
 
         AreaDeUso::create([
             'nombre' => $this->nombre,
