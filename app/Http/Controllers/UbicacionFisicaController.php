@@ -21,8 +21,16 @@ class UbicacionFisicaController extends Controller
     /**
      * Mostrar el detalle de una ubicación física.
      */
-    public function show(UbicacionFisica $ubicacionFisica)
+    public function show(UbicacionFisica $ubicacionfisica)
     {
+        /*
+        |--------------------------------------------------------------------------
+        | Mantener el nombre utilizado por la vista
+        |--------------------------------------------------------------------------
+        */
+
+        $ubicacionFisica = $ubicacionfisica;
+
         abort_if(
             !tenant(),
             404,
@@ -37,12 +45,6 @@ class UbicacionFisicaController extends Controller
             'Debes iniciar sesión para consultar esta información.'
         );
 
-        /*
-        |--------------------------------------------------------------------------
-        | Consulta del historial completo
-        |--------------------------------------------------------------------------
-        */
-
         $historialesQuery = $ubicacionFisica
             ->historialResguardos()
             ->with([
@@ -50,12 +52,6 @@ class UbicacionFisicaController extends Controller
                 'resguardante',
             ])
             ->orderByDesc('fecha_asignacion');
-
-        /*
-        |--------------------------------------------------------------------------
-        | Usuarios con acceso completo
-        |--------------------------------------------------------------------------
-        */
 
         if ($user->hasAnyRole([
             'Administrador',
@@ -71,12 +67,6 @@ class UbicacionFisicaController extends Controller
                 'historiales'
             ));
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Subdirector y usuarios normales
-        |--------------------------------------------------------------------------
-        */
 
         if (blank($user->subdireccion)) {
             abort(
