@@ -21,8 +21,9 @@ class UbicacionFisicaController extends Controller
     /**
      * Mostrar el detalle de una ubicación física.
      */
-    public function show(UbicacionFisica $ubicacionfisica)
+    public function show($ubicacionfisica)
     {
+        $ubicacionfisica = UbicacionFisica::find($ubicacionfisica);
         $historiales = $ubicacionfisica
             ->historialResguardos()
             ->with([
