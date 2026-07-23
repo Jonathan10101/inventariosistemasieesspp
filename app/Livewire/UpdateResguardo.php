@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Livewire\Component;
 use App\Models\Resguardo;
 use App\Models\Resguardante;
 use App\Services\ImageCompressor;
