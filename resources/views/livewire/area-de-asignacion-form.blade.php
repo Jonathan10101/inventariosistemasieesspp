@@ -157,10 +157,13 @@
             >
                 <div class="modal-content ieesspp-modal-content">
 
+                    {{-- ========================================================= --}}
+                    {{-- ENCABEZADO DEL MODAL                                     --}}
+                    {{-- ========================================================= --}}
                     <div class="modal-header ieesspp-modal-header">
                         <div>
                             <span class="modal-label">
-                                {{ $isEditing
+                                {{ $accionPrincipal === 'editar'
                                     ? 'Edición de registro'
                                     : 'Nuevo registro' }}
                             </span>
@@ -182,103 +185,268 @@
                         </button>
                     </div>
 
-                    <div class="ieesspp-modal-body p-4">
+                    {{-- ========================================================= --}}
+                    {{-- CUERPO DEL MODAL                                         --}}
+                    {{-- ========================================================= --}}
+                    <div class="ieesspp-modal-body">
 
                         <form wire:submit.prevent="saveArea">
 
-                            <div class="form-group mb-3">
+                            <div class="p-4">
 
-                                <label
-                                    for="nombre-area-asignacion"
-                                    class="font-weight-bold"
-                                >
-                                    Nombre del área de asignación
-                                </label>
-
-                                <input
-                                    type="text"
-                                    id="nombre-area-asignacion"
-                                    wire:model="nombre"
-                                    oninput="
-                                        this.value =
-                                        this.value.toUpperCase()
-                                    "
-                                    autocomplete="off"
-                                    maxlength="150"
-                                    placeholder="Ejemplo: DIRECCIÓN GENERAL"
-                                    class="form-control
-                                        @error('nombre')
-                                            is-invalid
-                                        @enderror"
-                                >
-
-                                @error('nombre')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-
-                                <small class="form-text text-muted">
-                                    Escribe el nombre institucional
-                                    del área de asignación.
-                                </small>
-
-                            </div>
-
-                            <div
-                                class="d-flex justify-content-end
-                                    align-items-center
-                                    flex-wrap
-                                    gap-2
-                                    mt-4"
-                            >
-                                <button
-                                    type="button"
-                                    wire:click="closeModal"
-                                    wire:loading.attr="disabled"
-                                    wire:target="saveArea"
-                                    class="btn btn-outline-secondary"
-                                >
-                                    <i class="fas fa-times mr-1"></i>
-                                    Cancelar
-                                </button>
-
-                                <button
-                                    type="submit"
-                                    wire:loading.attr="disabled"
-                                    wire:target="saveArea"
-                                    class="btn text-white"
+                                {{-- ================================================= --}}
+                                {{-- INFORMACIÓN                                      --}}
+                                {{-- ================================================= --}}
+                                <div
+                                    class="d-flex align-items-center mb-4 p-3"
                                     style="
-                                        min-height: 42px;
-                                        padding: 0 20px;
-                                        border: none;
-                                        border-radius: 10px;
-                                        background: #171C63;
-                                        font-weight: 700;
+                                        gap: 13px;
+                                        border: 1px solid rgba(23, 28, 99, 0.14);
+                                        border-radius: 13px;
+                                        background: rgba(23, 28, 99, 0.05);
                                     "
                                 >
-                                    <span
-                                        wire:loading.remove
-                                        wire:target="saveArea"
+                                    <div
+                                        class="d-flex align-items-center justify-content-center flex-shrink-0"
+                                        style="
+                                            width: 46px;
+                                            height: 46px;
+                                            border-radius: 12px;
+                                            background: rgba(23, 28, 99, 0.10);
+                                            color: #171C63;
+                                            font-size: 19px;
+                                        "
                                     >
-                                        <i class="fas fa-save mr-1"></i>
+                                        <i class="fas fa-sitemap"></i>
+                                    </div>
 
-                                        {{ $isEditing
-                                            ? 'Guardar cambios'
-                                            : 'Registrar área' }}
-                                    </span>
+                                    <div>
+                                        <strong
+                                            class="d-block"
+                                            style="
+                                                color: #0f172a;
+                                                font-size: 14px;
+                                                font-weight: 800;
+                                            "
+                                        >
+                                            {{ $accionPrincipal === 'editar'
+                                                ? 'Actualizar área de asignación'
+                                                : 'Registrar área de asignación' }}
+                                        </strong>
 
-                                    <span
-                                        wire:loading
-                                        wire:target="saveArea"
+                                        <p
+                                            class="mb-0 mt-1"
+                                            style="
+                                                color: #64748b;
+                                                font-size: 13px;
+                                            "
+                                        >
+                                            {{ $accionPrincipal === 'editar'
+                                                ? 'Modifica el nombre institucional del área seleccionada.'
+                                                : 'Captura el nombre del área institucional que deseas registrar.' }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {{-- ================================================= --}}
+                                {{-- CAMPO NOMBRE                                      --}}
+                                {{-- ================================================= --}}
+                                <div class="form-group mb-0">
+
+                                    <label
+                                        for="nombre-area-asignacion"
+                                        class="d-block mb-2"
+                                        style="
+                                            color: #0f172a;
+                                            font-size: 14px;
+                                            font-weight: 800;
+                                        "
                                     >
-                                        <i class="fas fa-spinner fa-spin mr-1"></i>
+                                        Área de asignación
 
-                                        {{ $isEditing
-                                            ? 'Actualizando...'
-                                            : 'Registrando...' }}
-                                    </span>
-                                </button>
+                                        <span class="text-danger">
+                                            *
+                                        </span>
+                                    </label>
+
+                                    <div
+                                        class="input-group"
+                                        style="
+                                            overflow: hidden;
+                                            border-radius: 12px;
+                                        "
+                                    >
+                                        <div class="input-group-prepend">
+                                            <span
+                                                class="input-group-text h-100"
+                                                style="
+                                                    min-width: 48px;
+                                                    justify-content: center;
+                                                    border-color:
+                                                        @error('nombre')
+                                                            #dc3545
+                                                        @else
+                                                            #cbd5e1
+                                                        @enderror;
+                                                    background: #f8fafc;
+                                                    color: #171C63;
+                                                "
+                                            >
+                                                <i class="fas fa-building"></i>
+                                            </span>
+                                        </div>
+
+                                        <input
+                                            type="text"
+                                            id="nombre-area-asignacion"
+                                            wire:model="nombre"
+                                            oninput="this.value = this.value.toUpperCase()"
+                                            autocomplete="off"
+                                            maxlength="150"
+                                            placeholder="Ejemplo: DIRECCIÓN GENERAL"
+                                            class="form-control
+                                                @error('nombre')
+                                                    is-invalid
+                                                @enderror"
+                                            style="
+                                                min-height: 48px;
+                                                border-color:
+                                                    @error('nombre')
+                                                        #dc3545
+                                                    @else
+                                                        #cbd5e1
+                                                    @enderror;
+                                                background: #f8fafc;
+                                                color: #0f172a;
+                                                font-size: 14px;
+                                                font-weight: 700;
+                                                text-transform: uppercase;
+                                                box-shadow: none;
+                                            "
+                                            autofocus
+                                        >
+                                    </div>
+
+                                    @error('nombre')
+                                        <div
+                                            class="d-flex align-items-start mt-2 p-2"
+                                            style="
+                                                gap: 8px;
+                                                border: 1px solid #fecaca;
+                                                border-radius: 10px;
+                                                background: #fef2f2;
+                                                color: #b91c1c;
+                                                font-size: 13px;
+                                                font-weight: 700;
+                                            "
+                                        >
+                                            <i class="fas fa-circle-exclamation mt-1"></i>
+
+                                            <span>
+                                                {{ $message }}
+                                            </span>
+                                        </div>
+                                    @enderror
+
+                                    <small
+                                        class="d-block mt-2"
+                                        style="
+                                            color: #64748b;
+                                            font-size: 12px;
+                                        "
+                                    >
+                                        El nombre se guardará automáticamente
+                                        en letras mayúsculas.
+                                    </small>
+
+                                </div>
+
+                                {{-- ================================================= --}}
+                                {{-- INDICADOR DE GUARDADO                             --}}
+                                {{-- ================================================= --}}
+                                <div
+                                    wire:loading
+                                    wire:target="saveArea"
+                                    class="mt-3 p-2"
+                                    style="
+                                        border-radius: 10px;
+                                        background: rgba(23, 28, 99, 0.07);
+                                        color: #171C63;
+                                        font-size: 13px;
+                                        font-weight: 800;
+                                    "
+                                >
+                                    <i class="fas fa-spinner fa-spin mr-1"></i>
+
+                                    {{ $accionPrincipal === 'editar'
+                                        ? 'Actualizando área...'
+                                        : 'Registrando área...' }}
+                                </div>
+
+                                {{-- ================================================= --}}
+                                {{-- BOTONES                                           --}}
+                                {{-- ================================================= --}}
+                                <div
+                                    class="d-flex justify-content-end align-items-center flex-wrap mt-4 pt-3"
+                                    style="
+                                        gap: 10px;
+                                        border-top: 1px solid #e2e8f0;
+                                    "
+                                >
+                                    <button
+                                        type="button"
+                                        wire:click="closeModal"
+                                        wire:loading.attr="disabled"
+                                        wire:target="saveArea"
+                                        class="btn btn-outline-secondary"
+                                        style="
+                                            min-height: 44px;
+                                            padding: 0 18px;
+                                            border-radius: 11px;
+                                            font-weight: 800;
+                                        "
+                                    >
+                                        <i class="fas fa-times mr-1"></i>
+                                        Cancelar
+                                    </button>
+
+                                    <button
+                                        type="submit"
+                                        wire:loading.attr="disabled"
+                                        wire:target="saveArea"
+                                        class="btn btn-ieesspp"
+                                        style="
+                                            min-height: 44px;
+                                            padding: 0 20px !important;
+                                            box-shadow:
+                                                0 12px 24px
+                                                rgba(23, 28, 99, 0.22);
+                                        "
+                                    >
+                                        <span
+                                            wire:loading.remove
+                                            wire:target="saveArea"
+                                        >
+                                            <i class="fas fa-save mr-1"></i>
+
+                                            {{ $accionPrincipal === 'editar'
+                                                ? 'Guardar cambios'
+                                                : 'Registrar área' }}
+                                        </span>
+
+                                        <span
+                                            wire:loading
+                                            wire:target="saveArea"
+                                        >
+                                            <i class="fas fa-spinner fa-spin mr-1"></i>
+
+                                            {{ $accionPrincipal === 'editar'
+                                                ? 'Actualizando...'
+                                                : 'Registrando...' }}
+                                        </span>
+                                    </button>
+                                </div>
+
                             </div>
 
                         </form>
