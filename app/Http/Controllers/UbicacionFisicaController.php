@@ -23,74 +23,18 @@ class UbicacionFisicaController extends Controller
      */
     public function show(UbicacionFisica $ubicacionfisica)
     {
-        /*
-        |--------------------------------------------------------------------------
-        | Mantener el nombre utilizado por la vista
-        |--------------------------------------------------------------------------
-        */
-
-        $ubicacionFisica = $ubicacionfisica;
-
-        abort_if(
-            !tenant(),
-            404,
-            'No se encontró el tenant correspondiente.'
-        );
-
-        $user = Auth::user();
-
-        abort_if(
-            !$user,
-            401,
-            'Debes iniciar sesión para consultar esta información.'
-        );
-
-        $historialesQuery = $ubicacionFisica
+        $historiales = $ubicacionfisica
             ->historialResguardos()
             ->with([
                 'resguardo',
                 'resguardante',
             ])
-            ->orderByDesc('fecha_asignacion');
-
-        if ($user->hasAnyRole([
-            'Administrador',
-            'Director',
-            'Delegacion',
-        ])) {
-            $historiales = $historialesQuery
-                ->paginate($this->perPage)
-                ->withQueryString();
-
-            return view('ubicaciones.show', compact(
-                'ubicacionFisica',
-                'historiales'
-            ));
-        }
-
-        if (blank($user->subdireccion)) {
-            abort(
-                403,
-                'Tu usuario no tiene una subdirección asignada.'
-            );
-        }
-
-        $historialesQuery->whereHas(
-            'resguardante.user',
-            function ($query) use ($user) {
-                $query->where(
-                    'subdireccion',
-                    $user->subdireccion
-                );
-            }
-        );
-
-        $historiales = $historialesQuery
+            ->orderByDesc('fecha_asignacion')
             ->paginate($this->perPage)
             ->withQueryString();
 
         return view('ubicaciones.show', compact(
-            'ubicacionFisica',
+            'ubicacionfisica',
             'historiales'
         ));
     }
