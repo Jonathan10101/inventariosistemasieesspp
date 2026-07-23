@@ -27,17 +27,13 @@ class UbicacionFisicaController extends Controller
         if (!$ubicacionfisica) {
             abort(404);
         }
-        $historiales = $ubicacionfisica
-            ->historialResguardos()
-            ->with([
-                'resguardo',
-                'resguardante',
-            ])
-            ->orderByDesc('fecha_asignacion')
-            ->paginate($this->perPage)
-            ->withQueryString();
+        $historiales = $ubicacionFisica
+        ->historialResguardos()
+        ->whereNull('fecha_liberacion')
+        ->whereNull('fecha_baja')
+        ->paginate($this->perPage);
 
-        return view('ubicaciones.show', compact(
+        return view('ubicacionfisica.show', compact(
             'ubicacionfisica',
             'historiales'
         ));
