@@ -2,101 +2,228 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
-use Livewire\TemporaryUploadedFile;
 use App\Models\UbicacionFisica;
+use App\Services\ImageCompressor;
+use App\Services\TenantDatabaseStorage;
 use Illuminate\Validation\Rule;
+use Livewire\Component;
 use Livewire\WithFileUploads;
-
 
 class UpdateUbicacionFisica extends Component
 {
-    
     use WithFileUploads;
-    public $ubicacionfisica,$imagen,$id_ubicacion_fisica;
 
-    protected function rules()
+    public $ubicacionfisica;
+
+    /*
+    |--------------------------------------------------------------------------
+    | Nueva imagen
+    |--------------------------------------------------------------------------
+    |
+    | Esta propiedad solamente contiene el archivo nuevo seleccionado.
+    |
+    */
+    public $imagen = null;
+
+    /*
+    |--------------------------------------------------------------------------
+    | Imagen actualmente guardada
+    |--------------------------------------------------------------------------
+    |
+    | Esta propiedad contiene únicamente la ruta existente en la base.
+    |
+    */
+    public ?string $imagenActual = null;
+
+    public $id_ubicacion_fisica;
+
+    protected function rules(): array
     {
         return [
-    'ubicacionfisica' => [
-            'required',
-            'min:2',
-            'max:150',
-            Rule::unique('ubicacion_fisicas', 'descripcion')->ignore($this->id_ubicacion_fisica),
-        ],
-        'imagen' => $this->imagen instanceof TemporaryUploadedFile
-            ? 'image|mimes:jpg,jpeg,png|max:4096'
-            : 'nullable',
+            'ubicacionfisica' => [
+                'required',
+                'string',
+                'min:2',
+                'max:150',
+
+                Rule::unique(
+                    'ubicacion_fisicas',
+                    'descripcion'
+                )->ignore(
+                    $this->id_ubicacion_fisica
+                ),
+            ],
+
+            'imagen' => [
+                'nullable',
+                'image',
+                'mimes:jpg,jpeg,png,webp',
+                'max:4096',
+            ],
         ];
     }
 
-    public function mount($data){     
-        $ubicacionFisicaBusqueda =   UbicacionFisica::find($data);
-        $this->ubicacionfisica = $ubicacionFisicaBusqueda->descripcion; 
-        $this->id_ubicacion_fisica = $ubicacionFisicaBusqueda->id; 
-        $this->imagen = $ubicacionFisicaBusqueda->imagen;
+    public function mount($data): void
+    {
+        $ubicacionFisica = UbicacionFisica::findOrFail(
+            $data
+        );
+
+        $this->ubicacionfisica =
+            $ubicacionFisica->descripcion;
+
+        $this->id_ubicacion_fisica =
+            $ubicacionFisica->id;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Conservar la ruta anterior
+        |--------------------------------------------------------------------------
+        |
+        | No debes colocar esta ruta en $this->imagen porque esa propiedad se
+        | utiliza para el archivo temporal nuevo.
+        |
+        */
+        $this->imagenActual =
+            $ubicacionFisica->imagen;
+
+        $this->imagen = null;
     }
 
-    public function save()
+    public function save(): void
     {
-        // Normalizar texto
-        $this->ubicacionfisica = preg_replace('/\s+/', ' ', trim(mb_strtoupper($this->ubicacionfisica)));
+        /*
+        |--------------------------------------------------------------------------
+        | Normalizar descripción
+        |--------------------------------------------------------------------------
+        */
+        $this->ubicacionfisica = preg_replace(
+            '/\s+/',
+            ' ',
+            trim(
+                mb_strtoupper(
+                    (string) $this->ubicacionfisica,
+                    'UTF-8'
+                )
+            )
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Validar datos
+        |--------------------------------------------------------------------------
+        */
         $this->validate();
 
-        // Verificar duplicados
-        $ubicacionFisicaComparacion = str_replace(' ', '', $this->ubicacionfisica);
-        $existe = UbicacionFisica::whereRaw("REPLACE(descripcion, ' ', '') = ?", [$ubicacionFisicaComparacion])
-            ->where('id', '!=', $this->id_ubicacion_fisica)
+        /*
+        |--------------------------------------------------------------------------
+        | Verificar duplicados ignorando espacios
+        |--------------------------------------------------------------------------
+        */
+        $ubicacionFisicaComparacion = str_replace(
+            ' ',
+            '',
+            $this->ubicacionfisica
+        );
+
+        $existe = UbicacionFisica::whereRaw(
+            "REPLACE(descripcion, ' ', '') = ?",
+            [$ubicacionFisicaComparacion]
+        )
+            ->where(
+                'id',
+                '!=',
+                $this->id_ubicacion_fisica
+            )
             ->exists();
 
         if ($existe) {
-            $this->addError('ubicacionfisica', 'Esta ubicación física ya existe aunque escrito diferente.');
+            $this->addError(
+                'ubicacionfisica',
+                'Esta ubicación física ya existe aunque esté escrita diferente.'
+            );
+
             return;
         }
 
-        // Imagen actual (la que estaba antes)
-        $imagenAnterior = $this->imagen_actual ?? null; // Puedes tener esta propiedad si guardas la ruta anterior
-        $path = $imagenAnterior;
+        /*
+        |--------------------------------------------------------------------------
+        | Comprobar almacenamiento
+        |--------------------------------------------------------------------------
+        */
+        app(
+            TenantDatabaseStorage::class
+        )->assertCanWrite();
 
-        // Si se sube una nueva imagen, la reemplazamos
-        if ($this->imagen instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
-            // Borrar la imagen anterior si existe
-            if ($imagenAnterior && \Storage::disk('public')->exists($imagenAnterior)) {
-                \Storage::disk('public')->delete($imagenAnterior);
-            }
+        /*
+        |--------------------------------------------------------------------------
+        | Mantener imagen anterior
+        |--------------------------------------------------------------------------
+        |
+        | Si el usuario no selecciona otra imagen, se enviará la ruta existente.
+        |
+        */
+        $path = $this->imagenActual;
 
-            // Guardar la nueva imagen
-            $path = $this->imagen->store('ubicaciones', 'public');
+        /*
+        |--------------------------------------------------------------------------
+        | Comprimir imagen nueva
+        |--------------------------------------------------------------------------
+        |
+        | Este componente posee el archivo temporal, por eso la compresión debe
+        | realizarse aquí y no en el componente receptor.
+        |
+        */
+        if ($this->imagen) {
+            $imageCompressor = app(
+                ImageCompressor::class
+            );
+
+            $path = $imageCompressor->store(
+                file: $this->imagen,
+                directory: 'ubicaciones',
+                disk: 'public',
+                maxWidth: 1600,
+                maxHeight: 1600,
+                quality: 70
+            );
         }
 
-        // Si no se sube nada y no había imagen anterior, queda null
-        if (!$path) {
-            $path = null;
-        }
-
-        // Datos finales
+        /*
+        |--------------------------------------------------------------------------
+        | Enviar solamente datos y ruta
+        |--------------------------------------------------------------------------
+        */
         $data = [
             'id' => $this->id_ubicacion_fisica,
             'descripcion' => $this->ubicacionfisica,
             'imagen' => $path,
         ];
 
-        // dd($data); // Para revisar
+        $this->dispatch(
+            'saveUpdateUbicacionFisicaFromAnotherComponent',
+            data: $data
+        );
 
-        $this->dispatch('saveUpdateUbicacionFisicaFromAnotherComponent', $data);
         $this->resetForm();
     }
 
-
-
-
-    public function resetForm()
+    public function resetForm(): void
     {
-        $this->reset(['ubicacionfisica','imagen','id_ubicacion_fisica']);
+        $this->reset([
+            'ubicacionfisica',
+            'imagen',
+            'imagenActual',
+            'id_ubicacion_fisica',
+        ]);
+
+        $this->resetValidation();
     }
 
     public function render()
     {
-        return view('livewire.update-ubicacion-fisica');
+        return view(
+            'livewire.update-ubicacion-fisica'
+        );
     }
 }
