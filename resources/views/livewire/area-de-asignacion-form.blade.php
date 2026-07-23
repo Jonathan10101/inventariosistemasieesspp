@@ -184,16 +184,7 @@
                         @switch($accionPrincipal)
 
                             @case('editar')
-                                @livewire(
-                                    'update-area-de-asignacion',
-                                    [
-                                        'data' => $data_external_component
-                                    ],
-                                    key(
-                                        'update-area-'
-                                        . $data_external_component
-                                    )
-                                )
+                                @livewire('update-area-de-asignacion', ['data' => $data_external_component])
                             @break
 
                             @default

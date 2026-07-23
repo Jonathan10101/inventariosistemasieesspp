@@ -15,11 +15,11 @@
                     </div>
 
                     <h4 class="angular-title">
-                        Editar puesto
+                        Editar área de asginación
                     </h4>
 
                     <p class="angular-subtitle">
-                        Actualiza el nombre del puesto institucional utilizado para los resguardantes del inventario.
+                        Actualiza el nombre del área de asginación utilizado para la plataforma.
                     </p>
                 </div>
             </div>
@@ -46,36 +46,36 @@
                         </div>
 
                         <div>
-                            <h5>Información del puesto</h5>
-                            <p>Modifica el nombre oficial del puesto que será usado en los resguardos institucionales.</p>
+                            <h5>Información del área de asignación</h5>
+                            <p>Modifica el nombre oficial del área de asginación que será usado en los resguardos institucionales.</p>
                         </div>
                     </div>
 
                     <div class="row">
 
                         <div class="col-md-12">
-                            <div class="angular-field angular-floating @error('puesto') has-error @enderror">
+                            <div class="angular-field angular-floating @error('areaDeUso') has-error @enderror">
                                 <i class="fas fa-briefcase angular-field-icon"></i>
 
                                 <input
-                                    id="puesto"
+                                    id="areaDeUso"
                                     type="text"
-                                    wire:model.defer="puesto"
+                                    wire:model.defer="areaDeUso"
                                     class="form-control text-uppercase"
                                     placeholder=" "
                                     autocomplete="off"
                                     oninput="this.value = this.value.toUpperCase()"
                                 >
 
-                                <label for="puesto" class="angular-field-label">
-                                    Nombre del puesto*
+                                <label for="areaDeUso" class="angular-field-label">
+                                    Nombre del área de asginación*
                                 </label>
 
                                 <small class="angular-help">
-                                    Ejemplo: JEFE DE DEPARTAMENTO, ANALISTA, AUXILIAR ADMINISTRATIVO.
+                                    Ejemplo: DELEGACIÓN ADMINISTRATIVA, DEPARTAMENTO DE COORDINACIÓN Y VINCULACIÓN, RECURSOS HUMANOS.
                                 </small>
 
-                                @error('puesto')
+                                @error('areaDeUso')
                                     <div class="angular-error">
                                         <i class="fas fa-exclamation-circle"></i>
                                         {{ $message }}
