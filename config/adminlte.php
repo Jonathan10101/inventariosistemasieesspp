@@ -43,7 +43,7 @@ return [
             align-items: center;
             justify-content: center;
             text-align: center;
-            gap: 4px;
+            
         ">
             <img
                 src="/images/intevi logo.png"
