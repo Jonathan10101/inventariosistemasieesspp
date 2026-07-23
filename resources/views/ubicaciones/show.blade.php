@@ -4,6 +4,29 @@
 @section('title', 'Resguardos por ubicación')
 
 @section('content_header')
+
+    {{-- ========================================================= --}}
+    {{-- BARRA DE NAVEGACIÓN MÓVIL                                 --}}
+    {{-- ========================================================= --}}
+    <div class="mobile-page-nav">
+        <button
+            type="button"
+            class="mobile-nav-btn"
+            onclick="window.history.back()"
+        >
+            <i class="fas fa-arrow-left"></i>
+            <span>Atrás</span>
+        </button>
+
+        <a
+            href="{{ url('/dashboard') }}"
+            class="mobile-nav-btn primary"
+        >
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+        </a>
+    </div>
+    
 <div class="mb-3 border-bottom pb-2 m-3 mt-0">
     <h1 class="fw-semibold text-dark text-uppercase mb-1" style="color:#171C63 !important;">
         Resguardos en {{ $ubicacionFisica->descripcion }}
