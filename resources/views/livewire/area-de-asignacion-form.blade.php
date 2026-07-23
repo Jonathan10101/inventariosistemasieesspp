@@ -160,7 +160,7 @@
                     <div class="modal-header ieesspp-modal-header">
                         <div>
                             <span class="modal-label">
-                                {{ $accionPrincipal === 'editar'
+                                {{ $isEditing
                                     ? 'Edición de registro'
                                     : 'Nuevo registro' }}
                             </span>
@@ -174,32 +174,115 @@
                             type="button"
                             class="modal-close-btn"
                             wire:click="closeModal"
+                            wire:loading.attr="disabled"
+                            wire:target="saveArea"
                             aria-label="Cerrar"
                         >
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
 
-                    <div class="ieesspp-modal-body">
-                        @switch($accionPrincipal)
+                    <div class="ieesspp-modal-body p-4">
 
-                            @case('editar')
+                        <form wire:submit.prevent="saveArea">
 
-                                <livewire:update-area-de-asignacion
-                                    :data="$data_external_component"
-                                    :key="'update-area-'.$data_external_component"
-                                />
-                            @break
+                            <div class="form-group mb-3">
 
-                            @default
-                                @livewire(
-                                    'create-new-area-de-asignacion',
-                                    [],
-                                    key('create-new-area-de-asignacion')
-                                )
-                            @break
+                                <label
+                                    for="nombre-area-asignacion"
+                                    class="font-weight-bold"
+                                >
+                                    Nombre del área de asignación
+                                </label>
 
-                        @endswitch
+                                <input
+                                    type="text"
+                                    id="nombre-area-asignacion"
+                                    wire:model="nombre"
+                                    oninput="
+                                        this.value =
+                                        this.value.toUpperCase()
+                                    "
+                                    autocomplete="off"
+                                    maxlength="150"
+                                    placeholder="Ejemplo: DIRECCIÓN GENERAL"
+                                    class="form-control
+                                        @error('nombre')
+                                            is-invalid
+                                        @enderror"
+                                >
+
+                                @error('nombre')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+
+                                <small class="form-text text-muted">
+                                    Escribe el nombre institucional
+                                    del área de asignación.
+                                </small>
+
+                            </div>
+
+                            <div
+                                class="d-flex justify-content-end
+                                    align-items-center
+                                    flex-wrap
+                                    gap-2
+                                    mt-4"
+                            >
+                                <button
+                                    type="button"
+                                    wire:click="closeModal"
+                                    wire:loading.attr="disabled"
+                                    wire:target="saveArea"
+                                    class="btn btn-outline-secondary"
+                                >
+                                    <i class="fas fa-times mr-1"></i>
+                                    Cancelar
+                                </button>
+
+                                <button
+                                    type="submit"
+                                    wire:loading.attr="disabled"
+                                    wire:target="saveArea"
+                                    class="btn text-white"
+                                    style="
+                                        min-height: 42px;
+                                        padding: 0 20px;
+                                        border: none;
+                                        border-radius: 10px;
+                                        background: #171C63;
+                                        font-weight: 700;
+                                    "
+                                >
+                                    <span
+                                        wire:loading.remove
+                                        wire:target="saveArea"
+                                    >
+                                        <i class="fas fa-save mr-1"></i>
+
+                                        {{ $isEditing
+                                            ? 'Guardar cambios'
+                                            : 'Registrar área' }}
+                                    </span>
+
+                                    <span
+                                        wire:loading
+                                        wire:target="saveArea"
+                                    >
+                                        <i class="fas fa-spinner fa-spin mr-1"></i>
+
+                                        {{ $isEditing
+                                            ? 'Actualizando...'
+                                            : 'Registrando...' }}
+                                    </span>
+                                </button>
+                            </div>
+
+                        </form>
+
                     </div>
 
                 </div>
