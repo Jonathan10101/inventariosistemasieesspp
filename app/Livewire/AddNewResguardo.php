@@ -27,7 +27,7 @@ use Illuminate\Support\Number;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Validation\ValidationException;
-use Livewire\TemporaryUploadedFile;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 use App\Models\Resguardo;
 use App\Models\User;
