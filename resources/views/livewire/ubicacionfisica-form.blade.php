@@ -29,24 +29,8 @@
     {{-- ========================================================= --}}
     {{-- NAVEGACIÓN MÓVIL                                          --}}
     {{-- ========================================================= --}}
-    <div class="mobile-page-nav">
-        <button
-            type="button"
-            class="mobile-nav-btn"
-            onclick="window.history.back()"
-        >
-            <i class="fas fa-arrow-left"></i>
-            <span>Atrás</span>
-        </button>
-
-        <a
-            href="{{ url('/dashboard') }}"
-            class="mobile-nav-btn primary"
-        >
-            <i class="fas fa-tachometer-alt"></i>
-            <span>Dashboard</span>
-        </a>
-    </div>
+    
+  
 
     {{-- ========================================================= --}}
     {{-- SWEETALERT                                                --}}
@@ -917,6 +901,11 @@
        UBICACIONES FÍSICAS
        ESTILO UNIFORME BASADO EN PUESTOSFORM
     ========================================================= */
+
+    button:disabled {
+        cursor: wait !important;
+        opacity: 0.68;
+    }
 
     .ubicaciones-page {
         color: #111827;
