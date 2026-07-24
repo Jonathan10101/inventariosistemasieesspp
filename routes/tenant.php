@@ -219,13 +219,12 @@ Route::middleware([
         |--------------------------------------------------------------------------
         | Exportación
         |--------------------------------------------------------------------------
-        */
-
         Route::get('/export', [
             ExportController::class,
             'export',
         ])
             ->name('export')
             ->middleware('can:inventario.index');
+        */
     });
 });
