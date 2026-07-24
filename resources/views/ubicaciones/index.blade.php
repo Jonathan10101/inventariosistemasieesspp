@@ -30,7 +30,7 @@
 @stop
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/ieesspptitleanimado.css')C">
+<link rel="stylesheet" href="{{ asset('css/ieesspptitleanimado.css')">
 @stop
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
