@@ -14,18 +14,6 @@
     {{-- ========================================================= --}}
     <div
         wire:loading.delay
-        wire:target="
-            showModalNewUbicacionFisica,
-            showModalImportUbicaciones,
-            closeModal,
-            closeImportModal,
-            importarUbicacionesFisicas,
-            archivoUbicaciones,
-            cambiarAccion,
-            downloadEtiqueta,
-            searchUbicacionesFisicas,
-            clearSearch
-        "
         class="ieesspp-loading-bar"
     >
         <div class="progress w-100 h-100 rounded-0">
