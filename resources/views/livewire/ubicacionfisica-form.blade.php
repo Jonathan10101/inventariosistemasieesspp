@@ -17,8 +17,7 @@
     {{-- BARRA DE CARGA                                            --}}
     {{-- ========================================================= --}}
     <div
-        wire:loading.delay
-        wire:target="showModalNewUbicacionFisica,showModalImportUbicaciones,closeModal,closeImportModal,archivoUbicaciones,importarUbicacionesFisicas,downloadEtiqueta,cambiarAccion,searchUbicacionesFisicas,clearSearch"
+        wire:loading
         class="ieesspp-loading-bar"
     >
         <div class="progress w-100 h-100 rounded-0">
@@ -648,6 +647,10 @@
                                             src="{{ asset('storage/' . $ubicacion->imagen) }}"
                                             alt="Imagen de {{ $ubicacion->descripcion }}"
                                             class="ubicacion-image"
+                                            loading="lazy"
+                                            decoding="async"
+                                            width="86"
+                                            height="62"
                                         >
                                     </a>
                                 @else
@@ -759,14 +762,6 @@
     >
         {{ $ubicacionesfisicas->links() }}
     </div>
-
-    {{-- ========================================================= --}}
-    {{-- ESTILOS EXTERNOS                                          --}}
-    {{-- ========================================================= --}}
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
 
     {{-- No cargar Bootstrap aquí. AdminLTE ya lo incluye. --}}
     <link
