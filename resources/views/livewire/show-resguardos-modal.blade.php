@@ -47,7 +47,10 @@
                     @if ($historial->imagen_evidencia)
                         <a href="{{ asset('storage/' . $historial->imagen_evidencia) }}" target="_blank" style="text-decoration:none;">
                             <div class="hp-media">
-                                <img src="{{ asset('storage/' . $historial->imagen_evidencia) }}" alt="Evidencia">
+                                <img src="{{ asset('storage/' . $historial->imagen_evidencia) }}" 
+                                alt="Evidencia"
+                                loading="lazy"
+                                decoding="async">
                             </div>
                             <div class="text-center mt-2" style="font-size:.9rem; color:#64748b;">Ver evidencia</div>
                         </a>
