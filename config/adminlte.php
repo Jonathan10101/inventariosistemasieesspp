@@ -53,13 +53,15 @@ return [
                     height: 38px;
                     object-fit: contain;
                     display: block;
-                    margin: 0 auto;
+                    margin: 0px !important;
+                    padding: 0px !important;
                 "
             >
 
             <strong style="
                 display: block;
-                margin: 0;
+                margin: 0px !important;
+                padding: 0px !important;
                 color: #171C63;
                 font-size: 17px;
                 font-weight: 900;
