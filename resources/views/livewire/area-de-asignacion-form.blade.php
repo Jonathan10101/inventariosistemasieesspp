@@ -14,16 +14,14 @@
     {{-- BARRA DE CARGA                                            --}}
     {{-- ========================================================= --}}
     <div
-        wire:loading.delay
-        wire:target="showModalNewAreaDeAsignacion,showModalImportAreas,archivoAreas,importarAreas,cambiarAccion,searchAreasDeAsignacion,clearSearch"
+        wire:loading
         class="ieesspp-loading-bar"
     >
         <div class="progress w-100 h-100 rounded-0">
-            <div
-                class="progress-bar progress-bar-striped progress-bar-animated w-100"
-            ></div>
+            <div class="progress-bar progress-bar-striped progress-bar-animated w-100"></div>
         </div>
     </div>
+    
 
     {{-- ========================================================= --}}
     {{-- NAVEGACIÓN MÓVIL                                          --}}
