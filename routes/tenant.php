@@ -18,6 +18,7 @@ use App\Http\Controllers\{
     UbicacionFisicaController,
     UserController
 };
+use App\Services\TenantFileStorage;
 
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
@@ -39,6 +40,12 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
+
+    Route::get('/probar-almacenamiento', function () {
+        return response()->json(
+            app(TenantFileStorage::class)->usage()
+        );
+    })->middleware('auth');
 
     /*
     |--------------------------------------------------------------------------
