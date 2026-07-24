@@ -24,6 +24,7 @@
             <div class="progress-bar progress-bar-striped progress-bar-animated w-100"></div>
         </div>
     </div>
+    
 
     {{-- ========================================================= --}}
     {{-- NAVEGACIÓN MÓVIL                                          --}}

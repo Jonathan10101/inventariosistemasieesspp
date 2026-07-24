@@ -10,13 +10,14 @@
 
     {{-- LOADING BAR --}}
     <div
-        wire:loading.delay
-        wire:target="showModalNewPuesto,showModalImportPuestos,archivoPuestos,importarPuestos,cambiarAccion,searchPuestos,clearSearch"          class="ieesspp-loading-bar"
-        >
+        wire:loading
+        class="ieesspp-loading-bar"
+    >
         <div class="progress w-100 h-100 rounded-0">
             <div class="progress-bar progress-bar-striped progress-bar-animated w-100"></div>
         </div>
     </div>
+    
 
     {{-- BARRA MÓVIL --}}
     <div class="mobile-page-nav">

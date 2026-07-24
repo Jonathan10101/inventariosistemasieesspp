@@ -14,26 +14,14 @@
     {{-- BARRA SUPERIOR DE CARGA                                   --}}
     {{-- ========================================================= --}}
     <div
-        wire:loading.delay
-        wire:target="
-            showModalNewMarca,
-            showModalImportMarcas,
-            closeImportModal,
-            importarMarcas,
-            archivoMarcas,
-            editar,
-            searchMarcas,
-            clearSearch,
-            cambiarAccion
-        "
+        wire:loading
         class="ieesspp-loading-bar"
     >
         <div class="progress w-100 h-100 rounded-0">
-            <div
-                class="progress-bar progress-bar-striped progress-bar-animated w-100"
-            ></div>
+            <div class="progress-bar progress-bar-striped progress-bar-animated w-100"></div>
         </div>
     </div>
+    
 
     {{-- ========================================================= --}}
     {{-- BARRA DE NAVEGACIÓN MÓVIL                                 --}}
