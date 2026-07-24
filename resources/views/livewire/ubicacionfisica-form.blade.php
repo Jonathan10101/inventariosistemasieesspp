@@ -1,8 +1,4 @@
 <div class="container mt-4 ubicaciones-page">
-    @php
-        use Illuminate\Support\Facades\Storage;
-    @endphp
-
     {{-- ========================================================= --}}
     {{-- MARCADOR DEL TUTORIAL                                     --}}
     {{-- ========================================================= --}}
@@ -17,20 +13,49 @@
     {{-- BARRA DE CARGA                                            --}}
     {{-- ========================================================= --}}
     <div
-        wire:loading
+        wire:loading.delay
+        wire:target="
+            showModalNewUbicacionFisica,
+            showModalImportUbicaciones,
+            closeModal,
+            closeImportModal,
+            importarUbicacionesFisicas,
+            archivoUbicaciones,
+            cambiarAccion,
+            downloadEtiqueta,
+            searchUbicacionesFisicas,
+            clearSearch
+        "
         class="ieesspp-loading-bar"
     >
         <div class="progress w-100 h-100 rounded-0">
-            <div class="progress-bar progress-bar-striped progress-bar-animated w-100"></div>
+            <div
+                class="progress-bar progress-bar-striped progress-bar-animated w-100"
+            ></div>
         </div>
     </div>
-    
 
     {{-- ========================================================= --}}
-    {{-- NAVEGACIÓN MÓVIL                                          --}}
+    {{-- BARRA DE NAVEGACIÓN MÓVIL                                 --}}
     {{-- ========================================================= --}}
-    
-  
+    <div class="mobile-page-nav">
+        <button
+            type="button"
+            class="mobile-nav-btn"
+            onclick="window.history.back()"
+        >
+            <i class="fas fa-arrow-left"></i>
+            <span>Atrás</span>
+        </button>
+
+        <a
+            href="{{ url('/dashboard') }}"
+            class="mobile-nav-btn primary"
+        >
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+        </a>
+    </div>
 
     {{-- ========================================================= --}}
     {{-- SWEETALERT                                                --}}
@@ -72,7 +97,7 @@
         <div class="header-actions">
             <button
                 type="button"
-                class="btn btn-tour-ubicacion"
+                class="btn btn-tour-module"
                 data-tour-start
                 title="Ver tutorial del módulo"
             >
@@ -150,12 +175,18 @@
     {{-- ========================================================= --}}
     @if($showModal)
         <div
-            class="modal fade ieesspp-modal show d-block"
+            class="modal fade show ubicacion-modal-wrapper"
+            style="display: block;"
             tabindex="-1"
             role="dialog"
             aria-modal="true"
             aria-labelledby="ubicacionModalTitle"
         >
+            <div
+                class="modal-backdrop-custom"
+                wire:click="closeModal"
+            ></div>
+
             <div
                 class="modal-dialog modal-lg modal-dialog-centered ieesspp-modal-dialog"
                 role="document"
@@ -226,19 +257,25 @@
     {{-- ========================================================= --}}
     @if($showImportModal)
         <div
-            class="modal fade ieesspp-modal show d-block"
+            class="modal fade show ubicacion-modal-wrapper"
+            style="display: block;"
             tabindex="-1"
             role="dialog"
             aria-modal="true"
             aria-labelledby="importarUbicacionesModalTitle"
         >
             <div
+                class="modal-backdrop-custom"
+                wire:click="closeImportModal"
+            ></div>
+
+            <div
                 class="modal-dialog modal-lg modal-dialog-centered ieesspp-modal-dialog"
                 role="document"
             >
                 <div class="modal-content ieesspp-modal-content">
 
-                    <div class="modal-header ieesspp-modal-header import-ubicaciones-header">
+                    <div class="modal-header ieesspp-modal-header import-modal-header">
                         <div>
                             <span class="modal-label">
                                 Carga masiva del catálogo
@@ -291,12 +328,15 @@
                                     Seleccionar archivo
                                 </label>
 
-                                <input
-                                    type="file"
-                                    id="archivoUbicaciones"
-                                    wire:model="archivoUbicaciones"
-                                    accept=".xlsx,.xls,.csv"
-                                >
+                                <div class="import-file-wrapper">
+                                    <input
+                                        type="file"
+                                        id="archivoUbicaciones"
+                                        wire:model="archivoUbicaciones"
+                                        accept=".xlsx,.xls,.csv"
+                                        class="form-control import-file-input"
+                                    >
+                                </div>
 
                                 <p class="import-help">
                                     Formatos permitidos: XLSX, XLS y CSV.
@@ -554,7 +594,7 @@
                 id="searchid"
                 placeholder="Ejemplo: ALMACÉN GENERAL"
                 wire:model="search"
-                wire:keyup.debounce.400ms="searchUbicacionesFisicas"
+                wire:input.debounce.400ms="searchUbicacionesFisicas"
                 oninput="this.value = this.value.toUpperCase()"
                 class="form-control search-input"
                 autocomplete="off"
@@ -630,6 +670,7 @@
                                     <a
                                         href="{{ asset('storage/' . $ubicacion->imagen) }}"
                                         target="_blank"
+                                        class="ubicacion-image-link"
                                     >
                                         <img
                                             src="{{ asset('storage/' . $ubicacion->imagen) }}"
@@ -675,6 +716,7 @@
                                             class="btn-action-edit"
                                             wire:click="cambiarAccion('editar', {{ $ubicacion->id }})"
                                             wire:loading.attr="disabled"
+                                            wire:target="cambiarAccion('editar', {{ $ubicacion->id }})"
                                             title="Editar ubicación"
                                         >
                                             <i class="fas fa-pen"></i>
@@ -684,6 +726,7 @@
                                             type="button"
                                             wire:click="downloadEtiqueta({{ $ubicacion->id }})"
                                             wire:loading.attr="disabled"
+                                            wire:target="downloadEtiqueta({{ $ubicacion->id }})"
                                             class="btn-action-download"
                                             title="Descargar etiqueta"
                                         >
@@ -769,6 +812,8 @@
     {{-- JAVASCRIPT                                                --}}
     {{-- ========================================================= --}}
     @push('js')
+        @livewireScripts
+
         <script>
             document.addEventListener('livewire:initialized', function () {
 
@@ -911,11 +956,6 @@
         color: #111827;
     }
 
-    .ubicaciones-page button:disabled {
-        cursor: wait !important;
-        opacity: 0.65;
-    }
-
     /* =========================================================
        BARRA DE CARGA
     ========================================================= */
@@ -1004,7 +1044,7 @@
        BOTÓN DEL TUTORIAL
     ========================================================= */
 
-    .btn-tour-ubicacion {
+    .btn-tour-module {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -1024,8 +1064,8 @@
             box-shadow 0.18s ease;
     }
 
-    .btn-tour-ubicacion:hover,
-    .btn-tour-ubicacion:focus {
+    .btn-tour-module:hover,
+    .btn-tour-module:focus {
         background: #171C63;
         color: #ffffff;
         transform: translateY(-1px);
@@ -1117,14 +1157,24 @@
        REGISTRAR Y EDITAR
     ========================================================= */
 
-    .ieesspp-modal {
+    .ubicacion-modal-wrapper {
+        position: fixed;
+        inset: 0;
+        z-index: 1050;
         overflow-x: hidden;
         overflow-y: auto;
-        background: rgba(15, 23, 42, 0.58);
+    }
+
+    .modal-backdrop-custom {
+        position: fixed;
+        inset: 0;
+        z-index: 1050;
+        background: rgba(15, 23, 42, 0.62);
         backdrop-filter: blur(5px);
     }
 
     .ieesspp-modal-dialog {
+        position: relative;
         z-index: 1055;
     }
 
@@ -1202,14 +1252,18 @@
        AGREGAR import-ubicaciones-header AL ENCABEZADO
     ========================================================= */
 
-    .import-ubicaciones-header,
-    .import-header,
-    .ubicaciones-import-modal .ieesspp-modal-header {
-        background: linear-gradient(
-            135deg,
-            #14532d 0%,
-            #15803d 100%
-        );
+    .import-modal-header {
+        background:
+            radial-gradient(
+                circle at top left,
+                rgba(255, 255, 255, 0.18),
+                transparent 35%
+            ),
+            linear-gradient(
+                135deg,
+                #14532d 0%,
+                #15803d 100%
+            );
     }
 
     .import-body {
@@ -1266,30 +1320,38 @@
         font-weight: 800;
     }
 
-    .import-input {
-        display: block;
-        width: 100%;
-        min-height: 48px;
-        padding: 8px;
+    .import-file-wrapper {
+        padding: 5px;
         border: 1px solid #cbd5e1;
-        border-radius: 12px;
+        border-radius: 13px;
         background: #f8fafc;
-        color: #334155;
-        box-shadow: none;
+        transition:
+            border-color 0.18s ease,
+            background 0.18s ease,
+            box-shadow 0.18s ease;
     }
 
-    .import-input:focus {
-        border-color: rgba(21, 128, 61, 0.45);
+    .import-file-wrapper:focus-within {
+        border-color: rgba(23, 28, 99, 0.45);
         background: #ffffff;
-        box-shadow: 0 0 0 4px rgba(21, 128, 61, 0.09);
+        box-shadow: 0 0 0 4px rgba(23, 28, 99, 0.09);
     }
 
-    .import-input::file-selector-button {
+    .import-file-input {
+        min-height: 46px;
+        padding: 10px 12px;
+        border: none !important;
+        border-radius: 10px;
+        background: transparent;
+        box-shadow: none !important;
+    }
+
+    .import-file-input::file-selector-button {
         margin-right: 12px;
-        padding: 9px 13px;
+        padding: 8px 12px;
         border: none;
         border-radius: 9px;
-        background: #15803d;
+        background: #171C63;
         color: #ffffff;
         font-size: 12px;
         font-weight: 800;
@@ -1320,7 +1382,10 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        margin-top: 12px;
+        margin: 12px 0;
+        padding: 11px 13px;
+        border-radius: 10px;
+        background: rgba(23, 28, 99, 0.07);
         color: #171C63;
         font-size: 13px;
         font-weight: 800;
@@ -2080,7 +2145,7 @@
         }
 
         .header-actions,
-        .btn-tour-ubicacion,
+        .btn-tour-module,
         .btn-import-ubicacion,
         .btn-add-ubicacion,
         .btn-outline-success {
@@ -2223,5 +2288,4 @@
         }
     }
 </style>
-
 </div>
