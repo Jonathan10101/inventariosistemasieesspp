@@ -12,8 +12,7 @@
 
     {{-- LOADING BAR --}}
     <div
-        wire:loading.delay
-        wire:target="showModalNewResguardo,export,rangeFrom,rangeTo,edit,addNewResguardo,searchResguardos,clearSearch,cambiarAccion,showHistorialResguardo,downloadEtiqueta,perPage"
+        wire:loading
         class="ieesspp-loading-bar"
     >
         <div class="progress w-100 h-100 rounded-0">
