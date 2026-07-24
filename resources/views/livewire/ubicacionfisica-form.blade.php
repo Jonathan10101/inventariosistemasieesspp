@@ -760,6 +760,14 @@
         {{ $ubicacionesfisicas->links() }}
     </div>
 
+    {{-- ========================================================= --}}
+    {{-- ESTILOS EXTERNOS                                          --}}
+    {{-- ========================================================= --}}
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
     {{-- No cargar Bootstrap aquí. AdminLTE ya lo incluye. --}}
     <link
         rel="stylesheet"
