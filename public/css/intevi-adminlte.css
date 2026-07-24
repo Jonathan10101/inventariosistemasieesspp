@@ -646,3 +646,28 @@ button[class*="btn-import"]:disabled {
 .main-sidebar .brand-link img {
     margin: 0 !important;
 }
+
+
+
+/* Centrado definitivo del logo INTEVI */
+.sidebar-ieesspp .brand-link {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 4px 0 !important;
+    text-align: center !important;
+}
+
+.sidebar-ieesspp .brand-link > .brand-image {
+    display: none !important;
+}
+
+.sidebar-ieesspp .brand-link .brand-text {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+}
