@@ -117,6 +117,11 @@
                     wire:target="showModalImportMarcas"
                     title="Importar marcas desde Excel"
                     class="btn btn-outline-success"
+                    data-tour-step
+                    data-tour-order="6"
+                    data-tour-title="Importar datos"
+                    data-tour-description="Presiona este botón para importar datos de forma masiva y ahorrar tiempo al registrar de manera manual, solo tienes que generar un excel e importarlo."
+                    data-tour-side="left"
                 >
                     <span
                         wire:loading.remove
