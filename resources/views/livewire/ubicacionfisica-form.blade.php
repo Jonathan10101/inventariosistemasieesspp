@@ -39,7 +39,10 @@
             <span>Atrás</span>
         </button>
 
-        <a href="{{ url('/dashboard') }}" class="mobile-nav-btn primary">
+        <a
+            href="{{ url('/dashboard') }}"
+            class="mobile-nav-btn primary"
+        >
             <i class="fas fa-tachometer-alt"></i>
             <span>Dashboard</span>
         </a>
@@ -763,6 +766,14 @@
     >
         {{ $ubicacionesfisicas->links() }}
     </div>
+
+    {{-- ========================================================= --}}
+    {{-- ESTILOS EXTERNOS                                          --}}
+    {{-- ========================================================= --}}
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
 
     {{-- No cargar Bootstrap aquí. AdminLTE ya lo incluye. --}}
     <link
