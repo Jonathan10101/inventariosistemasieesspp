@@ -23,7 +23,7 @@
                 <!--
                 <i class="fas fa-shield-alt"></i>
                 -->
-                INTEVI · Sistema Integral de Inventarios
+                INTEVI · Inventario y resguardo institucional
             </div>
 
             <h1>Panel de Control</h1>
