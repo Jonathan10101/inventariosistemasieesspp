@@ -536,6 +536,7 @@
             </span>
         </div>
 
+        {{--
         @hasanyrole('Administrador|Delegacion|Subdirector')
             <a
                 href="{{ route('export') }}"
@@ -546,6 +547,7 @@
                 <span>Exportar Excel</span>
             </a>
         @endhasanyrole
+        --}}
     </div>
 
     <!-- PAGINACIÓN -->
