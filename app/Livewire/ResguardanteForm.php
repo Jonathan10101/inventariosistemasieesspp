@@ -84,44 +84,45 @@ class ResguardanteForm extends Component
     {
         $resguardante = Resguardante::findOrFail($data['id']);
 
-        if (!$resguardante->user_id) {
-            $this->addError(
-                'user',
-                'Este resguardante no tiene un usuario relacionado.'
-            );
-
-            return;
-        }
-
         $user = User::findOrFail($resguardante->user_id);
 
         $datosValidados = validator($data, [
-            'nombre1' => ['required', 'string', 'max:255'],
-            'nombre2' => ['nullable', 'string', 'max:255'],
-            'apellido1' => ['required', 'string', 'max:255'],
-            'apellido2' => ['nullable', 'string', 'max:255'],
-            'puesto_id' => ['required', 'exists:puestos,id'],
-
+            'nombre1' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+            'nombre2' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+            'apellido1' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+            'apellido2' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+            'puesto_id' => [
+                'required',
+                'exists:puestos,id',
+            ],
             'email' => [
                 'required',
                 'email',
-                'max:255',
                 Rule::unique('users', 'email')->ignore($user->id),
             ],
-
-            /*
-            * La contraseña es opcional al editar.
-            * Si queda vacía, se conserva la contraseña actual.
-            */
             'password' => [
                 'nullable',
                 'string',
                 'min:8',
             ],
         ], [
-            'email.required' => 'El correo electrónico es obligatorio.',
-            'email.email' => 'El correo electrónico no tiene un formato válido.',
-            'email.unique' => 'Este correo ya está registrado.',
+            'email.unique' => 'Este correo electrónico ya está registrado.',
             'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
         ])->validate();
 
@@ -131,24 +132,21 @@ class ResguardanteForm extends Component
             $datosValidados
         ) {
             $resguardante->update([
-                'nombre1' => trim($datosValidados['nombre1']),
-                'nombre2' => !empty($datosValidados['nombre2'])
-                    ? trim($datosValidados['nombre2'])
-                    : null,
-                'apellido1' => trim($datosValidados['apellido1']),
-                'apellido2' => !empty($datosValidados['apellido2'])
-                    ? trim($datosValidados['apellido2'])
-                    : null,
+                'nombre1' => $datosValidados['nombre1'],
+                'nombre2' => $datosValidados['nombre2'] ?? null,
+                'apellido1' => $datosValidados['apellido1'],
+                'apellido2' => $datosValidados['apellido2'] ?? null,
                 'puesto_id' => $datosValidados['puesto_id'],
             ]);
 
             $datosUsuario = [
-                'email' => strtolower(trim($datosValidados['email'])),
+                'email' => strtolower(
+                    trim($datosValidados['email'])
+                ),
             ];
 
             /*
-            * Solamente modifica la contraseña cuando el administrador
-            * escribió una nueva contraseña.
+            * Solo cambiar la contraseña cuando se escribió una nueva.
             */
             if (!empty($datosValidados['password'])) {
                 $datosUsuario['password'] = Hash::make(

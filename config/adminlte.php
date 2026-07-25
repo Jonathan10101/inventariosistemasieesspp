@@ -311,6 +311,7 @@ return [
             'text' => 'Tutorial general',
             'url' => '#tutorial-general',
             'icon' => 'fas fa-graduation-cap',
+            'can' => 'resguardante.create'
         ],
 
     ],

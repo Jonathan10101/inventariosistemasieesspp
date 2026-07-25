@@ -7,6 +7,7 @@ use App\Models\Resguardante;
 use App\Models\Puesto;
 use App\Models\AreaDeUso;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Str;
 
 
 class CreateNewResguardante extends Component
@@ -67,8 +68,18 @@ class CreateNewResguardante extends Component
             $this->addError('nombreCompleto', 'Este nombre ya parece estar registrado anteriormente. Es posible que esté guardado con otra combinación de nombre o apellidos. Por favor verifica la información ingresada.');
             return;
         }
-        //dd($this->subdireccion);
-        $emailFinal = $this->nombre1.$this->nombre2.$this->apellido1.$this->apellido2;//."@ieesspp.com";
+        
+        $host = request()->getHost();
+
+        $nombreTenant = Str::before($host, '.intevi.app');
+        
+        $emailFinal = Str::slug(
+            $this->nombre1 .
+            $this->nombre2 .
+            $this->apellido1 .
+            $this->apellido2,
+            ''
+        ) . '@' . $nombreTenant . '.com';
         $passwordFinal = $this->nombre1.$this->nombre2.$this->apellido1.$this->apellido2 . str_pad((string) random_int(0, 999), 3, '0', STR_PAD_LEFT);
         //dd($passwordFinal);
         
