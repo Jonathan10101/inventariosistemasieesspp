@@ -3,27 +3,23 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\EnsureSingleUserSession;
-
-use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
-use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 use App\Http\Controllers\{
     AreaDeAsignacionController,
     DashboardController,
     Etiqueta2Controller,
     EtiquetaController,
-    ExportController,
     InventarioController,
     MarcaController,
     PuestoController,
     ResguardanteController,
     RolController,
-    UbicacionFisicaController,
-    UserController
+    UbicacionFisicaController
 };
-use App\Services\TenantFileStorage;
 
+use App\Http\Middleware\EnsureSingleUserSession;
+
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 /*
@@ -31,20 +27,34 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 | Rutas de los tenants
 |--------------------------------------------------------------------------
 |
-| Estas rutas funcionan para dominios como:
+| Estas rutas funcionan únicamente dentro de los dominios de los tenants:
 |
 | https://ieesspp.intevi.app
 | https://demo.intevi.app
 |
+| Primero se identifica el tenant mediante el dominio y posteriormente
+| se ejecutan las rutas correspondientes.
+|
 */
-
-
 
 Route::middleware([
     'web',
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | Comprobación de conexión
+    |--------------------------------------------------------------------------
+    |
+    | Esta ruta es utilizada por public/js/intevi-offline.js para verificar
+    | que realmente exista conexión con el servidor de INTEVI.
+    |
+    | Debe permanecer fuera del middleware de autenticación.
+    |
+    */
+
     Route::get('/conexion-intevi', function () {
         return response()
             ->noContent()
@@ -53,18 +63,18 @@ Route::middleware([
                 'no-store, no-cache, must-revalidate, max-age=0'
             )
             ->header('Pragma', 'no-cache');
-    });
-
-    Route::middleware([
-        'auth',
-        EnsureSingleUserSession::class,
-    ])->group(function () {
-
+    })->name('tenant.connection');
 
     /*
     |--------------------------------------------------------------------------
     | Página principal del tenant
     |--------------------------------------------------------------------------
+    |
+    | Si el usuario tiene una sesión iniciada, se envía al dashboard.
+    | Si no tiene sesión, se envía al formulario de inicio de sesión.
+    |
+    | Debe permanecer fuera del grupo protegido.
+    |
     */
 
     Route::get('/', function () {
@@ -75,14 +85,23 @@ Route::middleware([
 
     /*
     |--------------------------------------------------------------------------
-    | Rutas protegidas
+    | Rutas protegidas del tenant
     |--------------------------------------------------------------------------
+    |
+    | Todas las rutas de los módulos requieren:
+    |
+    | 1. Usuario autenticado.
+    | 2. Sesión válida de Jetstream.
+    | 3. Correo electrónico verificado.
+    | 4. Que sea la única sesión activa de ese usuario.
+    |
     */
 
     Route::middleware([
         'auth:sanctum',
         config('jetstream.auth_session'),
         'verified',
+        EnsureSingleUserSession::class,
     ])->group(function () {
 
         /*
@@ -145,10 +164,10 @@ Route::middleware([
         | Ubicaciones físicas
         |--------------------------------------------------------------------------
         |
-        | El controlador solamente tiene los métodos:
+        | Actualmente se conservan las rutas resource completas.
         |
-        | index()
-        | show()
+        | Si el controlador solamente contiene index() y show(), puedes
+        | agregar ->only(['index', 'show']) al final.
         |
         */
 
@@ -157,15 +176,12 @@ Route::middleware([
             UbicacionFisicaController::class
         )->middleware('can:ubicacionfisica.index');
 
-
-
-
         /*
         |--------------------------------------------------------------------------
         | Áreas de asignación
         |--------------------------------------------------------------------------
         |
-        | El controlador solamente tiene los métodos:
+        | El controlador utiliza únicamente:
         |
         | index()
         | store()
@@ -190,15 +206,18 @@ Route::middleware([
         |--------------------------------------------------------------------------
         | Usuarios
         |--------------------------------------------------------------------------
+        |
+        | Descomenta esta sección cuando vuelvas a activar el módulo.
+        |
+        */
 
-
+        /*
         Route::resource(
             'usuarios',
             UserController::class
         )->middleware('can:puestos.create');
         */
 
-        
         /*
         |--------------------------------------------------------------------------
         | Roles
@@ -240,6 +259,12 @@ Route::middleware([
         |--------------------------------------------------------------------------
         | Exportación
         |--------------------------------------------------------------------------
+        |
+        | Descomenta esta sección cuando vuelvas a activar la exportación.
+        |
+        */
+
+        /*
         Route::get('/export', [
             ExportController::class,
             'export',
