@@ -75,7 +75,7 @@
     </section>
 
     <x-tenant-storage-card :storage="$storage" />
-
+    @hasanyrole('Administrador')
     {{-- MÉTRICAS --}}
     <section class="dash-metrics">
 
@@ -183,246 +183,247 @@
 
         </div>
     </section>
+    
+        <div class="row">
 
-    <div class="row">
+            {{-- PANEL DESPLEGABLE --}}
+            <div class="col-lg-5 mb-4">
+                <div class="dash-card">
 
-        {{-- PANEL DESPLEGABLE --}}
-        <div class="col-lg-5 mb-4">
-            <div class="dash-card">
-
-                <div class="dash-card-header">
-                    <div>
-                        <h3>Centro de operación</h3>
-                        <p>Secciones desplegables para navegar rápido.</p>
-                    </div>
-                </div>
-
-                {{-- DESPLEGABLE 1 --}}
-                <div class="dash-accordion-item">
-                    <button
-                        class="dash-accordion-button"
-                        type="button"
-                        data-toggle="collapse"
-                        data-target="#collapseGestion"
-                        aria-expanded="true"
-                        aria-controls="collapseGestion"
-                    >
-                        <span>
-                            <i class="fas fa-layer-group"></i>
-                            Gestión principal
-                        </span>
-
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-
-                    <div id="collapseGestion" class="collapse show">
-                        <div class="dash-accordion-body">
-
-                            <a href="{{ url('/inventario') }}" class="dash-mini-link">
-                                <i class="fas fa-boxes"></i>
-                                <div>
-                                    <strong>Inventario</strong>
-                                    <span>Bienes y activos registrados.</span>
-                                </div>
-                            </a>
-                            <!--
-                            <a href="{{ url('/resguardos') }}" class="dash-mini-link">
-                                <i class="fas fa-file-signature"></i>
-                                <div>
-                                    <strong>Resguardos</strong>
-                                    <span>Documentación y movimientos.</span>
-                                </div>
-                            </a>
-                            -->
-                            <a href="{{ url('/resguardante') }}" class="dash-mini-link">
-                                <i class="fas fa-user-shield"></i>
-                                <div>
-                                    <strong>Resguardantes</strong>
-                                    <span>Responsables institucionales.</span>
-                                </div>
-                            </a>
-
+                    <div class="dash-card-header">
+                        <div>
+                            <h3>Centro de operación</h3>
+                            <p>Secciones desplegables para navegar rápido.</p>
                         </div>
                     </div>
-                </div>
 
-                {{-- DESPLEGABLE 2 --}}
-                <div class="dash-accordion-item">
-                    <button
-                        class="dash-accordion-button collapsed"
-                        type="button"
-                        data-toggle="collapse"
-                        data-target="#collapseCatalogos"
-                        aria-expanded="false"
-                        aria-controls="collapseCatalogos"
-                    >
-                        <span>
-                            <i class="fas fa-folder-open"></i>
-                            Catálogos
-                        </span>
+                    {{-- DESPLEGABLE 1 --}}
+                    <div class="dash-accordion-item">
+                        <button
+                            class="dash-accordion-button"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#collapseGestion"
+                            aria-expanded="true"
+                            aria-controls="collapseGestion"
+                        >
+                            <span>
+                                <i class="fas fa-layer-group"></i>
+                                Gestión principal
+                            </span>
 
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
 
-                    <div id="collapseCatalogos" class="collapse">
-                        <div class="dash-accordion-body">
+                        <div id="collapseGestion" class="collapse show">
+                            <div class="dash-accordion-body">
 
-                            <a href="{{ url('/marcas') }}" class="dash-mini-link">
-                                <i class="fas fa-tags"></i>
-                                <div>
-                                    <strong>Marcas</strong>
-                                    <span>Catálogo de fabricantes.</span>
-                                </div>
-                            </a>
+                                <a href="{{ url('/inventario') }}" class="dash-mini-link">
+                                    <i class="fas fa-boxes"></i>
+                                    <div>
+                                        <strong>Inventario</strong>
+                                        <span>Bienes y activos registrados.</span>
+                                    </div>
+                                </a>
+                                <!--
+                                <a href="{{ url('/resguardos') }}" class="dash-mini-link">
+                                    <i class="fas fa-file-signature"></i>
+                                    <div>
+                                        <strong>Resguardos</strong>
+                                        <span>Documentación y movimientos.</span>
+                                    </div>
+                                </a>
+                                -->
+                                <a href="{{ url('/resguardante') }}" class="dash-mini-link">
+                                    <i class="fas fa-user-shield"></i>
+                                    <div>
+                                        <strong>Resguardantes</strong>
+                                        <span>Responsables institucionales.</span>
+                                    </div>
+                                </a>
 
-                            <a href="{{ url('/puestos') }}" class="dash-mini-link">
-                                <i class="fas fa-briefcase"></i>
-                                <div>
-                                    <strong>Puestos</strong>
-                                    <span>Cargos de resguardantes.</span>
-                                </div>
-                            </a>
-
-                            <a href="{{ url('/areadeasignacion') }}" class="dash-mini-link">
-                                <i class="fas fa-sitemap"></i>
-                                <div>
-                                    <strong>Áreas de asignación</strong>
-                                    <span>Áreas institucionales.</span>
-                                </div>
-                            </a>
-
-                            <a href="{{ url('/ubicacionfisica') }}" class="dash-mini-link">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <div>
-                                    <strong>Ubicaciones físicas</strong>
-                                    <span>Espacios y lugares físicos.</span>
-                                </div>
-                            </a>
-
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                {{-- DESPLEGABLE 3 --}}
-                {{--
-                <div class="dash-accordion-item">
-                    <button
-                        class="dash-accordion-button collapsed"
-                        type="button"
-                        data-toggle="collapse"
-                        data-target="#collapseAdministracion"
-                        aria-expanded="false"
-                        aria-controls="collapseAdministracion"
-                    >
-                        <span>
-                            <i class="fas fa-user-lock"></i>
-                            Administración
-                        </span>
+                    {{-- DESPLEGABLE 2 --}}
+                    <div class="dash-accordion-item">
+                        <button
+                            class="dash-accordion-button collapsed"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#collapseCatalogos"
+                            aria-expanded="false"
+                            aria-controls="collapseCatalogos"
+                        >
+                            <span>
+                                <i class="fas fa-folder-open"></i>
+                                Catálogos
+                            </span>
 
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
 
-                    <div id="collapseAdministracion" class="collapse">
-                        <div class="dash-accordion-body">
+                        <div id="collapseCatalogos" class="collapse">
+                            <div class="dash-accordion-body">
 
-                            <a href="{{ url('/usuarios') }}" class="dash-mini-link">
-                                <i class="fas fa-users-cog"></i>
-                                <div>
-                                    <strong>Usuarios</strong>
-                                    <span>Gestión de accesos.</span>
-                                </div>
-                            </a>
+                                <a href="{{ url('/marcas') }}" class="dash-mini-link">
+                                    <i class="fas fa-tags"></i>
+                                    <div>
+                                        <strong>Marcas</strong>
+                                        <span>Catálogo de fabricantes.</span>
+                                    </div>
+                                </a>
 
-                            <!--
-                            <a href="{{ url('/roles') }}" class="dash-mini-link">
-                                <i class="fas fa-key"></i>
-                                <div>
-                                    <strong>Roles y permisos</strong>
-                                    <span>Control de privilegios.</span>
-                                </div>
-                            </a>
-                            -->
+                                <a href="{{ url('/puestos') }}" class="dash-mini-link">
+                                    <i class="fas fa-briefcase"></i>
+                                    <div>
+                                        <strong>Puestos</strong>
+                                        <span>Cargos de resguardantes.</span>
+                                    </div>
+                                </a>
+
+                                <a href="{{ url('/areadeasignacion') }}" class="dash-mini-link">
+                                    <i class="fas fa-sitemap"></i>
+                                    <div>
+                                        <strong>Áreas de asignación</strong>
+                                        <span>Áreas institucionales.</span>
+                                    </div>
+                                </a>
+
+                                <a href="{{ url('/ubicacionfisica') }}" class="dash-mini-link">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <div>
+                                        <strong>Ubicaciones físicas</strong>
+                                        <span>Espacios y lugares físicos.</span>
+                                    </div>
+                                </a>
+
+                            </div>
                         </div>
                     </div>
-                </div>
-                --}}
 
+                    {{-- DESPLEGABLE 3 --}}
+                    {{--
+                    <div class="dash-accordion-item">
+                        <button
+                            class="dash-accordion-button collapsed"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#collapseAdministracion"
+                            aria-expanded="false"
+                            aria-controls="collapseAdministracion"
+                        >
+                            <span>
+                                <i class="fas fa-user-lock"></i>
+                                Administración
+                            </span>
+
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+
+                        <div id="collapseAdministracion" class="collapse">
+                            <div class="dash-accordion-body">
+
+                                <a href="{{ url('/usuarios') }}" class="dash-mini-link">
+                                    <i class="fas fa-users-cog"></i>
+                                    <div>
+                                        <strong>Usuarios</strong>
+                                        <span>Gestión de accesos.</span>
+                                    </div>
+                                </a>
+
+                                <!--
+                                <a href="{{ url('/roles') }}" class="dash-mini-link">
+                                    <i class="fas fa-key"></i>
+                                    <div>
+                                        <strong>Roles y permisos</strong>
+                                        <span>Control de privilegios.</span>
+                                    </div>
+                                </a>
+                                -->
+                            </div>
+                        </div>
+                    </div>
+                    --}}
+
+                </div>
             </div>
-        </div>
 
-        {{-- ACTIVIDAD RECIENTE --}}
-        {{--
-        <div class="col-lg-7 mb-4">
-            <div class="dash-card h-100">
+            {{-- ACTIVIDAD RECIENTE --}}
+            {{--
+            <div class="col-lg-7 mb-4">
+                <div class="dash-card h-100">
 
-                <div class="dash-card-header">
-                    <div>
-                        <h3>Actividad reciente</h3>
-                        <p>Últimos movimientos del sistema.</p>
+                    <div class="dash-card-header">
+                        <div>
+                            <h3>Actividad reciente</h3>
+                            <p>Últimos movimientos del sistema.</p>
+                        </div>
+
+                        <a href="{{ url('/inventario') }}" class="dash-card-link">
+                            Ver todo
+                        </a>
                     </div>
 
-                    <a href="{{ url('/inventario') }}" class="dash-card-link">
-                        Ver todo
-                    </a>
-                </div>
+                    <div class="dash-table-wrapper">
+                        <table class="table dash-table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Bien</th>
+                                    <th>Responsable</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
 
-                <div class="dash-table-wrapper">
-                    <table class="table dash-table mb-0">
-                        <thead>
-                            <tr>
-                                <th>Bien</th>
-                                <th>Responsable</th>
-                                <th>Estado</th>
-                            </tr>
-                        </thead>
+                            <tbody>
+                                @if(isset($ultimosResguardos) && $ultimosResguardos->count())
+                                    @foreach($ultimosResguardos as $resguardo)
+                                        <tr>
+                                            <td>
+                                                <strong>
+                                                    {{ $resguardo->descripcion ?? 'Bien registrado' }}
+                                                </strong>
+                                                <span>
+                                                    {{ $resguardo->nserie ?? 'Sin serie' }}
+                                                </span>
+                                            </td>
 
-                        <tbody>
-                            @if(isset($ultimosResguardos) && $ultimosResguardos->count())
-                                @foreach($ultimosResguardos as $resguardo)
+                                            <td>
+                                                {{ $resguardo->resguardante->nombre1 ?? 'Sin responsable' }}
+                                            </td>
+
+                                            <td>
+                                                <span class="dash-badge-success">
+                                                    Activo
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
                                     <tr>
-                                        <td>
-                                            <strong>
-                                                {{ $resguardo->descripcion ?? 'Bien registrado' }}
-                                            </strong>
-                                            <span>
-                                                {{ $resguardo->nserie ?? 'Sin serie' }}
-                                            </span>
-                                        </td>
+                                        <td colspan="3">
+                                            <div class="dash-empty">
+                                                <div class="dash-empty-icon">
+                                                    <i class="fas fa-inbox"></i>
+                                                </div>
 
-                                        <td>
-                                            {{ $resguardo->resguardante->nombre1 ?? 'Sin responsable' }}
-                                        </td>
-
-                                        <td>
-                                            <span class="dash-badge-success">
-                                                Activo
-                                            </span>
+                                                <strong>Sin actividad reciente</strong>
+                                                <span>Cuando registres inventarios o resguardos aparecerán aquí.</span>
+                                            </div>
                                         </td>
                                     </tr>
-                                @endforeach
-                            @else
-                                <tr>
-                                    <td colspan="3">
-                                        <div class="dash-empty">
-                                            <div class="dash-empty-icon">
-                                                <i class="fas fa-inbox"></i>
-                                            </div>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
 
-                                            <strong>Sin actividad reciente</strong>
-                                            <span>Cuando registres inventarios o resguardos aparecerán aquí.</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endif
-                        </tbody>
-                    </table>
                 </div>
-
             </div>
-        </div>
-        --}}
+            --}}
 
-    </div>
+        </div>
+    @endhasanyrole
 
 </div>
 
