@@ -322,7 +322,6 @@
                                         id="archivoUbicaciones"
                                         wire:model="archivoUbicaciones"
                                         accept=".xlsx,.xls,.csv"
-                                        class="form-control import-file-input"
                                     >
                                 </div>
 
