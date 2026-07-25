@@ -3,6 +3,10 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\EnsureSingleUserSession;
+
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
+use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 use App\Http\Controllers\{
     AreaDeAsignacionController,
@@ -20,7 +24,6 @@ use App\Http\Controllers\{
 };
 use App\Services\TenantFileStorage;
 
-use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 /*
@@ -51,6 +54,11 @@ Route::middleware([
             )
             ->header('Pragma', 'no-cache');
     });
+
+    Route::middleware([
+        'auth',
+        EnsureSingleUserSession::class,
+    ])->group(function () {
 
 
     /*
