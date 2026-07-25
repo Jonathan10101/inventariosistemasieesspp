@@ -39,8 +39,8 @@
                 </div>
 
                 {{-- SECCIÓN: INFORMACIÓN GENERAL --}}
+                @can('inventario.edit')
                 <div class="angular-section mb-4">
-                    @can('inventario.edit')
                     <div class="angular-section-header">
                         <div class="angular-section-icon">
                             <i class="fas fa-clipboard-list"></i>
