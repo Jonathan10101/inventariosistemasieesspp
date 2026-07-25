@@ -9,7 +9,9 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
-
+use App\Listeners\ActivateSingleUserSession;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Support\Facades\Event;
 
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 
@@ -36,7 +38,11 @@ class AppServiceProvider extends ServiceProvider
             return $user->email === config('services.pulse.admin_email');
         });
         */
-         Gate::define('viewPulse', function (User $user): bool {
+        Event::listen(
+            Login::class,
+            ActivateSingleUserSession::class
+        );
+        Gate::define('viewPulse', function (User $user): bool {
             return $user->email === config('services.pulse.admin_email');
         });
         Livewire::setUpdateRoute(function ($handle) {
