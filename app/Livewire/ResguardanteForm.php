@@ -8,6 +8,9 @@ use Livewire\WithPagination;
 use Livewire\Attributes\On;
 use App\Models\Resguardante;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;    
 
 
 class ResguardanteForm extends Component
@@ -55,11 +58,11 @@ class ResguardanteForm extends Component
     #[On('saveFromComponentNewResguardante')]
     public function saveNewResguardante($data){
         $user_id = User::create([
-            "name" => $data['nombre1'] . $data['nombre2'] . $data['apellido1'] . $data['apellido2'],
+            "name" => $data['nombre1'] ." ". $data['nombre2'] ." ". $data['apellido1'] ." ". $data['apellido2'],
             //"email" => $data['nombre1'] . $data['nombre2'] . $data['apellido1'] . $data['apellido2'] . "@ieesspp.com",
             //'subdireccion' => $data['subdireccion'],
             "email" => $data['email'],
-            "password" => bcrypt($data['password'])
+            "password" => Hash::make($data['password'])
         ])->assignRole("Empleado");
         $id_user = (int)$user_id->id;
         //dd($id_user);
@@ -77,30 +80,88 @@ class ResguardanteForm extends Component
     }
 
     #[On('UpdateResguardanteFromAnotherComponent')]
-    public function saveUpdateResguardante($data){
-        $updateResguardante = Resguardante::find($data['id']);
-        $updateResguardante->update([
-            'nombre1' => $data['nombre1'],
-            'nombre2' => $data['nombre2'],
-            'apellido1' => $data['apellido1'],
-            'apellido2' => $data['apellido2'],
-            'puesto_id' => $data['puesto_id']
-        ]);
+    public function saveUpdateResguardante($data)
+    {
+        $resguardante = Resguardante::findOrFail($data['id']);
 
-        $resguardante = Resguardante::find($data['id']);
+        if (!$resguardante->user_id) {
+            $this->addError(
+                'user',
+                'Este resguardante no tiene un usuario relacionado.'
+            );
 
-        $id_user = $resguardante->user_id;
+            return;
+        }
 
-        $user = User::find($id_user);
-    
-        $user->update([
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            //'subdireccion' => $data['subdireccion']
-        ]);
+        $user = User::findOrFail($resguardante->user_id);
 
-        $this->dispatch('alumno-updated',1);
-        $this->showModal = false;  
+        $datosValidados = validator($data, [
+            'nombre1' => ['required', 'string', 'max:255'],
+            'nombre2' => ['nullable', 'string', 'max:255'],
+            'apellido1' => ['required', 'string', 'max:255'],
+            'apellido2' => ['nullable', 'string', 'max:255'],
+            'puesto_id' => ['required', 'exists:puestos,id'],
+
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('users', 'email')->ignore($user->id),
+            ],
+
+            /*
+            * La contraseña es opcional al editar.
+            * Si queda vacía, se conserva la contraseña actual.
+            */
+            'password' => [
+                'nullable',
+                'string',
+                'min:8',
+            ],
+        ], [
+            'email.required' => 'El correo electrónico es obligatorio.',
+            'email.email' => 'El correo electrónico no tiene un formato válido.',
+            'email.unique' => 'Este correo ya está registrado.',
+            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+        ])->validate();
+
+        DB::transaction(function () use (
+            $resguardante,
+            $user,
+            $datosValidados
+        ) {
+            $resguardante->update([
+                'nombre1' => trim($datosValidados['nombre1']),
+                'nombre2' => !empty($datosValidados['nombre2'])
+                    ? trim($datosValidados['nombre2'])
+                    : null,
+                'apellido1' => trim($datosValidados['apellido1']),
+                'apellido2' => !empty($datosValidados['apellido2'])
+                    ? trim($datosValidados['apellido2'])
+                    : null,
+                'puesto_id' => $datosValidados['puesto_id'],
+            ]);
+
+            $datosUsuario = [
+                'email' => strtolower(trim($datosValidados['email'])),
+            ];
+
+            /*
+            * Solamente modifica la contraseña cuando el administrador
+            * escribió una nueva contraseña.
+            */
+            if (!empty($datosValidados['password'])) {
+                $datosUsuario['password'] = Hash::make(
+                    $datosValidados['password']
+                );
+            }
+
+            $user->update($datosUsuario);
+        });
+
+        $this->dispatch('alumno-updated', 1);
+
+        $this->showModal = false;
     }
 
     public function cambiarAccion($nuevaAccion,$id)
