@@ -135,7 +135,7 @@ Route::middleware([
         Route::resource(
             'marcas',
             MarcaController::class
-        )->middleware('can:marcas.index');
+        )->middleware('can:marcas.create');
 
         /*
         |--------------------------------------------------------------------------
@@ -146,7 +146,7 @@ Route::middleware([
         Route::resource(
             'resguardante',
             ResguardanteController::class
-        )->middleware('can:resguardante.index');
+        )->middleware('can:resguardante.create');
 
         /*
         |--------------------------------------------------------------------------
@@ -174,7 +174,7 @@ Route::middleware([
         Route::resource(
             'ubicacionfisica',
             UbicacionFisicaController::class
-        )->middleware('can:ubicacionfisica.index');
+        )->middleware('can:ubicacionfisica.create');
 
         /*
         |--------------------------------------------------------------------------
