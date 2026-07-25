@@ -219,13 +219,11 @@ return [
 
     'css' => [
         'css/intevi-adminlte.css',
-        'css/intevi-offline.css',
 
         //'css/intevi-componentes.css',
     ],
 
     'js' => [
-        'js/intevi-offline.js',
 
     ],
 
@@ -358,6 +356,19 @@ return [
                     'type' => 'js',
                     'asset' => true,
                     'location' => 'js/intevi-tour.js',
+                ],
+                
+            ],
+        ],
+        'InteviOffline' => [
+            'active' => true,
+
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'js/intevi-offline.js',
+                    'defer' => true,
                 ],
             ],
         ],

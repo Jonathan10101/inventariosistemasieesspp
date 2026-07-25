@@ -1,55 +1,265 @@
 /**
- * INTEVI - Bloqueo global cuando no existe conexión
+ * INTEVI
+ * Bloqueo global cuando no existe conexión.
  *
- * Características:
- * - No depende de Livewire.
- * - No depende de jQuery.
- * - No depende de Bootstrap.
- * - No depende de Vite.
- * - Compatible con navegación normal y wire:navigate.
+ * No depende de:
+ * - Livewire
+ * - jQuery
+ * - Bootstrap
+ * - Vite
+ *
+ * Los estilos se agregan desde este mismo archivo.
  */
 
 (function () {
     'use strict';
 
     /*
-     * Evita que el script se registre más de una vez.
+     * Evita cargar el sistema dos veces.
      */
-    if (window.__inteviOfflineGuardLoaded) {
+    if (window.__INTEVI_OFFLINE_GUARD__) {
         return;
     }
 
-    window.__inteviOfflineGuardLoaded = true;
+    window.__INTEVI_OFFLINE_GUARD__ = true;
 
     const CONFIG = {
         endpoint: '/conexion-intevi',
-
-        /*
-         * Tiempo máximo para esperar respuesta del servidor.
-         */
         timeout: 5000,
-
-        /*
-         * Frecuencia de comprobación cuando existe conexión.
-         */
         onlineInterval: 15000,
-
-        /*
-         * Frecuencia de comprobación cuando no existe conexión.
-         */
-        offlineInterval: 5000,
+        offlineInterval: 4000,
     };
 
+    let overlay = null;
     let timer = null;
     let checking = false;
 
-    /**
-     * Crea el bloqueo visual.
-     */
-    function createOverlay() {
-        let overlay = document.getElementById('intevi-offline-overlay');
+    /*
+    |--------------------------------------------------------------------------
+    | Crear estilos
+    |--------------------------------------------------------------------------
+    */
 
-        if (overlay) {
+    function createStyles() {
+        if (document.getElementById('intevi-offline-styles')) {
+            return;
+        }
+
+        const style = document.createElement('style');
+
+        style.id = 'intevi-offline-styles';
+
+        style.textContent = `
+            html.intevi-sin-conexion,
+            body.intevi-sin-conexion {
+                overflow: hidden !important;
+            }
+
+            #intevi-offline-overlay {
+                position: fixed;
+                inset: 0;
+                z-index: 2147483647;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                padding: 20px;
+
+                background: rgba(10, 14, 66, 0.97);
+
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+
+                transition:
+                    opacity 0.2s ease,
+                    visibility 0.2s ease;
+
+                font-family:
+                    -apple-system,
+                    BlinkMacSystemFont,
+                    "Segoe UI",
+                    Roboto,
+                    Arial,
+                    sans-serif;
+            }
+
+            #intevi-offline-overlay.intevi-visible {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: all;
+            }
+
+            .intevi-offline-card {
+                width: 100%;
+                max-width: 460px;
+
+                padding: 36px 32px;
+
+                background: #ffffff;
+                border-radius: 16px;
+
+                box-shadow:
+                    0 24px 70px rgba(0, 0, 0, 0.35),
+                    0 8px 25px rgba(0, 0, 0, 0.20);
+
+                text-align: center;
+            }
+
+            .intevi-offline-icon {
+                width: 90px;
+                height: 90px;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                margin: 0 auto 18px;
+
+                color: #171C63;
+                background: rgba(23, 28, 99, 0.10);
+
+                border-radius: 50%;
+            }
+
+            .intevi-offline-brand {
+                margin-bottom: 10px;
+
+                color: #171C63;
+
+                font-size: 14px;
+                font-weight: 900;
+                letter-spacing: 3px;
+            }
+
+            .intevi-offline-title {
+                margin: 0 0 14px;
+
+                color: #171C63;
+
+                font-size: 27px;
+                font-weight: 800;
+                line-height: 1.2;
+            }
+
+            .intevi-offline-description {
+                margin: 0 0 22px;
+
+                color: #4b5563;
+
+                font-size: 15px;
+                line-height: 1.6;
+            }
+
+            .intevi-offline-status {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+
+                min-height: 46px;
+
+                margin-bottom: 18px;
+                padding: 11px 15px;
+
+                color: #171C63;
+                background: #f2f3f9;
+
+                border: 1px solid rgba(23, 28, 99, 0.12);
+                border-radius: 9px;
+
+                font-size: 14px;
+                font-weight: 700;
+            }
+
+            .intevi-offline-spinner {
+                width: 18px;
+                height: 18px;
+
+                flex: 0 0 auto;
+
+                border: 2px solid rgba(23, 28, 99, 0.22);
+                border-top-color: #171C63;
+                border-radius: 50%;
+
+                animation: intevi-offline-girar 0.8s linear infinite;
+            }
+
+            .intevi-offline-button {
+                width: 100%;
+
+                padding: 13px 20px;
+
+                color: #ffffff;
+                background: #171C63;
+
+                border: 0;
+                border-radius: 8px;
+
+                box-shadow: 0 8px 18px rgba(23, 28, 99, 0.22);
+
+                font-size: 15px;
+                font-weight: 800;
+
+                cursor: pointer;
+            }
+
+            .intevi-offline-button:hover:not(:disabled) {
+                background: #101447;
+            }
+
+            .intevi-offline-button:disabled {
+                opacity: 0.65;
+                cursor: wait;
+            }
+
+            .intevi-offline-help {
+                margin: 17px 0 0;
+
+                color: #6b7280;
+
+                font-size: 12px;
+                line-height: 1.5;
+            }
+
+            @keyframes intevi-offline-girar {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+            @media (max-width: 576px) {
+                .intevi-offline-card {
+                    padding: 30px 22px;
+                }
+
+                .intevi-offline-title {
+                    font-size: 23px;
+                }
+
+                .intevi-offline-description {
+                    font-size: 14px;
+                }
+            }
+        `;
+
+        document.head.appendChild(style);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Crear pantalla de bloqueo
+    |--------------------------------------------------------------------------
+    */
+
+    function createOverlay() {
+        const existingOverlay = document.getElementById(
+            'intevi-offline-overlay'
+        );
+
+        if (existingOverlay) {
+            overlay = existingOverlay;
             return overlay;
         }
 
@@ -58,22 +268,22 @@
         }
 
         overlay = document.createElement('div');
+
         overlay.id = 'intevi-offline-overlay';
-        overlay.className = 'intevi-offline-overlay';
-        overlay.setAttribute('aria-hidden', 'true');
-        overlay.setAttribute('aria-live', 'assertive');
         overlay.setAttribute('role', 'alertdialog');
         overlay.setAttribute('aria-modal', 'true');
+        overlay.setAttribute('aria-hidden', 'true');
 
         overlay.innerHTML = `
             <div class="intevi-offline-card">
-                <div class="intevi-offline-icon" aria-hidden="true">
+                <div class="intevi-offline-icon">
                     <svg
+                        width="58"
+                        height="58"
                         viewBox="0 0 24 24"
-                        width="64"
-                        height="64"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
                     >
                         <path
                             d="M2 8.82C6.68 4.74 13.25 4.2 18.52 7.2"
@@ -117,11 +327,11 @@
                 </div>
 
                 <h1 class="intevi-offline-title">
-                    Sin conexión a Internet
+                    Sin conexión
                 </h1>
 
                 <p class="intevi-offline-description">
-                    La aplicación se bloqueó temporalmente para evitar
+                    INTEVI se bloqueó temporalmente para evitar
                     pérdidas o inconsistencias en la información.
                 </p>
 
@@ -131,7 +341,7 @@
                         aria-hidden="true"
                     ></span>
 
-                    <span data-intevi-offline-status>
+                    <span data-intevi-offline-message>
                         Esperando conexión...
                     </span>
                 </div>
@@ -145,8 +355,8 @@
                 </button>
 
                 <p class="intevi-offline-help">
-                    INTEVI se desbloqueará automáticamente cuando
-                    se restablezca la conexión.
+                    La aplicación se desbloqueará automáticamente
+                    cuando regrese la conexión.
                 </p>
             </div>
         `;
@@ -157,92 +367,109 @@
             '[data-intevi-offline-retry]'
         );
 
-        if (retryButton) {
-            retryButton.addEventListener('click', function () {
-                checkConnection(true);
-            });
-        }
+        retryButton?.addEventListener('click', function () {
+            checkConnection(true);
+        });
 
         return overlay;
     }
 
-    /**
-     * Actualiza el mensaje mostrado.
-     */
-    function setStatus(message, isChecking = false) {
-        const overlay = createOverlay();
+    /*
+    |--------------------------------------------------------------------------
+    | Cambiar mensaje
+    |--------------------------------------------------------------------------
+    */
+
+    function setMessage(message, loading = false) {
+        createOverlay();
 
         if (!overlay) {
             return;
         }
 
-        const status = overlay.querySelector(
-            '[data-intevi-offline-status]'
+        const messageElement = overlay.querySelector(
+            '[data-intevi-offline-message]'
         );
 
-        const button = overlay.querySelector(
+        const retryButton = overlay.querySelector(
             '[data-intevi-offline-retry]'
         );
 
-        if (status) {
-            status.textContent = message;
+        if (messageElement) {
+            messageElement.textContent = message;
         }
 
-        if (button) {
-            button.disabled = isChecking;
-            button.textContent = isChecking
+        if (retryButton) {
+            retryButton.disabled = loading;
+
+            retryButton.textContent = loading
                 ? 'Comprobando...'
                 : 'Comprobar conexión';
         }
     }
 
-    /**
-     * Bloquea toda la aplicación.
-     */
-    function blockApplication() {
-        const overlay = createOverlay();
+    /*
+    |--------------------------------------------------------------------------
+    | Mostrar bloqueo
+    |--------------------------------------------------------------------------
+    */
+
+    function showOffline(
+        message = 'No fue posible conectarse con INTEVI.'
+    ) {
+        createStyles();
+        createOverlay();
 
         if (!overlay) {
             return;
         }
 
-        overlay.classList.add('is-visible');
+        setMessage(message, false);
+
+        overlay.classList.add('intevi-visible');
         overlay.setAttribute('aria-hidden', 'false');
 
-        document.documentElement.classList.add('intevi-is-offline');
-        document.body.classList.add('intevi-is-offline');
-
-        scheduleNextCheck(CONFIG.offlineInterval);
-    }
-
-    /**
-     * Desbloquea la aplicación.
-     */
-    function unblockApplication() {
-        const overlay = document.getElementById(
-            'intevi-offline-overlay'
+        document.documentElement.classList.add(
+            'intevi-sin-conexion'
         );
 
+        document.body.classList.add('intevi-sin-conexion');
+
+        scheduleCheck(CONFIG.offlineInterval);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Ocultar bloqueo
+    |--------------------------------------------------------------------------
+    */
+
+    function hideOffline() {
+        createOverlay();
+
         if (overlay) {
-            overlay.classList.remove('is-visible');
+            overlay.classList.remove('intevi-visible');
             overlay.setAttribute('aria-hidden', 'true');
         }
 
         document.documentElement.classList.remove(
-            'intevi-is-offline'
+            'intevi-sin-conexion'
         );
 
-        if (document.body) {
-            document.body.classList.remove('intevi-is-offline');
-        }
+        document.body?.classList.remove(
+            'intevi-sin-conexion'
+        );
 
-        scheduleNextCheck(CONFIG.onlineInterval);
+        scheduleCheck(CONFIG.onlineInterval);
     }
 
-    /**
-     * Programa la siguiente comprobación.
-     */
-    function scheduleNextCheck(milliseconds) {
+    /*
+    |--------------------------------------------------------------------------
+    | Programar comprobación
+    |--------------------------------------------------------------------------
+    */
+
+    function scheduleCheck(milliseconds) {
         if (timer) {
             window.clearTimeout(timer);
         }
@@ -252,26 +479,30 @@
         }, milliseconds);
     }
 
-    /**
-     * Comprueba la conexión real contra Laravel.
-     */
-    async function checkConnection(manualCheck = false) {
+    /*
+    |--------------------------------------------------------------------------
+    | Verificar conexión real
+    |--------------------------------------------------------------------------
+    */
+
+    async function checkConnection(manual = false) {
         if (checking) {
             return;
         }
 
         checking = true;
 
-        if (manualCheck) {
-            setStatus('Comprobando conexión...', true);
+        if (manual) {
+            setMessage('Comprobando conexión...', true);
         }
 
         /*
-         * El navegador ya detectó que no existe red.
+         * Si el navegador confirma que no existe red,
+         * bloqueamos inmediatamente.
          */
-        if (!navigator.onLine) {
-            blockApplication();
-            setStatus('Esperando conexión...', false);
+        if (navigator.onLine === false) {
+            showOffline('Tu dispositivo no tiene conexión.');
+
             checking = false;
             return;
         }
@@ -283,42 +514,39 @@
         }, CONFIG.timeout);
 
         try {
-            const separator = CONFIG.endpoint.includes('?')
-                ? '&'
-                : '?';
+            const url = new URL(
+                CONFIG.endpoint,
+                window.location.origin
+            );
 
-            const url =
-                CONFIG.endpoint +
-                separator +
-                'timestamp=' +
-                Date.now();
+            url.searchParams.set(
+                '_intevi',
+                Date.now().toString()
+            );
 
-            const response = await fetch(url, {
+            const response = await fetch(url.toString(), {
                 method: 'GET',
                 cache: 'no-store',
                 credentials: 'same-origin',
                 redirect: 'follow',
+                signal: controller.signal,
                 headers: {
+                    Accept: 'text/plain, */*',
                     'X-Requested-With': 'XMLHttpRequest',
                     'Cache-Control': 'no-cache',
                 },
-                signal: controller.signal,
             });
 
             if (!response.ok) {
                 throw new Error(
-                    'El servidor respondió con estado ' +
-                    response.status
+                    'Respuesta del servidor: ' + response.status
                 );
             }
 
-            unblockApplication();
+            hideOffline();
         } catch (error) {
-            blockApplication();
-
-            setStatus(
-                'No fue posible conectar con INTEVI.',
-                false
+            showOffline(
+                'No fue posible comunicarse con el servidor de INTEVI.'
             );
         } finally {
             window.clearTimeout(timeoutId);
@@ -326,39 +554,81 @@
         }
     }
 
-    /**
-     * El navegador perdió completamente la red.
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | Eventos del navegador
+    |--------------------------------------------------------------------------
+    */
+
     window.addEventListener('offline', function () {
-        blockApplication();
-        setStatus('Se perdió la conexión a Internet.', false);
+        showOffline('Se perdió la conexión a Internet.');
     });
 
-    /**
-     * El navegador informa que regresó la red.
-     *
-     * No desbloqueamos inmediatamente. Primero comprobamos que
-     * el servidor de INTEVI realmente responda.
-     */
     window.addEventListener('online', function () {
-        setStatus('Restableciendo conexión...', true);
+        setMessage('Restableciendo conexión...', true);
         checkConnection(true);
     });
 
-    /**
-     * Compatibilidad con navegación de Livewire.
+    window.addEventListener('pageshow', function () {
+        checkConnection(false);
+    });
+
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') {
+            checkConnection(false);
+        }
+    });
+
+    /*
+     * Compatibilidad con Livewire.
      */
     document.addEventListener('livewire:navigated', function () {
+        createStyles();
         createOverlay();
         checkConnection(false);
     });
 
-    /**
-     * Inicialización.
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | Herramientas para comprobarlo manualmente
+    |--------------------------------------------------------------------------
+    */
+
+    window.INTEVI_OFFLINE_TEST = {
+        loaded: true,
+
+        show: function () {
+            showOffline('Prueba manual del bloqueo.');
+        },
+
+        hide: function () {
+            hideOffline();
+        },
+
+        check: function () {
+            checkConnection(true);
+        },
+    };
+
+    /*
+    |--------------------------------------------------------------------------
+    | Inicialización
+    |--------------------------------------------------------------------------
+    */
+
     function initialize() {
+        createStyles();
         createOverlay();
-        checkConnection(false);
+
+        if (navigator.onLine === false) {
+            showOffline('Tu dispositivo no tiene conexión.');
+        } else {
+            checkConnection(false);
+        }
+
+        console.info(
+            '[INTEVI] Detector de conexión cargado correctamente.'
+        );
     }
 
     if (document.readyState === 'loading') {
