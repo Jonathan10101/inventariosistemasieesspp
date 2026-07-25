@@ -24,6 +24,7 @@
                 </div>
             </div>
 
+            @can('inventario.edit')
             <div class="angular-body">
 
                 {{-- AVISO --}}
@@ -39,6 +40,7 @@
                 </div>
 
                 {{-- SECCIÓN: INFORMACIÓN GENERAL --}}
+                
                 <div class="angular-section mb-4">
                     <div class="angular-section-header">
                         <div class="angular-section-icon">
@@ -53,7 +55,7 @@
 
                     <div class="row">
 
-                        @can('inventario.edit')
+                        
                             <div class="col-md-12">
                                 <div class="angular-field angular-floating @error('descripcion') has-error @enderror">
                                     <i class="fas fa-box angular-field-icon"></i>
@@ -84,9 +86,8 @@
                                     @enderror
                                 </div>
                             </div>
-                        @endcan
+                        
 
-                        @can('inventario.edit')
                             <div class="col-md-12">
                                 <div class="angular-field angular-select @error('marca_id') has-error @enderror">
                                     <i class="fas fa-tags angular-field-icon"></i>
@@ -117,9 +118,7 @@
                                     @enderror
                                 </div>
                             </div>
-                        @endcan
 
-                        @can('inventario.edit')
                             <div class="col-md-12">
                                 <div class="angular-field angular-floating @error('modelo') has-error @enderror">
                                     <i class="fas fa-laptop angular-field-icon"></i>
@@ -182,10 +181,10 @@
                                     @enderror
                                 </div>
                             </div>
-                        @endcan
 
                     </div>
                 </div>
+                
 
                 {{-- SECCIÓN: ESTADO Y UBICACIÓN --}}
                 <div class="angular-section mb-4">
