@@ -42,9 +42,20 @@ class AppServiceProvider extends ServiceProvider
             Login::class,
             ActivateSingleUserSession::class
         );
+
         Gate::define('viewPulse', function (User $user): bool {
-            return $user->email === config('services.pulse.admin_email');
+            $userEmail = mb_strtolower(
+                trim((string) $user->email)
+            );
+
+            $adminEmail = mb_strtolower(
+                trim((string) config('services.pulse.admin_email'))
+            );
+
+            return $adminEmail !== ''
+                && $userEmail === $adminEmail;
         });
+        
         Livewire::setUpdateRoute(function ($handle) {
             return Route::post('/livewire/update', $handle)
                 ->middleware([
