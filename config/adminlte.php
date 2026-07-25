@@ -270,6 +270,7 @@ return [
             'text' => 'Puestos',
             'url'  => 'puestos',
             'icon' => 'fas fa-briefcase',
+            'can' => 'puestos.create'
         ],
         [
             'text' => 'Áreas de asignación',
