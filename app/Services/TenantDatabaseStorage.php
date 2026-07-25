@@ -7,6 +7,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use RuntimeException;
+use Illuminate\Support\Facades\Storage;
 
 class TenantDatabaseStorage
 {
@@ -76,27 +77,20 @@ class TenantDatabaseStorage
      *
      * No incluye archivos guardados en storage/, public/ o servicios externos.
      */
-    public function usedBytes(): int
+/**
+ * Calcula únicamente el espacio usado por la base de datos.
+ */
+    public function databaseUsedBytes(): int
     {
         $connection = $this->connection();
         $databaseName = $this->databaseName();
 
-        /*
-         * En MySQL 8 evita que information_schema entregue
-         * estadísticas almacenadas anteriormente.
-         *
-         * En caso de utilizar MariaDB o una versión que no soporte
-         * esta variable, la medición continúa normalmente.
-         */
         try {
             $connection->statement(
                 'SET SESSION information_schema_stats_expiry = 0'
             );
         } catch (QueryException $exception) {
-            /*
-             * No detenemos el sistema si esta variable no existe.
-             * La consulta del tamaño todavía puede ejecutarse.
-             */
+            // Continuar si la versión de MySQL/MariaDB no lo soporta.
         }
 
         $result = $connection->selectOne(
@@ -280,4 +274,254 @@ class TenantDatabaseStorage
             $decimals
         ) . ' ' . $units[$power];
     }
+
+
+    /**
+     * Uso total del tenant:
+     *
+     * Base de datos + imágenes + PDF.
+     */
+    public function usedBytes(): int
+    {
+        return $this->databaseUsedBytes()
+            + $this->filesUsedBytes();
+    }
+
+    /**
+     * Calcula los archivos pertenecientes al tenant actual.
+     *
+     * Aunque los archivos estén mezclados en las carpetas del servidor,
+     * las rutas se obtienen desde la base de datos del tenant activo.
+     */
+    public function filesUsedBytes(): int
+    {
+        $disk = Storage::disk('public');
+
+        $totalBytes = 0;
+
+        foreach ($this->tenantFilePaths() as $path) {
+            try {
+                if (!$disk->exists($path)) {
+                    continue;
+                }
+
+                $totalBytes += max(
+                    0,
+                    (int) $disk->size($path)
+                );
+            } catch (\Throwable $exception) {
+                /*
+                * Un archivo inexistente o dañado no detiene el sistema.
+                */
+            }
+        }
+
+        return $totalBytes;
+    }
+
+    /**
+     * Obtiene imágenes y PDF registrados en la base
+     * del tenant actualmente activo.
+     */
+    private function tenantFilePaths(): array
+    {
+        $connection = $this->connection();
+
+        $schema = $connection->getSchemaBuilder();
+
+        /*
+        * Se usa la ruta como llave para evitar contar dos veces
+        * una imagen o PDF compartido por varios registros.
+        */
+        $paths = [];
+
+        /*
+        * PDF e imágenes del historial de resguardos.
+        */
+        if (
+            $schema->hasTable('historial_resguardos')
+            && $schema->hasColumn(
+                'historial_resguardos',
+                'resguardo_pdf'
+            )
+        ) {
+            $pdfPaths = $connection
+                ->table('historial_resguardos')
+                ->whereNotNull('resguardo_pdf')
+                ->where('resguardo_pdf', '<>', '')
+                ->pluck('resguardo_pdf');
+
+            foreach ($pdfPaths as $path) {
+                $path = $this->normalizeFilePath($path);
+
+                if ($path !== null) {
+                    $paths[$path] = true;
+                }
+            }
+        }
+
+        if (
+            $schema->hasTable('historial_resguardos')
+            && $schema->hasColumn(
+                'historial_resguardos',
+                'imagen_evidencia'
+            )
+        ) {
+            $imagePaths = $connection
+                ->table('historial_resguardos')
+                ->whereNotNull('imagen_evidencia')
+                ->where('imagen_evidencia', '<>', '')
+                ->pluck('imagen_evidencia');
+
+            foreach ($imagePaths as $path) {
+                $path = $this->normalizeFilePath($path);
+
+                if ($path !== null) {
+                    $paths[$path] = true;
+                }
+            }
+        }
+
+        /*
+        * Imagen principal del resguardo, si esa columna existe.
+        */
+        if (
+            $schema->hasTable('resguardos')
+            && $schema->hasColumn(
+                'resguardos',
+                'imagen'
+            )
+        ) {
+            $resguardoImages = $connection
+                ->table('resguardos')
+                ->whereNotNull('imagen')
+                ->where('imagen', '<>', '')
+                ->pluck('imagen');
+
+            foreach ($resguardoImages as $path) {
+                $path = $this->normalizeFilePath($path);
+
+                if ($path !== null) {
+                    $paths[$path] = true;
+                }
+            }
+        }
+
+        /*
+        * Imágenes de ubicaciones físicas.
+        */
+        if (
+            $schema->hasTable('ubicacion_fisicas')
+            && $schema->hasColumn(
+                'ubicacion_fisicas',
+                'imagen'
+            )
+        ) {
+            $ubicacionImages = $connection
+                ->table('ubicacion_fisicas')
+                ->whereNotNull('imagen')
+                ->where('imagen', '<>', '')
+                ->pluck('imagen');
+
+            foreach ($ubicacionImages as $path) {
+                $path = $this->normalizeFilePath($path);
+
+                if ($path !== null) {
+                    $paths[$path] = true;
+                }
+            }
+        }
+
+        return array_keys($paths);
+    }
+
+    /**
+     * Convierte la ruta guardada en la base de datos
+     * en una ruta válida para Storage::disk('public').
+     */
+    private function normalizeFilePath(mixed $path): ?string
+    {
+        if (!is_string($path)) {
+            return null;
+        }
+
+        $path = trim($path);
+
+        if ($path === '') {
+            return null;
+        }
+
+        $path = str_replace('\\', '/', $path);
+
+        /*
+        * Si se almacenó una URL completa.
+        */
+        if (
+            str_starts_with($path, 'http://')
+            || str_starts_with($path, 'https://')
+        ) {
+            $urlPath = parse_url(
+                $path,
+                PHP_URL_PATH
+            );
+
+            if (!is_string($urlPath)) {
+                return null;
+            }
+
+            $path = $urlPath;
+        }
+
+        $path = urldecode($path);
+
+        /*
+        * Ejemplo:
+        *
+        * /var/www/laravel/public/storage/resguardos/archivo.webp
+        *
+        * se convierte en:
+        *
+        * resguardos/archivo.webp
+        */
+        $storagePosition = strpos(
+            $path,
+            '/storage/'
+        );
+
+        if ($storagePosition !== false) {
+            $path = substr(
+                $path,
+                $storagePosition + strlen('/storage/')
+            );
+        }
+
+        $path = ltrim($path, '/');
+
+        $prefixes = [
+            'public/storage/',
+            'storage/app/public/',
+            'storage/',
+        ];
+
+        foreach ($prefixes as $prefix) {
+            if (str_starts_with($path, $prefix)) {
+                $path = substr(
+                    $path,
+                    strlen($prefix)
+                );
+            }
+        }
+
+        $path = ltrim($path, '/');
+
+        if (
+            !str_starts_with($path, 'resguardos/')
+            && !str_starts_with($path, 'ubicaciones/')
+        ) {
+            return null;
+        }
+
+        return $path;
+    }
+
 }

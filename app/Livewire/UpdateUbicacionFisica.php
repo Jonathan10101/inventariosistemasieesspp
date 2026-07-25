@@ -151,10 +151,12 @@ class UpdateUbicacionFisica extends Component
         | Comprobar almacenamiento
         |--------------------------------------------------------------------------
         */
-        app(
-            TenantDatabaseStorage::class
-        )->assertCanWrite();
+        $incomingBytes = $this->imagen
+            ? (int) $this->imagen->getSize()
+            : 0;
 
+        app(TenantDatabaseStorage::class)
+            ->assertCanWrite($incomingBytes);
         /*
         |--------------------------------------------------------------------------
         | Mantener imagen anterior
