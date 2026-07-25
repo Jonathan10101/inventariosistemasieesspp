@@ -306,7 +306,20 @@ class CreateNewResguardo extends Component
         |--------------------------------------------------------------------------
         */
 
-        $storageService->assertCanWrite();
+        //$storageService->assertCanWrite();
+        
+        $incomingBytes = 0;
+
+        if ($this->imagen) {
+            $incomingBytes += (int) $this->imagen->getSize();
+        }
+
+        if ($this->resguardo_pdf) {
+            $incomingBytes += (int) $this->resguardo_pdf->getSize();
+        }
+
+        app(TenantDatabaseStorage::class)
+            ->assertCanWrite($incomingBytes);
 
         /*
         |--------------------------------------------------------------------------

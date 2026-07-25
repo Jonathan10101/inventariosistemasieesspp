@@ -41,11 +41,7 @@ Route::middleware([
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
 
-    Route::get('/probar-almacenamiento', function () {
-        return response()->json(
-            app(TenantFileStorage::class)->usage()
-        );
-    })->middleware('auth');
+
 
     /*
     |--------------------------------------------------------------------------

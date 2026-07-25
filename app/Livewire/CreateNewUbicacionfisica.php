@@ -38,7 +38,12 @@ class CreateNewUbicacionfisica extends Component
         | Comprobar espacio disponible
         |--------------------------------------------------------------------------
         */
-        app(TenantDatabaseStorage::class)->assertCanWrite();
+        $incomingBytes = $this->imagen
+            ? (int) $this->imagen->getSize()
+            : 0;
+
+        app(TenantDatabaseStorage::class)
+            ->assertCanWrite($incomingBytes);
 
         /*
         |--------------------------------------------------------------------------
