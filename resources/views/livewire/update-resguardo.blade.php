@@ -150,38 +150,39 @@
                                     @enderror
                                 </div>
                             </div>
-                        @endcan
+                        
 
-                        <div class="col-md-12">
-                            <div class="angular-field angular-floating @error('nserie') has-error @enderror">
-                                <i class="fas fa-barcode angular-field-icon"></i>
+                            <div class="col-md-12">
+                                <div class="angular-field angular-floating @error('nserie') has-error @enderror">
+                                    <i class="fas fa-barcode angular-field-icon"></i>
 
-                                <input
-                                    id="numerodeserieid"
-                                    type="text"
-                                    wire:model.defer="nserie"
-                                    class="form-control text-uppercase"
-                                    placeholder=" "
-                                    autocomplete="off"
-                                    oninput="this.value = this.value.toUpperCase()"
-                                >
+                                    <input
+                                        id="numerodeserieid"
+                                        type="text"
+                                        wire:model.defer="nserie"
+                                        class="form-control text-uppercase"
+                                        placeholder=" "
+                                        autocomplete="off"
+                                        oninput="this.value = this.value.toUpperCase()"
+                                    >
 
-                                <label for="numerodeserieid" class="angular-field-label">
-                                    No. de serie*
-                                </label>
+                                    <label for="numerodeserieid" class="angular-field-label">
+                                        No. de serie*
+                                    </label>
 
-                                <small class="angular-help">
-                                    Ingresa el número de serie del bien. Si no aplica, usa el criterio definido por la institución.
-                                </small>
+                                    <small class="angular-help">
+                                        Ingresa el número de serie del bien. Si no aplica, usa el criterio definido por la institución.
+                                    </small>
 
-                                @error('nserie')
-                                    <div class="angular-error">
-                                        <i class="fas fa-exclamation-circle"></i>
-                                        {{ $message }}
-                                    </div>
-                                @enderror
+                                    @error('nserie')
+                                        <div class="angular-error">
+                                            <i class="fas fa-exclamation-circle"></i>
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
                             </div>
-                        </div>
+                        @endcan
 
                     </div>
                 </div>
