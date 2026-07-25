@@ -223,11 +223,7 @@ return [
     ],
 
     'js' => [
-        'js/intevi-tour.js',
-        'js/intevi-tour-general.js',
         'js/intevi-network-status.js',
-
-        //
     ],
 
     /*
@@ -305,13 +301,11 @@ return [
             'icon' => 'fas fa-fw fa-heartbeat',
             'can' => 'viewPulse',
         ],
-        /*
         [
             'text' => 'Tutorial general',
             'url' => '#tutorial-general',
             'icon' => 'fas fa-graduation-cap',
         ],
-        */
 
     ],
 

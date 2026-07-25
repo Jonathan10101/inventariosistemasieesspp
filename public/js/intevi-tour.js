@@ -1,388 +1,692 @@
 (function () {
     'use strict';
 
-    const DRIVER_VERSION = '1.6.0';
+    /**
+     * INTEVI - Controlador único de tutoriales.
+     *
+     * Este archivo controla:
+     * - El tutorial general del sistema.
+     * - Los tutoriales específicos de cada módulo.
+     * - El inicio automático una sola vez.
+     * - El inicio manual desde botones o desde el menú.
+     * - La compatibilidad con Livewire.
+     *
+     * IMPORTANTE:
+     * No cargues otro archivo de tutoriales junto con este.
+     */
 
-    const DRIVER_JS_URL =
-        `https://cdn.jsdelivr.net/npm/driver.js@${DRIVER_VERSION}/dist/driver.js.iife.js`;
+    const STORAGE_PREFIX = 'intevi:tour';
+    const DEFAULT_VERSION = 1;
+    const BOOT_DELAY_MS = 500;
 
-    const DRIVER_CSS_URL =
-        `https://cdn.jsdelivr.net/npm/driver.js@${DRIVER_VERSION}/dist/driver.css`;
-
-    let activeTour = null;
-    let initializationTimer = null;
-    let driverLoadingPromise = null;
+    let activeDriver = null;
+    let bootTimer = null;
 
     /**
-     * Carga automáticamente Driver.js y su CSS.
+     * Obtiene Driver.js desde la versión IIFE cargada por CDN.
      */
-    function loadDriver() {
-        if (window.driver?.js?.driver) {
-            return Promise.resolve(window.driver.js.driver);
-        }
-
-        if (driverLoadingPromise) {
-            return driverLoadingPromise;
-        }
-
-        driverLoadingPromise = new Promise(function (resolve, reject) {
-            if (!document.querySelector('link[data-intevi-driver-css]')) {
-                const css = document.createElement('link');
-
-                css.rel = 'stylesheet';
-                css.href = DRIVER_CSS_URL;
-                css.dataset.inteviDriverCss = 'true';
-
-                document.head.appendChild(css);
-            }
-
-            let script = document.querySelector(
-                'script[data-intevi-driver-js]'
-            );
-
-            if (!script) {
-                script = document.createElement('script');
-
-                script.src = DRIVER_JS_URL;
-                script.defer = true;
-                script.dataset.inteviDriverJs = 'true';
-
-                document.head.appendChild(script);
-            }
-
-            function driverLoaded() {
-                const createDriver = window.driver?.js?.driver;
-
-                if (!createDriver) {
-                    reject(
-                        new Error(
-                            'Driver.js cargó, pero no se encontró window.driver.js.driver.'
-                        )
-                    );
-
-                    return;
-                }
-
-                resolve(createDriver);
-            }
-
-            if (window.driver?.js?.driver) {
-                driverLoaded();
-
-                return;
-            }
-
-            script.addEventListener('load', driverLoaded, {
-                once: true,
-            });
-
-            script.addEventListener(
-                'error',
-                function () {
-                    reject(
-                        new Error(
-                            'No fue posible descargar Driver.js.'
-                        )
-                    );
-                },
-                {
-                    once: true,
-                }
-            );
-        });
-
-        return driverLoadingPromise;
+    function getDriverFactory() {
+        return window.driver &&
+            window.driver.js &&
+            typeof window.driver.js.driver === 'function'
+            ? window.driver.js.driver
+            : null;
     }
 
-    function getMarker() {
+    /**
+     * Normaliza textos utilizados como identificadores.
+     */
+    function normalizeName(value) {
+        return String(value || '')
+            .trim()
+            .toLowerCase()
+            .replace(/\s+/g, '-');
+    }
+
+    /**
+     * Devuelve el marcador de tutorial presente en la vista.
+     *
+     * Ejemplo:
+     * <div
+     *   data-tour-page="inventario"
+     *   data-tour-version="1"
+     *   data-tour-autostart="true"
+     *   hidden
+     * ></div>
+     */
+    function getPageMarker() {
         return document.querySelector('[data-tour-page]');
     }
 
-    function getStorageKey(marker) {
-        const page =
-            marker.dataset.tourPage ||
-            window.location.pathname;
+    /**
+     * Lee la configuración declarada por la vista.
+     */
+    function getPageConfig() {
+        const marker = getPageMarker();
 
-        const version =
-            marker.dataset.tourVersion || '1';
+        if (!marker) {
+            return null;
+        }
 
-        return `intevi:tour:${page}:v${version}`;
+        const parsedVersion = Number.parseInt(
+            marker.dataset.tourVersion || String(DEFAULT_VERSION),
+            10
+        );
+
+        return {
+            page: normalizeName(marker.dataset.tourPage),
+            version: Number.isFinite(parsedVersion) && parsedVersion > 0
+                ? parsedVersion
+                : DEFAULT_VERSION,
+            autostart: marker.dataset.tourAutostart !== 'false',
+        };
     }
 
+    /**
+     * Detecta el dashboard sin obligarte a agregar otro marcador especial.
+     */
+    function isDashboardPage() {
+        const path = window.location.pathname
+            .replace(/\/+$/, '')
+            .toLowerCase();
+
+        const config = getPageConfig();
+
+        return path === '/dashboard' ||
+            path.endsWith('/dashboard') ||
+            config?.page === 'dashboard';
+    }
+
+    /**
+     * Crea una llave separada por dominio, tutorial y versión.
+     */
+    function getStorageKey(tourName, version) {
+        return [
+            STORAGE_PREFIX,
+            window.location.host,
+            normalizeName(tourName),
+            `v${version}`,
+        ].join(':');
+    }
+
+    /**
+     * Consulta si un tutorial ya fue visto o cerrado.
+     */
+    function hasSeenTour(tourName, version) {
+        return localStorage.getItem(
+            getStorageKey(tourName, version)
+        ) !== null;
+    }
+
+    /**
+     * Guarda el estado del tutorial.
+     */
+    function saveTourStatus(tourName, version, status) {
+        localStorage.setItem(
+            getStorageKey(tourName, version),
+            JSON.stringify({
+                status,
+                savedAt: new Date().toISOString(),
+            })
+        );
+    }
+
+    /**
+     * Determina si un elemento se puede destacar.
+     */
     function isVisible(element) {
-        if (!element) {
+        if (!(element instanceof Element)) {
             return false;
         }
 
         const style = window.getComputedStyle(element);
 
-        return (
-            style.display !== 'none' &&
+        return style.display !== 'none' &&
             style.visibility !== 'hidden' &&
-            element.getClientRects().length > 0
-        );
+            element.getClientRects().length > 0;
     }
 
-    function getValidSide(value) {
-        const validSides = [
-            'top',
-            'right',
-            'bottom',
-            'left',
-        ];
+    /**
+     * Devuelve el primer elemento visible de una lista de selectores.
+     */
+    function findFirstVisible(selectors) {
+        for (const selector of selectors) {
+            const element = document.querySelector(selector);
 
-        return validSides.includes(value)
+            if (isVisible(element)) {
+                return element;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Crea un paso opcional del tutorial general.
+     *
+     * Si el elemento no existe por permisos, rol o vista,
+     * simplemente no se agrega y el tutorial continúa.
+     */
+    function optionalStep({
+        selectors,
+        title,
+        description,
+        side = 'right',
+        align = 'start',
+    }) {
+        const element = findFirstVisible(selectors);
+
+        if (!element) {
+            return null;
+        }
+
+        return {
+            element,
+            popover: {
+                title,
+                description,
+                side,
+                align,
+            },
+        };
+    }
+
+    /**
+     * Tutorial general de INTEVI.
+     *
+     * Los selectores corresponden directamente a las URL
+     * configuradas en config/adminlte.php.
+     */
+    function buildGeneralSteps() {
+        return [
+            {
+                popover: {
+                    title: 'Bienvenido a INTEVI',
+                    description:
+                        'Conoce las principales secciones del sistema de inventario y resguardos institucionales.',
+                    side: 'bottom',
+                    align: 'center',
+                },
+            },
+
+            optionalStep({
+                selectors: ['.brand-link'],
+                title: 'INTEVI',
+                description:
+                    'Este es el acceso principal del sistema. Desde aquí puedes identificar la plataforma y volver al inicio.',
+                side: 'bottom',
+                align: 'center',
+            }),
+
+            optionalStep({
+                selectors: [
+                    '.nav-sidebar a[href$="/dashboard"]',
+                    '.nav-sidebar a[href*="/dashboard"]',
+                ],
+                title: 'Panel de Control',
+                description:
+                    'Aquí puedes consultar el resumen general, indicadores y actividad reciente del sistema.',
+            }),
+
+            optionalStep({
+                selectors: [
+                    '.nav-sidebar a[href$="/inventario"]',
+                    '.nav-sidebar a[href*="/inventario"]',
+                ],
+                title: 'Inventario',
+                description:
+                    'Administra los bienes, equipos, números de serie, características y documentos asociados.',
+            }),
+
+            optionalStep({
+                selectors: [
+                    '.nav-sidebar a[href$="/resguardante"]',
+                    '.nav-sidebar a[href*="/resguardante"]',
+                ],
+                title: 'Resguardantes',
+                description:
+                    'Registra y consulta a las personas responsables de los bienes institucionales.',
+            }),
+
+            optionalStep({
+                selectors: [
+                    '.nav-sidebar a[href$="/marcas"]',
+                    '.nav-sidebar a[href*="/marcas"]',
+                ],
+                title: 'Marcas',
+                description:
+                    'Administra el catálogo de fabricantes y marcas utilizadas en el inventario.',
+            }),
+
+            optionalStep({
+                selectors: [
+                    '.nav-sidebar a[href$="/puestos"]',
+                    '.nav-sidebar a[href*="/puestos"]',
+                ],
+                title: 'Puestos',
+                description:
+                    'Administra el catálogo de puestos asignados a los resguardantes.',
+            }),
+
+            optionalStep({
+                selectors: [
+                    '.nav-sidebar a[href$="/areadeasignacion"]',
+                    '.nav-sidebar a[href*="/areadeasignacion"]',
+                ],
+                title: 'Áreas de asignación',
+                description:
+                    'Organiza los bienes de acuerdo con el área institucional que los utiliza.',
+            }),
+
+            optionalStep({
+                selectors: [
+                    '.nav-sidebar a[href$="/ubicacionfisica"]',
+                    '.nav-sidebar a[href*="/ubicacionfisica"]',
+                ],
+                title: 'Ubicaciones físicas',
+                description:
+                    'Consulta y administra los espacios físicos donde se encuentran los bienes.',
+            }),
+
+            optionalStep({
+                selectors: [
+                    '.nav-sidebar a[href*="/pulse"]',
+                ],
+                title: 'Monitor de sistema',
+                description:
+                    'Los usuarios autorizados pueden consultar información técnica y de rendimiento del sistema.',
+            }),
+
+            {
+                popover: {
+                    title: 'Tutorial terminado',
+                    description:
+                        'Cada módulo puede mostrar su propio tutorial. También puedes abrir nuevamente el tutorial general desde el menú lateral.',
+                    side: 'bottom',
+                    align: 'center',
+                },
+            },
+        ].filter(Boolean);
+    }
+
+    /**
+     * Valores permitidos por Driver.js.
+     */
+    function normalizeSide(value) {
+        return ['top', 'right', 'bottom', 'left'].includes(value)
             ? value
             : 'bottom';
     }
 
-    function getValidAlign(value) {
-        const validAlignments = [
-            'start',
-            'center',
-            'end',
-        ];
-
-        return validAlignments.includes(value)
+    function normalizeAlign(value) {
+        return ['start', 'center', 'end'].includes(value)
             ? value
-            : 'center';
+            : 'start';
     }
 
-    function buildSteps() {
+    /**
+     * Construye automáticamente el tutorial del módulo actual
+     * con los elementos data-tour-step existentes en la vista.
+     */
+    function buildModuleSteps() {
         return Array.from(
             document.querySelectorAll('[data-tour-step]')
         )
             .filter(isVisible)
-            .sort(function (first, second) {
-                return (
-                    Number(first.dataset.tourOrder || 0) -
-                    Number(second.dataset.tourOrder || 0)
+            .sort((first, second) => {
+                const firstOrder = Number.parseInt(
+                    first.dataset.tourOrder || '9999',
+                    10
                 );
+
+                const secondOrder = Number.parseInt(
+                    second.dataset.tourOrder || '9999',
+                    10
+                );
+
+                return firstOrder - secondOrder;
             })
-            .map(function (element) {
-                return {
-                    element: element,
-
-                    popover: {
-                        title:
-                            element.dataset.tourTitle ||
-                            'Información',
-
-                        description:
-                            element.dataset
-                                .tourDescription ||
-                            'Conoce esta sección del sistema.',
-
-                        side: getValidSide(
-                            element.dataset.tourSide
-                        ),
-
-                        align: getValidAlign(
-                            element.dataset.tourAlign
-                        ),
-                    },
-                };
-            });
+            .map((element, index) => ({
+                element,
+                popover: {
+                    title:
+                        element.dataset.tourTitle ||
+                        `Paso ${index + 1}`,
+                    description:
+                        element.dataset.tourDescription ||
+                        'Conoce esta función del módulo.',
+                    side: normalizeSide(
+                        element.dataset.tourSide || 'bottom'
+                    ),
+                    align: normalizeAlign(
+                        element.dataset.tourAlign || 'start'
+                    ),
+                },
+            }));
     }
 
-    function hasSeenTour(storageKey) {
-        try {
-            return (
-                window.localStorage.getItem(storageKey) ===
-                'seen'
-            );
-        } catch (error) {
-            return false;
+    /**
+     * Abre el menú lateral antes del tutorial general.
+     */
+    function prepareSidebar() {
+        if (window.innerWidth >= 992) {
+            document.body.classList.remove('sidebar-collapse');
         }
     }
 
-    function markTourAsSeen(storageKey) {
-        try {
-            window.localStorage.setItem(
-                storageKey,
-                'seen'
-            );
-        } catch (error) {
-            console.warn(
-                'No fue posible guardar el tutorial.',
-                error
-            );
+    /**
+     * Destruye cualquier tutorial que esté activo.
+     */
+    function destroyActiveTour() {
+        if (
+            activeDriver &&
+            typeof activeDriver.isActive === 'function' &&
+            activeDriver.isActive()
+        ) {
+            activeDriver.destroy();
         }
+
+        activeDriver = null;
     }
 
-    function destroyTour() {
-        if (!activeTour) {
+    /**
+     * Inicia un tutorial.
+     */
+    function startTour({
+        name,
+        version,
+        steps,
+        force = false,
+    }) {
+        const driverFactory = getDriverFactory();
+
+        if (!driverFactory) {
+            console.error(
+                '[INTEVI TOUR] Driver.js no se encuentra cargado.'
+            );
             return;
         }
 
-        try {
-            activeTour.destroy();
-        } catch (error) {
+        if (!Array.isArray(steps) || steps.length === 0) {
             console.warn(
-                'No fue posible cerrar el tutorial.',
-                error
+                `[INTEVI TOUR] El tutorial "${name}" no tiene pasos visibles.`
             );
-        }
-
-        activeTour = null;
-    }
-
-    async function startTour(force = false) {
-        const marker = getMarker();
-
-        if (!marker) {
-            console.warn(
-                'INTEVI: falta data-tour-page en la vista.'
-            );
-
             return;
         }
 
-        const steps = buildSteps();
+        if (!force && hasSeenTour(name, version)) {
+            return;
+        }
+
+        destroyActiveTour();
+
+        let statusWasSaved = false;
+
+        activeDriver = driverFactory({
+            steps,
+            animate: true,
+            smoothScroll: true,
+            allowClose: true,
+            overlayOpacity: 0.72,
+            overlayColor: '#000000',
+            stagePadding: 8,
+            stageRadius: 8,
+            popoverOffset: 12,
+            showProgress: true,
+            progressText: 'Paso {{current}} de {{total}}',
+            nextBtnText: 'Siguiente',
+            prevBtnText: 'Anterior',
+            doneBtnText: 'Finalizar',
+            popoverClass: 'intevi-driver-popover',
+
+            onCloseClick: (
+                element,
+                step,
+                options
+            ) => {
+                statusWasSaved = true;
+                saveTourStatus(name, version, 'dismissed');
+                options.driver.destroy();
+            },
+
+            onDoneClick: (
+                element,
+                step,
+                options
+            ) => {
+                statusWasSaved = true;
+                saveTourStatus(name, version, 'completed');
+                options.driver.destroy();
+            },
+
+            onDestroyed: () => {
+                if (!statusWasSaved) {
+                    saveTourStatus(name, version, 'dismissed');
+                }
+
+                activeDriver = null;
+            },
+        });
+
+        activeDriver.drive();
+    }
+
+    /**
+     * Inicia el tutorial general.
+     */
+    function startGeneralTour(force = false) {
+        prepareSidebar();
+
+        startTour({
+            name: 'general',
+            version: DEFAULT_VERSION,
+            steps: buildGeneralSteps(),
+            force,
+        });
+    }
+
+    /**
+     * Inicia el tutorial del módulo actual.
+     */
+    function startCurrentModuleTour(force = false) {
+        const config = getPageConfig();
+
+        if (!config?.page) {
+            console.warn(
+                '[INTEVI TOUR] Esta vista no tiene data-tour-page.'
+            );
+            return;
+        }
+
+        startTour({
+            name: `module:${config.page}`,
+            version: config.version,
+            steps: buildModuleSteps(),
+            force,
+        });
+    }
+
+    /**
+     * Inicio automático.
+     *
+     * Prioridad:
+     * 1. En dashboard se ejecuta el tutorial general.
+     * 2. En las demás páginas se ejecuta el tutorial del módulo.
+     */
+    function boot() {
+        const config = getPageConfig();
+
+        if (isDashboardPage()) {
+            startGeneralTour(false);
+            return;
+        }
+
+        if (!config || !config.autostart || !config.page) {
+            return;
+        }
+
+        const steps = buildModuleSteps();
 
         if (steps.length === 0) {
-            console.warn(
-                'INTEVI: no existen elementos data-tour-step visibles.'
-            );
-
             return;
         }
 
-        const storageKey = getStorageKey(marker);
-
-        if (!force && hasSeenTour(storageKey)) {
-            return;
-        }
-
-        try {
-            const createDriver = await loadDriver();
-
-            destroyTour();
-
-            activeTour = createDriver({
-                steps: steps,
-
-                animate: true,
-                smoothScroll: true,
-                allowClose: true,
-                allowKeyboardControl: true,
-
-                showProgress: true,
-                progressText:
-                    'Paso {{current}} de {{total}}',
-
-                nextBtnText: 'Siguiente',
-                prevBtnText: 'Anterior',
-                doneBtnText: 'Finalizar',
-
-                overlayColor: '#080b2f',
-                overlayOpacity: 0.72,
-
-                stagePadding: 8,
-                stageRadius: 10,
-                popoverOffset: 12,
-
-                onDestroyed: function () {
-                    markTourAsSeen(storageKey);
-                    activeTour = null;
-                },
-            });
-
-            activeTour.drive();
-        } catch (error) {
-            console.error(
-                'INTEVI: no se pudo iniciar el tutorial.',
-                error
-            );
-        }
+        startTour({
+            name: `module:${config.page}`,
+            version: config.version,
+            steps,
+            force: false,
+        });
     }
 
-    function initializeTour() {
-        window.clearTimeout(initializationTimer);
+    /**
+     * Evita dobles ejecuciones por DOMContentLoaded y Livewire.
+     */
+    function scheduleBoot() {
+        window.clearTimeout(bootTimer);
 
-        initializationTimer = window.setTimeout(
-            function () {
-                const marker = getMarker();
-
-                if (!marker) {
-                    return;
-                }
-
-                if (
-                    marker.dataset.tourAutostart ===
-                    'true'
-                ) {
-                    startTour(false);
-                }
-            },
-            500
+        bootTimer = window.setTimeout(
+            boot,
+            BOOT_DELAY_MS
         );
     }
 
-    document.addEventListener(
-        'click',
-        function (event) {
-            const button = event.target.closest(
-                '[data-tour-start]'
+    /**
+     * Reinicia el tutorial actual.
+     */
+    function resetCurrentTour() {
+        if (isDashboardPage()) {
+            localStorage.removeItem(
+                getStorageKey('general', DEFAULT_VERSION)
             );
+            return;
+        }
 
-            if (!button) {
+        const config = getPageConfig();
+
+        if (!config?.page) {
+            return;
+        }
+
+        localStorage.removeItem(
+            getStorageKey(
+                `module:${config.page}`,
+                config.version
+            )
+        );
+    }
+
+    /**
+     * Reinicia todos los tutoriales del dominio actual.
+     */
+    function resetAllTours() {
+        const prefix = [
+            STORAGE_PREFIX,
+            window.location.host,
+        ].join(':');
+
+        const keys = [];
+
+        for (let index = 0; index < localStorage.length; index++) {
+            const key = localStorage.key(index);
+
+            if (key && key.startsWith(prefix)) {
+                keys.push(key);
+            }
+        }
+
+        keys.forEach((key) => localStorage.removeItem(key));
+    }
+
+    /**
+     * Inicio manual:
+     *
+     * Menú general:
+     * href="#tutorial-general"
+     *
+     * Botón del módulo:
+     * data-tour-start="current"
+     *
+     * Botón general:
+     * data-tour-start="general"
+     */
+    document.addEventListener('click', (event) => {
+        const generalMenuLink = event.target.closest(
+            'a[href="#tutorial-general"], a[href$="#tutorial-general"]'
+        );
+
+        if (generalMenuLink) {
+            event.preventDefault();
+            startGeneralTour(true);
+            return;
+        }
+
+        const startButton = event.target.closest(
+            '[data-tour-start]'
+        );
+
+        if (startButton) {
+            event.preventDefault();
+
+            if (startButton.dataset.tourStart === 'general') {
+                startGeneralTour(true);
                 return;
             }
 
-            event.preventDefault();
-
-            startTour(true);
+            if (startButton.dataset.tourStart === 'current') {
+                startCurrentModuleTour(true);
+                return;
+            }
         }
-    );
 
-    document.addEventListener(
-        'livewire:navigated',
-        initializeTour
-    );
+        const resetButton = event.target.closest(
+            '[data-tour-reset]'
+        );
 
-    document.addEventListener(
-        'livewire:navigating',
-        destroyTour
-    );
+        if (!resetButton) {
+            return;
+        }
+
+        event.preventDefault();
+
+        if (resetButton.dataset.tourReset === 'all') {
+            resetAllTours();
+            scheduleBoot();
+            return;
+        }
+
+        resetCurrentTour();
+        scheduleBoot();
+    });
+
+    /**
+     * API pública para pruebas desde la consola.
+     */
+    window.InteviTour = {
+        boot: scheduleBoot,
+        startGeneral: () => startGeneralTour(true),
+        startCurrent: () => startCurrentModuleTour(true),
+        resetCurrent: resetCurrentTour,
+        resetAll: resetAllTours,
+    };
 
     if (document.readyState === 'loading') {
         document.addEventListener(
             'DOMContentLoaded',
-            initializeTour,
-            {
-                once: true,
-            }
+            scheduleBoot,
+            { once: true }
         );
     } else {
-        initializeTour();
+        scheduleBoot();
     }
 
-    window.INTEVITour = {
-        start: function () {
-            startTour(true);
-        },
+    document.addEventListener(
+        'livewire:initialized',
+        scheduleBoot
+    );
 
-        reset: function () {
-            const marker = getMarker();
-
-            if (!marker) {
-                return;
-            }
-
-            try {
-                window.localStorage.removeItem(
-                    getStorageKey(marker)
-                );
-            } catch (error) {
-                console.warn(error);
-            }
-
-            startTour(true);
-        },
-    };
-
-    console.log(
-        '✅ INTEVI: sistema de tutoriales cargado.'
+    document.addEventListener(
+        'livewire:navigated',
+        scheduleBoot
     );
 })();
