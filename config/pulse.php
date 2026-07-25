@@ -3,6 +3,8 @@
 use Laravel\Pulse\Http\Middleware\Authorize;
 use Laravel\Pulse\Pulse;
 use Laravel\Pulse\Recorders;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
+use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 return [
 
@@ -122,8 +124,9 @@ return [
 
     'middleware' => [
         'web',
+        InitializeTenancyByDomain::class,
+        PreventAccessFromCentralDomains::class,
         Authorize::class,
-        Laravel\Pulse\Http\Middleware\Authorize::class,
     ],
 
     /*
