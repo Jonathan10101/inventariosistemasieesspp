@@ -39,7 +39,6 @@
                 </div>
 
                 {{-- SECCIÓN: INFORMACIÓN GENERAL --}}
-                @can('inventario.edit')
                 <div class="angular-section mb-4">
                     <div class="angular-section-header">
                         <div class="angular-section-icon">
@@ -51,7 +50,7 @@
                         </div>
                         
                     </div>
-                    @endcan
+                    
 
                     <div class="row">
 
