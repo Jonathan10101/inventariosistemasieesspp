@@ -13,7 +13,7 @@
         data-tour-page="dashboard"
         data-tour-version="1"
         data-tour-general="true"
-        data-tour-general-version="2"
+        data-tour-general-version="3"
         data-tour-autostart="true"
         hidden
     ></div>

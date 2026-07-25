@@ -219,10 +219,12 @@ return [
 
     'css' => [
         'css/intevi-adminlte.css',
+        'css/intevi-tour.css',
         //'css/intevi-componentes.css',
     ],
 
     'js' => [
+        'js/intevi-tour.js',
         'js/intevi-network-status.js',
     ],
 
@@ -337,34 +339,7 @@ return [
         'Chartjs' => ['active' => false],
         'Sweetalert2' => ['active' => false],
         'Pace' => ['active' => false],
-        'DriverJs' => [
-            'active' => true,
 
-            'files' => [
-                [
-                    'type' => 'css',
-                    'asset' => false,
-                    'location' => 'https://cdn.jsdelivr.net/npm/driver.js@1.7.0/dist/driver.css',
-                ],
-                [
-                    'type' => 'css',
-                    'asset' => true,
-                    'location' => 'css/intevi-tour.css',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => 'https://cdn.jsdelivr.net/npm/driver.js@1.7.0/dist/driver.js.iife.js',
-                    'defer' => true,
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'js/intevi-tour.js',
-                    'defer' => true,
-                ],
-            ],
-        ],
 
     ],
 

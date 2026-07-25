@@ -1,122 +1,200 @@
 /* =========================================================
-   INTEVI - TUTORIAL ÚNICO CON DRIVER.JS
-   Archivo: public/css/intevi-tour.css
+   INTEVI TOUR - Tutorial local sin dependencias
    ========================================================= */
 
-.driver-popover.intevi-driver-popover {
-    width: min(370px, calc(100vw - 30px)) !important;
-    max-width: 370px !important;
-    border: 1px solid rgba(23, 28, 99, 0.14) !important;
-    border-radius: 12px !important;
+:root {
+    --intevi-tour-primary: #171C63;
+    --intevi-tour-primary-dark: #101447;
+    --intevi-tour-overlay: rgba(8, 15, 35, 0.72);
+    --intevi-tour-z-overlay: 2147483000;
+    --intevi-tour-z-popover: 2147483002;
+}
+
+.intevi-tour-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: var(--intevi-tour-z-overlay);
+    display: none;
+    background: var(--intevi-tour-overlay);
+    pointer-events: auto;
+}
+
+.intevi-tour-overlay.is-visible {
+    display: block;
+}
+
+.intevi-tour-highlight {
+    position: fixed;
+    z-index: var(--intevi-tour-z-overlay);
+    display: none;
+    box-sizing: border-box;
+    border: 3px solid #ffffff;
+    border-radius: 12px;
+    background: transparent;
     box-shadow:
-        0 18px 45px rgba(15, 23, 42, 0.20),
-        0 4px 14px rgba(15, 23, 42, 0.10) !important;
+        0 0 0 9999px var(--intevi-tour-overlay),
+        0 0 0 4px rgba(23, 28, 99, 0.45),
+        0 18px 45px rgba(0, 0, 0, 0.26);
+    pointer-events: none;
+    transition:
+        top 0.22s ease,
+        left 0.22s ease,
+        width 0.22s ease,
+        height 0.22s ease;
+}
+
+.intevi-tour-highlight.is-visible {
+    display: block;
+}
+
+.intevi-tour-popover {
+    position: fixed;
+    z-index: var(--intevi-tour-z-popover);
+    width: min(370px, calc(100vw - 24px));
+    box-sizing: border-box;
+    padding: 22px;
+    border: 1px solid rgba(23, 28, 99, 0.14);
+    border-radius: 16px;
+    background: #ffffff;
+    color: #0f172a;
+    box-shadow:
+        0 24px 65px rgba(15, 23, 42, 0.28),
+        0 5px 18px rgba(15, 23, 42, 0.14);
     font-family:
         "Source Sans Pro",
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
-        sans-serif !important;
+        sans-serif;
 }
 
-.driver-popover.intevi-driver-popover .driver-popover-title {
-    padding-right: 26px !important;
-    color: #171C63 !important;
-    font-size: 18px !important;
-    font-weight: 800 !important;
-    line-height: 1.25 !important;
+.intevi-tour-popover.is-centered {
+    transform: translate(-50%, -50%);
 }
 
-.driver-popover.intevi-driver-popover .driver-popover-description {
-    color: #4b5563 !important;
-    font-size: 14px !important;
-    line-height: 1.55 !important;
+.intevi-tour-close {
+    position: absolute;
+    top: 8px;
+    right: 11px;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: #64748b;
+    font-size: 25px;
+    line-height: 1;
+    cursor: pointer;
 }
 
-.driver-popover.intevi-driver-popover .driver-popover-footer {
-    margin-top: 17px !important;
+.intevi-tour-close:hover,
+.intevi-tour-close:focus {
+    background: #f1f5f9;
+    color: var(--intevi-tour-primary);
+    outline: none;
 }
 
-.driver-popover.intevi-driver-popover .driver-popover-progress-text {
-    color: #6b7280 !important;
-    font-size: 12px !important;
-    font-weight: 600 !important;
+.intevi-tour-progress {
+    margin: 0 34px 8px 0;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
 }
 
-.driver-popover.intevi-driver-popover .driver-popover-next-btn {
-    padding: 7px 14px !important;
-    border: 1px solid #171C63 !important;
-    border-radius: 6px !important;
-    background: #171C63 !important;
-    color: #ffffff !important;
-    font-weight: 700 !important;
-    text-shadow: none !important;
+.intevi-tour-title {
+    margin: 0 28px 10px 0;
+    color: var(--intevi-tour-primary);
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 1.22;
 }
 
-.driver-popover.intevi-driver-popover .driver-popover-next-btn:hover,
-.driver-popover.intevi-driver-popover .driver-popover-next-btn:focus {
-    border-color: #101447 !important;
-    background: #101447 !important;
-    color: #ffffff !important;
+.intevi-tour-description {
+    color: #475569;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.6;
 }
 
-.driver-popover.intevi-driver-popover .driver-popover-prev-btn {
-    padding: 7px 14px !important;
-    border: 1px solid #d1d5db !important;
-    border-radius: 6px !important;
-    background: #ffffff !important;
-    color: #374151 !important;
-    font-weight: 700 !important;
-    text-shadow: none !important;
+.intevi-tour-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 9px;
+    margin-top: 20px;
 }
 
-.driver-popover.intevi-driver-popover .driver-popover-prev-btn:hover,
-.driver-popover.intevi-driver-popover .driver-popover-prev-btn:focus {
-    border-color: #9ca3af !important;
-    background: #f3f4f6 !important;
-    color: #171C63 !important;
+.intevi-tour-button {
+    min-height: 40px;
+    padding: 0 16px;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 850;
+    cursor: pointer;
+    transition: all 0.16s ease;
 }
 
-.driver-popover.intevi-driver-popover .driver-popover-close-btn {
-    color: #6b7280 !important;
-    font-size: 22px !important;
+.intevi-tour-prev {
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #334155;
 }
 
-.driver-popover.intevi-driver-popover .driver-popover-close-btn:hover,
-.driver-popover.intevi-driver-popover .driver-popover-close-btn:focus {
-    color: #171C63 !important;
+.intevi-tour-prev:hover,
+.intevi-tour-prev:focus {
+    border-color: #94a3b8;
+    background: #f8fafc;
+    outline: none;
 }
 
-.driver-popover.intevi-driver-popover .driver-popover-arrow {
-    border-color: transparent !important;
+.intevi-tour-next {
+    border: 1px solid var(--intevi-tour-primary);
+    background: var(--intevi-tour-primary);
+    color: #ffffff;
+    box-shadow: 0 10px 22px rgba(23, 28, 99, 0.22);
 }
 
-.driver-active-element {
-    z-index: 1000000001 !important;
+.intevi-tour-next:hover,
+.intevi-tour-next:focus {
+    border-color: var(--intevi-tour-primary-dark);
+    background: var(--intevi-tour-primary-dark);
+    color: #ffffff;
+    outline: none;
 }
 
-@media (max-width: 576px) {
-    .driver-popover.intevi-driver-popover {
-        width: calc(100vw - 24px) !important;
-        max-width: calc(100vw - 24px) !important;
-        border-radius: 10px !important;
+.intevi-tour-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+
+@media (max-width: 680px) {
+    .intevi-tour-highlight {
+        border-radius: 9px;
     }
 
-    .driver-popover.intevi-driver-popover .driver-popover-title {
-        font-size: 16px !important;
+    .intevi-tour-popover {
+        width: calc(100vw - 24px);
+        max-height: min(55vh, 430px);
+        overflow-y: auto;
+        padding: 19px;
+        border-radius: 14px;
     }
 
-    .driver-popover.intevi-driver-popover .driver-popover-description {
-        font-size: 13px !important;
+    .intevi-tour-title {
+        font-size: 18px;
     }
 
-    .driver-popover.intevi-driver-popover .driver-popover-footer {
-        gap: 6px !important;
+    .intevi-tour-description {
+        font-size: 13px;
     }
 
-    .driver-popover.intevi-driver-popover .driver-popover-next-btn,
-    .driver-popover.intevi-driver-popover .driver-popover-prev-btn {
-        padding: 6px 10px !important;
-        font-size: 13px !important;
+    .intevi-tour-footer {
+        position: sticky;
+        bottom: -19px;
+        margin: 18px -19px -19px;
+        padding: 12px 19px 19px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.78), #ffffff 30%);
     }
 }
