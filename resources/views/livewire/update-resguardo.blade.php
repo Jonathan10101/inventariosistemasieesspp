@@ -44,11 +44,12 @@
                         <div class="angular-section-icon">
                             <i class="fas fa-clipboard-list"></i>
                         </div>
-
+                        @can('inventario.edit')
                         <div>
                             <h5>Información general del bien</h5>
                             <p>Datos principales para identificar el inventario institucional.</p>
                         </div>
+                        @endcan
                     </div>
 
                     <div class="row">
@@ -152,6 +153,7 @@
                             </div>
                         @endcan
 
+                        @can('inventario.edit')
                         <div class="col-md-12">
                             <div class="angular-field angular-floating @error('nserie') has-error @enderror">
                                 <i class="fas fa-barcode angular-field-icon"></i>
@@ -182,6 +184,7 @@
                                 @enderror
                             </div>
                         </div>
+                        @endcan
 
                     </div>
                 </div>
