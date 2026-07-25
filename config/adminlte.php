@@ -260,7 +260,10 @@ return [
             'can' => 'resguardante.create'
         ],
 
-        ['header' => 'CATÁLOGOS'],
+        [
+            'header' => 'CATÁLOGOS',
+            'can' => 'marcas.create'
+        ],
 
         [
             'text' => 'Marcas',
