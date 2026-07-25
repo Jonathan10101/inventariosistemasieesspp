@@ -73,11 +73,24 @@
             10
         );
 
+        const parsedGeneralVersion = Number.parseInt(
+            marker.dataset.tourGeneralVersion ||
+                marker.dataset.tourVersion ||
+                String(DEFAULT_VERSION),
+            10
+        );
+
         return {
             page: normalizeName(marker.dataset.tourPage),
             version: Number.isFinite(parsedVersion) && parsedVersion > 0
                 ? parsedVersion
                 : DEFAULT_VERSION,
+            general: marker.dataset.tourGeneral === 'true',
+            generalVersion:
+                Number.isFinite(parsedGeneralVersion) &&
+                parsedGeneralVersion > 0
+                    ? parsedGeneralVersion
+                    : DEFAULT_VERSION,
             autostart: marker.dataset.tourAutostart !== 'false',
         };
     }
@@ -397,12 +410,26 @@
         version,
         steps,
         force = false,
+        loadAttempt = 0,
     }) {
         const driverFactory = getDriverFactory();
 
         if (!driverFactory) {
+            if (loadAttempt < 30) {
+                window.setTimeout(() => {
+                    startTour({
+                        name,
+                        version,
+                        steps,
+                        force,
+                        loadAttempt: loadAttempt + 1,
+                    });
+                }, 100);
+                return;
+            }
+
             console.error(
-                '[INTEVI TOUR] Driver.js no se encuentra cargado.'
+                '[INTEVI TOUR] Driver.js no se encuentra cargado después de varios intentos.'
             );
             return;
         }
@@ -420,7 +447,6 @@
 
         destroyActiveTour();
 
-        let statusWasSaved = false;
 
         activeDriver = driverFactory({
             steps,
@@ -444,7 +470,6 @@
                 step,
                 options
             ) => {
-                statusWasSaved = true;
                 saveTourStatus(name, version, 'dismissed');
                 options.driver.destroy();
             },
@@ -454,16 +479,11 @@
                 step,
                 options
             ) => {
-                statusWasSaved = true;
                 saveTourStatus(name, version, 'completed');
                 options.driver.destroy();
             },
 
             onDestroyed: () => {
-                if (!statusWasSaved) {
-                    saveTourStatus(name, version, 'dismissed');
-                }
-
                 activeDriver = null;
             },
         });
@@ -475,11 +495,14 @@
      * Inicia el tutorial general.
      */
     function startGeneralTour(force = false) {
+        const config = getPageConfig();
+        const version = config?.generalVersion || DEFAULT_VERSION;
+
         prepareSidebar();
 
         startTour({
             name: 'general',
-            version: DEFAULT_VERSION,
+            version,
             steps: buildGeneralSteps(),
             force,
         });
@@ -516,12 +539,16 @@
     function boot() {
         const config = getPageConfig();
 
-        if (isDashboardPage()) {
+        if (!config || !config.autostart) {
+            return;
+        }
+
+        if (config.general || isDashboardPage()) {
             startGeneralTour(false);
             return;
         }
 
-        if (!config || !config.autostart || !config.page) {
+        if (!config.page) {
             return;
         }
 
@@ -555,14 +582,18 @@
      * Reinicia el tutorial actual.
      */
     function resetCurrentTour() {
-        if (isDashboardPage()) {
+        const config = getPageConfig();
+
+        if (config?.general || isDashboardPage()) {
             localStorage.removeItem(
-                getStorageKey('general', DEFAULT_VERSION)
+                getStorageKey(
+                    'general',
+                    config?.generalVersion || DEFAULT_VERSION
+                )
             );
             return;
         }
 
-        const config = getPageConfig();
 
         if (!config?.page) {
             return;
