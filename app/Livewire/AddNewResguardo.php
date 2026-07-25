@@ -244,8 +244,20 @@ class AddNewResguardo extends Component
         | Comprobar almacenamiento
         |--------------------------------------------------------------------------
         */
+        $incomingBytes = 0;
 
-        $storageService->assertCanWrite();
+        if ($this->imagen) {
+            $incomingBytes += (int) $this->imagen->getSize();
+        }
+
+        if ($this->resguardo_pdf) {
+            $incomingBytes += (int) $this->resguardo_pdf->getSize();
+        }
+
+        app(TenantDatabaseStorage::class)
+            ->assertCanWrite($incomingBytes);
+
+        //$storageService->assertCanWrite();
 
         /*
         |--------------------------------------------------------------------------
