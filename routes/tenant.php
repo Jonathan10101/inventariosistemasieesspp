@@ -34,6 +34,14 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 | https://demo.intevi.app
 |
 */
+
+
+
+Route::middleware([
+    'web',
+    InitializeTenancyByDomain::class,
+    PreventAccessFromCentralDomains::class,
+])->group(function () {
     Route::get('/conexion-intevi', function () {
         return response()
             ->noContent()
@@ -43,14 +51,6 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
             )
             ->header('Pragma', 'no-cache');
     });
-
-
-Route::middleware([
-    'web',
-    InitializeTenancyByDomain::class,
-    PreventAccessFromCentralDomains::class,
-])->group(function () {
-
 
 
     /*

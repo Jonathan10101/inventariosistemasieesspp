@@ -22,22 +22,24 @@ foreach (config('tenancy.central_domains') as $index => $domain) {
                         ? 'central.home2'
                         : "central.home2.{$index}"
                 );
+
+            /*
+            |--------------------------------------------------------------------------
+            | Comprobación de conexión del tenant
+            |--------------------------------------------------------------------------
+            */
+            Route::get('/conexion-intevi', function () {
+                return response()
+                    ->noContent()
+                    ->header(
+                        'Cache-Control',
+                        'no-store, no-cache, must-revalidate, max-age=0'
+                    )
+                    ->header('Pragma', 'no-cache');
+            });    
         });
 
-    /*
-    |--------------------------------------------------------------------------
-    | Comprobación de conexión del tenant
-    |--------------------------------------------------------------------------
-    */
-    Route::get('/conexion-intevi', function () {
-        return response()
-            ->noContent()
-            ->header(
-                'Cache-Control',
-                'no-store, no-cache, must-revalidate, max-age=0'
-            )
-            ->header('Pragma', 'no-cache');
-    });
+
 }
 
 /*
