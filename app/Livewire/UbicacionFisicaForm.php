@@ -12,6 +12,8 @@ use Throwable;
 use App\Services\ImageCompressor;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Illuminate\Support\Facades\Storage as LaravelStorage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 
 class UbicacionfisicaForm extends Component
@@ -384,56 +386,62 @@ class UbicacionfisicaForm extends Component
     */
 
     #[On('saveUpdateUbicacionFisicaFromAnotherComponent')]
-    public function saveUpdateUbicacionFisica(array $data): void
-    {
-        $ubicacion = UbicacionFisica::findOrFail(
-            $data['id']
-        );
-
-        $imagenAnterior = $ubicacion->imagen;
-
+    public function saveUpdateUbicacionFisicaFromAnotherComponent(array $data): void {
         /*
         |--------------------------------------------------------------------------
-        | Ruta enviada por el componente de edición
+        | Buscar registro
         |--------------------------------------------------------------------------
-        |
-        | Puede ser la misma ruta anterior o una ruta nueva comprimida.
-        |
         */
-        $rutaImagen = !empty($data['imagen'])
-            ? (string) $data['imagen']
-            : null;
+
+        $ubicacionFisica = UbicacionFisica::findOrFail($data['id']);
+
+        /*
+        * La imagen anterior se obtiene directamente desde la base de datos.
+        * No se confía en una ruta enviada desde el navegador.
+        */
+        $imagenAnterior = $ubicacionFisica->imagen;
+
+        $imagenNueva = $data['imagen'] ?? null;
+
+        $imagenCambiada = (bool) (
+            $data['imagen_cambiada'] ?? false
+        );
 
         try {
             /*
             |--------------------------------------------------------------------------
-            | Actualizar primero la base de datos
+            | Actualizar base de datos
             |--------------------------------------------------------------------------
             */
-            $ubicacion->update([
-                'descripcion' => mb_strtoupper(
-                    trim(
-                        (string) ($data['descripcion'] ?? '')
-                    ),
-                    'UTF-8'
-                ),
 
-                'imagen' => $rutaImagen,
-            ]);
-        } catch (\Throwable $exception) {
+            DB::transaction(function () use (
+                $ubicacionFisica,
+                $data,
+                $imagenNueva
+            ): void {
+                $ubicacionFisica->update([
+                    'descripcion' => $data['descripcion'],
+                    'imagen' => $imagenNueva,
+                ]);
+            });
+        } catch (Throwable $exception) {
             /*
             |--------------------------------------------------------------------------
-            | Eliminar la nueva imagen si la actualización falló
+            | Si falló la BD, eliminar la imagen nueva
             |--------------------------------------------------------------------------
+            |
+            | Así no queda un archivo nuevo sin estar relacionado con ningún
+            | registro.
+            |
             */
+
             if (
-                $rutaImagen
-                && $rutaImagen !== $imagenAnterior
-                && LaravelStorage::disk('public')->exists($rutaImagen)
+                $imagenCambiada &&
+                !empty($imagenNueva) &&
+                $imagenNueva !== $imagenAnterior &&
+                LaravelStorage::disk('public')->exists($imagenNueva)
             ) {
-                LaravelStorage::disk('public')->delete(
-                    $rutaImagen
-                );
+                LaravelStorage::disk('public')->delete($imagenNueva);
             }
 
             throw $exception;
@@ -444,24 +452,40 @@ class UbicacionfisicaForm extends Component
         | Eliminar imagen anterior
         |--------------------------------------------------------------------------
         |
-        | Solamente se elimina después de actualizar correctamente la base.
+        | Se hace después de actualizar correctamente la base de datos.
         |
         */
+
         if (
-            $rutaImagen
-            && $imagenAnterior
-            && $rutaImagen !== $imagenAnterior
-            && LaravelStorage::disk('public')->exists($imagenAnterior)
+            $imagenCambiada &&
+            !empty($imagenAnterior) &&
+            $imagenAnterior !== $imagenNueva
         ) {
-            LaravelStorage::disk('public')->delete(
-                $imagenAnterior
-            );
+            try {
+                if (
+                    LaravelStorage::disk('public')
+                        ->exists($imagenAnterior)
+                ) {
+                    LaravelStorage::disk('public')
+                        ->delete($imagenAnterior);
+                }
+            } catch (Throwable $exception) {
+                /*
+                * La ubicación ya se actualizó correctamente.
+                * Solo registramos que no se pudo borrar el archivo anterior.
+                */
+                Log::warning(
+                    'No se pudo eliminar la imagen anterior de la ubicación física.',
+                    [
+                        'ubicacion_fisica_id' => $ubicacionFisica->id,
+                        'imagen_anterior' => $imagenAnterior,
+                        'error' => $exception->getMessage(),
+                    ]
+                );
+            }
         }
 
-        $this->dispatch(
-            'alumno-updated',
-            1
-        );
+        $this->dispatch('ubicacion-fisica-updated', 1);
 
         $this->showModal = false;
     }
