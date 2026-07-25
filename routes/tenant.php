@@ -34,6 +34,16 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 | https://demo.intevi.app
 |
 */
+    Route::get('/conexion-intevi', function () {
+        return response()
+            ->noContent()
+            ->header(
+                'Cache-Control',
+                'no-store, no-cache, must-revalidate, max-age=0'
+            )
+            ->header('Pragma', 'no-cache');
+    });
+
 
 Route::middleware([
     'web',
