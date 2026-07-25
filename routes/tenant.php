@@ -200,7 +200,7 @@ Route::middleware([
                 Route::post('/', 'store')
                     ->name('store')
                     ->middleware('can:areadeasignacion.create');
-            });
+            })->middleware('can:areadeasignacion.create');;
 
         /*
         |--------------------------------------------------------------------------
