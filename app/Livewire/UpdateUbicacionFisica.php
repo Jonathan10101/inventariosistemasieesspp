@@ -97,6 +97,7 @@ class UpdateUbicacionFisica extends Component
         | Normalizar descripción
         |--------------------------------------------------------------------------
         */
+
         $this->ubicacionfisica = preg_replace(
             '/\s+/',
             ' ',
@@ -113,6 +114,7 @@ class UpdateUbicacionFisica extends Component
         | Validar datos
         |--------------------------------------------------------------------------
         */
+
         $this->validate();
 
         /*
@@ -120,6 +122,7 @@ class UpdateUbicacionFisica extends Component
         | Verificar duplicados ignorando espacios
         |--------------------------------------------------------------------------
         */
+
         $ubicacionFisicaComparacion = str_replace(
             ' ',
             '',
@@ -151,35 +154,30 @@ class UpdateUbicacionFisica extends Component
         | Comprobar almacenamiento
         |--------------------------------------------------------------------------
         */
+
         $incomingBytes = $this->imagen
             ? (int) $this->imagen->getSize()
             : 0;
 
         app(TenantDatabaseStorage::class)
             ->assertCanWrite($incomingBytes);
+
         /*
         |--------------------------------------------------------------------------
         | Mantener imagen anterior
         |--------------------------------------------------------------------------
-        |
-        | Si el usuario no selecciona otra imagen, se enviará la ruta existente.
-        |
         */
+
         $path = $this->imagenActual;
 
         /*
         |--------------------------------------------------------------------------
-        | Comprimir imagen nueva
+        | Comprimir y guardar imagen nueva
         |--------------------------------------------------------------------------
-        |
-        | Este componente posee el archivo temporal, por eso la compresión debe
-        | realizarse aquí y no en el componente receptor.
-        |
         */
+
         if ($this->imagen) {
-            $imageCompressor = app(
-                ImageCompressor::class
-            );
+            $imageCompressor = app(ImageCompressor::class);
 
             $path = $imageCompressor->store(
                 file: $this->imagen,
@@ -193,13 +191,19 @@ class UpdateUbicacionFisica extends Component
 
         /*
         |--------------------------------------------------------------------------
-        | Enviar solamente datos y ruta
+        | Enviar datos al componente receptor
         |--------------------------------------------------------------------------
         */
+
         $data = [
             'id' => $this->id_ubicacion_fisica,
             'descripcion' => $this->ubicacionfisica,
             'imagen' => $path,
+
+            /*
+            * Indica si realmente se seleccionó una imagen nueva.
+            */
+            'imagen_cambiada' => (bool) $this->imagen,
         ];
 
         $this->dispatch(
