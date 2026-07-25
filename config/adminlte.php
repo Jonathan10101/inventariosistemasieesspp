@@ -219,11 +219,14 @@ return [
 
     'css' => [
         'css/intevi-adminlte.css',
+        'css/intevi-offline.css',
+
         //'css/intevi-componentes.css',
     ],
 
     'js' => [
-        'js/intevi-network-status.js',
+        'js/intevi-offline.js',
+
     ],
 
     /*
