@@ -40,17 +40,18 @@
 
                 {{-- SECCIÓN: INFORMACIÓN GENERAL --}}
                 <div class="angular-section mb-4">
+                    @can('inventario.edit')
                     <div class="angular-section-header">
                         <div class="angular-section-icon">
                             <i class="fas fa-clipboard-list"></i>
                         </div>
-                        @can('inventario.edit')
                         <div>
                             <h5>Información general del bien</h5>
                             <p>Datos principales para identificar el inventario institucional.</p>
                         </div>
-                        @endcan
+                        
                     </div>
+                    @endcan
 
                     <div class="row">
 
