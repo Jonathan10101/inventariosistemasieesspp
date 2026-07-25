@@ -257,6 +257,7 @@ return [
             'text' => 'Resguardantes',
             'url'  => 'resguardante',
             'icon' => 'fas fa-user-shield',
+            'can' => 'resguardante.create'
         ],
 
         ['header' => 'CATÁLOGOS'],
@@ -265,6 +266,7 @@ return [
             'text' => 'Marcas',
             'url'  => 'marcas',
             'icon' => 'fas fa-tags',
+            'can' => 'marcas.create'
         ],
         [
             'text' => 'Puestos',
@@ -276,11 +278,13 @@ return [
             'text' => 'Áreas de asignación',
             'url'  => 'areadeasignacion',
             'icon' => 'fas fa-sitemap',
+            'can' => 'areadeasignacion.create'
         ],
         [
             'text' => 'Ubicaciones físicas',
             'url'  => 'ubicacionfisica',
             'icon' => 'fas fa-map-marker-alt',
+            'can' => 'ubicacionfisica.create'
         ],
 
         ['header' => 'ADMINISTRACIÓN', 'can' => 'viewPulse'],
