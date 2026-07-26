@@ -224,8 +224,7 @@ return [
     ],
 
     'js' => [
-        'location' => 'js/intevi-clarity.js',
-        'defer' => true,
+
     ],
 
     /*
@@ -379,6 +378,16 @@ return [
                     'asset' => true,
                     'location' => 'js/intevi-offline.js',
                     'defer' => true,
+                ],
+            ],
+        ],
+        'Clarity' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'js/intevi-clarity.js',
                 ],
             ],
         ],
