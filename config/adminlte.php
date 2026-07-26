@@ -224,7 +224,8 @@ return [
     ],
 
     'js' => [
-
+        'location' => 'js/intevi-clarity.js',
+        'defer' => true,
     ],
 
     /*
