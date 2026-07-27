@@ -302,7 +302,8 @@
                             </div>
                         </div>
                     </div>
-
+                    
+                    @hasanyrole('Empleado')
                     <div class="dash-accordion-item">
                         <button
                             class="dash-accordion-button collapsed"
@@ -332,6 +333,7 @@
                             </div>
                         </div>
                     </div>
+                    @endhasanyrole
 
                     
 
