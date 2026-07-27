@@ -2857,7 +2857,7 @@ body.has-intevi-alert .hero {
         </div>
         <div class="container og-impact-grid">
             <span class="og-impact-label"></span>
-            <p class="og-impact-label" style="font-size:20px;margin-top:40px;text-transform: none !important;color:black;">Un día cuando entregabamos la administración cambio mi vida. Pasé de tener un inventario en muchas hojas con mucho caos, a tener un<span style="text-decoration: underline;"> inventario y resguardos con orden, control y sin estrés.</span></p>
+            <p class="og-impact-label" style="font-size:20px;margin-top:40px;text-transform: none !important;color:black;">Un día cuando trabajaba en Gobierno del Estado e iban a hacer cambio de administración cambio mi vida. Pude darme cuenta que mucha gente esta estresada por llevar el control de los resguardos institucionales. Pasé de tener un inventario en muchas hojas con mucho caos, a tener un<span style="text-decoration: underline;"> inventario y resguardos con orden, control y sin estrés.</span></p>
         </div>
     </section>
 
@@ -2871,9 +2871,9 @@ body.has-intevi-alert .hero {
                 -->
                 <h2 class="og-title og-title-sm" style="color:red;">Este es el problema que tienes...</h2>
 
-                <h2 class="og-title og-title-sm" style="margin-top:50px;">Piensas que al tener muchos bienes es muy difícil llevar un control de tus bienes.</h2>
+                <h2 class="og-title og-title-sm" style="margin-top:50px;">Piensas que al tener muchos bienes es muy difícil llevar control de todos los resguardos.</h2>
                 <h2 class="og-title og-title-sm" style="margin-top:50px;">Lo que significa que nunca podras tener un control exitoso de tus resguardos y seguiras viviendo el resto de tu vida con el estrés de una auditoria y de ser despedido en cualquier momento.</h2>
-                <h2 class="og-title og-title-sm" style="margin-top:50px;">Perderás mucho tiempo y esfuerzo de personas intentando hacer estrategias que no funcionan y que lo único que harán es que regreses a sufrir y tener un dolor de cabeza por el estrés de una auditoria.</h2>
+                <h2 class="og-title og-title-sm" style="margin-top:50px;">Perderás mucho tiempo y esfuerzo de personas intentando hacer estrategias que no funcionan y que lo único que harán es que regreses a sufrir y tener un dolor de cabeza por el estrés de una auditoria o de no saber exactamente en donde se ubica cada bien institucional.</h2>
 
                 <!--
                 <span class="og-highlight">Es no contar con información confiable sobre ellos.</span></h2>
@@ -2957,10 +2957,13 @@ body.has-intevi-alert .hero {
                 <div class="og-checks">
                     <div class="og-check"><span class="og-check-icon">✓</span><div><p>Registro completo de bienes, lo que significa que tendras la información muy fácil y rápido de la descripción, marca, serie, características, estado y datos de identificación.</p></div></div>
                     <div class="og-check"><span class="og-check-icon">✓</span><div><p>Resguardos y responsables, lo que significa relación clara entre el activo, la persona y el área que lo utiliza o custodia.</p></div></div>
+                    <div class="og-check"><span class="og-check-icon">✓</span><div><p>Ubicación sencilla de resguardos con códigos escaneables, lo que significa que desde la plataforma tendras la opción de generar etiquetas para pegarlas en tus resguardos y poder escanearlas sabiendo rápidamente a quien le pertenece dicho resguardo.</p></div></div>
+                    <div class="og-check"><span class="og-check-icon">✓</span><div><p>Implementación sencilla, lo que significa que no tendras que preocuparte de instalar muchas cosas en tu computadora ya que la plataforma funciona desde cualquier navegador web.</p></div></div>
                     <div class="og-check"><span class="og-check-icon">✓</span><div><p>Entorno independiente por institución, lo que significa que cada organismo opera con su propio acceso, usuarios e información.</p></div></div>
+                    <div class="og-check"><span class="og-check-icon">✓</span><div><p>Olvidate el mantenimiento, lo que significa que no tendras que preocuparte por hacer mantenimiento a la plataforma ya que nosotros desde forma remota lo hacemos para mantener todo funcionando: tu solo usas la plataforma y listo, sin preocuparte por todo lo demás.</p></div></div>
                 </div>
                 <div style="margin-top:50px;">
-                    <p>Hola, soy Jonatthan Bedolla informático y creador de productos digitales.</p><br>
+                    <p>Hola, soy Jonathan Bedolla informático y creador de productos digitales.</p><br>
                     <p><b>¿Porqué yo para solucionar este problema?</b></p><br>
                     <p>Es muy simple de entender, cuando trabaje casi durante dos años en un Instituto de Gobierno, me di cuenta que lograr llevar el control de los resguardos institucionales, fue algo casi que imposible.</p><br>
                     <p>Justo cuando iba darme por vencido y veia a mis compañeros que estaban muy estresados, me llego la idea de una solución mientras tomaba una ducha por la noche.</p><br>    
@@ -3242,8 +3245,8 @@ body.has-intevi-alert .hero {
 
                 <p>
                     Si durante los primeros <strong>30 días</strong> la plataforma
-                    no cumple con las condiciones acordadas, podrás solicitar la
-                    devolución conforme a los términos de la garantía.
+                    no es lo que estabas buscando, podrás solicitar una
+                    devolución.
                 </p>
             </div>
 
@@ -3261,10 +3264,12 @@ body.has-intevi-alert .hero {
                 </svg>
             </a>
 
+            <!--
             <small class="og-garantia-terminos">
                 Garantía aplicable conforme a las condiciones establecidas
                 en la propuesta comercial y contrato de servicio.
             </small>
+            -->
 
         </div>
 
@@ -3398,11 +3403,14 @@ body.has-intevi-alert .hero {
                         ['¿Todos los usuarios tienen el mismo acceso?', 'No. La plataforma administra roles y permisos de acuerdo con las responsabilidades de cada usuario.'],
                         ['¿La información de instituciones diferentes se mezcla?', 'No. Cada institución utiliza un entorno independiente y administra su propia información.'],
                         ['¿Se instala en cada computadora?', 'No. INTEVI funciona como plataforma web y se utiliza desde un navegador compatible.'],
-                        ['¿Ofrecen capacitación?', 'La capacitación y el acompañamiento pueden incorporarse dentro de la propuesta de implementación.'],
-                        ['¿Cuánto cuesta INTEVI?', 'El precio se determina mediante una cotización personalizada según usuarios, alcance y necesidades.'],
-                        ['¿Cómo podemos conocer el sistema?', 'Solicita una demostración para revisar la plataforma y plantear las necesidades de tu organismo.'],
+                        ['¿Cómo podemos conocer el sistema?', 'Solicita una demostración para revisar la plataforma y plantear las necesidades de tu organización.'],
                     ];
                 @endphp
+                
+                        {{--
+                        ['¿Ofrecen capacitación?', 'La capacitación y el acompañamiento pueden incorporarse dentro de la propuesta de implementación.'],
+                        ['¿Cuánto cuesta INTEVI?', 'El precio se determina mediante una cotización personalizada según usuarios, alcance y necesidades.'],
+                        --}}
                 @foreach ($faqs as $index => $faq)
                     <article class="og-faq-item {{ $index === 0 ? 'active' : '' }}">
                         <button class="og-faq-q" type="button" aria-expanded="{{ $index === 0 ? 'true' : 'false' }}"><span>{{ $faq[0] }}</span><span class="og-faq-plus">+</span></button>
