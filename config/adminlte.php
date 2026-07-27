@@ -291,6 +291,17 @@ return [
         ],
 
         ['header' => 'ADMINISTRACIÓN', 'can' => 'viewPulse'],
+        [
+            'text' => 'Tutorial general',
+            'url' => '#tutorial-general',
+            'icon' => 'fas fa-graduation-cap',
+            'can' => 'resguardante.create'
+        ],
+        [
+            'text' => 'Asistente IA',
+            'url' => 'https://chatgpt.com/g/g-6a67750fd8548191a96b005848090887-intevi-asistente',
+            'icon' => 'fas fa-robot',
+        ],
         /*
         [
             'text' => 'Usuarios',
@@ -303,19 +314,14 @@ return [
             'url'  => 'roles',
             'icon' => 'fas fa-user-lock',
         ],
-        */
         [
             'text' => 'Monitor de sistema',
             'url' => env('PULSE_PATH', 'pulse'),
             'icon' => 'fas fa-fw fa-heartbeat',
             'can' => 'viewPulse',
         ],
-        [
-            'text' => 'Tutorial general',
-            'url' => '#tutorial-general',
-            'icon' => 'fas fa-graduation-cap',
-            'can' => 'resguardante.create'
-        ],
+        */
+
 
     ],
 
