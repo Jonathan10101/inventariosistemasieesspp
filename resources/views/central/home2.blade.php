@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-PCLM28B2');</script>
-    <!-- End Google Tag Manager -->
-    <meta charset="UTF-8">
 
     <meta
         name="viewport"
@@ -2587,6 +2579,10 @@ body.has-intevi-alert .hero {
         @media(max-width:480px){.og-section{padding:74px 0}.og-float{display:none}.og-big-question{padding:27px 23px}.og-product-card{padding:14px}.og-mini-body{padding:24px 19px}.og-faq-a p{padding-right:0}}
 
     </style>
+    <script
+        src="{{ asset('js/intevi-clarity.js') }}"
+        defer>
+    </script>
 </head>
 
 <body>
@@ -3148,16 +3144,18 @@ body.has-intevi-alert .hero {
                 </div>
             </div>
             <div class="og-center">
-                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•PLATAFORMA INTEVI <span style="font-weight:bold;color:red;">($3600) USD LICENCIA ANUAL</span></p>
-                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•ASISTENTE VIRTUAL (GPT) <span style="font-weight:bold;color:red;">($100) USD</span></p>
-                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•PROGRAMA RESGUARDOS FÁCILES<br> DE CONTROLAR 5X <span style="font-weight:bold;color:red;">($1997) USD</span></p>
+                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•PLATAFORMA INTEVI <span style="font-weight:bold;color:red;">($1497) USD LICENCIA ANUAL</span></p>
+                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•MÉTODO RESGUARDOS FÁCILES<br> DE CONTROLAR 5X <span style="color:#131750;">(METODOLOGÍA INTEGRADA EN INTEVI PARA ORGANIZAR LA INFORMACIÓN, SIMPLIFICAR LA OPERACIÓN Y MANTENER LOS RESGUARDOS BAJO CONTROL DE UNA MANERA MÁS FÁCIL Y RÁPIDA)</span><span style="font-weight:bold;color:red;">($497) USD</span></p>
+                <p style="font-size:37px; margin-top:55px;" class="og-title og-title-sm">TOTAL VALOR: <span class="tachado-equis" style="color:red;">$1994 USD</span></p>
+                <p style="font-size:37px; margin-top:55px;" class="og-title og-title-sm">🚀Precio especial de lanzamiento</p>
+                <p style="font-size:47px; margin-top:55px;" class="og-title og-title-sm">PRECIO OFERTA: <span style="font-weight:bold;color:red;">$250  USD (EL PRIMER AÑO)</span></p>
+                <p style="color:gray;font-weight: bold;">Acceso completo a INTEVI durante 12 meses con precio especial de lanzamiento.</p>
+                <p style="color:red;font-weight: bold;">A partir del segundo año, la licencia tendrá un costo de: $500 USD</p>
 
-                <p style="font-size:37px; margin-top:55px;" class="og-title og-title-sm">TOTAL VALOR: <span class="tachado-equis" style="color:red;">$5697 USD</span></p>
-                <p style="font-size:47px; margin-top:55px;" class="og-title og-title-sm">PRECIO OFERTA: <span style="font-weight:bold;color:red;">$499 USD (ANUAL)</span></p>
-                 <a class="button button-primary" style="background:red; margin-top:40px;" href="#contacto">
+                <a class="button button-primary" style="background:#FBCC06;color:black; margin-top:40px;" href="#contacto">
                         QUIERO ENTRAR A INTEVI
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                    </a>
+                </a>
             </div>
     </div>
     <section class="og-impact" style="background:red; padding:10px;">
@@ -3187,18 +3185,23 @@ body.has-intevi-alert .hero {
                 </div>
             </div>
             <div class="og-center">
-                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•PLATAFORMA INTEVI <span style="font-weight:bold;color:red;">($3600) USD LICENCIA ANUAL</span></p>
-                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•ASISTENTE VIRTUAL (GPT) <span style="font-weight:bold;color:red;">($100) USD</span></p>
-                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•PROGRAMA RESGUARDOS FÁCILES<br> DE CONTROLAR 5X <span style="font-weight:bold;color:red;">($1997) USD</span></p>
+                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•PLATAFORMA INTEVI <span style="font-weight:bold;color:red;">($1497) USD LICENCIA ANUAL</span></p>
+                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•MÉTODO RESGUARDOS FÁCILES<br> DE CONTROLAR 5X <span style="color:#131750;">(METODOLOGÍA INTEGRADA EN INTEVI PARA ORGANIZAR LA INFORMACIÓN, SIMPLIFICAR LA OPERACIÓN Y MANTENER LOS RESGUARDOS BAJO CONTROL DE UNA MANERA MÁS FÁCIL Y RÁPIDA)</span><span style="font-weight:bold;color:red;">($497) USD</span></p>
                 <p style="font-size:47px; margin-top:55px;font-style: italic;" class="og-title og-title-sm">BONUS MÁGICOS</p>
-                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•CONSULTORIA<span style="font-weight:bold;color:red;">($500) USD</span></p>
+                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•ASISTENTE VIRTUAL (GPT) <span style="font-weight:bold;color:red;">($100) USD</span></p>
 
                 <p style="font-size:37px; margin-top:55px;" class="og-title og-title-sm">TOTAL VALOR: <span class="tachado-equis" style="color:red;">$6197 USD</span></p>
-                <p style="font-size:47px; margin-top:55px;" class="og-title og-title-sm">PRECIO OFERTA: <span style="font-weight:bold;color:red;">$499 USD (ANUAL)</span></p>
-                 <a class="button button-primary" style="background:red; margin-top:40px;" href="#contacto">
-                        QUIERO ENTRAR A INTEVI
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                    </a>
+                <p style="font-size:37px; margin-top:55px;" class="og-title og-title-sm">🚀Precio especial de lanzamiento</p>
+                <p style="font-size:47px; margin-top:55px;" class="og-title og-title-sm">PRECIO OFERTA: <span style="font-weight:bold;color:red;">$250 USD (ANUAL)</span></p>
+                <p style="color:gray;font-weight: bold;">Acceso completo a INTEVI durante 12 meses con precio especial de lanzamiento.</p>
+                <p style="color:red;font-weight: bold;">A partir del segundo año, la licencia tendrá un costo de: $500 USD</p>
+
+ 
+                <a class="button button-primary" style="background:#FBCC06;color:black; margin-top:40px;" href="#contacto">
+                    QUIERO ENTRAR A INTEVI
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+                
             </div>
     </div>
 
