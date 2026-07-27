@@ -322,7 +322,7 @@
 
                         <div id="collapseCatalogos" class="collapse">
                             <div class="dash-accordion-body">
-                                <a href="https://chatgpt.com/g/g-6a67750fd8548191a96b005848090887-intevi-asistente" class="dash-mini-link">
+                                <a href="https://chatgpt.com/g/g-6a67750fd8548191a96b005848090887-intevi-asistente" class="dash-mini-link" target="_blank" rel="noopener noreferrer">
                                     <i class="fas fa-robot"></i>
                                     <div>
                                         <strong>Asistente IA</strong>
