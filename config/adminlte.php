@@ -290,7 +290,7 @@ return [
             'can' => 'ubicacionfisica.create'
         ],
 
-        ['header' => 'ADMINISTRACIÓN', 'can' => 'viewPulse'],
+        ['header' => 'SOPORTE TÉCNICO', 'can' => 'viewPulse'],
         [
             'text' => 'Tutorial general',
             'url' => '#tutorial-general',
