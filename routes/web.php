@@ -22,7 +22,7 @@ foreach (config('tenancy.central_domains') as $index => $domain) {
                         ? 'central.home2'
                         : "central.home2.{$index}"
             );
-            Route::view('/landing', 'central.home2')
+            Route::view('/landing', 'central.home')
                 ->name(
                     $index === 0
                         ? 'central.home2'
