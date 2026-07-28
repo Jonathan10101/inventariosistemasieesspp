@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
 use App\Models\User;
+use App\Services\TenantUserLimit;
 
 class UserForm extends Component
 {
@@ -18,6 +19,30 @@ class UserForm extends Component
     public $perPage = 3;
     public $data_external_component;
     public $user;
+
+    #[Computed]
+    public function usuariosUsados(): int
+    {
+        return app(TenantUserLimit::class)->used();
+    }
+
+    #[Computed]
+    public function usuariosDisponibles(): int
+    {
+        return app(TenantUserLimit::class)->remaining();
+    }
+
+    #[Computed]
+    public function limiteUsuariosAlcanzado(): bool
+    {
+        return app(TenantUserLimit::class)->reached();
+    }
+
+    #[Computed]
+    public function limiteUsuarios(): int
+    {
+        return app(TenantUserLimit::class)->limit();
+    }
 
     // Función para limpiar la búsqueda
     public function clearSearch()
@@ -32,8 +57,19 @@ class UserForm extends Component
         // No es necesario hacer nada más, ya que Livewire maneja automáticamente el filtrado con `wire:model="search"`
     }
 
-    public function showModalNewUser(){
-        $this->showModal = true;// Abre el modal
+    public function showModalNewUser(): void
+    {
+        $tenantUserLimit = app(TenantUserLimit::class);
+        if ($tenantUserLimit->reached()) {
+            $this->dispatch(
+                'user-limit-reached',
+                limite: $tenantUserLimit->limit()
+            );
+            return;
+        }
+        $this->accionPrincipal = 'crear';
+        $this->tituloModalPrincipal = 'Agregar nuevo usuario';
+        $this->showModal = true;
     }
 
     // Cerrar el modal y resetear formulario    
@@ -50,9 +86,25 @@ class UserForm extends Component
     }
 
     #[On('saveFromComponentNewUser')]
-    public function saveNewUser($data){
+    public function saveNewUser($data): void
+    {
+        /*
+        |--------------------------------------------------------------------------
+        | Verificar límite de usuarios del tenant
+        |--------------------------------------------------------------------------
+        |
+        | Si la institución ya tiene 10 usuarios, se lanza un error de
+        | validación y el código se detiene antes de crear el usuario.
+        |
+        */
+        app(TenantUserLimit::class)->assertCanCreate();
+        /*
+        |--------------------------------------------------------------------------
+        | Crear usuario
+        |--------------------------------------------------------------------------
+        */
         User::create($data);
-        $this->showModal = false;  
+        $this->showModal = false;
         $this->dispatch('alumno-created', 1);
     }
 
