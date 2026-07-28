@@ -7,7 +7,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
-
+    <link rel="canonical" href="https://intevi.app/">
     <title>INTEVI | Control de inventario y resguardo institucional</title>
 
     <meta
@@ -2445,7 +2445,7 @@
 </head>
 
 <body>
-    <!--Start of Tawk.to Script-->
+    <!--Start of Tawk.to Script
     <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
     (function(){
@@ -2457,7 +2457,7 @@
     s0.parentNode.insertBefore(s1,s0);
     })();
     </script>
-    <!--End of Tawk.to Script-->
+    End of Tawk.to Script-->
 
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PCLM28B2"
