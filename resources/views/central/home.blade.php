@@ -2502,13 +2502,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <li><a class="nav-link" href="#preguntas">Preguntas</a></li>
             </ul>
 
-            <button
-                class="button button-primary nav-cta"
-                type="button"
-                data-open-chat
-            >
-                <a  href="#formulario-demo">Solicitar demostración</a>
-            </button>
+     
+            <a  class="button button-primary nav-cta" href="#formulario-demo">Solicitar demostración</a>
         </div>
 
         <button
@@ -2550,18 +2545,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </p>
 
                 <div class="hero-actions">
-                    <button
-                        class="button button-primary"
-                        type="button"
-                        data-open-chat
-                    >
-                        <a  href="#formulario-demo">
-                            Solicitar demostración
-                        </a>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <path d="M5 12h14M13 6l6 6-6 6"/>
-                        </svg>
-                    </button>
+                    <a  class="button button-primary nav-cta" href="#formulario-demo">Solicitar demostración</a>
 
                     <a class="button button-outline" href="#metodo">
                         Conocer el Control 5X
@@ -3083,16 +3067,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     </div>
                 </div>
 
-                <button
-                    class="button button-primary"
-                    type="button"
-                    data-open-chat
-                    style="margin-top: 31px;"
-                >
-                    <a  href="#formulario-demo">
-                        Solicitar demostración
-                    </a>
-                </button>
+                <a  class="button button-primary nav-cta" href="#formulario-demo">Solicitar demostración</a>
+
             </div>
         </div>
     </section>
@@ -3547,15 +3523,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     </div>
 
                     <div class="offer-actions">
-                        <button
-                            class="button button-primary"
-                            type="button"
-                            data-open-chat
-                        >
-                            <a  href="#formulario-demo">
-                                Solicitar demostración
-                            </a>
-                        </button>
+                        <a  class="button button-primary nav-cta" href="#formulario-demo">Solicitar demostración</a>
+
 
                         <!--
                         <a class="button button-outline" href="{{ $demoMailto }}">
@@ -3733,14 +3702,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
 
             <div class="cta-action">
-                <button class="button button-light" type="button" data-open-chat>
-                        <a  href="#formulario-demo">
-                            Solicitar demostración
-                        </a>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <path d="M5 12h14M13 6l6 6-6 6"/>
-                    </svg>
-                </button>
+                <a  class="button button-primary nav-cta" href="#formulario-demo">Solicitar demostración</a>
+
 
                 <a class="cta-email" href="{{ $demoMailto }}">
                     O escribe a {{ $contactEmail }}
