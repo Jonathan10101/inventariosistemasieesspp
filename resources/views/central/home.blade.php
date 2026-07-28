@@ -3523,15 +3523,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     </div>
 
                     <div class="offer-actions">
-                        <a  class="button button-primary nav-cta" href="#formulario-demo">Solicitar demostración</a>
-
-
-                        <!--
-                        <a class="button button-outline" href="{{ $demoMailto }}">
-                            Solicitar por correo
-                        </a>
-                        -->
-                    <div id="formulario-demo">
+    
+                     <div id="formulario-demo">
                         <iframe
                             width="540"
                             height="500"
@@ -3702,7 +3695,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
 
             <div class="cta-action">
-                <a  class="button button-primary nav-cta" href="#formulario-demo">Solicitar demostración</a>
+                <a  class="button button-primary nav-cta" style="background:white;color:black;" href="#formulario-demo">Solicitar demostración</a>
 
 
                 <a class="cta-email" href="{{ $demoMailto }}">
