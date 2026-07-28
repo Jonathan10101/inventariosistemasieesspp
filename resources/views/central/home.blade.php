@@ -3376,7 +3376,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         </div>
 
                         <p class="renewal-note">
-                            <strong>Renovación:</strong> $10,000 MXN al año a partir
+                            <strong>Renovación:</strong> $9,999 MXN al año a partir
                             del segundo año. El precio se informa desde el inicio
                             para que la institución conozca su inversión futura.
                         </p>
@@ -3397,8 +3397,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <p class="offer-note">
                         Precio sujeto al alcance estándar de la implementación.
                         Desarrollos especiales, integraciones o personalizaciones
-                        adicionales se cotizan por separado. Impuestos aplicables
-                        no incluidos.
+                        adicionales se cotizan por separado.
                     </p>
                 </div>
             </div>
