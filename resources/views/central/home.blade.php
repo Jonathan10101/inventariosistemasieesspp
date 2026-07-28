@@ -3292,7 +3292,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <span class="offer-badge">Lanzamiento</span>
 
                 <img
-                    src="{{ asset('images/intevi-caja.png') }}"
+                    src="{{ asset('images/cajaintevi.png') }}"
                     alt="Presentación de la plataforma INTEVI y el Método Resguardos Fáciles de Controlar 5X"
                     loading="lazy"
                     decoding="async"
