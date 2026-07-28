@@ -23,6 +23,8 @@ return [
         1,
         (int) env('TENANT_DATABASE_LIMIT_MB', 4096)
     ),
+    'tenant_user_limit' => (int) env('TENANT_USER_LIMIT', 10),
+
 
     /*
     |--------------------------------------------------------------------------

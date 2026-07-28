@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Services\TenantUserLimit;
+use Illuminate\Support\Facades\DB;
 
 
 class UserController extends Controller
@@ -13,6 +15,7 @@ class UserController extends Controller
         return view('users/index');
     }
 
+    /*
     public function store(Request $request)
     {
         // Validar el campo
@@ -26,4 +29,5 @@ class UserController extends Controller
         // Redirigir con mensaje
         return redirect()->back()->with('success', 'Marca registrada correctamente.');
     }
+    */
 }
