@@ -2507,7 +2507,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 type="button"
                 data-open-chat
             >
-                Solicitar demostración
+                <a  href="#formulario-demo">Solicitar demostración</a>
             </button>
         </div>
 
@@ -2556,7 +2556,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         data-open-chat
                     >
                         <a  href="#formulario-demo">
-                            Solicitar una demostración
+                            Solicitar demostración
                         </a>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                             <path d="M5 12h14M13 6l6 6-6 6"/>
@@ -3090,7 +3090,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     style="margin-top: 31px;"
                 >
                     <a  href="#formulario-demo">
-                        Solicitar una demostración
+                        Solicitar demostración
                     </a>
                 </button>
             </div>
@@ -3553,7 +3553,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             data-open-chat
                         >
                             <a  href="#formulario-demo">
-                                Solicitar una demostración
+                                Solicitar demostración
                             </a>
                         </button>
 
@@ -3734,8 +3734,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             <div class="cta-action">
                 <button class="button button-light" type="button" data-open-chat>
-                    Solicitar demostración
-
+                        <a  href="#formulario-demo">
+                            Solicitar demostración
+                        </a>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                         <path d="M5 12h14M13 6l6 6-6 6"/>
                     </svg>
@@ -3791,7 +3792,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <ul class="footer-links">
                     <li><a href="{{ $demoMailto }}">{{ $contactEmail }}</a></li>
                     <li><a href="#preguntas">Preguntas frecuentes</a></li>
-                    <li><a href="#contacto">Solicitar demostración</a></li>
+                    <li><a  href="#formulario-demo">Solicitar demostración</a></li>
                 </ul>
             </div>
         </div>
@@ -3805,7 +3806,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="mobile-sticky-cta">
     <button class="button button-primary" type="button" data-open-chat>
-        Solicitar demostración
+        <a  href="#formulario-demo">Solicitar demostración</a>
     </button>
 </div>
 
