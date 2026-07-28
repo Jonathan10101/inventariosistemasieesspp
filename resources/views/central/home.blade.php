@@ -3417,10 +3417,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     </div>
 
                     <div class="price-box">
-                        <span class="price-label">🚀 Precio especial de lanzamiento</span>
+                        <span class="price-label">🚀 Precio especial de lanzamiento (Cupo limitado)</span>
 
                         <div class="price-main">
-                            $4,999 MXN 
+                            $6,999 MXN 
                             <small>durante el primer año</small>
                         </div>
 
@@ -3440,8 +3440,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             Solicitar por correo
                         </a>
                         -->
-                        <iframe width="540" height="500" src="https://c9015cf0.sibforms.com/v2/serve/MUIFAKBtKumOeQ_vSPH4Fxc7sj3KkltZg_HQSUsH-CugU2MCkC8ZHdbYq2Zch6Z44BMj5yndHZmM3XoVk-ljtgcKxi77ZjEDjiDqvHslUhQXB0s8XYnRCYeTP2cGeFJ9MwXBF8UfHc5Yd4TvrMY7pGXQOn_gKXYPqdaEWzv6hoPLSi9KUxLXG_OuKz2fZlTvY8TrUTI9kPpx0b95aw==" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>
-                    </div>
+                        <iframe width="540" height="500" src="https://c9015cf0.sibforms.com/v2/serve/MUIFAKBtKumOeQ_vSPH4Fxc7sj3KkltZg_HQSUsH-CugU2MCkC8ZHdbYq2Zch6Z44BMj5yndHZmM3XoVk-ljtgcKxi77ZjEDjiDqvHslUhQXB0s8XYnRCYeTP2cGeFJ9MwXBF8UfHc5Yd4TvrMY7pGXQOn_gKXYPqdaEWzv6hoPLSi9KUxLXG_OuKz2fZlTvY8TrUTI9kPpx0b95aw==" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>                    </div>
 
                     <p class="offer-note">
                         Precio sujeto al alcance estándar de la implementación.
@@ -3561,7 +3560,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         ],
                         [
                             'question' => '¿Cuánto cuesta renovar?',
-                            'answer' => 'El precio especial es de $4,999 MXN durante el primer año. A partir del segundo año, la renovación anual es de $9,999 MXN, dentro del alcance contratado.',
+                            'answer' => 'El precio especial es de $6,999 MXN durante el primer año. A partir del segundo año, la renovación anual es de $9,999 MXN, dentro del alcance contratado.',
                         ],
                         [
                             'question' => '¿Cómo podemos conocer el sistema?',
