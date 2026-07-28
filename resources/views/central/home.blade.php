@@ -3357,96 +3357,232 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </p>
 
                 <div class="offer-card">
-                    <span class="offer-card-label">Instituciones fundadoras</span>
+                    <span class="offer-card-label">
+                        Instituciones fundadoras
+                    </span>
+
                     <h3>Implementación anual de INTEVI</h3>
 
                     <div class="offer-list">
+
                         <div class="offer-item">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                aria-hidden="true"
+                            >
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+
                             <div>
                                 <strong>Licencia anual de la plataforma</strong>
-                                <p>Acceso al entorno institucional y a los módulos contratados.</p>
+                                <p>
+                                    Acceso al entorno institucional y a los módulos contratados.
+                                </p>
                             </div>
                         </div>
 
                         <div class="offer-item">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                aria-hidden="true"
+                            >
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+
+                            <div>
+                                <strong>Hasta 10 usuarios individuales</strong>
+                                <p>
+                                    Cuentas independientes con roles y permisos configurables
+                                    según las responsabilidades de cada usuario.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="offer-item">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                aria-hidden="true"
+                            >
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+
                             <div>
                                 <strong>Método Resguardos Fáciles de Controlar 5X</strong>
-                                <p>Metodología integrada, no un curso adicional.</p>
+                                <p>
+                                    Metodología integrada en la plataforma, no un curso
+                                    adicional.
+                                </p>
                             </div>
                         </div>
 
                         <div class="offer-item">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                aria-hidden="true"
+                            >
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+
                             <div>
                                 <strong>Configuración institucional inicial</strong>
-                                <p>Preparación del entorno estándar para comenzar.</p>
+                                <p>
+                                    Preparación del entorno estándar para comenzar a utilizar
+                                    la plataforma.
+                                </p>
                             </div>
                         </div>
 
                         <div class="offer-item">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                aria-hidden="true"
+                            >
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+
                             <div>
                                 <strong>Tutoriales guiados</strong>
-                                <p>Recorridos dentro de los módulos.</p>
+                                <p>
+                                    Recorridos interactivos dentro de los módulos para facilitar
+                                    el aprendizaje de los usuarios.
+                                </p>
                             </div>
                         </div>
 
                         <div class="offer-item">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                aria-hidden="true"
+                            >
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+
                             <div>
                                 <strong>Asistente especializado INTEVI</strong>
-                                <p>Apoyo para preguntas frecuentes sobre el uso de la plataforma.</p>
+                                <p>
+                                    Apoyo para resolver preguntas frecuentes relacionadas con
+                                    el uso de la plataforma.
+                                </p>
                             </div>
                         </div>
 
                         <div class="offer-item">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                aria-hidden="true"
+                            >
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+
                             <div>
                                 <strong>Actualizaciones y mantenimiento</strong>
-                                <p>La institución usa el sistema sin mantener servidores locales.</p>
+                                <p>
+                                    La institución utiliza el sistema sin mantener servidores
+                                    locales ni realizar instalaciones manuales.
+                                </p>
                             </div>
                         </div>
+
                         <div class="offer-item">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                aria-hidden="true"
+                            >
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+
                             <div>
-                                <strong>Almacenamiento</strong>
-                                <p>Recibe 2gb de almacenamiento para fotos y resguardos.</p>
+                                <strong>2 GB de almacenamiento</strong>
+                                <p>
+                                    Espacio para imágenes, documentos y archivos relacionados
+                                    con ubicaciones y resguardos.
+                                </p>
                             </div>
                         </div>
+
                     </div>
 
                     <div class="price-box">
-                        <span class="price-label">🚀 Precio especial de lanzamiento (Cupo limitado)</span>
+                        <span class="price-label">
+                            🚀 Precio especial de lanzamiento (cupo limitado)
+                        </span>
 
                         <div class="price-main">
-                            $6,999 MXN 
+                            $6,999 MXN
                             <small>durante el primer año</small>
                         </div>
 
                         <p class="renewal-note">
-                            <strong>Renovación:</strong> $9,999 MXN al año a partir
-                            del segundo año. El precio se informa desde el inicio
-                            para que la institución conozca su inversión futura.
+                            <strong>Renovación:</strong> $9,999 MXN al año a partir del
+                            segundo año. El precio se informa desde el inicio para que la
+                            institución conozca su inversión futura.
                         </p>
                     </div>
 
                     <div class="offer-actions">
-                        <button class="button button-primary" type="button" data-open-chat>
+                        <button
+                            class="button button-primary"
+                            type="button"
+                            data-open-chat
+                        >
                             Solicitar una demostración
                         </button>
+
                         <!--
                         <a class="button button-outline" href="{{ $demoMailto }}">
                             Solicitar por correo
                         </a>
                         -->
-                        <iframe width="540" height="500" src="https://c9015cf0.sibforms.com/v2/serve/MUIFAKBtKumOeQ_vSPH4Fxc7sj3KkltZg_HQSUsH-CugU2MCkC8ZHdbYq2Zch6Z44BMj5yndHZmM3XoVk-ljtgcKxi77ZjEDjiDqvHslUhQXB0s8XYnRCYeTP2cGeFJ9MwXBF8UfHc5Yd4TvrMY7pGXQOn_gKXYPqdaEWzv6hoPLSi9KUxLXG_OuKz2fZlTvY8TrUTI9kPpx0b95aw==" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>
-                    <p class="offer-note">
-                        Precio sujeto al alcance estándar de la implementación.
-                        Desarrollos especiales, integraciones o personalizaciones
-                        adicionales se cotizan por separado.
-                    </p>
+
+                        <iframe
+                            width="540"
+                            height="500"
+                            src="https://c9015cf0.sibforms.com/v2/serve/MUIFAKBtKumOeQ_vSPH4Fxc7sj3KkltZg_HQSUsH-CugU2MCkC8ZHdbYq2Zch6Z44BMj5yndHZmM3XoVk-ljtgcKxi77ZjEDjiDqvHslUhQXB0s8XYnRCYeTP2cGeFJ9MwXBF8UfHc5Yd4TvrMY7pGXQOn_gKXYPqdaEWzv6hoPLSi9KUxLXG_OuKz2fZlTvY8TrUTI9kPpx0b95aw=="
+                            frameborder="0"
+                            scrolling="auto"
+                            allowfullscreen
+                            title="Formulario para solicitar una demostración de INTEVI"
+                            style="
+                                display: block;
+                                width: 100%;
+                                max-width: 540px;
+                                margin-left: auto;
+                                margin-right: auto;
+                                border: 0;
+                            "
+                        ></iframe>
+
+                        <p class="offer-note">
+                            El precio corresponde al alcance estándar de la implementación e
+                            incluye hasta 10 usuarios individuales y 2 GB de almacenamiento.
+                            Usuarios adicionales, mayor capacidad, desarrollos especiales,
+                            integraciones o personalizaciones se cotizan por separado.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -3527,18 +3663,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             'answer' => 'Equipos tecnológicos, mobiliario, herramientas, activos administrativos y otros bienes que la organización necesite identificar y asignar.',
                         ],
                         [
-                            'question' => '¿Podemos conocer quién tiene cada bien?',
-                            'answer' => 'Sí. Cada activo puede relacionarse con su resguardante, puesto, área de asignación y ubicación física.',
-                        ],
-                        [
-                            'question' => '¿Se conserva el historial cuando cambia el responsable?',
-                            'answer' => 'Sí. INTEVI contempla historiales de asignación y liberación para consultar movimientos anteriores del resguardo.',
-                        ],
-                        [
-                            'question' => '¿Se pueden agregar imágenes y documentos?',
-                            'answer' => 'Sí. La plataforma permite relacionar imágenes y archivos PDF con procesos de ubicación y resguardo, de acuerdo con el módulo correspondiente.',
-                        ],
-                        [
                             'question' => '¿Podemos cargar información desde Excel?',
                             'answer' => 'La plataforma incluye carga masiva para determinados catálogos, como marcas, puestos y áreas de asignación.',
                         ],
@@ -3553,10 +3677,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         [
                             'question' => '¿Hay que instalar INTEVI en cada computadora?',
                             'answer' => 'No. INTEVI funciona como una plataforma web y se utiliza mediante un navegador compatible con conexión a Internet.',
-                        ],
-                        [
-                            'question' => '¿Qué incluye el precio del primer año?',
-                            'answer' => 'Incluye la licencia anual dentro del alcance estándar, el entorno institucional, la metodología 5X, configuración inicial, orientación, tutoriales, asistente de preguntas frecuentes y mantenimiento de la plataforma. Los desarrollos especiales se cotizan por separado.',
                         ],
                         [
                             'question' => '¿Cuánto cuesta renovar?',
