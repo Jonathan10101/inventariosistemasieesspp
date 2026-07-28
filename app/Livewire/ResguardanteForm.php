@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;    
+use App\Services\TenantUserLimit;
 
 
 class ResguardanteForm extends Component
@@ -24,6 +25,30 @@ class ResguardanteForm extends Component
     public $perPage = 3;
     public $data_external_component;
     public $resguardante;
+
+    #[Computed]
+    public function usuariosUsados(): int
+    {
+        return app(TenantUserLimit::class)->used();
+    }
+
+    #[Computed]
+    public function usuariosDisponibles(): int
+    {
+        return app(TenantUserLimit::class)->remaining();
+    }
+
+    #[Computed]
+    public function limiteUsuariosAlcanzado(): bool
+    {
+        return app(TenantUserLimit::class)->reached();
+    }
+
+    #[Computed]
+    public function limiteUsuarios(): int
+    {
+        return app(TenantUserLimit::class)->limit();
+    }
 
     // Función para limpiar la búsqueda
     public function clearSearch()
@@ -57,6 +82,8 @@ class ResguardanteForm extends Component
 
     #[On('saveFromComponentNewResguardante')]
     public function saveNewResguardante($data){
+        app(TenantUserLimit::class)->assertCanCreate();
+
         $user_id = User::create([
             "name" => $data['nombre1'] ." ". $data['nombre2'] ." ". $data['apellido1'] ." ". $data['apellido2'],
             //"email" => $data['nombre1'] . $data['nombre2'] . $data['apellido1'] . $data['apellido2'] . "@ieesspp.com",
