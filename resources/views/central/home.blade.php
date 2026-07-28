@@ -35,6 +35,14 @@
         content="website"
     >
 
+    <meta property="og:url" content="https://intevi.app/">
+    <meta property="og:image" content="{{ asset('images/intevi-dashboard.webp') }}">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="INTEVI | Control de inventario y resguardo institucional">
+    <meta name="twitter:description" content="Controla inventarios, responsables, ubicaciones, evidencias e historiales desde una sola plataforma.">
+    <meta name="twitter:image" content="{{ asset('images/intevi-dashboard.webp') }}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -50,6 +58,12 @@
         |--------------------------------------------------------------------------
         */
         $contactEmail = 'contacto@intevi.app';
+
+        /*
+         * Ajusta esta leyenda únicamente cuando tengas definido tu tratamiento fiscal.
+         * Evita publicar "IVA incluido" o "más IVA" si todavía no corresponde.
+         */
+        $taxLegend = 'El tratamiento de impuestos y facturación se confirma por escrito antes de contratar.';
 
         $demoSubject = rawurlencode(
             'Solicitud de demostración de INTEVI'
@@ -2329,6 +2343,226 @@
             width: 100%;
         }
 
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Ajustes de confianza, conversión y claridad comercial
+        |--------------------------------------------------------------------------
+        */
+
+        .trust-strip {
+            background: var(--surface-soft);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .trust-strip-content {
+            align-items: center;
+            display: grid;
+            gap: 18px;
+            grid-template-columns: 1.2fr repeat(3, .8fr);
+            min-height: 126px;
+        }
+
+        .trust-strip-intro strong {
+            color: var(--primary);
+            display: block;
+            font-family: 'Manrope', sans-serif;
+            font-size: 16px;
+            line-height: 1.35;
+        }
+
+        .trust-strip-intro span {
+            color: var(--muted);
+            display: block;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .trust-point {
+            align-items: center;
+            border-left: 1px solid var(--border);
+            color: var(--ink-soft);
+            display: flex;
+            font-size: 13px;
+            font-weight: 700;
+            gap: 10px;
+            min-height: 48px;
+            padding-left: 20px;
+        }
+
+        .trust-point svg {
+            color: var(--success);
+            flex: 0 0 auto;
+            height: 18px;
+            width: 18px;
+        }
+
+        .demo-view-list {
+            display: grid;
+            gap: 10px;
+            grid-template-columns: repeat(3, 1fr);
+            margin-top: 14px;
+        }
+
+        .demo-view-item {
+            background: white;
+            border: 1px solid var(--border);
+            color: var(--ink-soft);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 12px 14px;
+            text-align: center;
+        }
+
+        .story-layout-compact {
+            grid-template-columns: .88fr 1.12fr;
+        }
+
+        .offer-layout {
+            display: block;
+            margin-inline: auto;
+            max-width: 880px;
+        }
+
+        .offer-product {
+            display: none;
+        }
+
+        .offer-intro {
+            margin-bottom: 36px;
+            max-width: 780px;
+        }
+
+        .offer-intro .section-copy {
+            max-width: 760px;
+        }
+
+        .tax-note {
+            color: var(--ink-soft);
+            display: block;
+            font-size: 12px;
+            line-height: 1.55;
+            margin-top: 13px;
+        }
+
+        .demo-form-shell {
+            background: #f8f9fc;
+            border: 1px solid var(--border);
+            margin-top: 8px;
+            padding: 24px 18px 18px;
+        }
+
+        .demo-form-heading {
+            margin: 0 auto 16px;
+            max-width: 540px;
+            text-align: left;
+        }
+
+        .demo-form-heading strong {
+            color: var(--ink);
+            display: block;
+            font-family: 'Manrope', sans-serif;
+            font-size: 18px;
+        }
+
+        .demo-form-heading span {
+            color: var(--ink-soft);
+            display: block;
+            font-size: 13px;
+            line-height: 1.55;
+            margin-top: 4px;
+        }
+
+        .demo-form-shell iframe {
+            background: white;
+            border: 0;
+            display: block;
+            margin-inline: auto;
+            max-width: 540px;
+            width: 100%;
+        }
+
+        .guarantee-layout {
+            grid-template-columns: 1fr;
+            margin-inline: auto;
+            max-width: 860px;
+        }
+
+        .guarantee-layout > div:last-child {
+            max-width: 800px;
+        }
+
+        .guarantee-image {
+            display: none;
+        }
+
+        .commercial-clarity {
+            background: var(--primary-soft);
+            border-left: 3px solid var(--primary);
+            color: var(--ink-soft);
+            font-size: 13px;
+            line-height: 1.65;
+            margin-top: 26px;
+            padding: 17px 19px;
+        }
+
+        .footer-legal {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 22px;
+            margin-top: 18px;
+        }
+
+        .footer-legal a {
+            color: rgba(255, 255, 255, .58);
+            font-size: 12px;
+            text-decoration: underline;
+            text-decoration-color: rgba(255, 255, 255, .22);
+            text-underline-offset: 4px;
+        }
+
+        .footer-legal a:hover {
+            color: white;
+        }
+
+        @media (max-width: 960px) {
+            .trust-strip-content {
+                grid-template-columns: 1fr 1fr;
+                padding: 28px 0;
+            }
+
+            .trust-strip-intro {
+                grid-column: 1 / -1;
+            }
+
+            .trust-point:nth-last-child(1) {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .trust-strip-content,
+            .demo-view-list {
+                grid-template-columns: 1fr;
+            }
+
+            .trust-strip-intro,
+            .trust-point:nth-last-child(1) {
+                grid-column: auto;
+            }
+
+            .trust-point {
+                border-left: 0;
+                border-top: 1px solid var(--border);
+                padding: 16px 0 0;
+            }
+
+            .demo-form-shell {
+                padding: 20px 8px 12px;
+            }
+        }
+
         @media (max-width: 960px) {
             .method-header,
             .demo-layout,
@@ -2445,19 +2679,7 @@
 </head>
 
 <body>
-    <!--Start of Tawk.to Script
-    <script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/6a5ad85b940f101d5323a8b6/1jtpdq9oo';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
-    })();
-    </script>
-    End of Tawk.to Script-->
+
 
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PCLM28B2"
@@ -2495,7 +2717,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <div class="nav-area" id="navigation">
             <ul class="nav-links">
-                <li><a class="nav-link" href="#metodo">Control 5X</a></li>
+                <li><a class="nav-link" href="#metodo">Método 5X</a></li>
                 <li><a class="nav-link" href="#plataforma">Plataforma</a></li>
                 <li><a class="nav-link" href="#implementacion">Implementación</a></li>
                 <li><a class="nav-link" href="#oferta">Precio</a></li>
@@ -2503,7 +2725,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </ul>
 
      
-            <a  class="button button-primary nav-cta" href="#formulario-demo">Solicitar demostración</a>
+            <a class="button button-primary nav-cta" href="#formulario-demo">Solicitar demostración</a>
         </div>
 
         <button
@@ -2545,10 +2767,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </p>
 
                 <div class="hero-actions">
-                    <a  class="button button-primary nav-cta" href="#formulario-demo">Solicitar demostración</a>
+                    <a class="button button-primary nav-cta" href="#formulario-demo">Solicitar demostración</a>
 
                     <a class="button button-outline" href="#metodo">
-                        Conocer el Control 5X
+                        Conocer el Método 5X
                     </a>
                 </div>
 
@@ -2653,6 +2875,38 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
     </section>
 
+
+    {{-- CONFIANZA --}}
+    <section class="trust-strip" aria-label="Razones para conocer INTEVI">
+        <div class="container trust-strip-content">
+            <div class="trust-strip-intro">
+                <strong>Desarrollado desde una necesidad institucional real</strong>
+                <span>La plataforma se enfoca en el trabajo administrativo detrás de cada bien y resguardo.</span>
+            </div>
+
+            <div class="trust-point">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M20 6 9 17l-5-5"/>
+                </svg>
+                Demostración antes de contratar
+            </div>
+
+            <div class="trust-point">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M20 6 9 17l-5-5"/>
+                </svg>
+                Entorno independiente por institución
+            </div>
+
+            <div class="trust-point">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M20 6 9 17l-5-5"/>
+                </svg>
+                Alcance y renovación informados desde el inicio
+            </div>
+        </div>
+    </section>
+
     {{-- PROBLEMA --}}
     <section class="section" id="problema">
         <div class="container">
@@ -2718,7 +2972,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="container">
             <div class="method-header">
                 <div>
-                    <span class="eyebrow">Control Institucional 5X</span>
+                    <span class="eyebrow">Método de Control Institucional 5X</span>
 
                     <h2 class="heading heading-medium">
                         Cada bien debe responder cinco preguntas.
@@ -2732,7 +2986,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </div>
 
                 <div class="method-summary">
-                    <strong>Método Resguardos Fáciles de Controlar 5X</strong>
+                    <strong>Método de Control Institucional 5X</strong>
                     <p>
                         La metodología está integrada en la plataforma y organiza
                         el proceso alrededor de cinco elementos: existencia,
@@ -2981,6 +3235,54 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     </span>
                 </article>
 
+
+                <article class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                            <path d="M4 19V5h16v14H4z"/>
+                            <path d="M8 9h8M8 13h5"/>
+                            <path d="m15 16 2 2 4-4"/>
+                        </svg>
+                    </div>
+                    <h3>Historial de resguardos</h3>
+                    <p>
+                        Consulta asignaciones, cambios y liberaciones para mantener
+                        continuidad sobre lo que ha sucedido con cada bien.
+                    </p>
+                    <span class="feature-result">Trazabilidad institucional</span>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                            <path d="M5 3h14v18H5z"/>
+                            <path d="M8 7h8M8 11h8M8 15h5"/>
+                            <path d="m15 17 2 2 4-4"/>
+                        </svg>
+                    </div>
+                    <h3>Carga de catálogos desde Excel</h3>
+                    <p>
+                        Importa marcas, puestos y áreas de asignación para reducir
+                        captura manual durante la preparación del entorno.
+                    </p>
+                    <span class="feature-result">Implementación más ágil</span>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                            <path d="M3 21h18M5 21V8l7-4 7 4v13"/>
+                            <path d="M8 12h8M8 16h8"/>
+                        </svg>
+                    </div>
+                    <h3>Ubicaciones físicas</h3>
+                    <p>
+                        Organiza los espacios donde se encuentran los bienes y
+                        consulta los resguardos activos relacionados con cada lugar.
+                    </p>
+                    <span class="feature-result">Localización consultable</span>
+                </article>
+
             </div>
         </div>
     </section>
@@ -3016,6 +3318,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         loading="lazy"
                         decoding="async"
                     >
+                </div>
+
+                <div class="demo-view-list" aria-label="Vistas que pueden revisarse durante la demostración">
+                    <span class="demo-view-item">Inventario y filtros</span>
+                    <span class="demo-view-item">Asignación de resguardos</span>
+                    <span class="demo-view-item">Historial y evidencia</span>
                 </div>
             </div>
 
@@ -3067,7 +3375,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     </div>
                 </div>
 
-                <a  class="button button-primary nav-cta" style="margin-top:40px;" href="#formulario-demo">Solicitar demostración</a>
+                <a class="button button-primary" style="margin-top: 40px;" href="#formulario-demo">Solicitar demostración</a>
 
             </div>
         </div>
@@ -3243,7 +3551,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     {{-- HISTORIA --}}
     <section class="section section-soft">
-        <div class="container story-layout">
+        <div class="container story-layout story-layout-compact">
             <div class="story-card">
                 <p>
                     INTEVI nació de una necesidad observada en la operación
@@ -3253,76 +3561,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
 
             <div>
-                <span class="eyebrow">Creado desde la experiencia real</span>
+                <span class="eyebrow">Creado desde la experiencia institucional</span>
 
                 <h2 class="heading heading-medium">
-                    Una solución pensada para el trabajo administrativo que
-                    existe detrás de cada resguardo.
+                    Una solución pensada para el trabajo administrativo detrás
+                    de cada resguardo.
                 </h2>
 
                 <p class="section-copy">
-                    Después de trabajar en una institución gubernamental y
-                    conocer de cerca la dificultad de administrar numerosos
-                    bienes, responsables, ubicaciones y documentos, se desarrolló
-                    INTEVI para convertir ese proceso disperso en una operación
-                    más clara y consultable.
+                    Después de conocer directamente la dificultad de administrar
+                    bienes, responsables, ubicaciones y documentos dentro de una
+                    institución gubernamental, se desarrolló INTEVI para convertir
+                    información dispersa en una operación más clara y consultable.
                 </p>
 
                 <p class="section-copy">
-                    Por eso la plataforma no se limita al inventario: conecta el
-                    bien con la persona, el lugar, la evidencia y su historial.
+                    Por eso no se limita a guardar inventario: relaciona cada bien
+                    con su responsable, ubicación, evidencia e historial.
                 </p>
             </div>
-        </div>
-    </section>
-
-    {{-- VALOR --}}
-    <section class="roi-section">
-        <div class="container roi-layout">
-            <div>
-                <span class="value-title">El valor real</span>
-
-                <div class="roi-questions">
-                    <span class="roi-question">
-                        ¿Cuántas horas dedica el personal a buscar y comparar
-                        información?
-                    </span>
-                    <span class="roi-question">
-                        ¿Cuánto cuesta repetir capturas y corregir inconsistencias?
-                    </span>
-                    <span class="roi-question">
-                        ¿Qué ocurre cuando un bien no puede relacionarse con una
-                        ubicación o un responsable?
-                    </span>
-                </div>
-            </div>
-
-            <p class="roi-message">
-                INTEVI no se vende únicamente como software. Se implementa para
-                reducir incertidumbre, trabajo manual y dependencia de archivos
-                dispersos.
-            </p>
         </div>
     </section>
 
     {{-- OFERTA --}}
     <section class="offer-section" id="oferta">
         <div class="container offer-layout">
-            <div class="offer-product">
-                <!--
-                <span class="offer-badge">Lanzamiento</span>
-                
-                <img
-                    src="{{ asset('images/cajaintevi.png') }}"
-                    alt="Presentación de la plataforma INTEVI y el Método Resguardos Fáciles de Controlar 5X"
-                    loading="lazy"
-                    decoding="async"
-                    style="heigth:500px;"
-                >
-                -->
-            </div>
-
-            <div>
+            <div class="offer-intro">
                 <span class="eyebrow">Oferta transparente</span>
 
                 <h2 class="heading heading-medium">
@@ -3330,14 +3594,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </h2>
 
                 <p class="section-copy">
-                    Sin valores inflados ni productos separados que después debas
-                    comprar. La metodología, la orientación y las herramientas
-                    forman parte de la implementación.
+                    Una sola implementación anual con alcance definido desde el
+                    inicio. La metodología, la orientación y las herramientas
+                    forman parte del servicio estándar.
                 </p>
+
+                </div>
 
                 <div class="offer-card">
                     <span class="offer-card-label">
-                        Instituciones fundadoras
+                        Programa para instituciones fundadoras
                     </span>
 
                     <h3>Implementación anual de INTEVI</h3>
@@ -3358,7 +3624,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             <div>
                                 <strong>Licencia anual de la plataforma</strong>
                                 <p>
-                                    Acceso al entorno institucional y a los módulos contratados.
+                                    Acceso anual al entorno institucional y a los módulos incluidos en el alcance estándar.
                                 </p>
                             </div>
                         </div>
@@ -3395,7 +3661,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             </svg>
 
                             <div>
-                                <strong>Método Resguardos Fáciles de Controlar 5X</strong>
+                                <strong>Método de Control Institucional 5X</strong>
                                 <p>
                                     Metodología integrada en la plataforma, no un curso
                                     adicional.
@@ -3503,11 +3769,38 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             </div>
                         </div>
 
+
+                        <div class="offer-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+                            <div>
+                                <strong>Acompañamiento de arranque</strong>
+                                <p>
+                                    Orientación inicial para configurar el entorno y resolver
+                                    dudas relacionadas con el uso estándar de la plataforma.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="offer-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+                            <div>
+                                <strong>Herramientas de exportación</strong>
+                                <p>
+                                    Exportación de información disponible de acuerdo con las
+                                    funciones incluidas en cada módulo.
+                                </p>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="price-box">
                         <span class="price-label">
-                            🚀 Precio especial de lanzamiento (cupo limitado)
+                            Precio de implementación para instituciones fundadoras
                         </span>
 
                         <div class="price-main">
@@ -3516,87 +3809,89 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         </div>
 
                         <p class="renewal-note">
-                            <strong>Renovación:</strong> $9,999 MXN al año a partir del
+                            <strong>Renovación anual:</strong> $9,999 MXN a partir del
                             segundo año. El precio se informa desde el inicio para que la
                             institución conozca su inversión futura.
                         </p>
-                    </div>
 
-                    <div class="offer-actions">
-    
-                     <div id="formulario-demo">
-                        <iframe
-                            width="540"
-                            height="500"
-                            src="https://c9015cf0.sibforms.com/v2/serve/MUIFAKBtKumOeQ_vSPH4Fxc7sj3KkltZg_HQSUsH-CugU2MCkC8ZHdbYq2Zch6Z44BMj5yndHZmM3XoVk-ljtgcKxi77ZjEDjiDqvHslUhQXB0s8XYnRCYeTP2cGeFJ9MwXBF8UfHc5Yd4TvrMY7pGXQOn_gKXYPqdaEWzv6hoPLSi9KUxLXG_OuKz2fZlTvY8TrUTI9kPpx0b95aw=="
-                            frameborder="0"
-                            scrolling="auto"
-                            allowfullscreen
-                            title="Formulario para solicitar una demostración de INTEVI"
-                            style="
-                                display: block;
-                                width: 100%;
-                                max-width: 540px;
-                                margin-left: auto;
-                                margin-right: auto;
-                                border: 0;
-                            "
-                        ></iframe>
+                        <span class="tax-note">{{ $taxLegend }}</span>
                     </div>
+                    <div class="offer-actions">
+                        <div id="formulario-demo" class="demo-form-shell">
+                            <div class="demo-form-heading">
+                                <strong>Solicita una demostración</strong>
+                                <span>
+                                    Comparte tus datos y nos comunicaremos contigo para coordinar
+                                    una revisión de la plataforma sin compromiso de contratación.
+                                </span>
+                            </div>
+
+
+                            {{--
+                                IMPORTANTE: el texto interno del iframe se edita en Brevo,
+                                no desde este Blade. En Brevo deja los campos como:
+                                "Nombre y apellidos", "Institución u organización",
+                                "Correo institucional" y el botón "Agendar mi demostración".
+                            --}}
+                            <iframe
+                                width="540"
+                                height="620"
+                                src="https://c9015cf0.sibforms.com/v2/serve/MUIFAKBtKumOeQ_vSPH4Fxc7sj3KkltZg_HQSUsH-CugU2MCkC8ZHdbYq2Zch6Z44BMj5yndHZmM3XoVk-ljtgcKxi77ZjEDjiDqvHslUhQXB0s8XYnRCYeTP2cGeFJ9MwXBF8UfHc5Yd4TvrMY7pGXQOn_gKXYPqdaEWzv6hoPLSi9KUxLXG_OuKz2fZlTvY8TrUTI9kPpx0b95aw=="
+                                frameborder="0"
+                                scrolling="auto"
+                                loading="lazy"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                title="Formulario para solicitar una demostración de INTEVI"
+                            ></iframe>
+                        </div>
+
                         <p class="offer-note">
-                            El precio corresponde al alcance estándar de la implementación e
-                            incluye hasta 10 usuarios individuales y 2 GB de almacenamiento.
-                            Usuarios adicionales, mayor capacidad, desarrollos especiales,
+                            El precio corresponde al alcance estándar e incluye hasta 10
+                            usuarios individuales y 2 GB de almacenamiento. Usuarios
+                            adicionales, mayor capacidad, desarrollos especiales,
                             integraciones o personalizaciones se cotizan por separado.
                         </p>
                     </div>
                 </div>
-            </div>
         </div>
     </section>
 
-    {{-- GARANTÍA --}}
+    {{-- DECISIÓN INFORMADA --}}
     <section class="section">
         <div class="container guarantee-layout">
-            <div class="guarantee-image">
-                <!--
-                <img
-                    src="{{ asset('images/garantia.png') }}"
-                    alt="Garantía de evaluación durante 30 días"
-                    loading="lazy"
-                    decoding="async"
-                >
-                -->
-            </div>
-
             <div>
-                <span class="eyebrow">Compra protegida</span>
+                <span class="eyebrow">Decisión informada</span>
 
                 <h2 class="heading heading-medium">
-                    Evalúa INTEVI con mayor tranquilidad.
+                    Conoce el sistema y el alcance antes de contratar.
                 </h2>
 
                 <p class="section-copy">
-                    Primero conoces la plataforma mediante una demostración.
-                    Después de contratar, cuentas con <span style="font-weight: bold;">30 días</span> para confirmar que
-                    el servicio corresponde con el alcance presentado.
+                    Primero revisas la plataforma mediante una demostración. Antes
+                    de cualquier pago, la institución recibe por escrito el alcance,
+                    precio, renovación y condiciones aplicables a su implementación.
                 </p>
 
                 <div class="guarantee-list">
                     <span class="guarantee-item">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-                        Condiciones claras antes de contratar.
+                        Demostración funcional antes de tomar una decisión.
                     </span>
                     <span class="guarantee-item">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-                        Solicitud de cancelación dentro de los primeros 30 días,
-                        conforme a los términos de la garantía.
+                        Alcance estándar, adicionales y renovación informados por escrito.
                     </span>
                     <span class="guarantee-item">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-                        La demostración permite comprobar el sistema antes de decidir.
+                        Sin obligación de contratar después de la demostración.
                     </span>
                 </div>
+
+                <p class="commercial-clarity">
+                    No se publica una promesa de reembolso genérica. Cualquier garantía,
+                    cancelación o condición especial debe quedar definida expresamente en
+                    la propuesta comercial o contrato correspondiente.
+                </p>
             </div>
         </div>
     </section>
@@ -3613,8 +3908,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </h2>
 
                 <p class="section-copy">
-                    También puedes utilizar el chat para plantear una necesidad
-                    específica de tu institución.
+                    Si tu institución tiene una necesidad específica, inclúyela
+                    en la solicitud de demostración o escríbenos por correo.
                 </p>
             </div>
 
@@ -3627,11 +3922,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         ],
                         [
                             'question' => '¿Qué tipo de bienes se pueden registrar?',
-                            'answer' => 'Equipos tecnológicos, mobiliario, herramientas, activos administrativos y otros bienes que la organización necesite identificar y asignar.',
+                            'answer' => 'Equipos tecnológicos, mobiliario, herramientas, activos administrativos y otros bienes que la organización necesite identificar, localizar y asignar.',
                         ],
                         [
                             'question' => '¿Podemos cargar información desde Excel?',
-                            'answer' => 'La plataforma incluye carga masiva para determinados catálogos, como marcas, puestos y áreas de asignación.',
+                            'answer' => 'La plataforma incluye carga masiva para determinados catálogos, como marcas, puestos y áreas de asignación, con el fin de reducir captura manual durante la implementación.',
                         ],
                         [
                             'question' => '¿Todos los usuarios tienen el mismo acceso?',
@@ -3647,7 +3942,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         ],
                         [
                             'question' => '¿Cuánto cuesta renovar?',
-                            'answer' => 'El precio especial es de $6,999 MXN durante el primer año. A partir del segundo año, la renovación anual es de $9,999 MXN, dentro del alcance contratado.',
+                            'answer' => 'La implementación para instituciones fundadoras es de $6,999 MXN durante el primer año. A partir del segundo año, la renovación anual es de $9,999 MXN dentro del alcance estándar contratado.',
+                        ],
+                        [
+                            'question' => '¿El precio incluye impuestos y facturación?',
+                            'answer' => $taxLegend,
+                        ],
+                        [
+                            'question' => '¿Qué sucede si necesitamos más de 10 usuarios?',
+                            'answer' => 'El alcance estándar incluye hasta 10 usuarios individuales. Las cuentas adicionales se cotizan según la necesidad de la institución.',
+                        ],
+                        [
+                            'question' => '¿Qué sucede si superamos los 2 GB?',
+                            'answer' => 'La institución puede solicitar capacidad adicional. El costo y alcance se informan antes de realizar cualquier ampliación.',
+                        ],
+                        [
+                            'question' => '¿Qué tipo de soporte está incluido?',
+                            'answer' => 'La implementación incluye acompañamiento de arranque, tutoriales guiados y atención de dudas relacionadas con el uso estándar de la plataforma. Desarrollos, integraciones y personalizaciones se cotizan por separado.',
+                        ],
+                        [
+                            'question' => '¿Qué sucede con la información si no renovamos?',
+                            'answer' => 'Antes de finalizar el servicio se informa el procedimiento aplicable para exportar la información disponible mediante las herramientas incluidas en la plataforma y cerrar el entorno institucional.',
                         ],
                         [
                             'question' => '¿Cómo podemos conocer el sistema?',
@@ -3695,7 +4010,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
 
             <div class="cta-action">
-                <a  class="button button-primary nav-cta" style="background:white;color:black;" href="#formulario-demo">Solicitar demostración</a>
+                <a class="button button-light" href="#formulario-demo">Solicitar demostración</a>
 
 
                 <a class="cta-email" href="{{ $demoMailto }}">
@@ -3713,7 +4028,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <a href="#inicio" class="brand">
                     <img
                         src="{{ asset('images/intevi logo.png') }}"
-                        alt=""
+                        alt="Logo de INTEVI"
                         class="brand-logo"
                         width="52"
                         height="52"
@@ -3731,12 +4046,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     Gestión inteligente de resguardos e inventario de bienes
                     institucionales.
                 </p>
+
+                @if (
+                    Route::has('privacidad') ||
+                    Route::has('terminos') ||
+                    Route::has('condiciones.comerciales')
+                )
+                    <div class="footer-legal" aria-label="Información legal">
+                        @if (Route::has('privacidad'))
+                            <a href="{{ route('privacidad') }}">Aviso de privacidad</a>
+                        @endif
+
+                        @if (Route::has('terminos'))
+                            <a href="{{ route('terminos') }}">Términos del servicio</a>
+                        @endif
+
+                        @if (Route::has('condiciones.comerciales'))
+                            <a href="{{ route('condiciones.comerciales') }}">Condiciones comerciales</a>
+                        @endif
+                    </div>
+                @endif
             </div>
 
             <div>
                 <h3 class="footer-heading">Plataforma</h3>
                 <ul class="footer-links">
-                    <li><a href="#metodo">Control 5X</a></li>
+                    <li><a href="#metodo">Método 5X</a></li>
                     <li><a href="#plataforma">Funciones</a></li>
                     <li><a href="#implementacion">Implementación</a></li>
                     <li><a href="#oferta">Precio</a></li>
@@ -3748,7 +4083,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <ul class="footer-links">
                     <li><a href="{{ $demoMailto }}">{{ $contactEmail }}</a></li>
                     <li><a href="#preguntas">Preguntas frecuentes</a></li>
-                    <li><a  href="#formulario-demo">Solicitar demostración</a></li>
+                    <li><a href="#formulario-demo">Solicitar demostración</a></li>
                 </ul>
             </div>
         </div>
@@ -3761,65 +4096,57 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </footer>
 
 <div class="mobile-sticky-cta">
-    <button class="button button-primary" type="button" data-open-chat>
-        <a  href="#formulario-demo">Solicitar demostración</a>
-    </button>
+    <a class="button button-primary" href="#formulario-demo">
+        Solicitar demostración
+    </a>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const menuButton = document.getElementById('menuButton');
         const navigation = document.getElementById('navigation');
-        const navigationLinks = navigation.querySelectorAll('a');
-        const chatButtons = document.querySelectorAll('[data-open-chat]');
         const faqQuestions = document.querySelectorAll('.faq-question');
 
         function closeMenu() {
+            if (!menuButton || !navigation) {
+                return;
+            }
+
             menuButton.setAttribute('aria-expanded', 'false');
             menuButton.setAttribute('aria-label', 'Abrir menú');
             navigation.classList.remove('mobile-visible');
             document.body.classList.remove('menu-open');
         }
 
-        function openChat() {
-            if (
-                window.Tawk_API &&
-                typeof window.Tawk_API.maximize === 'function'
-            ) {
-                window.Tawk_API.maximize();
-                return;
-            }
+        if (menuButton && navigation) {
+            menuButton.addEventListener('click', function () {
+                const isOpen =
+                    menuButton.getAttribute('aria-expanded') === 'true';
 
-            window.location.href = @json($demoMailto);
+                menuButton.setAttribute('aria-expanded', String(!isOpen));
+                menuButton.setAttribute(
+                    'aria-label',
+                    isOpen ? 'Abrir menú' : 'Cerrar menú'
+                );
+
+                navigation.classList.toggle('mobile-visible', !isOpen);
+                document.body.classList.toggle('menu-open', !isOpen);
+            });
+
+            navigation.querySelectorAll('a').forEach(function (link) {
+                link.addEventListener('click', closeMenu);
+            });
         }
-
-        menuButton.addEventListener('click', function () {
-            const isOpen =
-                menuButton.getAttribute('aria-expanded') === 'true';
-
-            menuButton.setAttribute('aria-expanded', String(!isOpen));
-            menuButton.setAttribute(
-                'aria-label',
-                isOpen ? 'Abrir menú' : 'Cerrar menú'
-            );
-
-            navigation.classList.toggle('mobile-visible', !isOpen);
-            document.body.classList.toggle('menu-open', !isOpen);
-        });
-
-        navigationLinks.forEach(function (link) {
-            link.addEventListener('click', closeMenu);
-        });
-
-        chatButtons.forEach(function (button) {
-            button.addEventListener('click', openChat);
-        });
 
         faqQuestions.forEach(function (question) {
             question.addEventListener('click', function () {
                 const item = question.closest('.faq-item');
-                const isOpen = item.classList.contains('open');
 
+                if (!item) {
+                    return;
+                }
+
+                const isOpen = item.classList.contains('open');
                 item.classList.toggle('open', !isOpen);
                 question.setAttribute('aria-expanded', String(!isOpen));
             });
