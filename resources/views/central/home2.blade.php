@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <meta charset="UTF-8">
 
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
-
-    <title>INTEVI | Resguardos e inventario institucional</title>
+    <link rel="canonical" href="https://intevi.app/">
+    <title>INTEVI | Control de inventario y resguardo institucional</title>
 
     <meta
         name="description"
-        content="INTEVI centraliza el inventario, los resguardos, responsables, ubicaciones y movimientos de los bienes institucionales."
+        content="INTEVI permite saber qué bienes existen, dónde están, quién los tiene asignados, qué evidencia respalda cada resguardo y qué movimientos se han realizado."
     >
 
     <meta
@@ -34,6 +35,14 @@
         content="website"
     >
 
+    <meta property="og:url" content="https://intevi.app/">
+    <meta property="og:image" content="{{ asset('images/intevi-dashboard.webp') }}">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="INTEVI | Control de inventario y resguardo institucional">
+    <meta name="twitter:description" content="Controla inventarios, responsables, ubicaciones, evidencias e historiales desde una sola plataforma.">
+    <meta name="twitter:image" content="{{ asset('images/intevi-dashboard.webp') }}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -43,7 +52,36 @@
     >
 
     @php
-        $contactEmail =  'contacto.aned@gmail.com';
+        /*
+        |--------------------------------------------------------------------------
+        | Datos comerciales
+        |--------------------------------------------------------------------------
+        */
+        $contactEmail = 'contacto@intevi.app';
+
+        /*
+         * Ajusta esta leyenda únicamente cuando tengas definido tu tratamiento fiscal.
+         * Evita publicar "IVA incluido" o "más IVA" si todavía no corresponde.
+         */
+        $taxLegend = 'El tratamiento de impuestos y facturación se confirma por escrito antes de contratar.';
+
+        $demoSubject = rawurlencode(
+            'Solicitud de demostración de INTEVI'
+        );
+
+        $demoBody = rawurlencode(
+            "Hola, me interesa solicitar una demostración de INTEVI.\n\n" .
+            "Institución:\n" .
+            "Nombre:\n" .
+            "Cargo:\n" .
+            "Teléfono:\n" .
+            "Número aproximado de bienes:\n"
+        );
+
+        $demoMailto =
+            "mailto:{$contactEmail}" .
+            "?subject={$demoSubject}" .
+            "&body={$demoBody}";
     @endphp
 
     <style>
@@ -52,6 +90,7 @@
             --primary-dark: #101447;
             --primary-soft: #eef0ff;
             --accent: #d5ad63;
+            --accent-dark: #ae8540;
             --accent-soft: #f8f0df;
             --ink: #171923;
             --ink-soft: #555968;
@@ -64,123 +103,7 @@
             --shadow-sm: 0 12px 35px rgba(18, 24, 61, 0.07);
             --shadow-md: 0 24px 80px rgba(18, 24, 61, 0.12);
             --container: 1180px;
-            --alert-height: 58px;
         }
-
-        .intevi-alert {
-    background: #b42318;
-    border-bottom: 1px solid #8f1c13;
-    box-shadow: 0 8px 24px rgba(127, 29, 29, 0.18);
-    color: #ffffff;
-    left: 0;
-    min-height: var(--alert-height);
-    position: fixed;
-    right: 0;
-    top: var(--header-height);
-    z-index: 99;
-}
-
-.intevi-alert-content {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    min-height: var(--alert-height);
-    text-align: center;
-}
-
-.intevi-alert-message {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    text-align: center;
-    width: 100%;
-}
-
-.intevi-alert-message p {
-    font-size: 14px;
-    line-height: 1.45;
-    margin: 0;
-    text-align: center;
-}
-
-.intevi-alert-message strong {
-    font-weight: 800;
-    letter-spacing: 0.04em;
-    margin-right: 5px;
-}
-
-.intevi-alert-icon {
-    align-items: center;
-    background: rgba(255, 255, 255, 0.14);
-    display: flex;
-    flex: 0 0 auto;
-    height: 34px;
-    justify-content: center;
-    width: 34px;
-}
-
-.intevi-alert-icon svg {
-    height: 19px;
-    width: 19px;
-}
-
-.intevi-alert-close {
-    align-items: center;
-    background: transparent;
-    border: 0;
-    color: #ffffff;
-    cursor: pointer;
-    display: flex;
-    flex: 0 0 auto;
-    font-size: 27px;
-    height: 38px;
-    justify-content: center;
-    opacity: 0.8;
-    transition:
-        background-color 180ms ease,
-        opacity 180ms ease;
-    width: 38px;
-}
-
-.intevi-alert-close:hover {
-    background: rgba(255, 255, 255, 0.12);
-    opacity: 1;
-}
-
-/* Baja el contenido para que no quede oculto por la alerta */
-body.has-intevi-alert .hero {
-    padding-top: calc(178px + var(--alert-height));
-}
-
-@media (max-width: 960px) {
-    body.has-intevi-alert .hero {
-        padding-top: calc(145px + var(--alert-height));
-    }
-}
-
-@media (max-width: 720px) {
-    :root {
-        --alert-height: 72px;
-    }
-
-    .intevi-alert-message {
-        gap: 9px;
-    }
-
-    .intevi-alert-message p {
-        font-size: 12px;
-    }
-
-    .intevi-alert-icon {
-        height: 30px;
-        width: 30px;
-    }
-
-    body.has-intevi-alert .hero {
-        padding-top: calc(126px + var(--alert-height));
-    }
-}
 
         * {
             box-sizing: border-box;
@@ -1792,878 +1715,1017 @@ body.has-intevi-alert .hero {
                 transition-duration: 0.01ms !important;
             }
         }
+    
+        /*
+        |--------------------------------------------------------------------------
+        | Landing comercial INTEVI - bloques adicionales
+        |--------------------------------------------------------------------------
+        */
 
-         .intevi-testimonios {
-        position: relative;
-        overflow: hidden;
-        padding: 100px 20px;
-        background:
-            radial-gradient(
-                circle at 10% 10%,
-                rgba(23, 28, 99, 0.09),
-                transparent 32%
-            ),
-            linear-gradient(180deg, #ffffff 0%, #f7f8fc 100%);
-    }
-
-    .intevi-testimonios::before {
-        content: "";
-        position: absolute;
-        top: -180px;
-        right: -180px;
-        width: 380px;
-        height: 380px;
-        border-radius: 50%;
-        background: rgba(23, 28, 99, 0.04);
-        pointer-events: none;
-    }
-
-    .intevi-testimonios-container {
-        position: relative;
-        z-index: 1;
-        width: 100%;
-        max-width: 1180px;
-        margin: 0 auto;
-    }
-
-    .intevi-testimonios-header {
-        max-width: 760px;
-        margin: 0 auto 54px;
-        text-align: center;
-    }
-
-    .intevi-testimonios-label {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 34px;
-        margin-bottom: 18px;
-        padding: 7px 15px;
-        border: 1px solid rgba(23, 28, 99, 0.14);
-        border-radius: 999px;
-        background: rgba(23, 28, 99, 0.06);
-        color: #171c63;
-        font-size: 12px;
-        font-weight: 800;
-        letter-spacing: 0.09em;
-        text-transform: uppercase;
-    }
-
-    .intevi-testimonios-header h2 {
-        margin: 0;
-        color: #11152f;
-        font-size: clamp(34px, 5vw, 55px);
-        font-weight: 850;
-        line-height: 1.08;
-        letter-spacing: -0.04em;
-    }
-
-    .intevi-testimonios-header p {
-        max-width: 670px;
-        margin: 22px auto 0;
-        color: #62697b;
-        font-size: 18px;
-        line-height: 1.75;
-    }
-
-    .intevi-testimonios-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 26px;
-    }
-
-    .intevi-testimonio-card {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        min-height: 410px;
-        padding: 34px;
-        overflow: hidden;
-        border: 1px solid rgba(17, 21, 47, 0.09);
-        border-radius: 26px;
-        background: rgba(255, 255, 255, 0.96);
-        box-shadow:
-            0 22px 60px rgba(23, 28, 99, 0.08),
-            0 4px 14px rgba(17, 21, 47, 0.04);
-        transition:
-            transform 0.25s ease,
-            box-shadow 0.25s ease,
-            border-color 0.25s ease;
-    }
-
-    .intevi-testimonio-card::after {
-        content: "";
-        position: absolute;
-        right: -80px;
-        bottom: -100px;
-        width: 220px;
-        height: 220px;
-        border-radius: 50%;
-        background: rgba(23, 28, 99, 0.035);
-        pointer-events: none;
-    }
-
-    .intevi-testimonio-card:hover {
-        transform: translateY(-6px);
-        border-color: rgba(23, 28, 99, 0.18);
-        box-shadow:
-            0 30px 75px rgba(23, 28, 99, 0.13),
-            0 5px 18px rgba(17, 21, 47, 0.05);
-    }
-
-    .intevi-testimonio-top {
-        position: relative;
-        z-index: 1;
-        display: flex;
-        align-items: center;
-        gap: 17px;
-    }
-
-    .intevi-testimonio-logo {
-        flex: 0 0 62px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 62px;
-        height: 62px;
-        border-radius: 18px;
-        background: #171c63;
-        color: #ffffff;
-        box-shadow: 0 13px 30px rgba(23, 28, 99, 0.22);
-        font-size: 20px;
-        font-weight: 900;
-        letter-spacing: -0.03em;
-    }
-
-    .intevi-testimonio-logo-red {
-        background: #a71930;
-        box-shadow: 0 13px 30px rgba(167, 25, 48, 0.2);
-    }
-
-    .intevi-testimonio-tipo {
-        display: block;
-        margin-bottom: 6px;
-        color: #7a8192;
-        font-size: 11px;
-        font-weight: 800;
-        letter-spacing: 0.09em;
-        text-transform: uppercase;
-    }
-
-    .intevi-testimonio-top h3 {
-        margin: 0;
-        color: #171a2f;
-        font-size: 19px;
-        font-weight: 800;
-        line-height: 1.3;
-    }
-
-    .intevi-testimonio-quote {
-        position: relative;
-        z-index: 1;
-        flex: 1;
-        margin-top: 35px;
-        padding: 29px 25px 25px;
-        border: 1px solid rgba(23, 28, 99, 0.07);
-        border-radius: 19px;
-        background: #f8f9fd;
-    }
-
-    .intevi-comillas {
-        position: absolute;
-        top: -19px;
-        left: 20px;
-        color: #171c63;
-        font-family: Georgia, serif;
-        font-size: 63px;
-        font-weight: 700;
-        line-height: 1;
-    }
-
-    .intevi-testimonio-quote p {
-        margin: 0;
-        color: #444b5e;
-        font-size: 16px;
-        line-height: 1.8;
-    }
-
-    .intevi-testimonio-footer {
-        position: relative;
-        z-index: 1;
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        gap: 18px;
-        margin-top: 28px;
-    }
-
-    .intevi-testimonio-footer strong,
-    .intevi-testimonio-footer span {
-        display: block;
-    }
-
-    .intevi-testimonio-footer strong {
-        margin-bottom: 4px;
-        color: #171a2f;
-        font-size: 14px;
-        font-weight: 850;
-    }
-
-    .intevi-testimonio-footer > div > span {
-        color: #818798;
-        font-size: 12px;
-        line-height: 1.45;
-    }
-
-    .intevi-testimonio-verificado {
-        display: inline-flex !important;
-        align-items: center;
-        flex: 0 0 auto;
-        gap: 7px;
-        color: #171c63;
-        font-size: 11px;
-        font-weight: 800;
-        white-space: nowrap;
-    }
-
-    .intevi-testimonio-verificado svg {
-        width: 21px;
-        height: 21px;
-        fill: none;
-        stroke: currentColor;
-        stroke-width: 1.8;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-    }
-
-    .intevi-testimonios-nota {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 13px;
-        max-width: 760px;
-        margin: 38px auto 0;
-        padding: 18px 22px;
-        border: 1px solid rgba(23, 28, 99, 0.1);
-        border-radius: 18px;
-        background: rgba(255, 255, 255, 0.82);
-    }
-
-    .intevi-testimonios-nota-icono {
-        flex: 0 0 auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 38px;
-        height: 38px;
-        border-radius: 12px;
-        background: rgba(23, 28, 99, 0.08);
-        color: #171c63;
-    }
-
-    .intevi-testimonios-nota-icono svg {
-        width: 22px;
-        height: 22px;
-        fill: none;
-        stroke: currentColor;
-        stroke-width: 1.8;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-    }
-
-    .intevi-testimonios-nota p {
-        margin: 0;
-        color: #5d6475;
-        font-size: 14px;
-        line-height: 1.6;
-    }
-
-    .tachado-equis {
-    position: relative;
-    display: inline-block;
-    background: 
-        linear-gradient(to top left, transparent 45%, rgba(255, 0, 0, 0.35) 45%, rgba(255, 0, 0, 0.35) 55%, transparent 55%),
-        linear-gradient(to top right, transparent 45%, rgba(255, 0, 0, 0.35) 45%, rgba(255, 0, 0, 0.35) 55%, transparent 55%);
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    }
-
-    .og-garantia {
-        position: relative;
-        overflow: hidden;
-        padding: 90px 24px;
-        background:
-            radial-gradient(
-                circle at 10% 50%,
-                rgba(254, 213, 36, 0.12),
-                transparent 31%
-            ),
-            linear-gradient(
-                135deg,
-                #0d103a 0%,
-                #101447 48%,
-                #171c63 100%
-            );
-    }
-
-    .og-garantia::before {
-        content: "";
-        position: absolute;
-        top: -180px;
-        right: -120px;
-        width: 420px;
-        height: 420px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 50%;
-    }
-
-    .og-garantia::after {
-        content: "";
-        position: absolute;
-        right: 30px;
-        bottom: -260px;
-        width: 500px;
-        height: 500px;
-        border-radius: 50%;
-        background: rgba(254, 213, 36, 0.035);
-    }
-
-    .og-garantia-container {
-        position: relative;
-        z-index: 2;
-        display: grid;
-        grid-template-columns: minmax(280px, 1fr) minmax(0, 2fr);
-        align-items: center;
-        gap: clamp(45px, 7vw, 95px);
-        width: 100%;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Logo — aproximadamente 1/3
-    |--------------------------------------------------------------------------
-    */
-
-    .og-garantia-visual {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .og-garantia-sello {
-        position: relative;
-        width: 100%;
-        max-width: 360px;
-        padding: 18px;
-        border: 1px solid rgba(255, 255, 255, 0.13);
-        border-radius: 50%;
-        background: #ffffff;
-        box-shadow:
-            0 30px 70px rgba(0, 0, 0, 0.3),
-            0 0 0 10px rgba(255, 255, 255, 0.035);
-    }
-
-    .og-garantia-sello::before {
-        content: "";
-        position: absolute;
-        inset: -17px;
-        z-index: -1;
-        border: 1px dashed rgba(254, 213, 36, 0.28);
-        border-radius: 50%;
-    }
-
-    .og-garantia-sello img {
-        display: block;
-        width: 100%;
-        height: auto;
-        border-radius: 50%;
-        object-fit: contain;
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Contenido — aproximadamente 2/3
-    |--------------------------------------------------------------------------
-    */
-
-    .og-garantia-contenido {
-        max-width: 720px;
-    }
-
-    .og-garantia-etiqueta {
-        display: inline-flex;
-        align-items: center;
-        min-height: 34px;
-        margin-bottom: 18px;
-        padding: 7px 15px;
-        border: 1px solid rgba(254, 213, 36, 0.28);
-        border-radius: 999px;
-        background: rgba(254, 213, 36, 0.09);
-        color: #fed524;
-        font-size: 12px;
-        font-weight: 850;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-    }
-
-    .og-garantia-contenido h2 {
-        max-width: 680px;
-        margin: 0;
-        color: #ffffff;
-        font-size: clamp(36px, 5vw, 60px);
-        font-weight: 850;
-        line-height: 1.08;
-        letter-spacing: -0.045em;
-    }
-
-    .og-garantia-contenido h2 span {
-        color: #fed524;
-    }
-
-    .og-garantia-descripcion {
-        max-width: 650px;
-        margin: 24px 0 0;
-        color: rgba(255, 255, 255, 0.77);
-        font-size: 18px;
-        line-height: 1.75;
-    }
-
-    .og-garantia-beneficio {
-        display: flex;
-        align-items: flex-start;
-        gap: 16px;
-        margin-top: 30px;
-        padding: 21px 22px;
-        border: 1px solid rgba(255, 255, 255, 0.11);
-        border-radius: 18px;
-        background: rgba(255, 255, 255, 0.07);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-    }
-
-    .og-garantia-check {
-        flex: 0 0 auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
-        background: #fed524;
-        color: #101447;
-        box-shadow: 0 10px 25px rgba(254, 213, 36, 0.2);
-    }
-
-    .og-garantia-check svg {
-        width: 23px;
-        height: 23px;
-        fill: none;
-        stroke: currentColor;
-        stroke-width: 2.5;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-    }
-
-    .og-garantia-beneficio p {
-        margin: 0;
-        color: rgba(255, 255, 255, 0.88);
-        font-size: 15px;
-        line-height: 1.7;
-    }
-
-    .og-garantia-beneficio strong {
-        color: #ffffff;
-        font-weight: 850;
-    }
-
-    .og-garantia-mensaje {
-        margin: 25px 0 0;
-        color: rgba(255, 255, 255, 0.75);
-        font-size: 16px;
-        line-height: 1.65;
-    }
-
-    .og-garantia-mensaje strong {
-        color: #ffffff;
-    }
-
-    .og-garantia-boton {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        min-height: 56px;
-        margin-top: 28px;
-        padding: 15px 25px;
-        border: 1px solid #fed524;
-        border-radius: 12px;
-        background: #fed524;
-        color: #101447;
-        box-shadow: 0 14px 32px rgba(254, 213, 36, 0.2);
-        font-size: 15px;
-        font-weight: 850;
-        text-decoration: none;
-        transition:
-            transform 0.22s ease,
-            background-color 0.22s ease,
-            box-shadow 0.22s ease;
-    }
-
-    .og-garantia-boton svg {
-        width: 21px;
-        height: 21px;
-        fill: none;
-        stroke: currentColor;
-        stroke-width: 2;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        transition: transform 0.22s ease;
-    }
-
-    .og-garantia-boton:hover {
-        transform: translateY(-3px);
-        background: #ffe35c;
-        color: #101447;
-        box-shadow: 0 18px 38px rgba(254, 213, 36, 0.27);
-        text-decoration: none;
-    }
-
-    .og-garantia-boton:hover svg {
-        transform: translateX(4px);
-    }
-
-    .og-garantia-terminos {
-        display: block;
-        max-width: 620px;
-        margin-top: 18px;
-        color: rgba(255, 255, 255, 0.48);
-        font-size: 11px;
-        line-height: 1.6;
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Responsive
-    |--------------------------------------------------------------------------
-    */
-
-    @media (max-width: 900px) {
-        .og-garantia {
-            padding: 75px 20px;
+        .section-warm {
+            background: var(--surface-warm);
         }
 
-        .og-garantia-container {
-            grid-template-columns: 1fr;
-            gap: 50px;
+        .offer-section .eyebrow {
+            color: #cdd1ff;
         }
 
-        .og-garantia-sello {
-            max-width: 310px;
+        .offer-section .section-copy {
+            color: rgba(255, 255, 255, .72);
         }
 
-        .og-garantia-contenido {
-            max-width: 760px;
-            margin: 0 auto;
+        .hero-kicker-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 20px;
+            margin-top: 22px;
+        }
+
+        .hero-kicker-item {
+            align-items: center;
+            color: var(--muted);
+            display: inline-flex;
+            font-size: 13px;
+            gap: 7px;
+        }
+
+        .hero-kicker-item svg {
+            color: var(--success);
+            height: 16px;
+            width: 16px;
+        }
+
+        .pain-grid {
+            display: grid;
+            gap: 1px;
+            grid-template-columns: repeat(4, 1fr);
+            margin-top: 48px;
+            background: var(--border);
+            border: 1px solid var(--border);
+        }
+
+        .pain-card {
+            background: white;
+            min-height: 230px;
+            padding: 30px;
+        }
+
+        .pain-card-number {
+            color: var(--accent-dark);
+            display: block;
+            font-family: 'Manrope', sans-serif;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: .12em;
+            margin-bottom: 30px;
+        }
+
+        .pain-card h3 {
+            font-family: 'Manrope', sans-serif;
+            font-size: 18px;
+            line-height: 1.3;
+        }
+
+        .pain-card p {
+            color: var(--ink-soft);
+            font-size: 14px;
+            line-height: 1.7;
+            margin-top: 12px;
+        }
+
+        .method-header {
+            align-items: start;
+            display: grid;
+            gap: 70px;
+            grid-template-columns: .8fr 1.2fr;
+            margin-bottom: 55px;
+        }
+
+        .method-summary {
+            background: rgba(255, 255, 255, .07);
+            border: 1px solid rgba(255, 255, 255, .14);
+            padding: 31px;
+        }
+
+        .method-summary strong {
+            color: var(--accent);
+            display: block;
+            font-family: 'Manrope', sans-serif;
+            font-size: 17px;
+            margin-bottom: 10px;
+        }
+
+        .method-summary p {
+            color: rgba(255, 255, 255, .72);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .method-card {
+            border-left: 1px solid rgba(255, 255, 255, .15);
+            min-height: 315px;
+            padding: 27px 22px;
+        }
+
+        .method-card:last-child {
+            border-right: 1px solid rgba(255, 255, 255, .15);
+        }
+
+        .method-card-number {
+            color: var(--accent);
+            display: block;
+            font-family: 'Manrope', sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: .13em;
+            margin-bottom: 44px;
+        }
+
+        .method-card h3 {
+            font-family: 'Manrope', sans-serif;
+            font-size: 21px;
+            line-height: 1.2;
+        }
+
+        .method-card strong {
+            display: block;
+            font-size: 13px;
+            margin-top: 13px;
+        }
+
+        .method-card p {
+            color: rgba(255, 255, 255, .64);
+            font-size: 14px;
+            line-height: 1.7;
+            margin-top: 10px;
+        }
+
+        .feature-grid.feature-grid-nine {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .feature-result {
+            align-items: center;
+            color: var(--primary);
+            display: inline-flex;
+            font-size: 12px;
+            font-weight: 800;
+            gap: 7px;
+            letter-spacing: .04em;
+            margin-top: 22px;
+            text-transform: uppercase;
+        }
+
+        .feature-result::before {
+            background: var(--accent);
+            content: '';
+            height: 2px;
+            width: 17px;
+        }
+
+        .demo-layout {
+            align-items: center;
+            display: grid;
+            gap: 75px;
+            grid-template-columns: 1.15fr .85fr;
+        }
+
+        .demo-points {
+            display: grid;
+            gap: 16px;
+            margin-top: 30px;
+        }
+
+        .demo-point {
+            align-items: flex-start;
+            display: flex;
+            gap: 12px;
+        }
+
+        .demo-point svg {
+            color: var(--success);
+            flex: 0 0 auto;
+            height: 19px;
+            margin-top: 2px;
+            width: 19px;
+        }
+
+        .demo-point strong {
+            display: block;
+            font-size: 15px;
+            margin-bottom: 3px;
+        }
+
+        .demo-point p {
+            color: var(--ink-soft);
+            font-size: 14px;
+        }
+
+        .implementation-grid {
+            display: grid;
+            gap: 18px;
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .implementation-card {
+            background: white;
+            border: 1px solid var(--border);
+            min-height: 275px;
+            padding: 30px;
+        }
+
+        .implementation-number {
+            color: var(--accent-dark);
+            display: block;
+            font-family: 'Manrope', sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: .12em;
+            margin-bottom: 33px;
+        }
+
+        .implementation-card h3 {
+            font-family: 'Manrope', sans-serif;
+            font-size: 19px;
+            line-height: 1.3;
+        }
+
+        .implementation-card p {
+            color: var(--ink-soft);
+            font-size: 14px;
+            line-height: 1.7;
+            margin-top: 13px;
+        }
+
+        .story-layout {
+            align-items: center;
+            display: grid;
+            gap: 72px;
+            grid-template-columns: .82fr 1.18fr;
+        }
+
+        .story-card {
+            background: var(--primary);
+            color: white;
+            padding: 46px;
+            position: relative;
+        }
+
+        .story-card::before {
+            color: rgba(255, 255, 255, .12);
+            content: '“';
+            font-family: Georgia, serif;
+            font-size: 140px;
+            left: 23px;
+            line-height: 1;
+            position: absolute;
+            top: 8px;
+        }
+
+        .story-card p {
+            font-family: 'Manrope', sans-serif;
+            font-size: clamp(23px, 2.5vw, 32px);
+            font-weight: 700;
+            letter-spacing: -.03em;
+            line-height: 1.35;
+            position: relative;
+            z-index: 2;
+        }
+
+        .story-card span {
+            color: rgba(255, 255, 255, .68);
+            display: block;
+            font-size: 13px;
+            margin-top: 25px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .roi-section {
+            background:
+                linear-gradient(90deg, rgba(213, 173, 99, .12), transparent 38%),
+                var(--surface-warm);
+            border-bottom: 1px solid #e7e1d7;
+            border-top: 1px solid #e7e1d7;
+            padding: 85px 0;
+        }
+
+        .roi-layout {
+            align-items: center;
+            display: grid;
+            gap: 60px;
+            grid-template-columns: .82fr 1.18fr;
+        }
+
+        .roi-questions {
+            display: grid;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .roi-question {
+            align-items: flex-start;
+            color: var(--ink-soft);
+            display: flex;
+            font-size: 14px;
+            gap: 10px;
+        }
+
+        .roi-question::before {
+            background: var(--accent);
+            content: '';
+            flex: 0 0 auto;
+            height: 6px;
+            margin-top: 8px;
+            width: 6px;
+        }
+
+        .roi-message {
+            font-family: 'Manrope', sans-serif;
+            font-size: clamp(27px, 3.1vw, 42px);
+            font-weight: 700;
+            letter-spacing: -.04em;
+            line-height: 1.22;
+        }
+
+        .offer-section {
+            background:
+                radial-gradient(circle at 8% 15%, rgba(213, 173, 99, .12), transparent 24%),
+                #0b0e31;
+            color: white;
+            padding: 112px 0;
+        }
+
+        .offer-layout {
+            align-items: center;
+            display: grid;
+            gap: 72px;
+            grid-template-columns: .92fr 1.08fr;
+        }
+
+        .offer-product {
+            position: relative;
+        }
+
+        .offer-product img {
+            filter: drop-shadow(0 35px 65px rgba(0, 0, 0, .32));
+            margin-inline: auto;
+            max-height: 520px;
+            object-fit: contain;
+        }
+
+        .offer-badge {
+            background: var(--accent);
+            color: #0b0e31;
+            font-size: 11px;
+            font-weight: 800;
+            left: 0;
+            letter-spacing: .11em;
+            padding: 11px 15px;
+            position: absolute;
+            text-transform: uppercase;
+            top: 15px;
+        }
+
+        .offer-card {
+            background: white;
+            box-shadow: 0 35px 90px rgba(0, 0, 0, .25);
+            color: var(--ink);
+            padding: 44px;
+        }
+
+        .offer-card-label {
+            color: var(--primary);
+            display: block;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        .offer-card h3 {
+            font-family: 'Manrope', sans-serif;
+            font-size: clamp(27px, 2.8vw, 39px);
+            letter-spacing: -.04em;
+            line-height: 1.14;
+            margin-top: 10px;
+        }
+
+        .offer-list {
+            border-top: 1px solid var(--border);
+            display: grid;
+            gap: 16px;
+            margin-top: 25px;
+            padding-top: 25px;
+        }
+
+        .offer-item {
+            align-items: flex-start;
+            display: flex;
+            gap: 12px;
+        }
+
+        .offer-item svg {
+            color: var(--success);
+            flex: 0 0 auto;
+            height: 20px;
+            margin-top: 2px;
+            width: 20px;
+        }
+
+        .offer-item strong {
+            display: block;
+            font-size: 15px;
+        }
+
+        .offer-item p {
+            color: var(--ink-soft);
+            font-size: 13px;
+            margin-top: 2px;
+        }
+
+        .price-box {
+            background: #f5f6ff;
+            border: 1px solid #e1e4ff;
+            margin-top: 28px;
+            padding: 25px;
+        }
+
+        .price-label {
+            color: var(--primary);
+            display: block;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: .09em;
+            text-transform: uppercase;
+        }
+
+        .price-main {
+            align-items: baseline;
+            color: var(--primary);
+            display: flex;
+            flex-wrap: wrap;
+            font-family: 'Manrope', sans-serif;
+            font-size: clamp(43px, 5vw, 63px);
+            font-weight: 800;
+            gap: 9px;
+            letter-spacing: -.06em;
+            line-height: 1;
+            margin-top: 12px;
+        }
+
+        .price-main small {
+            color: var(--ink-soft);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0;
+        }
+
+        .renewal-note {
+            border-top: 1px solid #dfe2f9;
+            color: var(--ink-soft);
+            font-size: 14px;
+            margin-top: 19px;
+            padding-top: 17px;
+        }
+
+        .renewal-note strong {
+            color: var(--ink);
+        }
+
+        .offer-actions {
+            display: grid;
+            gap: 11px;
+            margin-top: 24px;
+        }
+
+        .offer-actions .button {
+            width: 100%;
+        }
+
+        .offer-note {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.55;
+            margin-top: 15px;
             text-align: center;
         }
 
-        .og-garantia-descripcion,
-        .og-garantia-contenido h2,
-        .og-garantia-terminos {
-            margin-right: auto;
-            margin-left: auto;
+        .guarantee-layout {
+            align-items: center;
+            display: grid;
+            gap: 68px;
+            grid-template-columns: .72fr 1.28fr;
         }
 
-        .og-garantia-beneficio {
-            max-width: 680px;
-            margin-right: auto;
-            margin-left: auto;
+        .guarantee-image {
+            display: flex;
+            justify-content: center;
+        }
+
+        .guarantee-image img {
+            filter: drop-shadow(0 24px 40px rgba(18, 24, 61, .14));
+            max-width: 275px;
+        }
+
+        .guarantee-list {
+            display: grid;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .guarantee-item {
+            align-items: flex-start;
+            display: flex;
+            font-size: 14px;
+            gap: 10px;
+        }
+
+        .guarantee-item svg {
+            color: var(--success);
+            flex: 0 0 auto;
+            height: 18px;
+            margin-top: 2px;
+            width: 18px;
+        }
+
+        .faq-layout {
+            display: grid;
+            gap: 62px;
+            grid-template-columns: .72fr 1.28fr;
+        }
+
+        .faq-intro {
+            align-self: start;
+            position: sticky;
+            top: 115px;
+        }
+
+        .faq-list {
+            border-top: 1px solid var(--border);
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .faq-question {
+            align-items: center;
+            background: transparent;
+            border: 0;
+            color: var(--ink);
+            cursor: pointer;
+            display: flex;
+            font-family: 'Manrope', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            justify-content: space-between;
+            line-height: 1.35;
+            padding: 24px 0;
             text-align: left;
-        }
-    }
-
-    @media (max-width: 560px) {
-        .og-garantia {
-            padding: 60px 16px;
-        }
-
-        .og-garantia-container {
-            gap: 38px;
-        }
-
-        .og-garantia-sello {
-            max-width: 255px;
-            padding: 12px;
-        }
-
-        .og-garantia-contenido h2 {
-            font-size: 36px;
-        }
-
-        .og-garantia-descripcion {
-            font-size: 16px;
-        }
-
-        .og-garantia-beneficio {
-            padding: 18px;
-        }
-
-        .og-garantia-boton {
             width: 100%;
         }
-    }
 
-
-
-    @media (max-width: 850px) {
-        .intevi-testimonios {
-            padding: 78px 18px;
+        .faq-symbol {
+            color: var(--primary);
+            flex: 0 0 auto;
+            font-size: 25px;
+            font-weight: 400;
+            margin-left: 20px;
+            transition: transform 180ms ease;
         }
 
-        .intevi-testimonios-grid {
-            grid-template-columns: 1fr;
+        .faq-item.open .faq-symbol {
+            transform: rotate(45deg);
         }
 
-        .intevi-testimonio-card {
-            min-height: auto;
-        }
-    }
-
-    @media (max-width: 560px) {
-        .intevi-testimonios {
-            padding: 65px 15px;
-        }
-
-        .intevi-testimonios-header {
-            margin-bottom: 38px;
+        .faq-answer {
+            color: var(--ink-soft);
+            display: grid;
+            font-size: 15px;
+            grid-template-rows: 0fr;
+            line-height: 1.75;
+            transition: grid-template-rows 220ms ease;
         }
 
-        .intevi-testimonios-header p {
+        .faq-answer > div {
+            overflow: hidden;
+        }
+
+        .faq-answer p {
+            padding: 0 44px 23px 0;
+        }
+
+        .faq-item.open .faq-answer {
+            grid-template-rows: 1fr;
+        }
+
+        .mobile-sticky-cta {
+            background: rgba(255, 255, 255, .96);
+            border-top: 1px solid var(--border);
+            bottom: 0;
+            display: none;
+            left: 0;
+            padding: 10px 15px;
+            position: fixed;
+            right: 0;
+            z-index: 90;
+        }
+
+        .mobile-sticky-cta .button {
+            min-height: 48px;
+            width: 100%;
+        }
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Ajustes de confianza, conversión y claridad comercial
+        |--------------------------------------------------------------------------
+        */
+
+        .trust-strip {
+            background: var(--surface-soft);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .trust-strip-content {
+            align-items: center;
+            display: grid;
+            gap: 18px;
+            grid-template-columns: 1.2fr repeat(3, .8fr);
+            min-height: 126px;
+        }
+
+        .trust-strip-intro strong {
+            color: var(--primary);
+            display: block;
+            font-family: 'Manrope', sans-serif;
             font-size: 16px;
+            line-height: 1.35;
         }
 
-        .intevi-testimonio-card {
-            padding: 24px;
-            border-radius: 22px;
+        .trust-strip-intro span {
+            color: var(--muted);
+            display: block;
+            font-size: 13px;
+            margin-top: 5px;
         }
 
-        .intevi-testimonio-top {
-            align-items: flex-start;
+        .trust-point {
+            align-items: center;
+            border-left: 1px solid var(--border);
+            color: var(--ink-soft);
+            display: flex;
+            font-size: 13px;
+            font-weight: 700;
+            gap: 10px;
+            min-height: 48px;
+            padding-left: 20px;
         }
 
-        .intevi-testimonio-logo {
-            flex-basis: 54px;
-            width: 54px;
-            height: 54px;
-            border-radius: 15px;
-            font-size: 17px;
+        .trust-point svg {
+            color: var(--success);
+            flex: 0 0 auto;
+            height: 18px;
+            width: 18px;
         }
 
-        .intevi-testimonio-footer {
-            align-items: flex-start;
-            flex-direction: column;
+        .demo-view-list {
+            display: grid;
+            gap: 10px;
+            grid-template-columns: repeat(3, 1fr);
+            margin-top: 14px;
         }
 
-        .intevi-testimonios-nota {
-            align-items: flex-start;
+        .demo-view-item {
+            background: white;
+            border: 1px solid var(--border);
+            color: var(--ink-soft);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 12px 14px;
+            text-align: center;
         }
-    }
-    
 
-        /* ================================================================
-           INTEVI V2 · Página de ventas de respuesta directa
-           ================================================================ */
-        .og-section { padding: 108px 0; }
-        .og-soft { background: #f6f7f9; }
-        .og-warm { background: #f4f1eb; }
-        .og-dark { background: #101447; color: #fff; }
-        .og-kicker { display:inline-flex; align-items:center; gap:10px; margin-bottom:18px; color:#171c63; font-size:12px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
-        .og-kicker::before { content:""; width:28px; height:2px; background:#d5ad63; }
-        .og-dark .og-kicker { color:#d5d9ff; }
-        .og-title { font-family:'Manrope',sans-serif; font-size:clamp(34px,4.2vw,58px); line-height:1.06; letter-spacing:-.05em; font-weight:800; }
-        .og-title-sm { font-size:clamp(29px,3.4vw,46px); }
-        .og-copy { color:#555968; font-size:18px; line-height:1.78; }
-        .og-dark .og-copy { color:rgba(255,255,255,.7); }
-        .og-center { max-width:820px; margin:0 auto 54px; text-align:center; }
-        .og-center .og-copy { max-width:680px; margin:20px auto 0; }
-        .og-highlight { color:#171c63; }
-        .og-dark .og-highlight { color:#e2c58c; }
+        .story-layout-compact {
+            grid-template-columns: .88fr 1.12fr;
+        }
 
-        /* 1. Hero */
-        .og-hero { min-height:900px; padding:175px 0 105px; background:radial-gradient(circle at 83% 20%,rgba(213,173,99,.16),transparent 24%),linear-gradient(180deg,#fff,#f6f7fa); overflow:hidden; position:relative; }
-        .og-hero::after { content:""; position:absolute; width:620px; height:620px; right:-260px; top:90px; border:1px solid rgba(23,28,99,.06); transform:rotate(14deg); }
-        .og-hero-grid { display:grid; grid-template-columns:minmax(390px,.88fr) minmax(570px,1.12fr); gap:54px; align-items:center; }
-        .og-hero-copy { position:relative; z-index:2; }
-        .og-pill { display:inline-flex; align-items:center; gap:9px; padding:9px 13px; border:1px solid #e4e5e9; background:#fff; color:#171c63; font-size:11px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; margin-bottom:26px; }
-        .og-pill::before { content:""; width:7px; height:7px; border-radius:50%; background:#14745a; box-shadow:0 0 0 4px rgba(20,116,90,.1); }
-        .og-hero h1 { font-family:'Manrope',sans-serif; font-size:clamp(46px,5.7vw,75px); font-weight:800; letter-spacing:-.06em; line-height:.98; }
-        .og-hero h1 span { color:#171c63; }
-        .og-hero-lead { max-width:650px; margin-top:28px; color:#414553; font-size:19px; line-height:1.72; }
-        .og-actions { display:flex; flex-wrap:wrap; gap:14px; margin-top:37px; }
-        .og-note { display:flex; align-items:flex-start; gap:9px; margin-top:22px; color:#747885; font-size:13px; }
-        .og-note::before { content:"✓"; color:#14745a; font-weight:900; }
-        .og-browser { position:relative; width:108%; filter:drop-shadow(0 35px 70px rgba(22,27,67,.17)); z-index:2; }
-        .og-browser-label { position:absolute; left:-18px; top:38px; z-index:4; padding:11px 16px; background:#171c63; color:#fff; font-size:10px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; box-shadow:0 12px 30px rgba(23,28,99,.24); }
-        .og-browser-frame { overflow:hidden; border:1px solid rgba(23,28,99,.13); background:#fff; box-shadow:0 40px 90px rgba(22,27,67,.18); }
-        .og-browser-top { display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:16px; align-items:center; min-height:52px; padding:0 16px; border-bottom:1px solid #e6e8ee; background:linear-gradient(#fff,#f7f8fb); }
-        .og-dots { display:flex; gap:7px; }.og-dots i { width:8px; height:8px; border-radius:50%; background:#d4d7df; }
-        .og-address { justify-self:center; width:100%; max-width:340px; padding:7px 12px; background:#eff1f6; color:#777c8b; font-size:10px; text-align:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-        .og-browser-screen { aspect-ratio:1915/920; overflow:hidden; background:#edf0f5; }.og-browser-screen img { width:100%; height:100%; object-fit:cover; object-position:center top; }
-        .og-float { position:absolute; right:-20px; bottom:-28px; z-index:4; width:220px; padding:17px 20px; border:1px solid #e4e5e9; background:rgba(255,255,255,.97); box-shadow:0 20px 50px rgba(22,27,67,.14); }
-        .og-float small { display:block; color:#767a87; font-size:9px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; }.og-float strong { display:block; margin-top:6px; color:#14745a; font-size:13px; }
+        .offer-layout {
+            display: block;
+            margin-inline: auto;
+            max-width: 880px;
+        }
 
-        /* 2. Declaración */
-        .og-impact { padding:82px 0; background:#171c63; color:#fff; }
-        .og-impact-grid { display:grid; grid-template-columns:.55fr 1.45fr; gap:50px; align-items:center; }
-        .og-impact-label { color:#d8dcff; font-size:12px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
-        .og-impact-copy { font-family:'Manrope',sans-serif; font-size:clamp(30px,4vw,51px); line-height:1.18; letter-spacing:-.045em; font-weight:700; }.og-impact-copy span { color:#e0c38a; }
+        .offer-product {
+            display: none;
+        }
 
-        /* 3. PAS */
-        .og-pas-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:50px; }
-        .og-pas-card { position:relative; min-height:390px; padding:36px; border:1px solid #e4e5e9; background:#fff; }
-        .og-pas-card::before { content:""; position:absolute; left:36px; top:0; width:72px; height:4px; background:#d5ad63; }
-        .og-step { color:#9d783a; font-size:11px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
-        .og-pas-card h3 { margin-top:24px; font-family:'Manrope',sans-serif; font-size:24px; line-height:1.2; letter-spacing:-.03em; }
-        .og-pas-card p { margin-top:17px; color:#666b79; font-size:15px; line-height:1.75; }
-        .og-list { display:grid; gap:11px; margin-top:22px; list-style:none; }.og-list li { display:flex; gap:10px; color:#343746; font-size:14px; }.og-list li::before { content:""; flex:0 0 auto; width:6px; height:6px; margin-top:9px; background:#171c63; }
-        .og-big-question { margin-top:42px; padding:34px 38px; border-left:4px solid #d5ad63; background:#f4f1eb; font-family:'Manrope',sans-serif; font-size:clamp(24px,3.2vw,38px); font-weight:700; line-height:1.25; letter-spacing:-.035em; }
+        .offer-intro {
+            margin-bottom: 36px;
+            max-width: 780px;
+        }
 
-        /* 4. Solución */
-        .og-solution-grid { display:grid; grid-template-columns:1.02fr .98fr; gap:78px; align-items:center; }
-        .og-product-card { padding:28px; border:1px solid #e4e5e9; background:#fff; box-shadow:0 18px 48px rgba(18,24,61,.09); }
-        .og-mini-head { height:44px; border:1px solid #e4e5e9; border-bottom:0; background:#f7f8fa; }.og-mini-body { padding:32px; border:1px solid #e4e5e9; background:linear-gradient(135deg,rgba(23,28,99,.04),transparent 55%),#fff; }
-        .og-mini-brand { display:flex; align-items:center; gap:14px; }.og-mini-logo { display:flex; align-items:center; justify-content:center; width:48px; height:48px; background:#171c63; color:#fff; font-family:'Manrope'; font-weight:800; }.og-mini-brand small { display:block; color:#767a87; font-size:10px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }.og-mini-brand strong { display:block; margin-top:3px; font-family:'Manrope'; font-size:18px; }
-        .og-metrics { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:27px; }.og-metric { padding:19px; border:1px solid #e4e5e9; background:#f6f7f9; }.og-metric small { display:block; color:#767a87; font-size:9px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; }.og-metric strong { display:block; margin-top:5px; color:#171c63; font-family:'Manrope'; font-size:21px; }
-        .og-checks { display:grid; gap:16px; margin-top:30px; }.og-check { display:flex; gap:13px; align-items:flex-start; }.og-check-icon { display:flex; align-items:center; justify-content:center; flex:0 0 auto; width:31px; height:31px; background:#eef0ff; color:#171c63; font-weight:900; }.og-check strong { display:block; font-size:15px; }.og-check p { color:#666b79; font-size:14px; }
+        .offer-intro .section-copy {
+            max-width: 760px;
+        }
 
-        /* 5. Curiosidad */
-        .og-benefits { display:grid; grid-template-columns:repeat(2,1fr); gap:1px; border:1px solid #e4e5e9; background:#e4e5e9; }
-        .og-benefit { min-height:205px; padding:31px; background:#fff; transition:.18s ease; }.og-benefit:hover { position:relative; z-index:2; transform:translateY(-4px); box-shadow:0 24px 70px rgba(18,24,61,.13); }
-        .og-benefit small { color:#9d783a; font-size:11px; font-weight:800; letter-spacing:.09em; }.og-benefit h3 { margin-top:18px; font-family:'Manrope'; font-size:21px; line-height:1.25; letter-spacing:-.025em; }.og-benefit p { margin-top:12px; color:#666b79; font-size:14px; line-height:1.7; }
+        .tax-note {
+            color: var(--ink-soft);
+            display: block;
+            font-size: 12px;
+            line-height: 1.55;
+            margin-top: 13px;
+        }
 
-        /* 6. Credibilidad */
-        .og-cred-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; margin-top:48px; border:1px solid rgba(255,255,255,.13); background:rgba(255,255,255,.13); }
-        .og-cred { min-height:225px; padding:28px; background:rgba(255,255,255,.035); }.og-cred-icon { display:flex; align-items:center; justify-content:center; width:45px; height:45px; background:rgba(255,255,255,.09); color:#e0c38a; font-size:20px; }.og-cred h3 { margin-top:23px; font-family:'Manrope'; font-size:18px; line-height:1.25; }.og-cred p { margin-top:11px; color:rgba(255,255,255,.65); font-size:14px; }
+        .demo-form-shell {
+            background: #f8f9fc;
+            border: 1px solid var(--border);
+            margin-top: 8px;
+            padding: 24px 18px 18px;
+        }
 
-        /* 7. Evidencia */
-        .og-evidence { display:grid; grid-template-columns:1.15fr .85fr; gap:23px; }
-        .og-evidence-main { overflow:hidden; border:1px solid #e4e5e9; background:#fff; box-shadow:0 16px 45px rgba(18,24,61,.08); }.og-evidence-main img { width:100%; aspect-ratio:1915/920; object-fit:cover; object-position:center top; }.og-evidence-caption { padding:27px 29px; }.og-evidence-caption small { color:#9d783a; font-size:10px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }.og-evidence-caption h3 { margin-top:7px; font-family:'Manrope'; font-size:23px; }.og-evidence-caption p { margin-top:9px; color:#666b79; font-size:14px; }
-        .og-evidence-list { display:grid; gap:13px; }.og-proof { padding:22px; border:1px solid #e4e5e9; background:#fff; }.og-proof h3 { display:flex; align-items:center; gap:10px; font-family:'Manrope'; font-size:17px; }.og-proof h3::before { content:"✓"; display:flex; align-items:center; justify-content:center; width:30px; height:30px; background:rgba(20,116,90,.1); color:#14745a; }.og-proof p { margin-top:9px; color:#666b79; font-size:13px; }
+        .demo-form-heading {
+            margin: 0 auto 16px;
+            max-width: 540px;
+            text-align: left;
+        }
 
-        /* 8. Oferta */
-        .og-offer { display:grid; grid-template-columns:.88fr 1.12fr; gap:23px; }
-        .og-cost { padding:41px; background:#101447; color:#fff; }.og-cost small { color:#d8dcff; font-size:11px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }.og-cost h3 { margin-top:17px; font-family:'Manrope'; font-size:clamp(29px,3.5vw,43px); line-height:1.12; letter-spacing:-.045em; }.og-cost .og-list li { padding-bottom:13px; border-bottom:1px solid rgba(255,255,255,.12); color:rgba(255,255,255,.72); }.og-cost .og-list li::before { background:#d5ad63; }
-        .og-offer-card { padding:43px; border:1px solid #e4e5e9; background:#fff; box-shadow:0 28px 80px rgba(18,24,61,.13); }.og-offer-badge { display:inline-flex; padding:8px 11px; background:#f8f0df; color:#9d783a; font-size:10px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }.og-offer-card h3 { margin-top:21px; font-family:'Manrope'; font-size:clamp(30px,3.6vw,45px); line-height:1.08; letter-spacing:-.047em; }.og-offer-card>p { margin-top:17px; color:#666b79; font-size:16px; line-height:1.75; }
-        .og-includes { display:grid; grid-template-columns:repeat(2,1fr); gap:11px; margin-top:26px; }.og-include { padding:15px; border:1px solid #e4e5e9; background:#f6f7f9; color:#343746; font-size:13px; font-weight:700; }.og-include::before { content:"✓"; margin-right:8px; color:#14745a; font-weight:900; }
-        .og-price { display:flex; align-items:center; justify-content:space-between; gap:25px; margin-top:28px; padding-top:26px; border-top:1px solid #e4e5e9; }.og-price small { display:block; color:#767a87; font-size:10px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }.og-price strong { display:block; margin-top:3px; color:#171c63; font-family:'Manrope'; font-size:24px; }
+        .demo-form-heading strong {
+            color: var(--ink);
+            display: block;
+            font-family: 'Manrope', sans-serif;
+            font-size: 18px;
+        }
 
-        /* 9. Bonos */
-        .og-bonus-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:19px; }.og-bonus { min-height:270px; padding:26px; border:1px solid #e4e5e9; background:#fff; }.og-bonus-num { display:flex; align-items:center; justify-content:center; width:38px; height:38px; background:#171c63; color:#fff; font-family:'Manrope'; font-size:12px; font-weight:800; }.og-bonus h3 { margin-top:21px; font-family:'Manrope'; font-size:18px; line-height:1.25; }.og-bonus p { margin-top:11px; color:#666b79; font-size:13px; line-height:1.67; }.og-bonus-note { margin-top:26px; padding:16px 19px; border-left:4px solid #d5ad63; background:#f8f0df; color:#5c4927; font-size:13px; }
+        .demo-form-heading span {
+            color: var(--ink-soft);
+            display: block;
+            font-size: 13px;
+            line-height: 1.55;
+            margin-top: 4px;
+        }
 
-        /* 10. Garantía */
-        .og-guarantee { padding:92px 0; background:radial-gradient(circle at 12% 5%,rgba(213,173,99,.15),transparent 28%),#171c63; color:#fff; }.og-guarantee-grid { display:grid; grid-template-columns:.85fr 1.15fr; gap:68px; align-items:center; }.og-seal { display:flex; align-items:center; justify-content:center; min-height:330px; border:1px solid rgba(255,255,255,.22); position:relative; }.og-seal::before,.og-seal::after { content:""; position:absolute; inset:23px; border:1px solid rgba(255,255,255,.12); transform:rotate(6deg); }.og-seal::after { transform:rotate(-6deg); }.og-seal-inner { position:relative; z-index:2; max-width:250px; text-align:center; }.og-seal-icon { display:flex; align-items:center; justify-content:center; width:72px; height:72px; margin:0 auto; background:rgba(255,255,255,.09); color:#e0c38a; font-size:30px; }.og-seal strong { display:block; margin-top:19px; font-family:'Manrope'; font-size:20px; line-height:1.2; }.og-guarantee-points { display:grid; grid-template-columns:repeat(2,1fr); gap:11px; margin-top:26px; }.og-guarantee-points span { color:rgba(255,255,255,.78); font-size:14px; }.og-guarantee-points span::before { content:"✓"; margin-right:8px; color:#e0c38a; font-weight:900; }
+        .demo-form-shell iframe {
+            background: white;
+            border: 0;
+            display: block;
+            margin-inline: auto;
+            max-width: 540px;
+            width: 100%;
+        }
 
-        /* 11. FAQ */
-        .og-faq-layout { display:grid; grid-template-columns:.7fr 1.3fr; gap:68px; }.og-faq-intro { align-self:start; position:sticky; top:120px; }.og-faq-intro p { margin-top:17px; color:#666b79; }
-        .og-faq-list { border-top:1px solid #e4e5e9; }.og-faq-item { border-bottom:1px solid #e4e5e9; }.og-faq-q { display:flex; align-items:center; justify-content:space-between; gap:22px; width:100%; padding:23px 0; border:0; background:transparent; color:#171923; font-family:'Manrope'; font-size:18px; font-weight:700; text-align:left; cursor:pointer; }.og-faq-plus { display:flex; align-items:center; justify-content:center; flex:0 0 auto; width:34px; height:34px; border:1px solid #e4e5e9; color:#171c63; transition:.2s ease; }.og-faq-item.active .og-faq-plus { background:#171c63; color:#fff; transform:rotate(45deg); }.og-faq-a { max-height:0; overflow:hidden; transition:max-height .28s ease; }.og-faq-a p { padding:0 55px 24px 0; color:#666b79; font-size:15px; line-height:1.75; }
+        .guarantee-layout {
+            grid-template-columns: 1fr;
+            margin-inline: auto;
+            max-width: 860px;
+        }
 
-        /* 12. Cierre */
-        .og-close { padding:100px 0; background:linear-gradient(90deg,rgba(213,173,99,.1),transparent 38%),#0c0f30; color:#fff; }.og-close-grid { display:flex; justify-content:space-between; align-items:center; gap:68px; }.og-close-copy { max-width:760px; }.og-close h2 { font-family:'Manrope'; font-size:clamp(37px,4.9vw,62px); line-height:1.02; letter-spacing:-.055em; }.og-close p { max-width:660px; margin-top:20px; color:rgba(255,255,255,.72); font-size:17px; line-height:1.75; }.og-close-actions { display:flex; flex:0 0 auto; flex-direction:column; gap:11px; min-width:275px; }.og-close-actions small { color:rgba(255,255,255,.55); text-align:center; }
-        .button-outline-light { border-color:rgba(255,255,255,.28); color:#fff; }.button-outline-light:hover { background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.55); color:#fff; }
+        .guarantee-layout > div:last-child {
+            max-width: 800px;
+        }
 
-        @media(max-width:1100px){.og-hero-grid{grid-template-columns:minmax(360px,.86fr) minmax(510px,1.14fr)}.og-cred-grid{grid-template-columns:repeat(2,1fr)}.og-bonus-grid{grid-template-columns:repeat(3,1fr)}}
-        @media(max-width:940px){.og-section{padding:88px 0}.og-hero{min-height:auto;padding:145px 0 90px}.og-hero-grid,.og-solution-grid,.og-guarantee-grid,.og-faq-layout{grid-template-columns:1fr}.og-browser{width:100%;max-width:760px;margin:12px auto 0}.og-impact-grid{grid-template-columns:1fr}.og-pas-grid{grid-template-columns:1fr}.og-pas-card{min-height:auto}.og-evidence,.og-offer{grid-template-columns:1fr}.og-bonus-grid{grid-template-columns:repeat(2,1fr)}.og-faq-intro{position:static}.og-close-grid{align-items:flex-start;flex-direction:column}.og-close-actions{width:min(100%,420px)}}
-        @media(max-width:720px){.og-hero{padding-top:128px}.og-hero h1{font-size:clamp(41px,12vw,58px)}.og-hero-lead{font-size:17px}.og-actions{align-items:stretch;flex-direction:column}.og-actions .button{width:100%}.og-browser-top{grid-template-columns:auto minmax(0,1fr)}.og-browser-label{left:-8px}.og-float{right:8px}.og-benefits,.og-includes,.og-guarantee-points{grid-template-columns:1fr}.og-cred-grid,.og-bonus-grid{grid-template-columns:1fr}.og-offer-card,.og-cost{padding:31px 25px}.og-price{align-items:flex-start;flex-direction:column}.og-price .button{width:100%}.og-close-actions,.og-close-actions .button{width:100%}}
-        @media(max-width:480px){.og-section{padding:74px 0}.og-float{display:none}.og-big-question{padding:27px 23px}.og-product-card{padding:14px}.og-mini-body{padding:24px 19px}.og-faq-a p{padding-right:0}}
+        .guarantee-image {
+            display: none;
+        }
+
+        .commercial-clarity {
+            background: var(--primary-soft);
+            border-left: 3px solid var(--primary);
+            color: var(--ink-soft);
+            font-size: 13px;
+            line-height: 1.65;
+            margin-top: 26px;
+            padding: 17px 19px;
+        }
+
+        .footer-legal {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 22px;
+            margin-top: 18px;
+        }
+
+        .footer-legal a {
+            color: rgba(255, 255, 255, .58);
+            font-size: 12px;
+            text-decoration: underline;
+            text-decoration-color: rgba(255, 255, 255, .22);
+            text-underline-offset: 4px;
+        }
+
+        .footer-legal a:hover {
+            color: white;
+        }
+
+        @media (max-width: 960px) {
+            .trust-strip-content {
+                grid-template-columns: 1fr 1fr;
+                padding: 28px 0;
+            }
+
+            .trust-strip-intro {
+                grid-column: 1 / -1;
+            }
+
+            .trust-point:nth-last-child(1) {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .trust-strip-content,
+            .demo-view-list {
+                grid-template-columns: 1fr;
+            }
+
+            .trust-strip-intro,
+            .trust-point:nth-last-child(1) {
+                grid-column: auto;
+            }
+
+            .trust-point {
+                border-left: 0;
+                border-top: 1px solid var(--border);
+                padding: 16px 0 0;
+            }
+
+            .demo-form-shell {
+                padding: 20px 8px 12px;
+            }
+        }
+
+        @media (max-width: 960px) {
+            .method-header,
+            .demo-layout,
+            .story-layout,
+            .offer-layout,
+            .guarantee-layout,
+            .faq-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .pain-grid,
+            .implementation-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .method-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .method-card,
+            .method-card:last-child {
+                border-bottom: 1px solid rgba(255, 255, 255, .15);
+                border-left: 0;
+                border-right: 0;
+                min-height: 245px;
+            }
+
+            .method-card:last-child {
+                grid-column: 1 / -1;
+                min-height: auto;
+            }
+
+            .method-card-number {
+                margin-bottom: 22px;
+            }
+
+            .roi-layout {
+                gap: 28px;
+                grid-template-columns: 1fr;
+            }
+
+            .offer-product {
+                margin-inline: auto;
+                max-width: 650px;
+            }
+
+            .offer-card {
+                margin-inline: auto;
+                max-width: 690px;
+                width: 100%;
+            }
+
+            .faq-intro {
+                position: static;
+            }
+        }
+
+        @media (max-width: 720px) {
+            body {
+                padding-bottom: 68px;
+            }
+
+            .hero-kicker-list {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .pain-grid,
+            .method-grid,
+            .feature-grid.feature-grid-nine,
+            .implementation-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .method-card:last-child {
+                grid-column: auto;
+            }
+
+            .method-card,
+            .method-card:last-child {
+                min-height: auto;
+                padding: 30px 3px;
+            }
+
+            .story-card,
+            .offer-card {
+                padding: 34px 27px;
+            }
+
+            .offer-product img {
+                max-height: 390px;
+            }
+
+            .price-main {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 11px;
+            }
+
+            .faq-answer p {
+                padding-right: 0;
+            }
+
+            .mobile-sticky-cta {
+                display: block;
+            }
+        }
 
     </style>
-    <script
+        <script
         src="{{ asset('js/intevi-clarity.js') }}"
         defer>
     </script>
 </head>
 
 <body>
-    <!--Start of Tawk.to Script-->
-    <script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/6a5ad85b940f101d5323a8b6/1jtpdq9oo';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
-    })();
-    </script>
-    <!--End of Tawk.to Script-->
 
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PCLM28B2"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-    
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NETSEPFHTT"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
 
-    gtag('config', 'G-NETSEPFHTT');
-    </script>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PCLM28B2"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+ 
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NETSEPFHTT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NETSEPFHTT');
+</script>
  
 <header class="site-header">
-        <div class="container navbar">
-    <!--        
-    <a href="{{ url('/') }}" class="brand">
-        <img
-            src="{{ asset('images/intevi logo.png') }}"
-            alt="Logo de INTEVI"
-            class="brand-logo"
-        >
+    <div class="container navbar">
+        <a href="#inicio" class="brand">
+            <img
+                src="{{ asset('images/intevi logo.png') }}"
+                alt="Logo de INTEVI"
+                class="brand-logo"
+                width="52"
+                height="52"
+            >
 
-        <span class="brand-text">
-            <span class="brand-name">INTEVI</span>
-
-            <span class="brand-description">
-                 Inventario y resguardo institucional
+            <span class="brand-text">
+                <span class="brand-name">INTEVI</span>
+                <span class="brand-description">
+                    Inventario y resguardo institucional
+                </span>
             </span>
-        </span>
-    </a>
+        </a>
 
         <div class="nav-area" id="navigation">
             <ul class="nav-links">
-                <li>
-                    <a class="nav-link" href="#solucion">
-                        Solución
-                    </a>
-                </li>
-
-                <li>
-                    <a class="nav-link" href="#funciones">
-                        Funciones
-                    </a>
-                </li>
-
-                <li>
-                    <a class="nav-link" href="#como-funciona">
-                        Cómo funciona
-                    </a>
-                </li>
-
-                <li>
-                    <a class="nav-link" href="#instituciones">
-                        Instituciones
-                    </a>
-                </li>
+                <li><a class="nav-link" href="#metodo">Método 5X</a></li>
+                <li><a class="nav-link" href="#plataforma">Plataforma</a></li>
+                <li><a class="nav-link" href="#implementacion">Implementación</a></li>
+                <li><a class="nav-link" href="#oferta">Precio</a></li>
+                <li><a class="nav-link" href="#preguntas">Preguntas</a></li>
             </ul>
 
-            <a class="button button-primary nav-cta" href="#contacto">
-                Solicitar demostración
-            </a>
+     
+            <a class="button button-primary nav-cta" href="#formulario-demo">Solicitar demostración</a>
         </div>
 
         <button
@@ -2677,822 +2739,1305 @@ body.has-intevi-alert .hero {
             <span></span>
         </button>
     </div>
-    -->
-
-    <div
-    class="intevi-alert"
-    id="inteviAlert"
-    role="alert"
-    aria-live="polite"
->
-    <div class="container intevi-alert-content">
-    <div class="intevi-alert-message">
-        <span class="intevi-alert-iconQUITARMAYUSCULAS" aria-hidden="true">
-            <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-            >
-                <path d="M12 3 2 21h20L12 3Z"/>
-                <path d="M12 9v5"/>
-                <path d="M12 18h.01"/>
-            </svg>
-        </span>
-
-        <p>
-            <strong style="text-decoration: underline;">🚨 ATENCIÓN:</strong>
-            Institutos de gobierno y empresas. 🚨
-        </p>
-    </div>
-    </div>
-</div>
-
 </header>
 
 <main>
-    {{-- 1. CAPTAR LA ATENCIÓN --}}
-    {{-- 
-    <section class="og-hero" id="inicio">
-        <div class="container og-hero-grid">
-            <div class="og-hero-copy">
-                <!--
-                <span class="og-pill">Control institucional de bienes</span>
-                -->
-                <!--
-                <h1>Recupera el control de los bienes <span>de tu institución.</span></h1>
-                <p class="og-hero-lead">
-                    Centraliza el inventario, identifica dónde se encuentra cada bien y consulta quién es su responsable desde una sola plataforma diseñada para organismos gubernamentales.
-                </p>
-                -->
-                <h1 style="font-size:40px;">Cómo llevar control de tus resguardos ahorrando <span style="color:red;">tiempo, esfuerzo y estrés</span> desde <span style="color:red;"> el primer mes</span>, utilizando un sistema sin importar si sabes usar una computadora,<span style="color:red;"> comenzando desde cero.</span></h1>
-                <p class="og-hero-lead">
-                    Esto funciona incluso si no eres un experto usando sistemas o no sabes usar bien una computadora.
-                </p>
-
-                <div class="og-actions">
-                    <a class="button button-primary" style="background:red;" href="#contacto">
-                        SOLICITAR UNA DEMOSTRACIÓN GRATIS
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                    </a>
-                    <!--
-                    <a class="button button-outline" href="#solucion">Conocer cómo funciona</a>
-                    -->
+    {{-- HERO --}}
+    <section class="hero" id="inicio">
+        <div class="container hero-grid">
+            <div class="hero-copy">
+                <div class="hero-tag">
+                    <span class="hero-tag-dot"></span>
+                    Control de resguardos institucionales
                 </div>
-                <p class="og-note">Conoce primero la plataforma. Después evalúa si responde a las necesidades de tu institución. Sin compromiso de contratación.</p>
-            </div>
 
-            <div class="og-browser">
-                <!--
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/jNQXAC9IVRw?si=z7OVEJo5EyEY0zv-&amp;start=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                -->
-                <!--
-                <span class="og-browser-label">Vista real de INTEVI</span>
-                <div class="og-browser-frame">
-                    <div class="og-browser-top">
-                        <div class="og-dots"><i></i><i></i><i></i></div>
-                        <div class="og-address">tuinstitucion.intevi.app/inventario</div>
-                        <div class="og-dots"><i></i><i></i><i></i></div>
-                    </div>
-                    <div class="og-browser-screen">
-                        <img src="{{ asset('images/intevi-dashboard.webp') }}" alt="Vista real del sistema INTEVI" width="1915" height="920" loading="eager" fetchpriority="high">
-                    </div>
-                </div>
-                <div class="og-float"><small>Información institucional</small><strong>Inventario centralizado</strong></div>
-                -->
-            </div>
-        </div>
-    </section>
-    --}}
-
-    <section class="og-hero" id="inicio" style="width:100%;">
-        <div class="og-hero-grid"
-            style="
-                display:block;
-                width:100%;
-                max-width:100%;
-                margin:0 auto;
-                padding-left:5%;
-                padding-right:5%;
-            ">
-
-            <div class="og-hero-copy"
-                style="
-                    width:100%;
-                    max-width:1300px;
-                    margin:0 auto;
-                    text-align:center;
-                ">
-
-                <h1 style="
-                    width:100%;
-                    max-width:none;
-                    margin-left:auto;
-                    margin-right:auto;
-                    font-size:clamp(32px, 4vw, 52px);
-                    line-height:1.15;
-                ">
-                    Cómo llevar control de tus resguardos ahorrando
-                    <span style="color:red;">tiempo, esfuerzo y estrés</span>
-                    desde <span style="color:red;">el primer mes</span>,
-                    utilizando un sistema sin importar si sabes usar una computadora,
-                    <span style="color:red;">comenzando desde cero.</span>
+                <h1 class="hero-title">
+                    No basta con saber qué bienes tienes.
+                    <span>
+                        Debes saber dónde están, quién responde por ellos
+                        y qué lo comprueba.
+                    </span>
                 </h1>
 
-                <p class="og-hero-lead"
-                style="
-                        max-width:900px;
-                        margin-left:auto;
-                        margin-right:auto;
-                ">
-                    Esto funciona incluso si no eres un experto usando sistemas o no sabes usar bien una computadora.
+                <p class="hero-description">
+                    INTEVI conecta inventario, responsables, ubicaciones,
+                    documentos e historiales para que cada bien institucional
+                    permanezca identificado, localizado y respaldado desde una
+                    sola plataforma.
                 </p>
 
-                <div class="og-actions"
-                    style="
-                        display:flex;
-                        justify-content:center;
-                        width:100%;
-                    ">
-                    <a class="button button-primary"
-                    style="background:red;"
-                    href="#contacto">
+                <div class="hero-actions">
+                    <a class="button button-primary nav-cta" href="#formulario-demo">Solicitar demostración</a>
 
-                        SOLICITAR UNA DEMOSTRACIÓN GRATIS
-
-                        <svg viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M5 12h14M13 6l6 6-6 6"/>
-                        </svg>
+                    <a class="button button-outline" href="#metodo">
+                        Conocer el Método 5X
                     </a>
                 </div>
 
-                <p class="og-note"
-                style="
-                        max-width:850px;
-                        margin-left:auto;
-                        margin-right:auto;
-                ">
-                    Conoce primero la plataforma. Después evalúa si responde a las necesidades de tu institución. Sin compromiso de contratación.
-                </p>
-
-            </div>
-        </div>
-    </section>
-
-    {{-- 2. DECLARACIÓN IMPACTANTE --}}
-    <section class="og-impact" style="background:#F8F8FB;">
-        <div class="container og-impact-grid">
-            <!--
-            <span class="og-impact-label" style="color:black;">Una realidad administrativa</span>
-            -->
-            <span class="og-impact-label" style="color:black;"></span>
-            <p class="og-impact-copy" style="color:black;">¿Sabías que un bien que no puede localizarse, comprobarse o relacionarse con un responsable <span style="text-decoration: underline;color:black;">no está realmente bajo control?</span></p>
-        </div>
-        <div class="container og-impact-grid">
-            <span class="og-impact-label"></span>
-            <p class="og-impact-label" style="font-size:20px;margin-top:40px;text-transform: none !important;color:black;">Un día cuando trabajaba en Gobierno del Estado e iban a hacer cambio de administración cambio mi vida. Pude darme cuenta que mucha gente esta estresada por llevar el control de los resguardos institucionales. Pasé de tener un inventario en muchas hojas con mucho caos, a tener un<span style="text-decoration: underline;"> inventario y resguardos con orden, control y sin estrés.</span></p>
-        </div>
-    </section>
-
-
-    {{-- 3. PROBLEMA, AGITACIÓN Y RESPUESTA --}}
-    <section class="og-section og-soft" id="solucion">
-        <div class="container">
-            <div class="og-center">
-                <!--
-                <span class="og-kicker">El Problema</span>
-                -->
-                <h2 class="og-title og-title-sm" style="color:red;">Este es el problema que tienes...</h2>
-
-                <h2 class="og-title og-title-sm" style="margin-top:50px;">Piensas que al tener muchos bienes es muy difícil llevar control de todos los resguardos.</h2>
-                <h2 class="og-title og-title-sm" style="margin-top:50px;">Lo que significa que nunca podras tener un control exitoso de tus resguardos y seguiras viviendo el resto de tu vida con el estrés de una auditoria y de ser despedido en cualquier momento.</h2>
-                <h2 class="og-title og-title-sm" style="margin-top:50px;">Perderás mucho tiempo y esfuerzo de personas intentando hacer estrategias que no funcionan y que lo único que harán es que regreses a sufrir y tener un dolor de cabeza por el estrés de una auditoria o de no saber exactamente en donde se ubica cada bien institucional.</h2>
-
-                <!--
-                <span class="og-highlight">Es no contar con información confiable sobre ellos.</span></h2>
-                <p class="og-copy">Cuando la información depende de archivos dispersos, documentos físicos y conocimiento individual, una consulta sencilla puede convertirse en horas de búsqueda.</p>
-                -->    
-            </div>
-
-            <!--
-            <div class="og-pas-grid">
-                <article class="og-pas-card">
-                    <span class="og-step">01 · El problema</span>
-                    <h3>La información está fragmentada</h3>
-                    <p>El inventario se reparte entre hojas de cálculo, formatos impresos, correos y equipos de diferentes áreas.</p>
-                    <ul class="og-list"><li>Versiones diferentes del mismo listado.</li><li>Bienes sin ubicación documentada.</li><li>Resguardos difíciles de localizar.</li><li>Datos que dependen de una persona.</li></ul>
-                </article>
-                <article class="og-pas-card">
-                    <span class="og-step">02 · El riesgo</span>
-                    <h3>Cada revisión expone la falta de control</h3>
-                    <p>El personal debe revisar carpetas, comparar archivos, llamar a otras áreas y reconstruir movimientos manualmente.</p>
-                    <ul class="og-list"><li>Más tiempo administrativo.</li><li>Registros duplicados o incompletos.</li><li>Dificultad para comprobar responsables.</li><li>Correcciones de última hora.</li></ul>
-                </article>
-                <article class="og-pas-card">
-                    <span class="og-step">03 · La solución</span>
-                    <h3>La institución necesita una fuente central</h3>
-                    <p>INTEVI organiza los bienes, responsables, áreas, ubicaciones y resguardos en un mismo entorno institucional.</p>
-                    <ul class="og-list"><li>Consulta centralizada.</li><li>Responsabilidad definida.</li><li>Ubicación identificada.</li><li>Acceso según roles y permisos.</li></ul>
-                </article>
-            </div>
-            
-            <p class="og-big-question">¿Dónde está este bien, quién lo tiene asignado y qué información respalda su resguardo?</p>
-            -->        
-        </div>
-    </section>
-
-    <section class="og-impact" style="background:red;">
-        <div class="container og-impact-grid">
-            <span class="og-impact-label"></span>
-            <p class="og-impact-copy">Afortunadamente para ti, hay una solución...</p>
-        </div>
-    </section>
-    <div class="container">
-            <div class="og-center">
-                <p style="font-size:42px; margin-top:35px;">Déjame presentarte a <span style="font-weight:bold;">INTEVI</span></p>
-            </div>
-            <div class="og-browser">
-                <div class="og-browser-screen">
-                    <img
-                        src="{{ asset('images/intevi-presentacion-producto3.png') }}"
-                        alt="Vista real del sistema INTEVI"
-                        width="1915"
-                        height="920"
-                        loading="eager"s
-                        fetchpriority="high"
-                        style="
-                            display: block !important;
-                            width: 100% !important;
-                            max-width: 1100px !important;
-                            height: auto !important;
-                            max-height: none !important;
-                            margin: 0 auto !important;
-                            object-fit: contain !important;
-                            object-position: center !important;
-                        "
-                    >
-                </div>
-                <!--
-                <span class="og-browser-label">Vista real de INTEVI</span>
-                <div class="og-browser-frame">
-                    <div class="og-browser-top">
-                        <div class="og-dots"><i></i><i></i><i></i></div>
-                        <div class="og-address">tuinstitucion.intevi.app/inventario</div>
-                        <div class="og-dots"><i></i><i></i><i></i></div>
-                    </div>
-                    <div class="og-browser-screen">
-                        <img src="{{ asset('images/intevi-presentacion-producto.png') }}" alt="Vista real del sistema INTEVI" width="1915" height="920" loading="eager" fetchpriority="high">
-                    </div>
-                -->
-                </div>
-                
-                <h2 class="og-title og-title-sm" style="margin-top:40px;">Una plataforma completamente nueva que le permite a las organizaciones que quieran llevar control de sus resguardos <span style="text-decoration: underline;color:black;"> incrementar el control de sus bienes, saber dónde están y quién los tiene desde el primer mes,</span> con un sistema fácil de usar, incluso si nunca antes has utilizado uno, empezando desde cero.</h2>
-                <div class="og-checks">
-                    <div class="og-check"><span class="og-check-icon">✓</span><div><p>Registro completo de bienes, lo que significa que tendras la información muy fácil y rápido de la descripción, marca, serie, características, estado y datos de identificación.</p></div></div>
-                    <div class="og-check"><span class="og-check-icon">✓</span><div><p>Resguardos y responsables, lo que significa relación clara entre el activo, la persona y el área que lo utiliza o custodia.</p></div></div>
-                    <div class="og-check"><span class="og-check-icon">✓</span><div><p>Ubicación sencilla de resguardos con códigos escaneables, lo que significa que desde la plataforma tendras la opción de generar etiquetas para pegarlas en tus resguardos y poder escanearlas sabiendo rápidamente a quien le pertenece dicho resguardo.</p></div></div>
-                    <div class="og-check"><span class="og-check-icon">✓</span><div><p>Implementación sencilla, lo que significa que no tendras que preocuparte de instalar muchas cosas en tu computadora ya que la plataforma funciona desde cualquier navegador web.</p></div></div>
-                    <div class="og-check"><span class="og-check-icon">✓</span><div><p>Entorno independiente por institución, lo que significa que cada organismo opera con su propio acceso, usuarios e información.</p></div></div>
-                    <div class="og-check"><span class="og-check-icon">✓</span><div><p>Olvidate el mantenimiento, lo que significa que no tendras que preocuparte por hacer mantenimiento a la plataforma ya que nosotros desde forma remota lo hacemos para mantener todo funcionando: tu solo usas la plataforma y listo, sin preocuparte por todo lo demás.</p></div></div>
-                </div>
-                <div style="margin-top:50px;">
-                    <p>Hola, soy Jonathan Bedolla informático y creador de productos digitales.</p><br>
-                    <p><b>¿Porqué yo para solucionar este problema?</b></p><br>
-                    <p>Es muy simple de entender, cuando trabaje casi durante dos años en un Instituto de Gobierno, me di cuenta que lograr llevar el control de los resguardos institucionales, fue algo casi que imposible.</p><br>
-                    <p>Justo cuando iba darme por vencido y veia a mis compañeros que estaban muy estresados, me llego la idea de una solución mientras tomaba una ducha por la noche.</p><br>    
-                    <p>Gracias a esa idea tengo hasta el momento un producto que soluciona el problema de llevar el control de los resguardos institucionales de las organizaciones.</p><br>
-                    <p>No fue por suerte ni por casualidad. Ha sido el resultado de <b>meses de trabajo y aplicación del método Resguardos Fáciles de controlar 5X</b>, inspirado en la solución de otros problemas por medio de software.</p><br>
-                </div>
-            </div>
-    </div>
-{{--    
-    <section class="og-impact" style="background:red;">
-        <div class="container og-impact-grid">
-            <span class="og-impact-label"></span>
-            <p style="font-size:30px;">Yo sé que todo lo que te he mostrado suena muy bueno para ser cierto, pero no quiero que te limites a creer mi palabra. Simplemente echa un vistazo a esto...</p>
-        </div>
-    </section>
-
-
-<section class="intevi-testimonios" id="testimonios">
-    <div class="intevi-testimonios-container">
-
-        <div class="intevi-testimonios-header">
-            <span class="intevi-testimonios-label">
-                Evidencia de pruebas institucionales
-            </span>
-
-            <h2>
-                INTEVI probado en entornos reales
-            </h2>
-
-            <p>
-                Instituciones han conocido y probado la plataforma para evaluar
-                su funcionamiento en procesos de inventario, control de bienes
-                y generación de resguardos.
-            </p>
-        </div>
-
-        <div class="intevi-testimonios-grid">
-
-            <!-- TESTIMONIO IIH -->
-            <article class="intevi-testimonio-card">
-                <div class="intevi-testimonio-top">
-                    <div class="intevi-testimonio-logo">
-                        IIH
-                    </div>
-
-                    <div>
-                        <span class="intevi-testimonio-tipo">
-                            Prueba institucional
-                        </span>
-
-                        <h3>Instituto de Investigaciones Históricas (UMSNH)</h3>
-                    </div>
-                </div>
-
-                <div class="intevi-testimonio-quote">
-                    <span class="intevi-comillas" aria-hidden="true">“</span>
-
-                    <p>
-                        INTEVI nos permitió conocer una alternativa más clara
-                        para organizar la información de los bienes, sus
-                        ubicaciones y las personas responsables de cada
-                        resguardo.
-                    </p>
-                </div>
-
-                <div class="intevi-testimonio-footer">
-                    <div>
-                        <strong>IIH</strong>
-                        <span>Instituto de Investigaciones Históricas</span>
-                    </div>
-
-                    <span class="intevi-testimonio-verificado">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M9 12.75 11.25 15 15.5 9.75"/>
-                            <circle cx="12" cy="12" r="9"/>
+                <div class="hero-kicker-list">
+                    <span class="hero-kicker-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M20 6 9 17l-5-5"/>
                         </svg>
+                        Funciona desde el navegador
+                    </span>
 
-                        Experiencia de prueba
+                    <span class="hero-kicker-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M20 6 9 17l-5-5"/>
+                        </svg>
+                        Sin instalación en cada equipo
+                    </span>
+
+                    <span class="hero-kicker-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M20 6 9 17l-5-5"/>
+                        </svg>
+                        Demostración sin compromiso
                     </span>
                 </div>
-            </article>
+            </div>
 
-            <!-- TESTIMONIO ACADEMIA DE POLICÍA -->
-            <article class="intevi-testimonio-card">
-                <div class="intevi-testimonio-top">
-                    <div class="intevi-testimonio-logo intevi-testimonio-logo-red">
-                        AP
+            <div class="product-preview">
+                <div class="preview-label">
+                    Vista real de INTEVI
+                </div>
+
+                <div class="system-browser">
+                    <div class="system-browser-bar">
+                        <div class="system-browser-controls">
+                            <span></span><span></span><span></span>
+                        </div>
+
+                        <div class="system-browser-address">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <rect x="5" y="10" width="14" height="10" rx="2"/>
+                                <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+                            </svg>
+                            <span>tuinstitucion.intevi.app/inventario</span>
+                        </div>
+
+                        <div class="system-browser-menu">
+                            <span></span><span></span><span></span>
+                        </div>
                     </div>
 
-                    <div>
-                        <span class="intevi-testimonio-tipo">
-                            Validación operativa
-                        </span>
-
-                        <h3>Academia de Policía (GOBIERNO DE MICHOACÁN)</h3>
+                    <div class="system-screen">
+                        <img
+                            src="{{ asset('images/intevi-dashboard.webp') }}"
+                            alt="Vista del sistema INTEVI para control de inventario institucional"
+                            width="1915"
+                            height="920"
+                            loading="eager"
+                            fetchpriority="high"
+                        >
                     </div>
                 </div>
 
-                <div class="intevi-testimonio-quote">
-                    <span class="intevi-comillas" aria-hidden="true">“</span>
-
-                    <p>
-                        La plataforma presenta de manera ordenada la información
-                        del inventario y facilita la consulta de resguardos,
-                        responsables, áreas y ubicaciones institucionales.
-                    </p>
+                <div class="product-floating-card">
+                    <span class="floating-card-label">Control institucional</span>
+                    <span class="floating-card-value">Información centralizada</span>
                 </div>
-
-                <div class="intevi-testimonio-footer">
-                    <div>
-                        <strong>Academia de Policía</strong>
-                        <span>Institución de formación policial</span>
-                    </div>
-
-                    <span class="intevi-testimonio-verificado">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M9 12.75 11.25 15 15.5 9.75"/>
-                            <circle cx="12" cy="12" r="9"/>
-                        </svg>
-
-                        Experiencia de prueba
-                    </span>
-                </div>
-            </article>
-
-        </div>
-
-        <div class="intevi-testimonios-nota">
-            <div class="intevi-testimonios-nota-icono">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 3 4.5 6v5.25c0 4.64 3.2 8.94 7.5 9.75 4.3-.81 7.5-5.11 7.5-9.75V6L12 3Z"/>
-                    <path d="m9 12 2 2 4-4"/>
-                </svg>
-            </div>
-
-            <p>
-                Cada implementación de INTEVI se adapta a la estructura,
-                áreas, ubicaciones y procesos internos de la institución.
-            </p>
-        </div>
-
-    </div>
-</section>
---}}
-
-    <section class="og-impact" style="background:red;">
-            <p style="font-size:25px;text-align: center;">AQUÍ HAY UN RESUMEN DE</p>
-            <p style="font-size:40px;text-align: center;"><b>TODO LO QUE OBTENDRÁS</b></p>
-            <p style="font-size:25px;text-align: center;">UNA VEZ INGRESES A INTEVI</p>
-    </section>
-    <section class="og-impact" style="background:black; padding:80px;">
-            <p style="font-size:40px;text-align: center;color:#FED524;"><b>!Solucionar tu Problema Garantizado!</b></p>
-            <p style="font-size:20px;text-align: center;">
-                Para llevar el control de los resguardos institucionales se necesitan estrategias y herramientas de control<br>
-                profesionales, se necesita de una plataforma de alta calidad. Aqui tenemos todo lo que se<br>
-                necesita.
-            </p>
-            <p style="font-size:30px;text-align: center;color:#E9231C;">Acceso inmediato a todo en menos de 72 horas</p>
-            <p style="font-size:20px;text-align: center;">Mira todo los beneficios que encontrarás en esta solución</p>
-    </section>
-    <div class="container">
-            <div class="og-browser">
-                <div class="og-browser-screen">
-                    <img
-                        src="{{ asset('images/lo que obtendras.png') }}"
-                        alt="Vista real del sistema INTEVI"
-                        width="1915"
-                        height="920"
-                        loading="eager"s
-                        fetchpriority="high"
-                        style="
-                            display: block !important;
-                            width: 100% !important;
-                            max-width: 1100px !important;
-                            height: auto !important;
-                            max-height: none !important;
-                            margin: 0 auto !important;
-                            object-fit: contain !important;
-                            object-position: center !important;
-                        "
-                    >
-                </div>
-            </div>
-            <div class="og-center">
-                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•PLATAFORMA INTEVI <span style="font-weight:bold;color:red;">($1497) USD LICENCIA ANUAL</span></p>
-                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•MÉTODO RESGUARDOS FÁCILES<br> DE CONTROLAR 5X <span style="color:#131750;">(METODOLOGÍA INTEGRADA EN INTEVI PARA ORGANIZAR LA INFORMACIÓN, SIMPLIFICAR LA OPERACIÓN Y MANTENER LOS RESGUARDOS BAJO CONTROL DE UNA MANERA MÁS FÁCIL Y RÁPIDA)</span><span style="font-weight:bold;color:red;">($497) USD</span></p>
-                <p style="font-size:37px; margin-top:55px;" class="og-title og-title-sm">TOTAL VALOR: <span class="tachado-equis" style="color:red;">$1994 USD</span></p>
-                <p style="font-size:37px; margin-top:55px;" class="og-title og-title-sm">🚀Precio especial de lanzamiento</p>
-                <p style="font-size:47px; margin-top:55px;" class="og-title og-title-sm">PRECIO OFERTA: <span style="font-weight:bold;color:red;">$250  USD (EL PRIMER AÑO)</span></p>
-                <p style="color:gray;font-weight: bold;">Acceso completo a INTEVI durante 12 meses con precio especial de lanzamiento.</p>
-                <p style="color:red;font-weight: bold;">A partir del segundo año, la licencia tendrá un costo de: $500 USD</p>
-
-                <a class="button button-primary" style="background:#FBCC06;color:black; margin-top:40px;" href="#contacto">
-                        QUIERO ENTRAR A INTEVI
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </a>
-            </div>
-    </div>
-    <section class="og-impact" style="background:red; padding:10px;">
-            <p style="font-size:40px;text-align: center;"><b>BONUS MÁGICOS</b></p>
-    </section>
-    <div class="container">
-            <div class="og-browser">
-                <div class="og-browser-screen">
-                    <img
-                        src="{{ asset('images/lo que obtendras.png') }}"
-                        alt="Vista real del sistema INTEVI"
-                        width="1915"
-                        height="920"
-                        loading="eager"s
-                        fetchpriority="high"
-                        style="
-                            display: block !important;
-                            width: 100% !important;
-                            max-width: 1100px !important;
-                            height: auto !important;
-                            max-height: none !important;
-                            margin: 0 auto !important;
-                            object-fit: contain !important;
-                            object-position: center !important;
-                        "
-                    >
-                </div>
-            </div>
-            <div class="og-center">
-                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•PLATAFORMA INTEVI <span style="font-weight:bold;color:red;">($1497) USD LICENCIA ANUAL</span></p>
-                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•MÉTODO RESGUARDOS FÁCILES<br> DE CONTROLAR 5X <span style="color:#131750;">(METODOLOGÍA INTEGRADA EN INTEVI PARA ORGANIZAR LA INFORMACIÓN, SIMPLIFICAR LA OPERACIÓN Y MANTENER LOS RESGUARDOS BAJO CONTROL DE UNA MANERA MÁS FÁCIL Y RÁPIDA)</span><span style="font-weight:bold;color:red;">($497) USD</span></p>
-                <p style="font-size:47px; margin-top:55px;font-style: italic;" class="og-title og-title-sm">BONUS MÁGICOS</p>
-                <p style="font-size:32px; margin-top:30px;" class="og-title og-title-sm">•ASISTENTE VIRTUAL (GPT) <span style="font-weight:bold;color:red;">($100) USD</span></p>
-
-                <p style="font-size:37px; margin-top:55px;" class="og-title og-title-sm">TOTAL VALOR: <span class="tachado-equis" style="color:red;">$6197 USD</span></p>
-                <p style="font-size:37px; margin-top:55px;" class="og-title og-title-sm">🚀Precio especial de lanzamiento</p>
-                <p style="font-size:47px; margin-top:55px;" class="og-title og-title-sm">PRECIO OFERTA: <span style="font-weight:bold;color:red;">$250 USD (ANUAL)</span></p>
-                <p style="color:gray;font-weight: bold;">Acceso completo a INTEVI durante 12 meses con precio especial de lanzamiento.</p>
-                <p style="color:red;font-weight: bold;">A partir del segundo año, la licencia tendrá un costo de: $500 USD</p>
-
- 
-                <a class="button button-primary" style="background:#FBCC06;color:black; margin-top:40px;" href="#contacto">
-                    QUIERO ENTRAR A INTEVI
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </a>
-                
-            </div>
-    </div>
-
-    <section class="og-garantia" id="garantia">
-    <div class="og-garantia-container">
-
-        <!-- LADO IZQUIERDO: 1/3 -->
-        <div class="og-garantia-visual">
-            <div class="og-garantia-sello">
-                <img
-                    src="{{ asset('images/garantia-30-dias.png') }}"
-                    alt="Garantía de devolución durante 30 días"
-                    loading="lazy"
-                    width="700"
-                    height="700"
-                >
             </div>
         </div>
+    </section>
 
-        <!-- LADO DERECHO: 2/3 -->
-        <div class="og-garantia-contenido">
+    {{-- PÚBLICO OBJETIVO --}}
+    <section class="audience-strip">
+        <div class="container audience-content">
+            <span class="audience-title">Diseñado para</span>
 
-            <span class="og-garantia-etiqueta">
-                Compra protegida
-            </span>
-
-            <h2>
-                Tu inversión está segura a un 100% con una 
-                <span>Garantía Total de 30 días</span>
-            </h2>
-
-            <p class="og-garantia-descripcion">
-                Queremos que conozcas INTEVI con tranquilidad y tengas la
-                seguridad de estar tomando una buena decisión para tu
-                institución.
-            </p>
-
-            <div class="og-garantia-beneficio">
-                <div class="og-garantia-check">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="m5 12 4 4L19 6"></path>
+            <div class="audience-list">
+                <span class="audience-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <path d="M3 21h18M5 21V8l7-4 7 4v13"/>
+                        <path d="M9 12h1M14 12h1M9 16h1M14 16h1"/>
                     </svg>
+                    Instituciones públicas
+                </span>
+
+                <span class="audience-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M8 12h8M12 8v8"/>
+                    </svg>
+                    Organismos
+                </span>
+
+                <span class="audience-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <path d="M4 20V6h8v14M12 10h8v10"/>
+                        <path d="M7 9h2M7 13h2M7 17h2M15 13h2M15 17h2"/>
+                    </svg>
+                    Empresas con bienes bajo resguardo
+                </span>
+            </div>
+        </div>
+    </section>
+
+
+    {{-- CONFIANZA --}}
+    <section class="trust-strip" aria-label="Razones para conocer INTEVI">
+        <div class="container trust-strip-content">
+            <div class="trust-strip-intro">
+                <strong>Desarrollado desde una necesidad institucional real</strong>
+                <span>La plataforma se enfoca en el trabajo administrativo detrás de cada bien y resguardo.</span>
+            </div>
+
+            <div class="trust-point">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M20 6 9 17l-5-5"/>
+                </svg>
+                Demostración antes de contratar
+            </div>
+
+            <div class="trust-point">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M20 6 9 17l-5-5"/>
+                </svg>
+                Entorno independiente por institución
+            </div>
+
+            <div class="trust-point">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M20 6 9 17l-5-5"/>
+                </svg>
+                Alcance y renovación informados desde el inicio
+            </div>
+        </div>
+    </section>
+
+    {{-- PROBLEMA --}}
+    <section class="section" id="problema">
+        <div class="container">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">El costo del descontrol</span>
+
+                    <h2 class="heading heading-medium">
+                        Puedes tener una lista de todos tus bienes y aun así
+                        no tener el control.
+                    </h2>
                 </div>
 
-                <p>
-                    Si durante los primeros <strong>30 días</strong> la plataforma
-                    no es lo que estabas buscando, podrás solicitar una
-                    devolución.
+                <p class="section-copy">
+                    El control comienza cuando cada activo puede localizarse,
+                    comprobarse y relacionarse con un responsable sin depender
+                    de archivos dispersos o de la memoria del personal.
                 </p>
             </div>
 
-            <p class="og-garantia-mensaje">
-                Sin riesgos innecesarios. Sin decisiones apresuradas.
-                <strong>Prueba INTEVI con mayor confianza.</strong>
-            </p>
+            <div class="pain-grid">
+                <article class="pain-card">
+                    <span class="pain-card-number">01</span>
+                    <h3>Horas buscando información</h3>
+                    <p>
+                        Localizar un bien, un documento o al responsable correcto
+                        deja de ser inmediato.
+                    </p>
+                </article>
 
-            <a href="#contacto" class="og-garantia-boton">
-                Solicitar una demostración
+                <article class="pain-card">
+                    <span class="pain-card-number">02</span>
+                    <h3>Trabajo repetido</h3>
+                    <p>
+                        El personal captura, compara y corrige la misma información
+                        en diferentes hojas y formatos.
+                    </p>
+                </article>
 
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M5 12h14"></path>
-                    <path d="m13 6 6 6-6 6"></path>
-                </svg>
-            </a>
+                <article class="pain-card">
+                    <span class="pain-card-number">03</span>
+                    <h3>Responsabilidad poco clara</h3>
+                    <p>
+                        Se dificulta comprobar quién recibió un bien, dónde quedó
+                        y qué evidencia existe.
+                    </p>
+                </article>
 
-            <!--
-            <small class="og-garantia-terminos">
-                Garantía aplicable conforme a las condiciones establecidas
-                en la propuesta comercial y contrato de servicio.
-            </small>
-            -->
-
+                <article class="pain-card">
+                    <span class="pain-card-number">04</span>
+                    <h3>Pérdida de continuidad</h3>
+                    <p>
+                        Cuando cambia el personal, parte del control puede irse
+                        con quien conocía los archivos.
+                    </p>
+                </article>
+            </div>
         </div>
+    </section>
 
-    </div>
-</section>
+    {{-- MÉTODO 5X --}}
+    <section class="section section-dark" id="metodo">
+        <div class="container">
+            <div class="method-header">
+                <div>
+                    <span class="eyebrow">Método de Control Institucional 5X</span>
+
+                    <h2 class="heading heading-medium">
+                        Cada bien debe responder cinco preguntas.
+                    </h2>
+
+                    <p class="section-copy">
+                        INTEVI no se limita a guardar una lista. Conecta la
+                        información necesaria para demostrar que un activo está
+                        realmente bajo control.
+                    </p>
+                </div>
+
+                <div class="method-summary">
+                    <strong>Método de Control Institucional 5X</strong>
+                    <p>
+                        La metodología está integrada en la plataforma y organiza
+                        el proceso alrededor de cinco elementos: existencia,
+                        ubicación, responsable, evidencia e historial.
+                    </p>
+                </div>
+            </div>
+
+            <div class="method-grid">
+                <article class="method-card">
+                    <span class="method-card-number">01</span>
+                    <h3>Existencia</h3>
+                    <strong>¿Qué bien existe?</strong>
+                    <p>
+                        Identifica el activo mediante descripción, marca, serie,
+                        características, estado y datos institucionales.
+                    </p>
+                </article>
+
+                <article class="method-card">
+                    <span class="method-card-number">02</span>
+                    <h3>Ubicación</h3>
+                    <strong>¿Dónde se encuentra?</strong>
+                    <p>
+                        Relaciona el bien con su área de asignación y su ubicación
+                        física actual.
+                    </p>
+                </article>
+
+                <article class="method-card">
+                    <span class="method-card-number">03</span>
+                    <h3>Responsable</h3>
+                    <strong>¿Quién responde por él?</strong>
+                    <p>
+                        Vincula cada bien con la persona, puesto y área que lo
+                        utiliza o mantiene bajo resguardo.
+                    </p>
+                </article>
+
+                <article class="method-card">
+                    <span class="method-card-number">04</span>
+                    <h3>Evidencia</h3>
+                    <strong>¿Qué lo comprueba?</strong>
+                    <p>
+                        Conserva documentos, imágenes y datos relacionados con
+                        la entrega y el resguardo.
+                    </p>
+                </article>
+
+                <article class="method-card">
+                    <span class="method-card-number">05</span>
+                    <h3>Historial</h3>
+                    <strong>¿Qué ha sucedido?</strong>
+                    <p>
+                        Consulta asignaciones, cambios y liberaciones para
+                        mantener continuidad sobre cada movimiento.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    {{-- FUNCIONES --}}
+    <section class="section section-soft" id="plataforma">
+        <div class="container">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">Una plataforma conectada</span>
+
+                    <h2 class="heading heading-medium">
+                        Herramientas para llevar el control sin depender de
+                        procesos dispersos.
+                    </h2>
+                </div>
+
+                <p class="section-copy">
+                    Cada módulo comparte información con los demás para reducir
+                    capturas repetidas y facilitar la consulta.
+                </p>
+            </div>
+
+            <div class="feature-grid feature-grid-nine">
+
+                <article class="feature-card">
+                    <div class="feature-icon">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            aria-hidden="true"
+                        >
+                            <path d="M4 7h16v13H4z"/>
+                            <path d="m4 7 3-3h10l3 3M9 11h6"/>
+                        </svg>
+                    </div>
+
+                    <h3>Inventario institucional</h3>
+
+                    <p>
+                        Registra las características, estado, cantidad y datos de
+                        identificación de cada bien desde un solo lugar.
+                    </p>
+
+                    <span class="feature-result">
+                        Registro centralizado
+                    </span>
+                </article>
 
 
+                <article class="feature-card">
+                    <div class="feature-icon">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            aria-hidden="true"
+                        >
+                            <circle cx="12" cy="8" r="3"/>
+                            <path d="M5 20c0-4 3-7 7-7s7 3 7 7"/>
+                            <path d="M17 5h4v4"/>
+                            <path d="m21 5-5 5"/>
+                        </svg>
+                    </div>
+
+                    <h3>Resguardos institucionales</h3>
+
+                    <p>
+                        Asigna los bienes al personal y relaciona cada resguardo con su
+                        responsable, puesto, área y ubicación física.
+                    </p>
+
+                    <span class="feature-result">
+                        Responsabilidad definida
+                    </span>
+                </article>
 
 
+                <article class="feature-card">
+                    <div class="feature-icon">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            aria-hidden="true"
+                        >
+                            <path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4z"/>
+                            <path d="M14 14h2v2h-2zM18 14h2v6h-6v-2"/>
+                        </svg>
+                    </div>
+
+                    <h3>Etiquetas escaneables</h3>
+
+                    <p>
+                        Genera etiquetas para identificar los bienes y consultar
+                        rápidamente la información relacionada con su resguardo.
+                    </p>
+
+                    <span class="feature-result">
+                        Identificación práctica
+                    </span>
+                </article>
 
 
+                <article class="feature-card">
+                    <div class="feature-icon">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            aria-hidden="true"
+                        >
+                            <path d="M5 4h10l4 4v12H5z"/>
+                            <path d="M15 4v5h5"/>
+                            <path d="M8 13h8M8 16h6"/>
+                        </svg>
+                    </div>
+
+                    <h3>Documentos e imágenes</h3>
+
+                    <p>
+                        Integra archivos PDF e imágenes para mantener organizada la
+                        evidencia documental de ubicaciones y resguardos.
+                    </p>
+
+                    <span class="feature-result">
+                        Evidencia organizada
+                    </span>
+                </article>
 
 
+                <article class="feature-card">
+                    <div class="feature-icon">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            aria-hidden="true"
+                        >
+                            <path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/>
+                            <circle cx="17" cy="7" r="3"/>
+                            <path d="m19.2 9.2 2.3 2.3"/>
+                        </svg>
+                    </div>
+
+                    <h3>Consultas y reportes</h3>
+
+                    <p>
+                        Localiza información mediante filtros por responsable, área,
+                        ubicación, estado y otros criterios institucionales.
+                    </p>
+
+                    <span class="feature-result">
+                        Información útil
+                    </span>
+                </article>
 
 
+                <article class="feature-card">
+                    <div class="feature-icon">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            aria-hidden="true"
+                        >
+                            <path d="M12 3 5 6v5c0 5 3 8 7 10 4-2 7-5 7-10V6z"/>
+                            <path d="M9 12l2 2 4-4"/>
+                        </svg>
+                    </div>
+
+                    <h3>Usuarios, roles y permisos</h3>
+
+                    <p>
+                        Define quién puede consultar, registrar o administrar la
+                        información según sus responsabilidades.
+                    </p>
+
+                    <span class="feature-result">
+                        Acceso controlado
+                    </span>
+                </article>
 
 
-    <!--
-    <section class="og-section" id="funciones">
-        <div class="container og-solution-grid">
+                <article class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                            <path d="M4 19V5h16v14H4z"/>
+                            <path d="M8 9h8M8 13h5"/>
+                            <path d="m15 16 2 2 4-4"/>
+                        </svg>
+                    </div>
+                    <h3>Historial de resguardos</h3>
+                    <p>
+                        Consulta asignaciones, cambios y liberaciones para mantener
+                        continuidad sobre lo que ha sucedido con cada bien.
+                    </p>
+                    <span class="feature-result">Trazabilidad institucional</span>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                            <path d="M5 3h14v18H5z"/>
+                            <path d="M8 7h8M8 11h8M8 15h5"/>
+                            <path d="m15 17 2 2 4-4"/>
+                        </svg>
+                    </div>
+                    <h3>Carga de catálogos desde Excel</h3>
+                    <p>
+                        Importa marcas, puestos y áreas de asignación para reducir
+                        captura manual durante la preparación del entorno.
+                    </p>
+                    <span class="feature-result">Implementación más ágil</span>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                            <path d="M3 21h18M5 21V8l7-4 7 4v13"/>
+                            <path d="M8 12h8M8 16h8"/>
+                        </svg>
+                    </div>
+                    <h3>Ubicaciones físicas</h3>
+                    <p>
+                        Organiza los espacios donde se encuentran los bienes y
+                        consulta los resguardos activos relacionados con cada lugar.
+                    </p>
+                    <span class="feature-result">Localización consultable</span>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    {{-- DEMOSTRACIÓN --}}
+    <section class="section">
+        <div class="container demo-layout">
+            <div class="system-browser">
+                <div class="system-browser-bar">
+                    <div class="system-browser-controls">
+                        <span></span><span></span><span></span>
+                    </div>
+
+                    <div class="system-browser-address">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <rect x="5" y="10" width="14" height="10" rx="2"/>
+                            <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+                        </svg>
+                        <span>Vista real del entorno institucional</span>
+                    </div>
+
+                    <div class="system-browser-menu">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+
+                <div class="system-screen">
+                    <img
+                        src="{{ asset('images/intevi-dashboard.webp') }}"
+                        alt="Panel real de la plataforma INTEVI"
+                        width="1915"
+                        height="920"
+                        loading="lazy"
+                        decoding="async"
+                    >
+                </div>
+
+                <div class="demo-view-list" aria-label="Vistas que pueden revisarse durante la demostración">
+                    <span class="demo-view-item">Inventario y filtros</span>
+                    <span class="demo-view-item">Asignación de resguardos</span>
+                    <span class="demo-view-item">Historial y evidencia</span>
+                </div>
+            </div>
+
             <div>
-                
-                <p class="og-copy" style="margin-top:21px">INTEVI permite registrar los activos de la institución y relacionarlos con responsables, áreas de asignación, ubicaciones físicas y documentos de resguardo.</p>
-                
-                <div class="og-checks">
-                    <div class="og-check"><span class="og-check-icon">✓</span><div><strong>Registro completo de bienes</strong><p>Descripción, marca, serie, características, estado y datos de identificación.</p></div></div>
-                    <div class="og-check"><span class="og-check-icon">✓</span><div><strong>Resguardos y responsables</strong><p>Relación clara entre el activo, la persona y el área que lo utiliza o custodia.</p></div></div>
-                    <div class="og-check"><span class="og-check-icon">✓</span><div><strong>Entorno independiente por institución</strong><p>Cada organismo opera con su propio acceso, usuarios e información.</p></div></div>
+                <span class="eyebrow">No es una promesa abstracta</span>
+
+                <h2 class="heading heading-medium">
+                    Conoce la plataforma antes de tomar una decisión.
+                </h2>
+
+                <p class="section-copy">
+                    Durante la demostración podrás revisar los módulos, explicar
+                    cómo trabaja actualmente tu institución y comprobar si
+                    INTEVI responde a tus necesidades reales.
+                </p>
+
+                <div class="demo-points">
+                    <div class="demo-point">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M20 6 9 17l-5-5"/>
+                        </svg>
+                        <div>
+                            <strong>Vista del sistema funcionando</strong>
+                            <p>No necesitas comprar para descubrir cómo opera.</p>
+                        </div>
+                    </div>
+
+                    <div class="demo-point">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M20 6 9 17l-5-5"/>
+                        </svg>
+                        <div>
+                            <strong>Revisión de tu proceso actual</strong>
+                            <p>
+                                Identificamos cómo administras bienes,
+                                responsables y resguardos.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="demo-point">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M20 6 9 17l-5-5"/>
+                        </svg>
+                        <div>
+                            <strong>Sin compromiso de contratación</strong>
+                            <p>Evalúa primero y decide con información.</p>
+                        </div>
+                    </div>
                 </div>
-            
+
+                <a class="button button-primary" style="margin-top: 40px;" href="#formulario-demo">Solicitar demostración</a>
+
             </div>
         </div>
     </section>
 
-    {{-- 5. VIÑETAS DE CURIOSIDAD --}}
-    <section class="og-section og-soft">
+    {{-- IMPLEMENTACIÓN --}}
+    <section class="section section-warm" id="implementacion">
         <div class="container">
-            <div class="og-center"><span class="og-kicker">Beneficios que puedes comprobar</span><h2 class="og-title og-title-sm">Imagina poder consultar en segundos…</h2><p class="og-copy">Preguntas administrativas frecuentes convertidas en consultas claras dentro de un mismo sistema.</p></div>
-            <div class="og-benefits">
-                <article class="og-benefit"><small>01</small><h3>Qué bienes existen realmente</h3><p>Sin comparar múltiples hojas de cálculo o versiones guardadas en diferentes equipos.</p></article>
-                <article class="og-benefit"><small>02</small><h3>Dónde se encuentra cada activo</h3><p>Desde una oficina o departamento hasta un almacén o ubicación física específica.</p></article>
-                <article class="og-benefit"><small>03</small><h3>Quién tiene asignado cada bien</h3><p>Consulta la relación entre el activo, su responsable, puesto y área de asignación.</p></article>
-                <article class="og-benefit"><small>04</small><h3>Qué información identifica al bien</h3><p>Descripción, marca, número de serie, características, estado y datos complementarios.</p></article>
-                <article class="og-benefit"><small>05</small><h3>Cómo está distribuido el inventario</h3><p>Organiza consultas por área, ubicación, responsable, estado o criterio administrativo.</p></article>
-                <article class="og-benefit"><small>06</small><h3>Quién puede modificar información</h3><p>Administra roles y permisos según las responsabilidades del personal autorizado.</p></article>
-                <article class="og-benefit"><small>07</small><h3>Qué registros requieren revisión</h3><p>Detecta información pendiente antes de una verificación o proceso administrativo.</p></article>
-                <article class="og-benefit"><small>08</small><h3>Cómo crecer sin perder el control</h3><p>Mantén una estructura organizada al incorporar bienes, usuarios, áreas o ubicaciones.</p></article>
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">Implementación acompañada</span>
+
+                    <h2 class="heading heading-medium">
+                        No te entregamos el acceso y te dejamos solo.
+                    </h2>
+                </div>
+
+                <p class="section-copy">
+                    La adopción se organiza para que el personal comprenda la
+                    plataforma y pueda comenzar con una estructura clara.
+                </p>
+            </div>
+
+            <div class="implementation-grid">
+                <article class="implementation-card">
+                    <span class="implementation-number">01</span>
+                    <h3>Conocemos tu operación</h3>
+                    <p>
+                        Revisamos cómo administra la institución sus bienes,
+                        áreas, responsables y resguardos.
+                    </p>
+                </article>
+
+                <article class="implementation-card">
+                    <span class="implementation-number">02</span>
+                    <h3>Preparamos tu entorno</h3>
+                    <p>
+                        Configuramos un acceso institucional independiente para
+                        comenzar a organizar usuarios e información.
+                    </p>
+                </article>
+
+                <article class="implementation-card">
+                    <span class="implementation-number">03</span>
+                    <h3>Orientamos a tu equipo</h3>
+                    <p>
+                        La plataforma incluye tutoriales guiados y acompañamiento
+                        inicial para facilitar su uso.
+                    </p>
+                </article>
+
+                <article class="implementation-card">
+                    <span class="implementation-number">04</span>
+                    <h3>Comienzas a controlar</h3>
+                    <p>
+                        El personal registra, asigna, consulta y actualiza la
+                        información desde un mismo entorno.
+                    </p>
+                </article>
             </div>
         </div>
     </section>
 
-    {{-- 6. CREDIBILIDAD --}}
-    <section class="og-section og-dark" id="como-funciona">
-        <div class="container">
-            <div class="og-center"><span class="og-kicker">Credibilidad por especialización</span><h2 class="og-title og-title-sm">Diseñado alrededor de los procesos reales de <span class="og-highlight">resguardo institucional.</span></h2><p class="og-copy">INTEVI no parte de la lógica de una tienda. Parte de la relación entre la institución, sus bienes y las personas responsables.</p></div>
-            <div class="og-cred-grid">
-                <article class="og-cred"><span class="og-cred-icon">▣</span><h3>Bienes institucionales</h3><p>Información pensada para identificar activos propiedad de la institución.</p></article>
-                <article class="og-cred"><span class="og-cred-icon">◉</span><h3>Responsables definidos</h3><p>Cada bien puede relacionarse con la persona que lo tiene asignado.</p></article>
-                <article class="og-cred"><span class="og-cred-icon">⌂</span><h3>Áreas y ubicaciones</h3><p>La estructura administrativa y física permanece conectada con el inventario.</p></article>
-                <article class="og-cred"><span class="og-cred-icon">✓</span><h3>Acceso controlado</h3><p>Roles y permisos definen quién consulta, registra o administra información.</p></article>
-            </div>
-        </div>
-    </section>
+    {{-- ENTORNO INDEPENDIENTE --}}
+    <section class="section" id="instituciones">
+        <div class="container organization-layout">
+            <div class="organization-preview">
+                <div class="browser-bar">
+                    <div class="browser-points">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <div class="browser-address">
+                        https://<strong>tuinstitucion</strong>.intevi.app
+                    </div>
+                </div>
 
-    {{-- 7. PRUEBAS Y EVIDENCIAS --}}
-    <section class="og-section og-soft">
-        <div class="container">
-            <div class="og-center"><span class="og-kicker">Pruebas que puedes revisar</span><h2 class="og-title og-title-sm">No tienes que imaginar cómo funciona. <span class="og-highlight">Puedes verlo directamente.</span></h2><p class="og-copy">La demostración se realiza sobre la plataforma, no solamente con diapositivas.</p></div>
-            <div class="og-evidence">
-                <article class="og-evidence-main"><img src="{{ asset('images/intevi-dashboard.webp') }}" alt="Dashboard real de INTEVI" loading="lazy"><div class="og-evidence-caption"><small>Vista real del producto</small><h3>La evidencia principal es el sistema funcionando</h3><p>Revisa cómo se consulta el inventario, cómo se administran responsables y cómo se organiza la información.</p></div></article>
-                <div class="og-evidence-list">
-                    <article class="og-proof"><h3>Inventario centralizado</h3><p>Comprueba cómo se registran y consultan los datos de cada bien.</p></article>
-                    <article class="og-proof"><h3>Resguardos y responsables</h3><p>Revisa cómo se relacionan los activos con personas y áreas.</p></article>
-                    <article class="og-proof"><h3>Usuarios y permisos</h3><p>Observa cómo se controla el acceso según cada responsabilidad.</p></article>
-                    <article class="og-proof"><h3>Entorno institucional propio</h3><p>Cada organismo mantiene separados sus usuarios y su información.</p></article>
+                <div class="organization-card">
+                    <div class="organization-brand">
+                        <div class="organization-logo">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                <path d="M3 21h18M5 21V8l7-4 7 4v13"/>
+                                <path d="M9 12h1M14 12h1M9 16h1M14 16h1"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <small>Entorno institucional</small>
+                            <strong>Nombre de la institución</strong>
+                        </div>
+                    </div>
+
+                    <div class="organization-lines">
+                        <div class="organization-line"></div>
+                        <div class="organization-line"></div>
+                        <div class="organization-line"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <span class="eyebrow">Entorno independiente</span>
+
+                <h2 class="heading heading-medium">
+                    La operación de cada organización permanece separada.
+                </h2>
+
+                <p class="section-copy">
+                    Cada institución cuenta con su propio acceso, usuarios,
+                    información y configuración dentro de un entorno identificado
+                    con su nombre.
+                </p>
+
+                <div class="benefit-list">
+                    <div class="benefit">
+                        <span class="benefit-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+                        </span>
+                        <div>
+                            <strong>Dirección web personalizada</strong>
+                            <p>Un acceso identificable para ingresar al sistema.</p>
+                        </div>
+                    </div>
+
+                    <div class="benefit">
+                        <span class="benefit-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+                        </span>
+                        <div>
+                            <strong>Información independiente</strong>
+                            <p>
+                                Los registros de una institución no se mezclan
+                                con los de otra.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="benefit">
+                        <span class="benefit-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+                        </span>
+                        <div>
+                            <strong>Roles y permisos</strong>
+                            <p>
+                                La visibilidad y administración se organizan
+                                según las responsabilidades del personal.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="benefit">
+                        <span class="benefit-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+                        </span>
+                        <div>
+                            <strong>Acceso mediante conexión segura</strong>
+                            <p>
+                                La plataforma se utiliza desde la web dentro del
+                                entorno asignado a la organización.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    {{-- 8. OFERTA Y ANCLAJE DE PRECIO --}}
-    <section class="og-section" id="instituciones">
-        <div class="container">
-            <div class="og-center"><span class="og-kicker">La oferta</span><h2 class="og-title og-title-sm">Una implementación ajustada a la realidad de tu institución</h2><p class="og-copy">INTEVI se presenta mediante una cotización personalizada porque cada organismo tiene un volumen y una estructura diferente.</p></div>
-            <div class="og-offer">
-                <article class="og-cost"><small>El verdadero anclaje de precio</small><h3>Compara la inversión con el costo de seguir sin control</h3><ul class="og-list"><li>Horas dedicadas a buscar información.</li><li>Duplicidad y corrección de registros.</li><li>Preparación manual de reportes.</li><li>Dependencia de archivos y personas específicas.</li><li>Dificultad para localizar resguardos.</li><li>Falta de claridad durante una revisión.</li></ul></article>
-                <article class="og-offer-card"><span class="og-offer-badge">Cotización institucional</span><h3>INTEVI para tu organismo</h3><p>La propuesta se calcula según el alcance real de la operación, para que la institución conozca con claridad qué recibe y cuánto invertirá.</p><div class="og-includes"><div class="og-include">Cantidad de bienes</div><div class="og-include">Número de usuarios</div><div class="og-include">Áreas participantes</div><div class="og-include">Configuración inicial</div><div class="og-include">Capacitación requerida</div><div class="og-include">Acompañamiento de arranque</div></div><div class="og-price"><div><small>Inversión</small><strong>Cotización personalizada</strong></div><a class="button button-primary" style="background:black;" href="#contacto">Solicitar cotización</a></div></article>
+    {{-- HISTORIA --}}
+    <section class="section section-soft">
+        <div class="container story-layout story-layout-compact">
+            <div class="story-card">
+                <p>
+                    INTEVI nació de una necesidad observada en la operación
+                    institucional, no de una lista genérica de funciones.
+                </p>
+                <span>Jonathan Bedolla · Informático y creador de INTEVI</span>
+            </div>
+
+            <div>
+                <span class="eyebrow">Creado desde la experiencia institucional</span>
+
+                <h2 class="heading heading-medium">
+                    Una solución pensada para el trabajo administrativo detrás
+                    de cada resguardo.
+                </h2>
+
+                <p class="section-copy">
+                    Después de conocer directamente la dificultad de administrar
+                    bienes, responsables, ubicaciones y documentos dentro de una
+                    institución gubernamental, se desarrolló INTEVI para convertir
+                    información dispersa en una operación más clara y consultable.
+                </p>
+
+                <p class="section-copy">
+                    Por eso no se limita a guardar inventario: relaciona cada bien
+                    con su responsable, ubicación, evidencia e historial.
+                </p>
             </div>
         </div>
     </section>
 
-    {{-- 9. BONOS --}}
-    <section class="og-section og-warm">
-        <div class="container">
-            <div class="og-center"><span class="og-kicker">Bonos de implementación</span><h2 class="og-title og-title-sm">La plataforma llega acompañada de un proceso de puesta en marcha</h2><p class="og-copy">Los apoyos se definen dentro de cada propuesta para facilitar la adopción inicial.</p></div>
-            <div class="og-bonus-grid">
-                <article class="og-bonus"><span class="og-bonus-num">01</span><h3>Diagnóstico inicial</h3><p>Revisión del proceso actual para organizar la implementación.</p></article>
-                <article class="og-bonus"><span class="og-bonus-num">02</span><h3>Configuración institucional</h3><p>Preparación de áreas, ubicaciones, roles y estructura básica.</p></article>
-                <article class="og-bonus"><span class="og-bonus-num">03</span><h3>Capacitación de usuarios</h3><p>Sesión para conocer los módulos y procesos principales.</p></article>
-                <article class="og-bonus"><span class="og-bonus-num">04</span><h3>Plantilla de preparación</h3><p>Formato para organizar los datos de la carga inicial.</p></article>
-                <article class="og-bonus"><span class="og-bonus-num">05</span><h3>Acompañamiento de arranque</h3><p>Orientación para resolver dudas durante la etapa inicial.</p></article>
-            </div>
-            <p class="og-bonus-note">Los bonos aplicables, su alcance y condiciones se especifican expresamente dentro de la cotización institucional.</p>
+    {{-- OFERTA --}}
+    <section class="offer-section" id="oferta">
+        <div class="container offer-layout">
+            <div class="offer-intro">
+                <span class="eyebrow">Oferta transparente</span>
+
+                <h2 class="heading heading-medium">
+                    Todo lo necesario para comenzar con una sola licencia.
+                </h2>
+
+                <p class="section-copy">
+                    Una sola implementación anual con alcance definido desde el
+                    inicio. La metodología, la orientación y las herramientas
+                    forman parte del servicio estándar.
+                </p>
+
+                </div>
+
+                <div class="offer-card">
+                    <span class="offer-card-label">
+                        Programa para instituciones fundadoras
+                    </span>
+
+                    <h3>Implementación anual de INTEVI</h3>
+
+                    <div class="offer-list">
+
+                        <div class="offer-item">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                aria-hidden="true"
+                            >
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+
+                            <div>
+                                <strong>Licencia anual de la plataforma</strong>
+                                <p>
+                                    Acceso anual al entorno institucional y a los módulos incluidos en el alcance estándar.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="offer-item">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                aria-hidden="true"
+                            >
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+
+                            <div>
+                                <strong>Hasta 10 usuarios individuales</strong>
+                                <p>
+                                    Cuentas independientes con roles y permisos configurables
+                                    según las responsabilidades de cada usuario.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="offer-item">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                aria-hidden="true"
+                            >
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+
+                            <div>
+                                <strong>Método de Control Institucional 5X</strong>
+                                <p>
+                                    Metodología integrada en la plataforma, no un curso
+                                    adicional.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="offer-item">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                aria-hidden="true"
+                            >
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+
+                            <div>
+                                <strong>Configuración institucional inicial</strong>
+                                <p>
+                                    Preparación del entorno estándar para comenzar a utilizar
+                                    la plataforma.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="offer-item">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                aria-hidden="true"
+                            >
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+
+                            <div>
+                                <strong>Tutoriales guiados</strong>
+                                <p>
+                                    Recorridos interactivos dentro de los módulos para facilitar
+                                    el aprendizaje de los usuarios.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="offer-item">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                aria-hidden="true"
+                            >
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+
+                            <div>
+                                <strong>Asistente especializado INTEVI</strong>
+                                <p>
+                                    Apoyo para resolver preguntas frecuentes relacionadas con
+                                    el uso de la plataforma.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="offer-item">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                aria-hidden="true"
+                            >
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+
+                            <div>
+                                <strong>Actualizaciones y mantenimiento</strong>
+                                <p>
+                                    La institución utiliza el sistema sin mantener servidores
+                                    locales ni realizar instalaciones manuales.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="offer-item">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                aria-hidden="true"
+                            >
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+
+                            <div>
+                                <strong>2 GB de almacenamiento</strong>
+                                <p>
+                                    Espacio para imágenes, documentos y archivos relacionados
+                                    con ubicaciones y resguardos.
+                                </p>
+                            </div>
+                        </div>
+
+
+                        <div class="offer-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+                            <div>
+                                <strong>Acompañamiento de arranque</strong>
+                                <p>
+                                    Orientación inicial para configurar el entorno y resolver
+                                    dudas relacionadas con el uso estándar de la plataforma.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="offer-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+                            <div>
+                                <strong>Herramientas de exportación</strong>
+                                <p>
+                                    Exportación de información disponible de acuerdo con las
+                                    funciones incluidas en cada módulo.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="price-box">
+                        <span class="price-label">
+                            Precio de implementación para instituciones fundadoras
+                        </span>
+
+                        <div class="price-main">
+                            $6,999 MXN
+                            <small>durante el primer año</small>
+                        </div>
+
+                        <p class="renewal-note">
+                            <strong>Renovación anual:</strong> $9,999 MXN a partir del
+                            segundo año. El precio se informa desde el inicio para que la
+                            institución conozca su inversión futura.
+                        </p>
+
+                        <span class="tax-note">{{ $taxLegend }}</span>
+                    </div>
+                    <div class="offer-actions">
+                        <div id="formulario-demo" class="demo-form-shell">
+                            <div class="demo-form-heading">
+                                <strong>Solicita una demostración</strong>
+                                <span>
+                                    Comparte tus datos y nos comunicaremos contigo para coordinar
+                                    una revisión de la plataforma sin compromiso de contratación.
+                                </span>
+                            </div>
+
+
+                            {{--
+                                IMPORTANTE: el texto interno del iframe se edita en Brevo,
+                                no desde este Blade. En Brevo deja los campos como:
+                                "Nombre y apellidos", "Institución u organización",
+                                "Correo institucional" y el botón "Agendar mi demostración".
+                            --}}
+                            <iframe
+                                width="540"
+                                height="620"
+                                src="https://c9015cf0.sibforms.com/v2/serve/MUIFAKBtKumOeQ_vSPH4Fxc7sj3KkltZg_HQSUsH-CugU2MCkC8ZHdbYq2Zch6Z44BMj5yndHZmM3XoVk-ljtgcKxi77ZjEDjiDqvHslUhQXB0s8XYnRCYeTP2cGeFJ9MwXBF8UfHc5Yd4TvrMY7pGXQOn_gKXYPqdaEWzv6hoPLSi9KUxLXG_OuKz2fZlTvY8TrUTI9kPpx0b95aw=="
+                                frameborder="0"
+                                scrolling="auto"
+                                loading="lazy"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                title="Formulario para solicitar una demostración de INTEVI"
+                            ></iframe>
+                        </div>
+
+                        <p class="offer-note">
+                            El precio corresponde al alcance estándar e incluye hasta 10
+                            usuarios individuales y 2 GB de almacenamiento. Usuarios
+                            adicionales, mayor capacidad, desarrollos especiales,
+                            integraciones o personalizaciones se cotizan por separado.
+                        </p>
+                    </div>
+                </div>
         </div>
     </section>
 
-    {{-- 10. GARANTÍA --}}
-    <section class="og-guarantee">
-        <div class="container og-guarantee-grid">
-            <div class="og-seal"><div class="og-seal-inner"><span class="og-seal-icon">✓</span><strong>Garantía de claridad antes de contratar</strong></div></div>
-            <div><span class="og-kicker">Primero conoces. Después decides.</span><h2 class="og-title og-title-sm">No contrates sin saber exactamente qué recibirá tu institución.</h2><p class="og-copy" style="margin-top:20px">Antes de formalizar una contratación, la institución recibe una propuesta clara y puede revisar el funcionamiento real de INTEVI mediante una demostración.</p><div class="og-guarantee-points"><span>Alcance de la implementación.</span><span>Funciones y usuarios contemplados.</span><span>Servicios y apoyos incluidos.</span><span>Costo y condiciones de la propuesta.</span></div><a class="button button-light" style="margin-top:28px" href="#contacto">Agendar una demostración</a></div>
+    {{-- DECISIÓN INFORMADA --}}
+    <section class="section">
+        <div class="container guarantee-layout">
+            <div>
+                <span class="eyebrow">Decisión informada</span>
+
+                <h2 class="heading heading-medium">
+                    Conoce el sistema y el alcance antes de contratar.
+                </h2>
+
+                <p class="section-copy">
+                    Primero revisas la plataforma mediante una demostración. Antes
+                    de cualquier pago, la institución recibe por escrito el alcance,
+                    precio, renovación y condiciones aplicables a su implementación.
+                </p>
+
+                <div class="guarantee-list">
+                    <span class="guarantee-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                        Demostración funcional antes de tomar una decisión.
+                    </span>
+                    <span class="guarantee-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                        Alcance estándar, adicionales y renovación informados por escrito.
+                    </span>
+                    <span class="guarantee-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                        Sin obligación de contratar después de la demostración.
+                    </span>
+                </div>
+
+                <p class="commercial-clarity">
+                    No se publica una promesa de reembolso genérica. Cualquier garantía,
+                    cancelación o condición especial debe quedar definida expresamente en
+                    la propuesta comercial o contrato correspondiente.
+                </p>
+            </div>
         </div>
     </section>
-    -->
-    {{-- 11. FAQ --}}
-    <section class="og-section" id="preguntas">
-        <div class="container og-faq-layout">
-            <div class="og-faq-intro">
-                <span class="og-kicker">Preguntas frecuentes</span>
-                <!--
-                <h2 class="og-title og-title-sm">Respuestas claras antes de dar el siguiente paso</h2><p>Información esencial para evaluar INTEVI dentro de un organismo.</p>
-                -->    
+
+    {{-- PREGUNTAS FRECUENTES --}}
+    <section class="section section-soft" id="preguntas">
+        <div class="container faq-layout">
+            <div class="faq-intro">
+                <span class="eyebrow">Preguntas frecuentes</span>
+
+                <h2 class="heading heading-medium">
+                    Resuelve las principales dudas antes de solicitar una
+                    demostración.
+                </h2>
+
+                <p class="section-copy">
+                    Si tu institución tiene una necesidad específica, inclúyela
+                    en la solicitud de demostración o escríbenos por correo.
+                </p>
             </div>
-            <div class="og-faq-list">
+
+            <div class="faq-list">
                 @php
                     $faqs = [
-                        ['¿INTEVI es un sistema de almacén?', 'No exactamente. Está orientado al control de bienes institucionales y a su relación con responsables, áreas, ubicaciones y resguardos.'],
-                        ['¿Qué tipo de bienes se pueden registrar?', 'Equipos tecnológicos, mobiliario, herramientas, activos administrativos y otros bienes que la institución necesite identificar.'],
-                        ['¿Podemos conocer quién tiene asignado cada bien?', 'Sí. INTEVI permite relacionar cada activo con su responsable y consultar la información asociada a su resguardo.'],
-                        ['¿Se organizan los bienes por área y ubicación?', 'Sí. Los activos pueden asociarse con áreas de asignación y ubicaciones físicas para facilitar su localización.'],
-                        ['¿Todos los usuarios tienen el mismo acceso?', 'No. La plataforma administra roles y permisos de acuerdo con las responsabilidades de cada usuario.'],
-                        ['¿La información de instituciones diferentes se mezcla?', 'No. Cada institución utiliza un entorno independiente y administra su propia información.'],
-                        ['¿Se instala en cada computadora?', 'No. INTEVI funciona como plataforma web y se utiliza desde un navegador compatible.'],
-                        ['¿Cómo podemos conocer el sistema?', 'Solicita una demostración para revisar la plataforma y plantear las necesidades de tu organización.'],
+                        [
+                            'question' => '¿INTEVI es un sistema de almacén?',
+                            'answer' => 'No exactamente. Está especializado en el control de bienes institucionales y en su relación con responsables, áreas, ubicaciones, documentos e historiales de resguardo.',
+                        ],
+                        [
+                            'question' => '¿Qué tipo de bienes se pueden registrar?',
+                            'answer' => 'Equipos tecnológicos, mobiliario, herramientas, activos administrativos y otros bienes que la organización necesite identificar, localizar y asignar.',
+                        ],
+                        [
+                            'question' => '¿Podemos cargar información desde Excel?',
+                            'answer' => 'La plataforma incluye carga masiva para determinados catálogos, como marcas, puestos y áreas de asignación, con el fin de reducir captura manual durante la implementación.',
+                        ],
+                        [
+                            'question' => '¿Todos los usuarios tienen el mismo acceso?',
+                            'answer' => 'No. Los roles y permisos permiten organizar qué puede consultar o administrar cada usuario según sus responsabilidades.',
+                        ],
+                        [
+                            'question' => '¿La información de las instituciones se mezcla?',
+                            'answer' => 'No. Cada organización trabaja dentro de un entorno independiente con su propio acceso, usuarios e información.',
+                        ],
+                        [
+                            'question' => '¿Hay que instalar INTEVI en cada computadora?',
+                            'answer' => 'No. INTEVI funciona como una plataforma web y se utiliza mediante un navegador compatible con conexión a Internet.',
+                        ],
+                        [
+                            'question' => '¿Cuánto cuesta renovar?',
+                            'answer' => 'La implementación para instituciones fundadoras es de $6,999 MXN durante el primer año. A partir del segundo año, la renovación anual es de $9,999 MXN dentro del alcance estándar contratado.',
+                        ],
+                        [
+                            'question' => '¿El precio incluye impuestos y facturación?',
+                            'answer' => $taxLegend,
+                        ],
+                        [
+                            'question' => '¿Qué sucede si necesitamos más de 10 usuarios?',
+                            'answer' => 'El alcance estándar incluye hasta 10 usuarios individuales. Las cuentas adicionales se cotizan según la necesidad de la institución.',
+                        ],
+                        [
+                            'question' => '¿Qué sucede si superamos los 2 GB?',
+                            'answer' => 'La institución puede solicitar capacidad adicional. El costo y alcance se informan antes de realizar cualquier ampliación.',
+                        ],
+                        [
+                            'question' => '¿Qué tipo de soporte está incluido?',
+                            'answer' => 'La implementación incluye acompañamiento de arranque, tutoriales guiados y atención de dudas relacionadas con el uso estándar de la plataforma. Desarrollos, integraciones y personalizaciones se cotizan por separado.',
+                        ],
+                        [
+                            'question' => '¿Qué sucede con la información si no renovamos?',
+                            'answer' => 'Antes de finalizar el servicio se informa el procedimiento aplicable para exportar la información disponible mediante las herramientas incluidas en la plataforma y cerrar el entorno institucional.',
+                        ],
+                        [
+                            'question' => '¿Cómo podemos conocer el sistema?',
+                            'answer' => 'Solicita una demostración. Revisaremos la plataforma y podrás explicar las necesidades actuales de tu organización antes de decidir.',
+                        ],
                     ];
                 @endphp
-                
-                        {{--
-                        ['¿Ofrecen capacitación?', 'La capacitación y el acompañamiento pueden incorporarse dentro de la propuesta de implementación.'],
-                        ['¿Cuánto cuesta INTEVI?', 'El precio se determina mediante una cotización personalizada según usuarios, alcance y necesidades.'],
-                        --}}
+
                 @foreach ($faqs as $index => $faq)
-                    <article class="og-faq-item {{ $index === 0 ? 'active' : '' }}">
-                        <button class="og-faq-q" type="button" aria-expanded="{{ $index === 0 ? 'true' : 'false' }}"><span>{{ $faq[0] }}</span><span class="og-faq-plus">+</span></button>
-                        <div class="og-faq-a"><p>{{ $faq[1] }}</p></div>
+                    <article class="faq-item {{ $index === 0 ? 'open' : '' }}">
+                        <button
+                            class="faq-question"
+                            type="button"
+                            aria-expanded="{{ $index === 0 ? 'true' : 'false' }}"
+                        >
+                            <span>{{ $faq['question'] }}</span>
+                            <span class="faq-symbol" aria-hidden="true">+</span>
+                        </button>
+
+                        <div class="faq-answer">
+                            <div>
+                                <p>{{ $faq['answer'] }}</p>
+                            </div>
+                        </div>
                     </article>
                 @endforeach
             </div>
         </div>
-        <div style="text-align:center; margin-top:40px;">
-            <p><b>PD:</b> Si has llegado hasta aquí es porque todo lo que te  he mostrado interesa y sabes que necesitas un vehículo que funcione de verdad.</p>
-            <p>Este producto premium tiene un precio regularmente de $3600 dólares, pero puedes obtenerlo hoy por sólo $499, cómpralo ahora antes que se vaya.</p>
-            <p>¿No te gustaría llevar un mejor control de tus resguados desde el primer mes? !Actúa Ahora!, satisfacción garantizada.</p>
-            <p>Sé que tienes dudas en este momento, si la inversión merecerá la pena, si tu producto puede beneficiarte entre otras muchas cosas.</p>
-            <p>Por eso te digo que la mejor forma de despejar dudas es probar, analizar y ver si funciona desde dentro. Entra y comprueba si todo lo que digo es</p>
-            <p>real, no pierdes nada, tienes una garantía total si no estás satisfecho.</p>
-            <p>Te prometo que, si sigues un buen ritmo, cruzarás el otro lado del puente sin riesgo alguno. </p>
-        </div>
     </section>
 
-    {{-- 12. CIERRE --}}
-    <!--
-    <section class="og-close" id="contacto">
-        <div class="container og-close-grid">
-            <div class="og-close-copy"><h2>Los bienes de tu institución ya existen. La pregunta es si su información está realmente bajo control.</h2><p>No esperes a una revisión, un cambio administrativo o la ausencia de una persona clave para descubrir que la información está dispersa. Conoce INTEVI y evalúa una forma más clara de administrar inventarios y resguardos.</p></div>
-            <div class="og-close-actions"><a class="button button-light" href="#contacto">Solicitar demostración</a><a class="button button-outline-light" href="mailto:{{ $contactEmail }}">Escribir a {{ $contactEmail }}</a><small>Sin compromiso de contratación.</small></div>
+    {{-- CTA FINAL --}}
+    <section class="cta" id="contacto">
+        <div class="container cta-layout">
+            <div class="cta-copy">
+                <h2>
+                    Descubre si INTEVI puede darte el control que hoy depende
+                    de archivos, tiempo y conocimiento disperso.
+                </h2>
+
+                <p>
+                    Solicita una demostración, conoce la plataforma y evalúa
+                    cómo puede adaptarse al proceso de resguardos de tu
+                    institución. Sin compromiso de contratación.
+                </p>
+            </div>
+
+            <div class="cta-action">
+                <a class="button button-light" href="#formulario-demo">Solicitar demostración</a>
+
+
+                <a class="cta-email" href="{{ $demoMailto }}">
+                    O escribe a {{ $contactEmail }}
+                </a>
+            </div>
         </div>
     </section>
-    -->
 </main>
 
-<!--
 <footer class="site-footer">
     <div class="container">
         <div class="footer-grid">
             <div class="footer-brand">
                 <a href="#inicio" class="brand">
-                    <span class="brand-symbol" aria-hidden="true">
-                <svg
-                    viewBox="0 0 32 32"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        d="M16 3.5 25 7v7.1c0 6.2-3.7 10.7-9 14.4-5.3-3.7-9-8.2-9-14.4V7l9-3.5Z"
-                        fill="currentColor"
-                        fill-opacity=".12"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linejoin="round"
-                    />
-                    <path
-                        d="M12.2 15.1v-2a3.8 3.8 0 0 1 7.6 0v2"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                    />
-                    <rect
-                        x="10.8"
-                        y="15"
-                        width="10.4"
-                        height="7.6"
-                        rx="2.1"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                    />
-                    <path
-                        d="M16 18.2v1.8"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                    />
-                </svg>
-            </span>
+                    <img
+                        src="{{ asset('images/intevi logo.png') }}"
+                        alt="Logo de INTEVI"
+                        class="brand-logo"
+                        width="52"
+                        height="52"
+                    >
 
-                    <span>
+                    <span class="brand-text">
                         <span class="brand-name">INTEVI</span>
-
                         <span class="brand-description">
-                             Inventario y resguardo institucional
+                            Inventario y resguardo institucional
                         </span>
                     </span>
                 </a>
@@ -3501,96 +4046,110 @@ body.has-intevi-alert .hero {
                     Gestión inteligente de resguardos e inventario de bienes
                     institucionales.
                 </p>
+
+                @if (
+                    Route::has('privacidad') ||
+                    Route::has('terminos') ||
+                    Route::has('condiciones.comerciales')
+                )
+                    <div class="footer-legal" aria-label="Información legal">
+                        @if (Route::has('privacidad'))
+                            <a href="{{ route('privacidad') }}">Aviso de privacidad</a>
+                        @endif
+
+                        @if (Route::has('terminos'))
+                            <a href="{{ route('terminos') }}">Términos del servicio</a>
+                        @endif
+
+                        @if (Route::has('condiciones.comerciales'))
+                            <a href="{{ route('condiciones.comerciales') }}">Condiciones comerciales</a>
+                        @endif
+                    </div>
+                @endif
             </div>
 
             <div>
                 <h3 class="footer-heading">Plataforma</h3>
-
                 <ul class="footer-links">
-                    <li>
-                        <a href="#solucion">Solución</a>
-                    </li>
-
-                    <li>
-                        <a href="#funciones">Funciones</a>
-                    </li>
-
-                    <li>
-                        <a href="#como-funciona">Cómo funciona</a>
-                    </li>
-
-                    <li>
-                        <a href="#instituciones">Instituciones</a>
-                    </li>
+                    <li><a href="#metodo">Método 5X</a></li>
+                    <li><a href="#plataforma">Funciones</a></li>
+                    <li><a href="#implementacion">Implementación</a></li>
+                    <li><a href="#oferta">Precio</a></li>
                 </ul>
             </div>
 
             <div>
                 <h3 class="footer-heading">Contacto</h3>
-
                 <ul class="footer-links">
-                    <li>
-                        <a href="mailto:{{ $contactEmail }}">
-                            Solicita tu demostración enviando un correo a: {{ $contactEmail }}
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="#contacto">
-                            Solicitar demostración
-                        </a>
-                    </li>
+                    <li><a href="{{ $demoMailto }}">{{ $contactEmail }}</a></li>
+                    <li><a href="#preguntas">Preguntas frecuentes</a></li>
+                    <li><a href="#formulario-demo">Solicitar demostración</a></li>
                 </ul>
             </div>
         </div>
 
         <div class="footer-bottom">
-            <p>
-                © {{ now()->year }} INTEVI. Todos los derechos reservados.
-            </p>
-
-            <p class="footer-signature">
-                 Inventario y resguardo institucional
-            </p>
+            <p>© {{ now()->year }} INTEVI. Todos los derechos reservados.</p>
+            <p class="footer-signature">Inventario Tecnológico Institucional</p>
         </div>
     </div>
 </footer>
--->
+
+<div class="mobile-sticky-cta">
+    <a class="button button-primary" href="#formulario-demo">
+        Solicitar demostración
+    </a>
+</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const menuButton = document.getElementById('menuButton');
         const navigation = document.getElementById('navigation');
-        const navigationLinks = navigation.querySelectorAll('a');
+        const faqQuestions = document.querySelectorAll('.faq-question');
 
         function closeMenu() {
+            if (!menuButton || !navigation) {
+                return;
+            }
+
             menuButton.setAttribute('aria-expanded', 'false');
             menuButton.setAttribute('aria-label', 'Abrir menú');
-
             navigation.classList.remove('mobile-visible');
             document.body.classList.remove('menu-open');
         }
 
-        menuButton.addEventListener('click', function () {
-            const isOpen =
-                menuButton.getAttribute('aria-expanded') === 'true';
+        if (menuButton && navigation) {
+            menuButton.addEventListener('click', function () {
+                const isOpen =
+                    menuButton.getAttribute('aria-expanded') === 'true';
 
-            menuButton.setAttribute(
-                'aria-expanded',
-                String(!isOpen)
-            );
+                menuButton.setAttribute('aria-expanded', String(!isOpen));
+                menuButton.setAttribute(
+                    'aria-label',
+                    isOpen ? 'Abrir menú' : 'Cerrar menú'
+                );
 
-            menuButton.setAttribute(
-                'aria-label',
-                isOpen ? 'Abrir menú' : 'Cerrar menú'
-            );
+                navigation.classList.toggle('mobile-visible', !isOpen);
+                document.body.classList.toggle('menu-open', !isOpen);
+            });
 
-            navigation.classList.toggle('mobile-visible', !isOpen);
-            document.body.classList.toggle('menu-open', !isOpen);
-        });
+            navigation.querySelectorAll('a').forEach(function (link) {
+                link.addEventListener('click', closeMenu);
+            });
+        }
 
-        navigationLinks.forEach(function (link) {
-            link.addEventListener('click', closeMenu);
+        faqQuestions.forEach(function (question) {
+            question.addEventListener('click', function () {
+                const item = question.closest('.faq-item');
+
+                if (!item) {
+                    return;
+                }
+
+                const isOpen = item.classList.contains('open');
+                item.classList.toggle('open', !isOpen);
+                question.setAttribute('aria-expanded', String(!isOpen));
+            });
         });
 
         window.addEventListener('resize', function () {
@@ -3598,53 +4157,7 @@ body.has-intevi-alert .hero {
                 closeMenu();
             }
         });
-
-        
     });
-</script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-const inteviAlert = document.getElementById('inteviAlert');
-const inteviAlertClose = document.getElementById('inteviAlertClose');
-
-if (inteviAlert) {
-    document.body.classList.add('has-intevi-alert');
-}
-
-if (inteviAlertClose && inteviAlert) {
-    inteviAlertClose.addEventListener('click', function () {
-        inteviAlert.remove();
-        document.body.classList.remove('has-intevi-alert');
-    });
-}
-        
-    });
-</script>
-
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const items = document.querySelectorAll('.og-faq-item');
-    function setOpen(item, open) {
-        const answer = item.querySelector('.og-faq-a');
-        const button = item.querySelector('.og-faq-q');
-        item.classList.toggle('active', open);
-        button.setAttribute('aria-expanded', String(open));
-        answer.style.maxHeight = open ? answer.scrollHeight + 'px' : '0px';
-    }
-    items.forEach(function (item) {
-        setOpen(item, item.classList.contains('active'));
-        item.querySelector('.og-faq-q').addEventListener('click', function () {
-            const opening = !item.classList.contains('active');
-            items.forEach(function (other) { if (other !== item) setOpen(other, false); });
-            setOpen(item, opening);
-        });
-    });
-    window.addEventListener('resize', function () {
-        items.forEach(function (item) { if (item.classList.contains('active')) setOpen(item, true); });
-    });
-});
 </script>
 
 </body>
