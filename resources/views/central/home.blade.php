@@ -2830,131 +2830,172 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
 
             <div class="feature-grid feature-grid-nine">
-                <article class="feature-card">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                            <path d="M4 7h16v13H4z"/><path d="m4 7 3-3h10l3 3M9 11h6"/>
-                        </svg>
-                    </div>
-                    <h3>Inventario de bienes</h3>
-                    <p>
-                        Registra descripción, marca, serie, cantidad,
-                        características, estado y datos de identificación.
-                    </p>
-                    <span class="feature-result">Registro central</span>
-                </article>
 
                 <article class="feature-card">
                     <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                            <circle cx="12" cy="8" r="3"/><path d="M5 20c0-4 3-7 7-7s7 3 7 7"/>
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            aria-hidden="true"
+                        >
+                            <path d="M4 7h16v13H4z"/>
+                            <path d="m4 7 3-3h10l3 3M9 11h6"/>
                         </svg>
                     </div>
-                    <h3>Resguardantes y puestos</h3>
+
+                    <h3>Inventario institucional</h3>
+
                     <p>
-                        Organiza responsables y relaciona su información con
-                        puestos, áreas y bienes asignados.
+                        Registra las características, estado, cantidad y datos de
+                        identificación de cada bien desde un solo lugar.
                     </p>
-                    <span class="feature-result">Responsabilidad definida</span>
+
+                    <span class="feature-result">
+                        Registro centralizado
+                    </span>
                 </article>
+
 
                 <article class="feature-card">
                     <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                            <path d="M4 20V9l8-5 8 5v11"/><path d="M8 20v-7h8v7"/>
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            aria-hidden="true"
+                        >
+                            <circle cx="12" cy="8" r="3"/>
+                            <path d="M5 20c0-4 3-7 7-7s7 3 7 7"/>
+                            <path d="M17 5h4v4"/>
+                            <path d="m21 5-5 5"/>
                         </svg>
                     </div>
-                    <h3>Áreas y ubicaciones físicas</h3>
+
+                    <h3>Resguardos institucionales</h3>
+
                     <p>
-                        Clasifica los activos por dirección, departamento,
-                        oficina, almacén o espacio físico.
+                        Asigna los bienes al personal y relaciona cada resguardo con su
+                        responsable, puesto, área y ubicación física.
                     </p>
-                    <span class="feature-result">Localización rápida</span>
+
+                    <span class="feature-result">
+                        Responsabilidad definida
+                    </span>
                 </article>
+
 
                 <article class="feature-card">
                     <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                            <path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4z"/><path d="M14 14h2v2h-2zM18 14h2v6h-6v-2"/>
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            aria-hidden="true"
+                        >
+                            <path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4z"/>
+                            <path d="M14 14h2v2h-2zM18 14h2v6h-6v-2"/>
                         </svg>
                     </div>
+
                     <h3>Etiquetas escaneables</h3>
+
                     <p>
-                        Genera etiquetas para identificar bienes y consultar
-                        rápidamente la información de su resguardo.
+                        Genera etiquetas para identificar los bienes y consultar
+                        rápidamente la información relacionada con su resguardo.
                     </p>
-                    <span class="feature-result">Identificación práctica</span>
+
+                    <span class="feature-result">
+                        Identificación práctica
+                    </span>
                 </article>
+
 
                 <article class="feature-card">
                     <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                            <path d="M5 4h10l4 4v12H5z"/><path d="M15 4v5h5M8 13h8M8 16h6"/>
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            aria-hidden="true"
+                        >
+                            <path d="M5 4h10l4 4v12H5z"/>
+                            <path d="M15 4v5h5"/>
+                            <path d="M8 13h8M8 16h6"/>
                         </svg>
                     </div>
+
                     <h3>Documentos e imágenes</h3>
+
                     <p>
-                        Integra archivos PDF e imágenes como apoyo documental
-                        de ubicaciones y resguardos.
+                        Integra archivos PDF e imágenes para mantener organizada la
+                        evidencia documental de ubicaciones y resguardos.
                     </p>
-                    <span class="feature-result">Evidencia organizada</span>
+
+                    <span class="feature-result">
+                        Evidencia organizada
+                    </span>
                 </article>
+
 
                 <article class="feature-card">
                     <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                            <path d="M4 4v6h6"/><path d="M5.5 15a7 7 0 1 0 1.2-8.2L4 10"/>
-                        </svg>
-                    </div>
-                    <h3>Historial de resguardos</h3>
-                    <p>
-                        Conserva asignaciones, cambios y liberaciones para
-                        consultar movimientos anteriores.
-                    </p>
-                    <span class="feature-result">Trazabilidad</span>
-                </article>
-
-                <article class="feature-card">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            aria-hidden="true"
+                        >
                             <path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/>
+                            <circle cx="17" cy="7" r="3"/>
+                            <path d="m19.2 9.2 2.3 2.3"/>
                         </svg>
                     </div>
+
                     <h3>Consultas y reportes</h3>
+
                     <p>
-                        Filtra por responsable, área, ubicación, estado u otros
-                        criterios para agilizar revisiones.
+                        Localiza información mediante filtros por responsable, área,
+                        ubicación, estado y otros criterios institucionales.
                     </p>
-                    <span class="feature-result">Información útil</span>
+
+                    <span class="feature-result">
+                        Información útil
+                    </span>
                 </article>
+
 
                 <article class="feature-card">
                     <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                            <path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5M8 17h3"/><path d="m16 14 2 2 3-4"/>
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            aria-hidden="true"
+                        >
+                            <path d="M12 3 5 6v5c0 5 3 8 7 10 4-2 7-5 7-10V6z"/>
+                            <path d="M9 12l2 2 4-4"/>
                         </svg>
                     </div>
-                    <h3>Carga de catálogos</h3>
-                    <p>
-                        Importa marcas, puestos y áreas desde Excel para reducir
-                        captura manual.
-                    </p>
-                    <span class="feature-result">Implementación ágil</span>
-                </article>
 
-                <article class="feature-card">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                            <path d="M12 3 5 6v5c0 5 3 8 7 10 4-2 7-5 7-10V6z"/><path d="M9 12l2 2 4-4"/>
-                        </svg>
-                    </div>
                     <h3>Usuarios, roles y permisos</h3>
+
                     <p>
-                        Define quién puede consultar, registrar o administrar
-                        según sus responsabilidades.
+                        Define quién puede consultar, registrar o administrar la
+                        información según sus responsabilidades.
                     </p>
-                    <span class="feature-result">Acceso controlado</span>
+
+                    <span class="feature-result">
+                        Acceso controlado
+                    </span>
                 </article>
+
             </div>
         </div>
     </section>
@@ -3290,7 +3331,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="container offer-layout">
             <div class="offer-product">
                 <span class="offer-badge">Lanzamiento</span>
-
+                <!--
                 <img
                     src="{{ asset('images/cajaintevi.png') }}"
                     alt="Presentación de la plataforma INTEVI y el Método Resguardos Fáciles de Controlar 5X"
@@ -3298,6 +3339,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     decoding="async"
                     style="heigth:500px;"
                 >
+                -->
             </div>
 
             <div>
@@ -3345,8 +3387,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <div class="offer-item">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
                             <div>
-                                <strong>Capacitación y tutoriales guiados</strong>
-                                <p>Orientación inicial y recorridos dentro de los módulos.</p>
+                                <strong>Tutoriales guiados</strong>
+                                <p>Recorridos dentro de los módulos.</p>
                             </div>
                         </div>
 
@@ -3363,6 +3405,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             <div>
                                 <strong>Actualizaciones y mantenimiento</strong>
                                 <p>La institución usa el sistema sin mantener servidores locales.</p>
+                            </div>
+                        </div>
+                        <div class="offer-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                            <div>
+                                <strong>Almacenamiento</strong>
+                                <p>Recibe 2gb de almacenamiento para fotos y resguardos.</p>
                             </div>
                         </div>
                     </div>
@@ -3391,7 +3440,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             Solicitar por correo
                         </a>
                         -->
-                        <iframe width="540" height="500"  src="https://c9015cf0.sibforms.com/v2/serve/MUIFAKBtKumOeQ_vSPH4Fxc7sj3KkltZg_HQSUsH-CugU2MCkC8ZHdbYq2Zch6Z44BMj5yndHZmM3XoVk-ljtgcKxi77ZjEDjiDqvHslUhQXB0s8XYnRCYeTP2cGeFJ9MwXBF8UfHc5Yd4TvrMY7pGXQOn_gKXYPqdaEWzv6hoPLSi9KUxLXG_OuKz2fZlTvY8TrUTI9kPpx0b95aw==" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>
+                        <iframe width="540" height="500" src="https://c9015cf0.sibforms.com/v2/serve/MUIFAKBtKumOeQ_vSPH4Fxc7sj3KkltZg_HQSUsH-CugU2MCkC8ZHdbYq2Zch6Z44BMj5yndHZmM3XoVk-ljtgcKxi77ZjEDjiDqvHslUhQXB0s8XYnRCYeTP2cGeFJ9MwXBF8UfHc5Yd4TvrMY7pGXQOn_gKXYPqdaEWzv6hoPLSi9KUxLXG_OuKz2fZlTvY8TrUTI9kPpx0b95aw==" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>
                     </div>
 
                     <p class="offer-note">
@@ -3408,12 +3457,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <section class="section">
         <div class="container guarantee-layout">
             <div class="guarantee-image">
+                <!--
                 <img
                     src="{{ asset('images/garantia.png') }}"
                     alt="Garantía de evaluación durante 30 días"
                     loading="lazy"
                     decoding="async"
                 >
+                -->
             </div>
 
             <div>
@@ -3425,7 +3476,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 <p class="section-copy">
                     Primero conoces la plataforma mediante una demostración.
-                    Después de contratar, cuentas con 30 días para confirmar que
+                    Después de contratar, cuentas con <span style="font-weight: bold;">30 días</span> para confirmar que
                     el servicio corresponde con el alcance presentado.
                 </p>
 
@@ -3510,7 +3561,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         ],
                         [
                             'question' => '¿Cuánto cuesta renovar?',
-                            'answer' => 'El precio especial es de $250 USD durante el primer año. A partir del segundo año, la renovación anual es de $500 USD, dentro del alcance contratado.',
+                            'answer' => 'El precio especial es de $4,999 MXN durante el primer año. A partir del segundo año, la renovación anual es de $9,999 MXN, dentro del alcance contratado.',
                         ],
                         [
                             'question' => '¿Cómo podemos conocer el sistema?',
