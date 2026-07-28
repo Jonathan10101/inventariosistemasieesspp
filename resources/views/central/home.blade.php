@@ -3330,8 +3330,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <section class="offer-section" id="oferta">
         <div class="container offer-layout">
             <div class="offer-product">
-                <span class="offer-badge">Lanzamiento</span>
                 <!--
+                <span class="offer-badge">Lanzamiento</span>
+                
                 <img
                     src="{{ asset('images/cajaintevi.png') }}"
                     alt="Presentación de la plataforma INTEVI y el Método Resguardos Fáciles de Controlar 5X"
@@ -3440,8 +3441,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             Solicitar por correo
                         </a>
                         -->
-                        <iframe width="540" height="500" src="https://c9015cf0.sibforms.com/v2/serve/MUIFAKBtKumOeQ_vSPH4Fxc7sj3KkltZg_HQSUsH-CugU2MCkC8ZHdbYq2Zch6Z44BMj5yndHZmM3XoVk-ljtgcKxi77ZjEDjiDqvHslUhQXB0s8XYnRCYeTP2cGeFJ9MwXBF8UfHc5Yd4TvrMY7pGXQOn_gKXYPqdaEWzv6hoPLSi9KUxLXG_OuKz2fZlTvY8TrUTI9kPpx0b95aw==" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>                    </div>
-
+                        <iframe width="540" height="500" src="https://c9015cf0.sibforms.com/v2/serve/MUIFAKBtKumOeQ_vSPH4Fxc7sj3KkltZg_HQSUsH-CugU2MCkC8ZHdbYq2Zch6Z44BMj5yndHZmM3XoVk-ljtgcKxi77ZjEDjiDqvHslUhQXB0s8XYnRCYeTP2cGeFJ9MwXBF8UfHc5Yd4TvrMY7pGXQOn_gKXYPqdaEWzv6hoPLSi9KUxLXG_OuKz2fZlTvY8TrUTI9kPpx0b95aw==" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>
                     <p class="offer-note">
                         Precio sujeto al alcance estándar de la implementación.
                         Desarrollos especiales, integraciones o personalizaciones
