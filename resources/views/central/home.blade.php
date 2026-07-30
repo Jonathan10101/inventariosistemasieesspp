@@ -217,7 +217,7 @@
 
         <nav class="nav-area" id="navigation" aria-label="Navegación principal">
             <ul class="nav-links">
-                <li><a class="nav-link" href="#metodo">Método 5X</a></li>
+                <li><a class="nav-link" href="#metodo">Control Institucional 5X</a></li>
                 <li><a class="nav-link" href="#plataforma">Plataforma</a></li>
                 <li><a class="nav-link" href="#implementacion">Implementación</a></li>
                 <li><a class="nav-link" href="#oferta">Precio</a></li>
@@ -249,12 +249,12 @@
                 </h1>
 
                 <p class="hero-description">
-                    INTEVI conecta inventario, responsables, ubicaciones, documentos e historiales para que cada bien permanezca identificado, localizado y respaldado desde una sola plataforma.
+                    INTEVI conecta cada bien con su ubicación, responsable, evidencia e historial para que tu institución mantenga el control desde una sola plataforma.
                 </p>
 
                 <div class="hero-actions">
                     <a class="button button-primary" href="#formulario-demo" data-analytics="demo-cta" data-location="hero">Solicitar demostración</a>
-                    <a class="button button-outline" href="#metodo">Conocer el Método 5X</a>
+                    <a class="button button-outline" href="#metodo">Conocer el Control Institucional 5X</a>
                 </div>
 
                 <div class="hero-proof-list" aria-label="Características principales">
@@ -331,13 +331,13 @@
         <div class="container">
             <div class="method-header">
                 <div>
-                    <span class="eyebrow">Método de Control Institucional 5X</span>
+                    <span class="eyebrow">Control Institucional 5X</span>
                     <h2 class="heading heading-medium">Cada bien debe responder cinco preguntas.</h2>
                     <p class="section-copy">INTEVI no se limita a guardar una lista: relaciona la información necesaria para demostrar que un activo está realmente bajo control.</p>
                 </div>
                 <div class="method-summary">
                     <strong>Un modelo sencillo para una operación compleja</strong>
-                    <p>El Método 5X organiza el proceso alrededor de existencia, ubicación, responsable, evidencia e historial.</p>
+                    <p>Control Institucional 5X organiza el proceso alrededor de existencia, ubicación, responsable, evidencia e historial.</p>
                 </div>
             </div>
 
@@ -437,7 +437,7 @@
                         <div class="offer-item"><svg><use href="#icon-check"/></svg><div><strong>Licencia anual y entorno institucional</strong><p>Acceso a los módulos incluidos en el alcance estándar.</p></div></div>
                         <div class="offer-item"><svg><use href="#icon-check"/></svg><div><strong>Hasta 10 usuarios individuales</strong><p>Cuentas independientes con roles y permisos configurables.</p></div></div>
                         <div class="offer-item"><svg><use href="#icon-check"/></svg><div><strong>2 GB de almacenamiento</strong><p>Para imágenes, documentos y archivos asociados con ubicaciones y resguardos.</p></div></div>
-                        <div class="offer-item"><svg><use href="#icon-check"/></svg><div><strong>Método de Control Institucional 5X</strong><p>Integrado en la forma de organizar los bienes dentro de la plataforma.</p></div></div>
+                        <div class="offer-item"><svg><use href="#icon-check"/></svg><div><strong>Control Institucional 5X</strong><p>Integrado en la forma de organizar los bienes dentro de la plataforma.</p></div></div>
                         <div class="offer-item"><svg><use href="#icon-check"/></svg><div><strong>Configuración y acompañamiento de arranque</strong><p>Orientación inicial, preparación de catálogos y capacitación de uso.</p></div></div>
                         <div class="offer-item"><svg><use href="#icon-check"/></svg><div><strong>Tutoriales y asistente especializado</strong><p>Apoyo para resolver dudas frecuentes relacionadas con el funcionamiento estándar.</p></div></div>
                         <div class="offer-item"><svg><use href="#icon-check"/></svg><div><strong>Mantenimiento y actualizaciones generales</strong><p>Sin instalaciones manuales en cada computadora.</p></div></div>
@@ -556,7 +556,7 @@
                 <p class="footer-description">Gestión inteligente de inventario, resguardos y trazabilidad de bienes institucionales.</p>
             </div>
 
-            <div><h3 class="footer-heading">Plataforma</h3><ul class="footer-links"><li><a href="#metodo">Método 5X</a></li><li><a href="#plataforma">Funciones</a></li><li><a href="#implementacion">Implementación</a></li><li><a href="#oferta">Precio</a></li></ul></div>
+            <div><h3 class="footer-heading">Plataforma</h3><ul class="footer-links"><li><a href="#metodo">Control Institucional 5X</a></li><li><a href="#plataforma">Funciones</a></li><li><a href="#implementacion">Implementación</a></li><li><a href="#oferta">Precio</a></li></ul></div>
             <div><h3 class="footer-heading">Contacto</h3><ul class="footer-links"><li><a href="{{ $demoMailto }}">{{ $contactEmail }}</a></li><li><a href="#preguntas">Preguntas frecuentes</a></li><li><a href="#formulario-demo">Solicitar demostración</a></li></ul></div>
             <div><h3 class="footer-heading">Información</h3><ul class="footer-links"><li><a href="{{ route('privacidad') }}">Aviso de privacidad</a></li><li><a href="{{ route('terminos') }}">Términos del servicio</a></li><li><a href="{{ route('condiciones.comerciales') }}">Condiciones comerciales</a></li></ul></div>
         </div>
