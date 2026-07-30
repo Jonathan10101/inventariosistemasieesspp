@@ -276,7 +276,7 @@
                         <source media="(max-width: 720px)" srcset="{{ $versionedAsset('images/intevi-plataforma-720.webp') }}">
                         <source media="(max-width: 1200px)" srcset="{{ $versionedAsset('images/intevi-plataforma-1120.webp') }}">
                         <img
-                            src="{{ $versionedAsset('images/intevi-plataforma-1600.webp') }}"
+                            src="{{ $versionedAsset('images/intevi-plataforma-1600v2.png') }}"
                             alt="Vista real del módulo de inventario de INTEVI con búsqueda, bienes registrados, ubicación y resguardante"
                             width="1600"
                             height="735"
@@ -430,6 +430,8 @@
                 <article class="price-card">
                     <span class="offer-label">Programa para instituciones fundadoras</span>
                     <h3>Primer año de implementación</h3>
+                    <h3>Todo lo necesario para comenzar con una sola licencia</h3>
+
                     <div class="price-main"><span class="price-amount">$6,999</span><span class="price-period">MXN durante el primer año</span></div>
                     <p class="renewal-note"><strong>Renovación:</strong> $9,999 MXN al año a partir del segundo año. El precio se informa desde el inicio para que la institución conozca su inversión futura.</p>
 
