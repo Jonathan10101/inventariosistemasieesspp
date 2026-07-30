@@ -27,6 +27,13 @@ foreach (config('tenancy.central_domains', []) as $index => $domain) {
                         : "central.home.{$index}"
                 );
 
+            Route::view('/landing', 'central.home2')
+                ->name(
+                    $index === 0
+                        ? 'central.home2'
+                        : "central.home2.{$index}"
+                );
+
             Route::view('/aviso-de-privacidad', 'central.privacy')
                 ->name(
                     $index === 0
