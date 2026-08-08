@@ -42,10 +42,9 @@
 
             {{-- Descripción --}}
             <p class="intevi-expired-description">
-                Los 7 días de evaluación de INTEVI han concluido.
-                Su información permanece disponible y protegida.
-                Active una licencia para continuar trabajando con
-                sus inventarios y resguardos institucionales.
+                Los 7 días de evaluación de INTEVI han concluido. Su información permanecerá almacenada y protegida durante los próximos 30 días.
+                Para conservar el acceso a sus inventarios, resguardos, documentos y configuraciones institucionales, active su licencia antes de que finalice este periodo de conservación.
+                Una vez activada, podrá continuar trabajando desde donde lo dejó, sin necesidad de volver a configurar su cuenta ni registrar nuevamente su información.
             </p>
 
 
@@ -938,4 +937,4 @@
 
 </style>
 
-@stop
+@stopgi
