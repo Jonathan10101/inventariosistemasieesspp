@@ -74,7 +74,7 @@
         </div>
     </section>
 
-    @hasanyrole('Administrador')
+    @hasanyrole('Administrador'g)
             <div class="row">
 
             {{-- PANEL DESPLEGABLE --}}
@@ -349,55 +349,6 @@
     @endhasanyrole
 
     @hasanyrole('Administrador')
-    {{-- MÉTRICAS --}}
-    <section class="dash-metrics">
-
-        <div class="dash-stat">
-            <div class="dash-stat-icon blue">
-                <i class="fas fa-boxes"></i>
-            </div>
-
-            <div>
-                <span>Inventarios</span>
-                <strong>{{ $totalInventarios ?? 0  }}</strong>
-            </div>
-        </div>
-
-        <div class="dash-stat">
-            <div class="dash-stat-icon green">
-                <i class="fas fa-tags"></i>
-            </div>
-
-            <div>
-                <span>Marcas</span>
-                <strong>{{ $totalMarcas ?? 0 }}</strong>
-            </div>
-        </div>
-
-        <div class="dash-stat">
-            <div class="dash-stat-icon purple">
-                <i class="fas fa-user-shield"></i>
-            </div>
-
-            <div>
-                <span>Resguardantes</span>
-                <strong>{{ $totalResguardantes ?? 0 }}</strong>
-            </div>
-        </div>
-
-        <div class="dash-stat">
-            <div class="dash-stat-icon orange">
-                <i class="fas fa-sitemap"></i>
-            </div>
-
-            <div>
-                <span>Áreas</span>
-                <strong>{{ $totalAreas ?? 0 }}</strong>
-            </div>
-        </div>
-
-    </section>
-
     {{-- MÓDULOS PRINCIPALES --}}
     <section class="dash-section">
         <div class="dash-section-header">
@@ -455,6 +406,55 @@
             </a>
 
         </div>
+    </section>
+    
+    {{-- MÉTRICAS --}}
+    <section class="dash-metrics">
+
+        <div class="dash-stat">
+            <div class="dash-stat-icon blue">
+                <i class="fas fa-boxes"></i>
+            </div>
+
+            <div>
+                <span>Inventarios</span>
+                <strong>{{ $totalInventarios ?? 0  }}</strong>
+            </div>
+        </div>
+
+        <div class="dash-stat">
+            <div class="dash-stat-icon green">
+                <i class="fas fa-tags"></i>
+            </div>
+
+            <div>
+                <span>Marcas</span>
+                <strong>{{ $totalMarcas ?? 0 }}</strong>
+            </div>
+        </div>
+
+        <div class="dash-stat">
+            <div class="dash-stat-icon purple">
+                <i class="fas fa-user-shield"></i>
+            </div>
+
+            <div>
+                <span>Resguardantes</span>
+                <strong>{{ $totalResguardantes ?? 0 }}</strong>
+            </div>
+        </div>
+
+        <div class="dash-stat">
+            <div class="dash-stat-icon orange">
+                <i class="fas fa-sitemap"></i>
+            </div>
+
+            <div>
+                <span>Áreas</span>
+                <strong>{{ $totalAreas ?? 0 }}</strong>
+            </div>
+        </div>
+
     </section>
     @endhasanyrole
 
