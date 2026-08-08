@@ -41,7 +41,8 @@ Route::middleware([
     'web',
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
-])->group(function () {
+])->group(function (): void {
+
     /*
     |--------------------------------------------------------------------------
     | Comprobación de conexión
@@ -65,36 +66,6 @@ Route::middleware([
     })->name('tenant.connection');
 
 
-
-    /*
-     * Esta ruta debe seguir disponible aunque la prueba haya vencido.
-     */
-    Route::middleware(['auth'])->group(function (): void {
-        Route::view(
-            '/suscripcion-vencida',
-            'tenant.subscription-expired'
-        )->name('subscription.expired');
-    });
-
-    /*
-     * Aquí van todas las rutas protegidas de INTEVI.
-     */
-    Route::middleware([
-        'auth',
-        'tenant.subscription',
-        EnsureSingleUserSession::class,
-    ])->group(function (): void {
-
-        Route::get('/dashboard', [
-            DashboardController::class,
-            'index',
-        ])->name('dashboard');
-
-
-
-
-
-
     /*
     |--------------------------------------------------------------------------
     | Página principal del tenant
@@ -113,17 +84,42 @@ Route::middleware([
             : redirect()->route('login');
     })->name('tenant.home');
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Suscripción vencida
+    |--------------------------------------------------------------------------
+    |
+    | Esta ruta debe seguir disponible aunque la prueba gratuita o
+    | suscripción del tenant haya vencido.
+    |
+    | Por eso solamente requiere que el usuario esté autenticado.
+    |
+    */
+
+    Route::middleware([
+        'auth',
+    ])->group(function (): void {
+
+        Route::view(
+            '/suscripcion-vencida',
+            'tenant.subscription-expired'
+        )->name('subscription.expired');
+    });
+
+
     /*
     |--------------------------------------------------------------------------
     | Rutas protegidas del tenant
     |--------------------------------------------------------------------------
     |
-    | Todas las rutas de los módulos requieren:
+    | Todas las rutas de INTEVI requieren:
     |
     | 1. Usuario autenticado.
     | 2. Sesión válida de Jetstream.
     | 3. Correo electrónico verificado.
-    | 4. Que sea la única sesión activa de ese usuario.
+    | 4. Suscripción/prueba activa del tenant.
+    | 5. Que sea la única sesión activa de ese usuario.
     |
     */
 
@@ -131,8 +127,9 @@ Route::middleware([
         'auth:sanctum',
         config('jetstream.auth_session'),
         'verified',
+        'tenant.subscription',
         EnsureSingleUserSession::class,
-    ])->group(function () {
+    ])->group(function (): void {
 
         /*
         |--------------------------------------------------------------------------
@@ -145,6 +142,7 @@ Route::middleware([
             'index',
         ])->name('dashboard');
 
+
         /*
         |--------------------------------------------------------------------------
         | Inventario
@@ -155,6 +153,7 @@ Route::middleware([
             'inventario',
             InventarioController::class
         )->middleware('can:inventario.index');
+
 
         /*
         |--------------------------------------------------------------------------
@@ -167,6 +166,7 @@ Route::middleware([
             MarcaController::class
         )->middleware('can:marcas.create');
 
+
         /*
         |--------------------------------------------------------------------------
         | Resguardantes
@@ -177,6 +177,7 @@ Route::middleware([
             'resguardante',
             ResguardanteController::class
         )->middleware('can:resguardante.create');
+
 
         /*
         |--------------------------------------------------------------------------
@@ -189,6 +190,7 @@ Route::middleware([
             PuestoController::class
         )->middleware('can:puestos.create');
 
+
         /*
         |--------------------------------------------------------------------------
         | Ubicaciones físicas
@@ -196,8 +198,9 @@ Route::middleware([
         |
         | Actualmente se conservan las rutas resource completas.
         |
-        | Si el controlador solamente contiene index() y show(), puedes
-        | agregar ->only(['index', 'show']) al final.
+        | Si el controlador solamente contiene index() y show(), puedes usar:
+        |
+        | ->only(['index', 'show'])
         |
         */
 
@@ -206,17 +209,13 @@ Route::middleware([
             UbicacionFisicaController::class
         )->middleware('can:ubicacionfisica.create');
 
+
         /*
         |--------------------------------------------------------------------------
         | Áreas de asignación
         |--------------------------------------------------------------------------
-        |
-        | El controlador utiliza únicamente:
-        |
-        | index()
-        | store()
-        |
         */
+
         Route::controller(AreaDeAsignacionController::class)
             ->prefix('areadeasignacion')
             ->name('areadeasignacion.')
@@ -230,6 +229,7 @@ Route::middleware([
                     ->name('store')
                     ->middleware('can:areadeasignacion.create');
             });
+
 
         /*
         |--------------------------------------------------------------------------
@@ -247,6 +247,7 @@ Route::middleware([
         )->middleware('can:puestos.create');
         */
 
+
         /*
         |--------------------------------------------------------------------------
         | Roles
@@ -257,6 +258,7 @@ Route::middleware([
             'roles',
             RolController::class
         )->middleware('can:puestos.create');
+
 
         /*
         |--------------------------------------------------------------------------
@@ -271,6 +273,7 @@ Route::middleware([
             ->name('etiquetas.show')
             ->middleware('can:inventario.index');
 
+
         /*
         |--------------------------------------------------------------------------
         | Segunda etiqueta
@@ -283,6 +286,7 @@ Route::middleware([
         ])
             ->name('etiquetas2.show')
             ->middleware('can:inventario.index');
+
 
         /*
         |--------------------------------------------------------------------------
