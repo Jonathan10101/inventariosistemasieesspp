@@ -471,10 +471,7 @@
 </head>
 <body class="@yield('classes_body')" @yield('body_data')>
 
-    {{-- Body Content --}}
-    @yield('body')
-       
-    @endif
+
 
     {{-- Base Scripts (depends on Laravel asset bundling tool) --}}
     @if(config('adminlte.enabled_laravel_mix', false))
