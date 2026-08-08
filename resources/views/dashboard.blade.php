@@ -74,117 +74,8 @@
         </div>
     </section>
 
-    <x-tenant-storage-card :storage="$storage" />
     @hasanyrole('Administrador')
-    {{-- MÉTRICAS --}}
-    <section class="dash-metrics">
-
-        <div class="dash-stat">
-            <div class="dash-stat-icon blue">
-                <i class="fas fa-boxes"></i>
-            </div>
-
-            <div>
-                <span>Inventarios</span>
-                <strong>{{ $totalInventarios ?? 0  }}</strong>
-            </div>
-        </div>
-
-        <div class="dash-stat">
-            <div class="dash-stat-icon green">
-                <i class="fas fa-tags"></i>
-            </div>
-
-            <div>
-                <span>Marcas</span>
-                <strong>{{ $totalMarcas ?? 0 }}</strong>
-            </div>
-        </div>
-
-        <div class="dash-stat">
-            <div class="dash-stat-icon purple">
-                <i class="fas fa-user-shield"></i>
-            </div>
-
-            <div>
-                <span>Resguardantes</span>
-                <strong>{{ $totalResguardantes ?? 0 }}</strong>
-            </div>
-        </div>
-
-        <div class="dash-stat">
-            <div class="dash-stat-icon orange">
-                <i class="fas fa-sitemap"></i>
-            </div>
-
-            <div>
-                <span>Áreas</span>
-                <strong>{{ $totalAreas ?? 0 }}</strong>
-            </div>
-        </div>
-
-    </section>
-
-    {{-- MÓDULOS PRINCIPALES --}}
-    <section class="dash-section">
-        <div class="dash-section-header">
-            <div>
-                <h2>Módulos principales</h2>
-                <p>Accesos directos para operar el sistema.</p>
-            </div>
-        </div>
-
-        <div class="dash-module-grid">
-
-            <a href="{{ url('/inventario') }}" class="dash-module-card">
-                <div class="dash-module-icon primary">
-                    <i class="fas fa-box-open"></i>
-                </div>
-
-                <div>
-                    <h3>Inventario</h3>
-                    <p>Registra, consulta y administra bienes institucionales.</p>
-                </div>
-
-                <span class="dash-module-arrow">
-                    <i class="fas fa-arrow-right"></i>
-                </span>
-            </a>
-
-            <a href="{{ url('/marcas') }}" class="dash-module-card">
-                <div class="dash-module-icon success">
-                    <i class="fas fa-tags"></i>
-                </div>
-            
-                <div>
-                    <h3>Marcas</h3>
-                    <p>Consulta las marcas registradas.</p>
-                </div>
-
-                <span class="dash-module-arrow">
-                    <i class="fas fa-arrow-right"></i>
-                </span>
-            </a>
-
-            <a href="{{ url('/resguardante') }}" class="dash-module-card">
-                <div class="dash-module-icon purple">
-                    <i class="fas fa-user-tie"></i>
-                </div>
-
-                <div>
-                    <h3>Resguardantes</h3>
-                    <p>Gestiona las personas responsables de los bienes.</p>
-                </div>
-
-                <span class="dash-module-arrow">
-                    <i class="fas fa-arrow-right"></i>
-                </span>
-            </a>
-
-        </div>
-    </section>
-    
-        <div class="row">
+            <div class="row">
 
             {{-- PANEL DESPLEGABLE --}}
             <div class="col-lg-5 mb-4">
@@ -456,6 +347,119 @@
 
         </div>
     @endhasanyrole
+
+    @hasanyrole('Administrador')
+    {{-- MÉTRICAS --}}
+    <section class="dash-metrics">
+
+        <div class="dash-stat">
+            <div class="dash-stat-icon blue">
+                <i class="fas fa-boxes"></i>
+            </div>
+
+            <div>
+                <span>Inventarios</span>
+                <strong>{{ $totalInventarios ?? 0  }}</strong>
+            </div>
+        </div>
+
+        <div class="dash-stat">
+            <div class="dash-stat-icon green">
+                <i class="fas fa-tags"></i>
+            </div>
+
+            <div>
+                <span>Marcas</span>
+                <strong>{{ $totalMarcas ?? 0 }}</strong>
+            </div>
+        </div>
+
+        <div class="dash-stat">
+            <div class="dash-stat-icon purple">
+                <i class="fas fa-user-shield"></i>
+            </div>
+
+            <div>
+                <span>Resguardantes</span>
+                <strong>{{ $totalResguardantes ?? 0 }}</strong>
+            </div>
+        </div>
+
+        <div class="dash-stat">
+            <div class="dash-stat-icon orange">
+                <i class="fas fa-sitemap"></i>
+            </div>
+
+            <div>
+                <span>Áreas</span>
+                <strong>{{ $totalAreas ?? 0 }}</strong>
+            </div>
+        </div>
+
+    </section>
+
+    {{-- MÓDULOS PRINCIPALES --}}
+    <section class="dash-section">
+        <div class="dash-section-header">
+            <div>
+                <h2>Módulos principales</h2>
+                <p>Accesos directos para operar el sistema.</p>
+            </div>
+        </div>
+
+        <div class="dash-module-grid">
+
+            <a href="{{ url('/inventario') }}" class="dash-module-card">
+                <div class="dash-module-icon primary">
+                    <i class="fas fa-box-open"></i>
+                </div>
+
+                <div>
+                    <h3>Inventario</h3>
+                    <p>Registra, consulta y administra bienes institucionales.</p>
+                </div>
+
+                <span class="dash-module-arrow">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+            </a>
+
+            <a href="{{ url('/marcas') }}" class="dash-module-card">
+                <div class="dash-module-icon success">
+                    <i class="fas fa-tags"></i>
+                </div>
+            
+                <div>
+                    <h3>Marcas</h3>
+                    <p>Consulta las marcas registradas.</p>
+                </div>
+
+                <span class="dash-module-arrow">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+            </a>
+
+            <a href="{{ url('/resguardante') }}" class="dash-module-card">
+                <div class="dash-module-icon purple">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+
+                <div>
+                    <h3>Resguardantes</h3>
+                    <p>Gestiona las personas responsables de los bienes.</p>
+                </div>
+
+                <span class="dash-module-arrow">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+            </a>
+
+        </div>
+    </section>
+    @endhasanyrole
+
+    <x-tenant-storage-card :storage="$storage" />
+
 
 </div>
 
