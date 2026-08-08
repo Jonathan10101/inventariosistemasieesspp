@@ -74,7 +74,7 @@
         </div>
     </section>
 
-    @hasanyrole('Administrador'g)
+    @hasanyrole('Administrador')
             <div class="row">
 
             {{-- PANEL DESPLEGABLE --}}
