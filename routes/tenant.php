@@ -103,7 +103,7 @@ Route::middleware([
 
         Route::view(
             '/suscripcion-vencida',
-            'tenant.subscription-expired'
+            'tenants.subscription-expired'
         )->name('subscription.expired');
     });
 
