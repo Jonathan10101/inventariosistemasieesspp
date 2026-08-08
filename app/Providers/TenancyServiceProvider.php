@@ -147,18 +147,6 @@ class TenancyServiceProvider extends ServiceProvider
 
         foreach (array_reverse($tenancyMiddleware) as $middleware) {
             $this->app[\Illuminate\Contracts\Http\Kernel::class]->prependToMiddlewarePriority($middleware);
-        }
-
-        
-        Livewire::setUpdateRoute(function ($handle) {
-            return Route::post('/livewire/update', $handle)
-                ->middleware([
-                    'web',
-                    InitializeTenancyByDomain::class,
-                    PreventAccessFromCentralDomains::class,
-                    EnsureTenantHasActiveSubscription::class,
-            ]);
-        });
-        
+        }        
     }
 }
