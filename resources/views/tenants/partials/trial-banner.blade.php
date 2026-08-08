@@ -3,581 +3,282 @@
     @php
         $trialDays = tenant()->trialDaysRemaining();
         $trialHours = tenant()->trialHoursRemaining();
-
-        /*
-        |--------------------------------------------------------------------------
-        | Progreso visual de la prueba
-        |--------------------------------------------------------------------------
-        |
-        | 7 días = 168 horas.
-        | Solo se utiliza para la barra visual.
-        |
-        */
-        $totalTrialHours = 7 * 24;
-
-        $remainingHours = max(
-            0,
-            min($totalTrialHours, $trialHours)
-        );
-
-        $elapsedPercentage = 100 - (($remainingHours / $totalTrialHours) * 100);
-
-        $elapsedPercentage = max(
-            0,
-            min(100, $elapsedPercentage)
-        );
     @endphp
 
-
     <style>
-        .intevi-trial-card {
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 20px;
-
-            background:
-                radial-gradient(
-                    circle at 0% 0%,
-                    rgba(23, 28, 99, 0.08),
-                    transparent 32%
-                ),
-                linear-gradient(
-                    135deg,
-                    #ffffff 0%,
-                    #f8faff 100%
-                );
-
-            border: 1px solid rgba(23, 28, 99, 0.10);
-            border-radius: 18px;
-
-            box-shadow:
-                0 10px 30px rgba(15, 23, 42, 0.055);
-
-            color: #0f172a;
-        }
-
-
-        .intevi-trial-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-
-            width: 4px;
-            height: 100%;
-
-            background:
-                linear-gradient(
-                    180deg,
-                    #171C63 0%,
-                    #3949ab 100%
-                );
-        }
-
-
-        .intevi-trial-inner {
+        .intevi-trial {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 20px;
 
-            gap: 24px;
+            margin-bottom: 18px;
+            padding: 12px 14px 12px 16px;
 
-            padding: 18px 20px 16px 22px;
+            background: #ffffff;
+            border: 1px solid #e4e8f0;
+            border-left: 4px solid #171C63;
+            border-radius: 10px;
+
+            box-shadow:
+                0 3px 10px rgba(15, 23, 42, 0.035);
         }
 
-
-        .intevi-trial-main {
+        .intevi-trial-left {
             display: flex;
             align-items: center;
-
-            gap: 15px;
-
             min-width: 0;
-            flex: 1;
+            gap: 12px;
         }
 
-
         .intevi-trial-icon {
-            width: 48px;
-            height: 48px;
-            min-width: 48px;
+            width: 34px;
+            height: 34px;
+            min-width: 34px;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
-            border-radius: 15px;
+            border-radius: 8px;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #171C63 0%,
-                    #2d3a9f 100%
-                );
+            background: #f1f3fb;
+            color: #171C63;
 
-            color: #ffffff;
-
-            font-size: 18px;
-
-            box-shadow:
-                0 10px 22px rgba(23, 28, 99, 0.20);
+            font-size: 14px;
         }
 
-
-        .intevi-trial-content {
+        .intevi-trial-copy {
             min-width: 0;
         }
 
-
-        .intevi-trial-topline {
+        .intevi-trial-title {
             display: flex;
             align-items: center;
             flex-wrap: wrap;
+            gap: 7px;
 
-            gap: 8px;
+            margin-bottom: 2px;
 
-            margin-bottom: 4px;
+            font-size: 13px;
+            font-weight: 800;
+            color: #172033;
         }
 
-
-        .intevi-trial-badge {
+        .intevi-trial-label {
             display: inline-flex;
             align-items: center;
 
-            padding: 4px 9px;
+            padding: 2px 7px;
 
-            border-radius: 999px;
+            border-radius: 5px;
 
-            background:
-                rgba(23, 28, 99, 0.08);
-
+            background: #eef0fa;
             color: #171C63;
 
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 900;
 
-            letter-spacing: 0.08em;
-
+            letter-spacing: .06em;
             text-transform: uppercase;
         }
 
-
-        .intevi-trial-title {
+        .intevi-trial-text {
             margin: 0;
 
-            color: #0f172a;
+            color: #6b7280;
 
-            font-size: 15px;
-            font-weight: 850;
-
-            letter-spacing: -0.015em;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.4;
         }
 
-
-        .intevi-trial-description {
-            margin: 0;
-
-            color: #64748b;
-
-            font-size: 13px;
-            font-weight: 600;
-
-            line-height: 1.5;
-        }
-
-
-        .intevi-trial-description strong {
+        .intevi-trial-text strong {
             color: #171C63;
-            font-weight: 900;
+            font-weight: 800;
         }
 
-
-        .intevi-trial-actions {
+        .intevi-trial-right {
             display: flex;
             align-items: center;
-
-            gap: 14px;
-
+            gap: 16px;
             flex-shrink: 0;
         }
 
+        .intevi-trial-counter {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
 
-        .intevi-trial-time {
-            text-align: right;
+            white-space: nowrap;
         }
 
-
-        .intevi-trial-time-number {
-            display: block;
-
+        .intevi-trial-counter-number {
             color: #171C63;
 
-            font-size: 22px;
-            font-weight: 950;
-
+            font-size: 18px;
+            font-weight: 900;
             line-height: 1;
-
-            letter-spacing: -0.04em;
         }
 
-
-        .intevi-trial-time-label {
-            display: block;
-
-            margin-top: 4px;
-
-            color: #94a3b8;
-
-            font-size: 10px;
-            font-weight: 800;
-
-            letter-spacing: 0.06em;
-
-            text-transform: uppercase;
-        }
-
-
-        .intevi-trial-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-
-            gap: 7px;
-
-            min-height: 40px;
-
-            padding: 8px 16px;
-
-            border: 1px solid #171C63;
-            border-radius: 11px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #171C63 0%,
-                    #26318f 100%
-                );
-
-            color: #ffffff !important;
-
-            font-size: 12px;
-            font-weight: 850;
-
-            text-decoration: none !important;
-
-            box-shadow:
-                0 8px 18px rgba(23, 28, 99, 0.16);
-
-            transition:
-                transform 0.15s ease,
-                box-shadow 0.15s ease;
-        }
-
-
-        .intevi-trial-button:hover {
-            color: #ffffff !important;
-
-            transform: translateY(-1px);
-
-            box-shadow:
-                0 12px 24px rgba(23, 28, 99, 0.23);
-
-            text-decoration: none !important;
-        }
-
-
-        .intevi-trial-progress-wrapper {
-            padding:
-                0 20px 14px 22px;
-        }
-
-
-        .intevi-trial-progress {
-            width: 100%;
-            height: 4px;
-
-            overflow: hidden;
-
-            border-radius: 999px;
-
-            background: #e8ecf5;
-        }
-
-
-        .intevi-trial-progress-bar {
-            height: 100%;
-
-            border-radius: 999px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    #171C63 0%,
-                    #5263da 100%
-                );
-
-            transition:
-                width 0.35s ease;
-        }
-
-
-        .intevi-trial-progress-info {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            gap: 15px;
-
-            margin-top: 6px;
-
-            color: #94a3b8;
+        .intevi-trial-counter-label {
+            color: #8a94a6;
 
             font-size: 10px;
             font-weight: 700;
+
+            text-transform: uppercase;
+            letter-spacing: .04em;
         }
 
+        .intevi-trial-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+
+            height: 34px;
+            padding: 0 13px;
+
+            border: 1px solid #171C63;
+            border-radius: 8px;
+
+            background: #171C63;
+
+            color: #ffffff !important;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            text-decoration: none !important;
+
+            transition: all .15s ease;
+        }
+
+        .intevi-trial-action:hover {
+            background: #20277e;
+            border-color: #20277e;
+            color: #ffffff !important;
+            text-decoration: none !important;
+        }
 
         @media (max-width: 767.98px) {
-
-            .intevi-trial-inner {
+            .intevi-trial {
                 align-items: flex-start;
                 flex-direction: column;
-
-                gap: 15px;
-
-                padding:
-                    16px 16px 14px 19px;
+                gap: 12px;
             }
 
-
-            .intevi-trial-main {
+            .intevi-trial-right {
                 width: 100%;
-
-                align-items: flex-start;
-            }
-
-
-            .intevi-trial-icon {
-                width: 42px;
-                height: 42px;
-                min-width: 42px;
-
-                border-radius: 13px;
-            }
-
-
-            .intevi-trial-actions {
-                width: 100%;
-
                 justify-content: space-between;
-
-                padding-left: 57px;
+                padding-left: 46px;
             }
-
-
-            .intevi-trial-time {
-                text-align: left;
-            }
-
-
-            .intevi-trial-button {
-                min-height: 38px;
-
-                padding:
-                    7px 13px;
-            }
-
-
-            .intevi-trial-progress-wrapper {
-                padding:
-                    0 16px 14px 19px;
-            }
-
         }
 
-
         @media (max-width: 480px) {
-
-            .intevi-trial-actions {
+            .intevi-trial-right {
                 padding-left: 0;
             }
 
-
-            .intevi-trial-description {
-                font-size: 12px;
+            .intevi-trial-icon {
+                display: none;
             }
 
-
-            .intevi-trial-time-number {
-                font-size: 19px;
+            .intevi-trial-action {
+                padding: 0 10px;
             }
-
         }
     </style>
 
 
-    <div class="intevi-trial-card">
+    <div class="intevi-trial">
 
-        <div class="intevi-trial-inner">
+        <div class="intevi-trial-left">
 
-
-            {{-- ================================================= --}}
-            {{-- INFORMACIÓN                                      --}}
-            {{-- ================================================= --}}
-
-            <div class="intevi-trial-main">
-
-                <div class="intevi-trial-icon">
-
-                    <i class="fas fa-gem"></i>
-
-                </div>
-
-
-                <div class="intevi-trial-content">
-
-                    <div class="intevi-trial-topline">
-
-                        <span class="intevi-trial-badge">
-                            Prueba gratuita
-                        </span>
-
-                        <h6 class="intevi-trial-title">
-                            Está explorando INTEVI
-                        </h6>
-
-                    </div>
-
-
-                    <p class="intevi-trial-description">
-
-                        @if($trialDays > 1)
-
-                            Tiene acceso completo a la plataforma durante
-                            <strong>
-                                {{ $trialDays }}
-                                {{ $trialDays === 1 ? 'día más' : 'días más' }}.
-                            </strong>
-
-                            Explore todas las funciones antes de activar su licencia.
-
-                        @elseif($trialHours > 1)
-
-                            Su periodo de prueba finaliza pronto.
-
-                            Le quedan aproximadamente
-                            <strong>
-                                {{ $trialHours }} horas
-                            </strong>
-                            de acceso completo.
-
-                        @elseif($trialHours === 1)
-
-                            Su periodo de prueba está por finalizar.
-
-                            Le queda aproximadamente
-                            <strong>
-                                1 hora
-                            </strong>
-                            de acceso completo.
-
-                        @else
-
-                            Su periodo de prueba está por finalizar.
-
-                            Active su licencia para continuar utilizando
-                            INTEVI sin interrupciones.
-
-                        @endif
-
-                    </p>
-
-                </div>
-
+            <div class="intevi-trial-icon">
+                <i class="far fa-clock"></i>
             </div>
 
+            <div class="intevi-trial-copy">
 
+                <div class="intevi-trial-title">
 
-            {{-- ================================================= --}}
-            {{-- CONTADOR + CTA                                   --}}
-            {{-- ================================================= --}}
+                    <span class="intevi-trial-label">
+                        Prueba
+                    </span>
 
-            <div class="intevi-trial-actions">
+                    Periodo de evaluación de INTEVI
 
-                <div class="intevi-trial-time">
+                </div>
+
+                <p class="intevi-trial-text">
 
                     @if($trialDays > 1)
 
-                        <span class="intevi-trial-time-number">
-                            {{ $trialDays }}
-                        </span>
+                        Acceso completo habilitado durante
+                        <strong>{{ $trialDays }} días más.</strong>
 
-                        <span class="intevi-trial-time-label">
-                            días restantes
-                        </span>
+                    @elseif($trialHours > 1)
+
+                        Su periodo de prueba finaliza en aproximadamente
+                        <strong>{{ $trialHours }} horas.</strong>
+
+                    @elseif($trialHours === 1)
+
+                        Su periodo de prueba finaliza en aproximadamente
+                        <strong>1 hora.</strong>
 
                     @else
 
-                        <span class="intevi-trial-time-number">
-                            {{ $trialHours }}
-                        </span>
-
-                        <span class="intevi-trial-time-label">
-                            horas restantes
-                        </span>
+                        Su periodo de prueba está por finalizar.
 
                     @endif
 
-                </div>
-
-
-                <a
-                    href="https://intevi.app/"
-                    class="intevi-trial-button"
-                >
-
-                    <i class="fas fa-arrow-up"></i>
-
-                    Activar licencia
-
-                </a>
+                </p>
 
             </div>
 
         </div>
 
 
+        <div class="intevi-trial-right">
 
-        {{-- ===================================================== --}}
-        {{-- PROGRESO                                             --}}
-        {{-- ===================================================== --}}
+            <div class="intevi-trial-counter">
 
-        <div class="intevi-trial-progress-wrapper">
+                @if($trialDays > 1)
 
-            <div class="intevi-trial-progress">
+                    <span class="intevi-trial-counter-number">
+                        {{ $trialDays }}
+                    </span>
 
-                <div
-                    class="intevi-trial-progress-bar"
-                    style="
-                        width:
-                        {{ number_format($elapsedPercentage, 2, '.', '') }}%;
-                    "
-                ></div>
+                    <span class="intevi-trial-counter-label">
+                        días
+                    </span>
 
-            </div>
+                @else
 
+                    <span class="intevi-trial-counter-number">
+                        {{ $trialHours }}
+                    </span>
 
-            <div class="intevi-trial-progress-info">
+                    <span class="intevi-trial-counter-label">
+                        horas
+                    </span>
 
-                <span>
-                    Inicio de prueba
-                </span>
-
-                <span>
-                    Periodo de 7 días
-                </span>
+                @endif
 
             </div>
+
+
+            <a
+                href="https://intevi.app/"
+                class="intevi-trial-action"
+            >
+                Activar licencia
+
+                <i class="fas fa-chevron-right" style="font-size: 8px;"></i>
+            </a>
 
         </div>
 
