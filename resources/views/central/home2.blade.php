@@ -685,9 +685,14 @@
                 class="lead-brand"
                 aria-label="Ir a la página principal de INTEVI"
             >
-                <span class="lead-brand-mark" aria-hidden="true">
-                    I
-                </span>
+                <img
+                    src="{{ asset('images/intevi logo.png') }}"
+                    alt="INTEVI"
+                    class="brand-logo"
+                    width="48"
+                    height="48"
+                    decoding="async"
+                >
 
                 <span class="lead-brand-name">
                     INTEVI
@@ -829,15 +834,17 @@
                         aria-labelledby="lead-form-title"
                     >
                         <header class="lead-form-header">
+                            <!--
                             <span class="lead-form-kicker">
                                 Descarga inmediata
                             </span>
+                            -->
 
                             <h2
                                 id="lead-form-title"
                                 class="lead-form-title"
                             >
-                                Recibe gratis el Diagnóstico 5X
+                                Recibe gratis el Diagnóstico de Control Institucional 5X
                             </h2>
 
                             <p class="lead-form-description">

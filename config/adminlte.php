@@ -398,6 +398,16 @@ return [
                 ],
             ],
         ],
+        'InteviTrial' => [
+        'active' => true,
+        'files' => [
+            [
+                'type' => 'js',
+                'asset' => true,
+                'location' => 'js/intevi-trial.js',
+            ],
+        ],
+    ],
 
     ],
 

@@ -473,6 +473,41 @@
 
     {{-- Body Content --}}
     @yield('body')
+        @if (tenant() && tenant()->isOnTrial())
+        @php
+            $trialDays = tenant()->trialDaysRemaining();
+            $trialHours = tenant()->trialHoursRemaining();
+        @endphp
+
+        <div
+            class="alert alert-warning rounded-0 border-0 mb-0"
+            role="alert"
+        >
+            <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap">
+                <div>
+                    <i class="fas fa-hourglass-half mr-2"></i>
+
+                    <strong>Periodo de prueba:</strong>
+
+                    @if ($trialDays > 1)
+                        le quedan {{ $trialDays }} días para utilizar INTEVI.
+                    @elseif ($trialHours > 0)
+                        le quedan aproximadamente {{ $trialHours }} horas.
+                    @else
+                        su periodo de prueba está por finalizar.
+                    @endif
+                </div>
+
+                <a
+                    href="https://intevi.app/"
+                    class="btn btn-sm text-white mt-2 mt-md-0"
+                    style="background-color: #171C63;"
+                >
+                    Activar licencia
+                </a>
+            </div>
+        </div>
+    @endif
 
     {{-- Base Scripts (depends on Laravel asset bundling tool) --}}
     @if(config('adminlte.enabled_laravel_mix', false))
