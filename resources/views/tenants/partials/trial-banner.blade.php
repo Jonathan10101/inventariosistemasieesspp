@@ -3,235 +3,511 @@
     @php
         $trialDays = tenant()->trialDaysRemaining();
         $trialHours = tenant()->trialHoursRemaining();
+        $trialEndsAt = tenant()->trial_ends_at;
     @endphp
 
     <style>
-        .intevi-trial {
+        /* =========================================================
+           INTEVI — ESTADO DE LICENCIA / PRUEBA
+        ========================================================= */
+
+        .intevi-license-status {
+            position: relative;
+
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 20px;
 
-            margin-bottom: 18px;
-            padding: 12px 14px 12px 16px;
+            gap: 24px;
 
-            background: #ffffff;
-            border: 1px solid #e4e8f0;
-            border-left: 4px solid #171C63;
-            border-radius: 10px;
+            width: 100%;
+
+            margin-bottom: 22px;
+
+            padding: 16px 18px;
+
+            background:
+                radial-gradient(
+                    circle at 0% 0%,
+                    rgba(23, 28, 99, 0.045),
+                    transparent 34%
+                ),
+                #ffffff;
+
+            border: 1px solid rgba(226, 232, 240, 0.95);
+            border-radius: 16px;
 
             box-shadow:
-                0 3px 10px rgba(15, 23, 42, 0.035);
+                0 8px 24px rgba(15, 23, 42, 0.045);
+
+            overflow: hidden;
         }
 
-        .intevi-trial-left {
+
+        /*
+        |--------------------------------------------------------------------------
+        | Línea institucional
+        |--------------------------------------------------------------------------
+        */
+
+        .intevi-license-status::before {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            top: 14px;
+            bottom: 14px;
+
+            width: 3px;
+
+            border-radius: 0 999px 999px 0;
+
+            background: #171C63;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Lado izquierdo
+        |--------------------------------------------------------------------------
+        */
+
+        .intevi-license-left {
             display: flex;
             align-items: center;
+
+            gap: 14px;
+
             min-width: 0;
-            gap: 12px;
+            flex: 1;
         }
 
-        .intevi-trial-icon {
-            width: 34px;
-            height: 34px;
-            min-width: 34px;
+
+        .intevi-license-icon {
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
-            border-radius: 8px;
+            border-radius: 13px;
 
-            background: #f1f3fb;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(23, 28, 99, 0.10),
+                    rgba(38, 49, 143, 0.055)
+                );
+
+            border:
+                1px solid rgba(23, 28, 99, 0.08);
+
             color: #171C63;
 
-            font-size: 14px;
+            font-size: 16px;
         }
 
-        .intevi-trial-copy {
+
+        .intevi-license-info {
             min-width: 0;
         }
 
-        .intevi-trial-title {
+
+        .intevi-license-heading {
             display: flex;
             align-items: center;
             flex-wrap: wrap;
-            gap: 7px;
 
-            margin-bottom: 2px;
+            gap: 8px;
 
-            font-size: 13px;
-            font-weight: 800;
-            color: #172033;
+            margin-bottom: 4px;
         }
 
-        .intevi-trial-label {
+
+        .intevi-license-title {
+            margin: 0;
+
+            color: #0f172a;
+
+            font-size: 14px;
+            font-weight: 900;
+
+            letter-spacing: -0.018em;
+        }
+
+
+        .intevi-license-badge {
             display: inline-flex;
             align-items: center;
 
-            padding: 2px 7px;
+            gap: 5px;
 
-            border-radius: 5px;
+            min-height: 22px;
 
-            background: #eef0fa;
+            padding: 3px 8px;
+
+            border-radius: 999px;
+
+            background: rgba(23, 28, 99, 0.07);
+
+            border:
+                1px solid rgba(23, 28, 99, 0.07);
+
             color: #171C63;
 
             font-size: 9px;
             font-weight: 900;
 
-            letter-spacing: .06em;
+            letter-spacing: 0.055em;
+
             text-transform: uppercase;
         }
 
-        .intevi-trial-text {
-            margin: 0;
 
-            color: #6b7280;
+        .intevi-license-badge-dot {
+            width: 5px;
+            height: 5px;
 
-            font-size: 12px;
-            font-weight: 500;
-            line-height: 1.4;
+            border-radius: 50%;
+
+            background: #171C63;
         }
 
-        .intevi-trial-text strong {
-            color: #171C63;
+
+        .intevi-license-description {
+            margin: 0;
+
+            color: #64748b;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            line-height: 1.5;
+        }
+
+
+        .intevi-license-description strong {
+            color: #334155;
             font-weight: 800;
         }
 
-        .intevi-trial-right {
+
+        /*
+        |--------------------------------------------------------------------------
+        | Lado derecho
+        |--------------------------------------------------------------------------
+        */
+
+        .intevi-license-right {
             display: flex;
             align-items: center;
-            gap: 16px;
+
+            gap: 20px;
+
             flex-shrink: 0;
         }
 
-        .intevi-trial-counter {
+
+        /*
+        |--------------------------------------------------------------------------
+        | Tiempo restante
+        |--------------------------------------------------------------------------
+        */
+
+        .intevi-license-remaining {
             display: flex;
-            align-items: baseline;
-            gap: 4px;
+            align-items: center;
+
+            gap: 11px;
+
+            padding-right: 20px;
+
+            border-right:
+                1px solid #e9edf3;
+        }
+
+
+        .intevi-license-number {
+            min-width: 35px;
+
+            color: #171C63;
+
+            font-size: 26px;
+            font-weight: 950;
+
+            line-height: 1;
+
+            letter-spacing: -0.055em;
+
+            text-align: right;
+        }
+
+
+        .intevi-license-time-copy {
+            display: flex;
+            flex-direction: column;
+
+            line-height: 1.25;
+        }
+
+
+        .intevi-license-time-label {
+            color: #334155;
+
+            font-size: 10px;
+            font-weight: 900;
+
+            letter-spacing: 0.04em;
+
+            text-transform: uppercase;
+        }
+
+
+        .intevi-license-time-date {
+            margin-top: 3px;
+
+            color: #94a3b8;
+
+            font-size: 10px;
+            font-weight: 650;
 
             white-space: nowrap;
         }
 
-        .intevi-trial-counter-number {
-            color: #171C63;
 
-            font-size: 18px;
-            font-weight: 900;
-            line-height: 1;
-        }
+        /*
+        |--------------------------------------------------------------------------
+        | CTA
+        |--------------------------------------------------------------------------
+        */
 
-        .intevi-trial-counter-label {
-            color: #8a94a6;
-
-            font-size: 10px;
-            font-weight: 700;
-
-            text-transform: uppercase;
-            letter-spacing: .04em;
-        }
-
-        .intevi-trial-action {
+        .intevi-license-button {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 7px;
 
-            height: 34px;
-            padding: 0 13px;
+            gap: 8px;
 
-            border: 1px solid #171C63;
-            border-radius: 8px;
+            min-height: 39px;
 
-            background: #171C63;
+            padding: 0 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #171C63 0%,
+                    #26318f 100%
+                );
+
+            border:
+                1px solid #171C63;
+
+            border-radius: 10px;
 
             color: #ffffff !important;
 
             font-size: 11px;
-            font-weight: 800;
+            font-weight: 850;
 
             text-decoration: none !important;
 
-            transition: all .15s ease;
+            white-space: nowrap;
+
+            box-shadow:
+                0 7px 16px rgba(23, 28, 99, 0.16);
+
+            transition:
+                transform 0.16s ease,
+                box-shadow 0.16s ease,
+                background 0.16s ease;
         }
 
-        .intevi-trial-action:hover {
-            background: #20277e;
-            border-color: #20277e;
+
+        .intevi-license-button:hover {
             color: #ffffff !important;
+
             text-decoration: none !important;
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 10px 22px rgba(23, 28, 99, 0.22);
         }
+
+
+        .intevi-license-button i {
+            font-size: 9px;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Responsive
+        |--------------------------------------------------------------------------
+        */
+
+        @media (max-width: 991.98px) {
+
+            .intevi-license-status {
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                gap: 15px;
+            }
+
+
+            .intevi-license-right {
+                width: 100%;
+
+                justify-content: flex-end;
+
+                padding-left: 58px;
+            }
+
+        }
+
 
         @media (max-width: 767.98px) {
-            .intevi-trial {
+
+            .intevi-license-status {
+                padding: 15px;
+            }
+
+
+            .intevi-license-icon {
+                width: 40px;
+                height: 40px;
+                min-width: 40px;
+
+                border-radius: 11px;
+            }
+
+
+            .intevi-license-right {
+                padding-left: 54px;
+
+                gap: 14px;
+            }
+
+
+            .intevi-license-number {
+                font-size: 22px;
+            }
+
+        }
+
+
+        @media (max-width: 575.98px) {
+
+            .intevi-license-status {
+                border-radius: 14px;
+            }
+
+
+            .intevi-license-left {
                 align-items: flex-start;
+            }
+
+
+            .intevi-license-right {
+                padding-left: 0;
+
+                align-items: stretch;
+
                 flex-direction: column;
+
                 gap: 12px;
             }
 
-            .intevi-trial-right {
+
+            .intevi-license-remaining {
                 width: 100%;
-                justify-content: space-between;
-                padding-left: 46px;
+
+                padding-right: 0;
+                padding-bottom: 11px;
+
+                border-right: 0;
+
+                border-bottom:
+                    1px solid #e9edf3;
             }
+
+
+            .intevi-license-number {
+                text-align: left;
+            }
+
+
+            .intevi-license-button {
+                width: 100%;
+            }
+
         }
 
-        @media (max-width: 480px) {
-            .intevi-trial-right {
-                padding-left: 0;
-            }
-
-            .intevi-trial-icon {
-                display: none;
-            }
-
-            .intevi-trial-action {
-                padding: 0 10px;
-            }
-        }
     </style>
 
 
-    <div class="intevi-trial">
+    <div class="intevi-license-status">
 
-        <div class="intevi-trial-left">
 
-            <div class="intevi-trial-icon">
-                <i class="far fa-clock"></i>
+        {{-- =====================================================
+             INFORMACIÓN
+        ====================================================== --}}
+
+        <div class="intevi-license-left">
+
+            <div class="intevi-license-icon">
+                <i class="fas fa-key"></i>
             </div>
 
-            <div class="intevi-trial-copy">
 
-                <div class="intevi-trial-title">
+            <div class="intevi-license-info">
 
-                    <span class="intevi-trial-label">
-                        Prueba
+                <div class="intevi-license-heading">
+
+                    <h6 class="intevi-license-title">
+                        Licencia de INTEVI
+                    </h6>
+
+
+                    <span class="intevi-license-badge">
+
+                        <span class="intevi-license-badge-dot"></span>
+
+                        Prueba activa
+
                     </span>
-
-                    Periodo de evaluación de INTEVI
 
                 </div>
 
-                <p class="intevi-trial-text">
+
+                <p class="intevi-license-description">
 
                     @if($trialDays > 1)
 
-                        Acceso completo habilitado durante
-                        <strong>{{ $trialDays }} días más.</strong>
+                        Su institución cuenta con
+                        <strong>acceso completo a todas las funciones</strong>
+                        durante el periodo de evaluación.
 
                     @elseif($trialHours > 1)
 
-                        Su periodo de prueba finaliza en aproximadamente
-                        <strong>{{ $trialHours }} horas.</strong>
+                        El periodo de evaluación está próximo a finalizar.
+                        Active su licencia para mantener
+                        <strong>el acceso completo al sistema.</strong>
 
                     @elseif($trialHours === 1)
 
-                        Su periodo de prueba finaliza en aproximadamente
-                        <strong>1 hora.</strong>
+                        Su periodo de evaluación finaliza aproximadamente
+                        en una hora.
 
                     @else
 
-                        Su periodo de prueba está por finalizar.
+                        Su periodo de evaluación está por finalizar.
+                        Active su licencia para continuar utilizando INTEVI.
 
                     @endif
 
@@ -242,42 +518,81 @@
         </div>
 
 
-        <div class="intevi-trial-right">
 
-            <div class="intevi-trial-counter">
+        {{-- =====================================================
+             ESTADO + ACCIÓN
+        ====================================================== --}}
+
+        <div class="intevi-license-right">
+
+
+            <div class="intevi-license-remaining">
 
                 @if($trialDays > 1)
 
-                    <span class="intevi-trial-counter-number">
+                    <div class="intevi-license-number">
                         {{ $trialDays }}
-                    </span>
+                    </div>
 
-                    <span class="intevi-trial-counter-label">
-                        días
-                    </span>
+
+                    <div class="intevi-license-time-copy">
+
+                        <span class="intevi-license-time-label">
+                            Días restantes
+                        </span>
+
+
+                        @if($trialEndsAt)
+
+                            <span class="intevi-license-time-date">
+                                Finaliza
+                                {{ $trialEndsAt->translatedFormat('d M Y') }}
+                            </span>
+
+                        @endif
+
+                    </div>
 
                 @else
 
-                    <span class="intevi-trial-counter-number">
+                    <div class="intevi-license-number">
                         {{ $trialHours }}
-                    </span>
+                    </div>
 
-                    <span class="intevi-trial-counter-label">
-                        horas
-                    </span>
+
+                    <div class="intevi-license-time-copy">
+
+                        <span class="intevi-license-time-label">
+                            Horas restantes
+                        </span>
+
+
+                        @if($trialEndsAt)
+
+                            <span class="intevi-license-time-date">
+                                Finaliza
+                                {{ $trialEndsAt->translatedFormat('d M Y') }}
+                            </span>
+
+                        @endif
+
+                    </div>
 
                 @endif
 
             </div>
 
 
+
             <a
                 href="https://intevi.app/"
-                class="intevi-trial-action"
+                class="intevi-license-button"
             >
+
                 Activar licencia
 
-                <i class="fas fa-chevron-right" style="font-size: 8px;"></i>
+                <i class="fas fa-arrow-right"></i>
+
             </a>
 
         </div>
