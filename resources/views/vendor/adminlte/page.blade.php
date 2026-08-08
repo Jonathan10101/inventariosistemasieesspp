@@ -55,6 +55,10 @@
         {{-- ===================================================== --}}
         {{-- CONTENIDO PRINCIPAL                                   --}}
         {{-- ===================================================== --}}
+        @push('content')
+            @include('tenants.partials.trial-banner')
+        @endpush
+
         @empty($iFrameEnabled)
 
             @include('adminlte::partials.cwrapper.cwrapper-default')
