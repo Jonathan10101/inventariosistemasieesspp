@@ -42,7 +42,6 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
-
     /*
     |--------------------------------------------------------------------------
     | Comprobación de conexión
@@ -64,6 +63,37 @@ Route::middleware([
             )
             ->header('Pragma', 'no-cache');
     })->name('tenant.connection');
+
+
+
+    /*
+     * Esta ruta debe seguir disponible aunque la prueba haya vencido.
+     */
+    Route::middleware(['auth'])->group(function (): void {
+        Route::view(
+            '/suscripcion-vencida',
+            'tenant.subscription-expired'
+        )->name('subscription.expired');
+    });
+
+    /*
+     * Aquí van todas las rutas protegidas de INTEVI.
+     */
+    Route::middleware([
+        'auth',
+        'tenant.subscription',
+        EnsureSingleUserSession::class,
+    ])->group(function (): void {
+
+        Route::get('/dashboard', [
+            DashboardController::class,
+            'index',
+        ])->name('dashboard');
+
+
+
+
+
 
     /*
     |--------------------------------------------------------------------------
@@ -187,11 +217,10 @@ Route::middleware([
         | store()
         |
         */
-
         Route::controller(AreaDeAsignacionController::class)
             ->prefix('areadeasignacion')
             ->name('areadeasignacion.')
-            ->group(function () {
+            ->group(function (): void {
 
                 Route::get('/', 'index')
                     ->name('index')
@@ -200,7 +229,7 @@ Route::middleware([
                 Route::post('/', 'store')
                     ->name('store')
                     ->middleware('can:areadeasignacion.create');
-            })->middleware('can:areadeasignacion.create');;
+            });
 
         /*
         |--------------------------------------------------------------------------
