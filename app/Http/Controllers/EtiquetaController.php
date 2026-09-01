@@ -33,8 +33,8 @@ class EtiquetaController extends Controller
         $pdf->setPaper([
             0,
             0,
-            70.87,
-            141.73
+            141.73, // 50 mm
+            70.87   // 25 mm
         ]);
 
         $codigoArchivo = ltrim($codigo, '0');
@@ -46,21 +46,13 @@ class EtiquetaController extends Controller
 
     private function generarEtiquetaBarcode($codigo)
     {
-        /*
-        |--------------------------------------------------------------------------
-        | Código de barras
-        |--------------------------------------------------------------------------
-        |
-        | Reducimos el tamaño porque ahora solamente tenemos
-        | 25 mm de ancho disponibles.
-        |
-        */
-
         return DNS1D::getBarcodeHTML(
             $codigo,
             'C128',
-            1,
-            30
+            1.6,
+            45
         );
     }
+
+
 }
