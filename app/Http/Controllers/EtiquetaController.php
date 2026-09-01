@@ -87,12 +87,6 @@ class EtiquetaController extends Controller
             compact('resguardante', 'etiquetas')
         );
 
-        // 5 cm x 2.5 cm por etiqueta
-        $pdf->setPaper(
-            [0, 0, 141.73, 70.87],
-            'portrait'
-        );
-
         $nombreCompleto = trim(
             $resguardante->nombre1 . ' ' .
             $resguardante->nombre2 . ' ' .
