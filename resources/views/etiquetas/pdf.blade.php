@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
 
+    <title>Etiqueta {{ $codigo }}</title>
+
     <style>
+
         @page {
-            size: 50mm 25mm;
+            size: 25mm 50mm;
             margin: 0;
         }
 
         html,
         body {
-            width: 50mm;
-            height: 25mm;
+            width: 25mm;
+            height: 50mm;
+
             margin: 0;
             padding: 0;
+
             overflow: hidden;
         }
 
@@ -22,17 +28,53 @@
             font-family: Arial, sans-serif;
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | CONTENEDOR ROTADO
+        |--------------------------------------------------------------------------
+        |
+        | El diseño sigue siendo 50 x 25 mm.
+        | Solamente lo giramos dentro de una página 25 x 50.
+        |
+        */
+
+        .rotacion {
+            position: absolute;
+
+            width: 50mm;
+            height: 25mm;
+
+            top: 0;
+            left: 25mm;
+
+            transform-origin: top left;
+            transform: rotate(90deg);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | ETIQUETA
+        |--------------------------------------------------------------------------
+        */
+
         .etiqueta {
             width: 48mm;
-            margin: 0 1mm;
+
+            margin-left: 1mm;
+            margin-right: 1mm;
 
             padding-top: 5mm;
 
             text-align: center;
+            overflow: hidden;
         }
 
         .barcode {
             width: 100%;
+
+            margin: 0;
+            padding: 0;
+
             text-align: center;
         }
 
@@ -42,38 +84,59 @@
         }
 
         .titulo {
-            margin-top: 1mm;
+            width: 100%;
+
+            margin: 1mm 0 0 0;
+            padding: 0;
+
             font-size: 7px;
+            line-height: 7px;
             font-weight: bold;
+
             text-align: center;
         }
 
         .codigo {
-            margin-top: 0.5mm;
+            width: 100%;
+
+            margin: 0.5mm 0 0 0;
+            padding: 0;
+
             font-size: 10px;
+            line-height: 10px;
             font-weight: bold;
+
             text-align: center;
         }
+
     </style>
+
 </head>
 
 <body>
 
-<div class="etiqueta">
 
-    <div class="barcode">
-        {!! $etiqueta !!}
-    </div>
+<div class="rotacion">
 
-    <div class="titulo">
-        Etiqueta de equipo
-    </div>
+    <div class="etiqueta">
 
-    <div class="codigo">
-        {{ $codigo }}
+        <div class="barcode">
+            {!! $etiqueta !!}
+        </div>
+
+        <div class="titulo">
+            Etiqueta de equipo
+        </div>
+
+        <div class="codigo">
+            {{ $codigo }}
+        </div>
+
     </div>
 
 </div>
 
+
 </body>
+
 </html>
