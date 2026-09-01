@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Resguardante;
 use DNS1D;
 
 class EtiquetaController extends Controller
@@ -47,6 +48,66 @@ class EtiquetaController extends Controller
             'C128',
             1.7,
             48
+        );
+    }
+
+    public function imprimirPorResguardante($resguardanteId)
+    {
+        $resguardante = Resguardante::with([
+            'resguardos' => function ($query) {
+                $query->orderBy('id');
+            }
+        ])->findOrFail($resguardanteId);
+
+        if ($resguardante->resguardos->isEmpty()) {
+            return back()->with(
+                'error',
+                'Este resguardante no tiene bienes asignados.'
+            );
+        }
+
+        $etiquetas = $resguardante->resguardos->map(function ($resguardo) {
+
+            $codigo = str_pad(
+                (string) $resguardo->id,
+                6,
+                '0',
+                STR_PAD_LEFT
+            );
+
+            return [
+                'codigo' => $codigo,
+                'etiqueta' => $this->generarEtiquetaBarcode($codigo),
+                'resguardo' => $resguardo,
+            ];
+        });
+
+        $pdf = Pdf::loadView(
+            'etiquetas.pdf-resguardante',
+            compact('resguardante', 'etiquetas')
+        );
+
+        // 5 cm x 2.5 cm por etiqueta
+        $pdf->setPaper(
+            [0, 0, 141.73, 70.87],
+            'portrait'
+        );
+
+        $nombreCompleto = trim(
+            $resguardante->nombre1 . ' ' .
+            $resguardante->nombre2 . ' ' .
+            $resguardante->apellido1 . ' ' .
+            $resguardante->apellido2
+        );
+
+        $nombreArchivo = preg_replace(
+            '/[^A-Za-z0-9_-]/',
+            '_',
+            $nombreCompleto
+        );
+
+        return $pdf->download(
+            "Etiquetas_{$nombreArchivo}.pdf"
         );
     }
 }
