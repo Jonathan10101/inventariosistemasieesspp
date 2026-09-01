@@ -33,8 +33,8 @@ class EtiquetaController extends Controller
         $pdf->setPaper([
             0,
             0,
-            141.73, // 50 mm
-            70.87   // 25 mm
+            70.87,
+            141.73
         ]);
 
         $codigoArchivo = ltrim($codigo, '0');
@@ -49,10 +49,8 @@ class EtiquetaController extends Controller
         return DNS1D::getBarcodeHTML(
             $codigo,
             'C128',
-            1.7,
-            48
+            1,
+            30
         );
     }
-
-
 }
