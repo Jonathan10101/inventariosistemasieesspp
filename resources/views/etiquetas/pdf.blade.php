@@ -5,14 +5,14 @@
 
     <style>
         @page {
-            size: 50mm 25mm;
+            size: 25mm 50mm;
             margin: 0;
         }
 
         html,
         body {
-            width: 50mm;
-            height: 25mm;
+            width: 25mm;
+            height: 50mm;
             margin: 0;
             padding: 0;
             overflow: hidden;
@@ -23,8 +23,10 @@
         }
 
         .etiqueta {
-            width: 48mm;
-            margin: 0 1mm;
+            width: 23mm;
+
+            margin-left: 1mm;
+            margin-right: 1mm;
 
             padding-top: 5mm;
 
