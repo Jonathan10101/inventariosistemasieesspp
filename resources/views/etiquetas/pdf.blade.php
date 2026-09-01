@@ -25,25 +25,26 @@
             overflow: hidden;
         }
 
-        .etiqueta {
-            width: 25mm;
-            height: 50mm;
-            position: absolute;
-            top: 25mm;
-            left: 0;
-            transform: rotate(-90deg);
-            transform-origin: top left;
-            text-align: center;
-            overflow: hidden;
-        }
-
         .barcode {
             width: 100%;
-            height: auto;
-            margin: 0 0 1mm 0;
+            margin: 0;
             padding: 0;
-            overflow: visible;
             text-align: center;
+            overflow: visible;
+        }
+
+        .etiqueta {
+            width: 48mm;
+            height: 18mm;
+
+            margin-left: 1mm;
+            margin-right: 1mm;
+
+            /* 0.5 cm desde arriba */
+            padding-top: 5mm;
+
+            text-align: center;
+            overflow: hidden;
         }
 
         .titulo {
