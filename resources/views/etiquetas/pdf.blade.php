@@ -22,23 +22,28 @@
 
         body {
             font-family: Arial, sans-serif;
+            overflow: hidden;
         }
 
         .etiqueta {
-            width: 48mm;
-            height: 23mm;
-            margin: 0;
-            padding: 1mm;
-
+            width: 25mm;
+            height: 50mm;
+            position: absolute;
+            top: 25mm;
+            left: 0;
+            transform: rotate(-90deg);
+            transform-origin: top left;
             text-align: center;
             overflow: hidden;
         }
 
         .barcode {
-            margin: 0;
+            width: 100%;
+            height: auto;
+            margin: 0 0 1mm 0;
             padding: 0;
-            height: 10mm;
-            overflow: hidden;
+            overflow: visible;
+            text-align: center;
         }
 
         .titulo {
@@ -46,16 +51,16 @@
             padding: 0;
 
             font-size: 7px;
-            line-height: 8px;
+            line-height: 7px;
             font-weight: bold;
         }
 
         .codigo {
-            margin: 0;
+            margin: 0.5mm 0 0 0;
             padding: 0;
 
             font-size: 9px;
-            line-height: 10px;
+            line-height: 9px;
             font-weight: bold;
         }
     </style>
@@ -63,21 +68,21 @@
 
 <body>
 
-    <div class="etiqueta">
+<div class="etiqueta">
 
-        <div class="barcode">
-            {!! $etiqueta !!}
-        </div>
-
-        <div class="titulo">
-            Etiqueta de equipo
-        </div>
-
-        <div class="codigo">
-            {{ $codigo }}
-        </div>
-
+    <div class="barcode">
+        {!! $etiqueta !!}
     </div>
+
+    <div class="titulo">
+        Etiqueta de equipo
+    </div>
+
+    <div class="codigo">
+        {{ $codigo }}
+    </div>
+
+</div>
 
 </body>
 </html>
