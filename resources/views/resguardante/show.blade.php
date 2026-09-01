@@ -302,6 +302,19 @@
         @endforelse
     </div>
 
+    <div class="row">
+        <div class="col">
+            <a
+                href="{{ route('resguardantes.etiquetas', $resguardante->id) }}"
+                class="btn btn-primary"
+            >
+                <i class="fas fa-print mr-1"></i>
+                Imprimir todas las etiquetas
+            </a>
+        </div>
+    </div>
+
+
     {{-- PAGINACIÓN --}}
     <div class="pagination-wrapper mt-4">
         {{ $historiales->links() }}

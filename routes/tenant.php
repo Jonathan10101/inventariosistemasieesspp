@@ -287,6 +287,11 @@ Route::middleware([
             ->name('etiquetas2.show')
             ->middleware('can:inventario.index');
 
+        Route::get(
+            '/resguardantes/{resguardante}/etiquetas',
+            [EtiquetaController::class, 'imprimirPorResguardante']
+        )->name('resguardantes.etiquetas');
+
 
         /*
         |--------------------------------------------------------------------------
