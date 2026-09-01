@@ -11,30 +11,14 @@ class EtiquetaController extends Controller
     {
         $etiqueta = $this->generarEtiquetaBarcode($codigo);
 
-        $pdf = Pdf::loadView('etiquetas.pdf', [
-            'etiqueta' => $etiqueta,
-            'codigo'   => $codigo,
-        ]);
+        $pdf = Pdf::loadView('etiquetas.pdf', compact('etiqueta', 'codigo'));
 
-        /*
-        |--------------------------------------------------------------------------
-        | Tamaño físico de la etiqueta
-        |--------------------------------------------------------------------------
-        |
-        | 25 mm x 50 mm
-        | 2.5 cm x 5 cm
-        |
-        | DomPDF utiliza puntos:
-        | 25 mm = 70.87 pt
-        | 50 mm = 141.73 pt
-        |
-        */
-
+        // 50 mm x 25 mm
         $pdf->setPaper([
             0,
             0,
-            70.87,
-            141.73
+            141.73,
+            70.87
         ]);
 
         $codigoArchivo = ltrim($codigo, '0');
@@ -46,11 +30,22 @@ class EtiquetaController extends Controller
 
     private function generarEtiquetaBarcode($codigo)
     {
-        return DNS1D::getBarcodeHTML(
+        $barcode = DNS1D::getBarcodeHTML(
             $codigo,
             'C128',
-            1,
-            30
+            2,
+            40
         );
+
+        // Centrado dentro de una etiqueta de 50 mm
+        return "
+            <div style='
+                width: 100%;
+                text-align: center;
+                margin: 0 auto;
+            '>
+                $barcode
+            </div>
+        ";
     }
 }
