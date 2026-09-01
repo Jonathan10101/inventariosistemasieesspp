@@ -1,89 +1,278 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
 
     <title>Etiqueta {{ $codigo }}</title>
 
     <style>
+
         @page {
-            size: 50mm 25mm;
+            size: 25mm 50mm;
             margin: 0;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         html,
         body {
-            width: 50mm;
-            height: 25mm;
+            width: 25mm;
+            height: 50mm;
+
             margin: 0;
             padding: 0;
-            overflow: hidden;
+
+            background: #fff;
         }
 
         body {
-            font-family: Arial, sans-serif;
+            font-family: DejaVu Sans, Arial, sans-serif;
             overflow: hidden;
         }
 
-        .barcode {
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            overflow: visible;
-        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | CONTENEDOR PRINCIPAL
+        |--------------------------------------------------------------------------
+        */
 
         .etiqueta {
-            width: 48mm;
-            height: 18mm;
 
-            margin-left: 1mm;
-            margin-right: 1mm;
+            width: 22mm;
+            height: 47mm;
 
-            /* 0.5 cm desde arriba */
-            padding-top: 5mm;
+            /*
+             * Margen físico de seguridad.
+             * Evita que el contenido quede pegado
+             * al borde de la etiqueta.
+             */
+            margin: 1.5mm;
+
+            padding:
+                3mm
+                1.2mm
+                2mm
+                1.2mm;
+
+            border: 0.25mm solid #222;
 
             text-align: center;
+
             overflow: hidden;
         }
 
-        .titulo {
+
+        /*
+        |--------------------------------------------------------------------------
+        | ENCABEZADO
+        |--------------------------------------------------------------------------
+        */
+
+        .tipo {
+
+            font-size: 5px;
+
+            font-weight: bold;
+
+            letter-spacing: 0.5px;
+
+            text-transform: uppercase;
+
             margin: 0;
-            padding: 0;
 
-            font-size: 7px;
-            line-height: 7px;
-            font-weight: bold;
+            padding: 0;
         }
 
-        .codigo {
-            margin: 0.5mm 0 0 0;
+
+        .descripcion {
+
+            font-size: 4px;
+
+            color: #555;
+
+            margin-top: 0.7mm;
+
+            margin-bottom: 2mm;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | SEPARADOR
+        |--------------------------------------------------------------------------
+        */
+
+        .separador {
+
+            width: 14mm;
+
+            margin:
+                0
+                auto
+                3mm
+                auto;
+
+            border-top:
+                0.2mm
+                solid
+                #333;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | CÓDIGO DE BARRAS
+        |--------------------------------------------------------------------------
+        */
+
+        .barcode {
+
+            width: 100%;
+
+            margin:
+                0
+                auto
+                2mm
+                auto;
+
             padding: 0;
 
-            font-size: 9px;
-            line-height: 9px;
-            font-weight: bold;
+            text-align: center;
         }
+
+
+        .barcode > div {
+
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | NÚMERO
+        |--------------------------------------------------------------------------
+        */
+
+        .numero-label {
+
+            margin-top: 1mm;
+
+            font-size: 4px;
+
+            letter-spacing: 0.4px;
+
+            text-transform: uppercase;
+
+            color: #555;
+        }
+
+
+        .numero {
+
+            margin-top: 0.7mm;
+
+            font-size: 11px;
+
+            line-height: 12px;
+
+            font-weight: bold;
+
+            letter-spacing: 0.4px;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | PIE
+        |--------------------------------------------------------------------------
+        */
+
+        .pie {
+
+            width: 100%;
+
+            margin-top: 3mm;
+
+            padding-top: 1.5mm;
+
+            border-top:
+                0.15mm
+                solid
+                #aaa;
+
+            font-size: 4px;
+
+            letter-spacing: 0.2px;
+
+            color: #555;
+
+            text-transform: uppercase;
+        }
+
     </style>
+
 </head>
+
 
 <body>
 
+
 <div class="etiqueta">
 
+
+    <div class="tipo">
+
+        ACTIVO INSTITUCIONAL
+
+    </div>
+
+
+    <div class="descripcion">
+
+        Control de inventario
+
+    </div>
+
+
+    <div class="separador"></div>
+
+
     <div class="barcode">
+
         {!! $etiqueta !!}
+
     </div>
 
-    <div class="titulo">
-        Etiqueta de equipo
+
+    <div class="numero-label">
+
+        NÚMERO DE INVENTARIO
+
     </div>
 
-    <div class="codigo">
-        {{ $codigo }}
+
+    <div class="numero">
+
+        {{ ltrim($codigo, '0') }}
+
     </div>
+
+
+    <div class="pie">
+
+        BIEN INVENTARIADO
+
+    </div>
+
 
 </div>
 
+
 </body>
+
 </html>

@@ -49,8 +49,8 @@ class EtiquetaController extends Controller
         return DNS1D::getBarcodeHTML(
             $codigo,
             'C128',
-            2.2,  // más ancho
-            45    // altura
+            1.8,
+            55
         );
     }
 
