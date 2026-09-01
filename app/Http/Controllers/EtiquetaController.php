@@ -17,8 +17,8 @@ class EtiquetaController extends Controller
         $pdf->setPaper([
             0,
             0,
-            141.73,
-            70.87
+            70.87,   // 25 mm ancho
+            141.73   // 50 mm alto
         ]);
 
         $codigoArchivo = ltrim($codigo, '0');
