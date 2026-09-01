@@ -3,18 +3,16 @@
 <head>
     <meta charset="UTF-8">
 
-    <title>Etiqueta {{ $codigo }}</title>
-
     <style>
         @page {
-            size: 25mm 50mm;
+            size: 50mm 25mm;
             margin: 0;
         }
 
         html,
         body {
-            width: 25mm;
-            height: 50mm;
+            width: 50mm;
+            height: 25mm;
             margin: 0;
             padding: 0;
             overflow: hidden;
@@ -24,82 +22,37 @@
             font-family: Arial, sans-serif;
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | ETIQUETA
-        |--------------------------------------------------------------------------
-        |
-        | 48mm + 1mm izquierda + 1mm derecha = 50mm
-        |
-        */
-
         .etiqueta {
             width: 48mm;
+            margin: 0 1mm;
 
-            margin-left: 1mm;
-            margin-right: 1mm;
-
-            /* 5mm de espacio superior */
             padding-top: 5mm;
 
             text-align: center;
-            overflow: hidden;
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | CÓDIGO DE BARRAS
-        |--------------------------------------------------------------------------
-        */
-
         .barcode {
-            width: 48mm;
-
-            margin: 0;
-            padding: 0;
-
+            width: 100%;
             text-align: center;
         }
 
-        /*
-         * DNS1D genera un DIV interno.
-         * Esto obliga a centrar ese DIV.
-         */
         .barcode > div {
             margin-left: auto !important;
             margin-right: auto !important;
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | TEXTO
-        |--------------------------------------------------------------------------
-        */
-
         .titulo {
-            width: 100%;
-
-            margin: 1mm 0 0 0;
-            padding: 0;
-
-            text-align: center;
-
+            margin-top: 1mm;
             font-size: 7px;
-            line-height: 7px;
             font-weight: bold;
+            text-align: center;
         }
 
         .codigo {
-            width: 100%;
-
-            margin: 1mm 0 0 0;
-            padding: 0;
-
-            text-align: center;
-
+            margin-top: 0.5mm;
             font-size: 10px;
-            line-height: 10px;
             font-weight: bold;
+            text-align: center;
         }
     </style>
 </head>
