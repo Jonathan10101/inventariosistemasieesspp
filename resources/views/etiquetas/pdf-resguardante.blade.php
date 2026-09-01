@@ -4,7 +4,11 @@
 <head>
     <meta charset="UTF-8">
 
-    <title>Etiqueta {{ $codigo }}</title>
+    <title>
+        Etiquetas del resguardante
+        {{ $resguardante->nombre1 }}
+        {{ $resguardante->apellido1 }}
+    </title>
 
     <style>
 
@@ -16,12 +20,8 @@
         html,
         body {
             width: 25mm;
-            height: 50mm;
-
             margin: 0;
             padding: 0;
-
-            overflow: hidden;
         }
 
         body {
@@ -30,11 +30,41 @@
 
         /*
         |--------------------------------------------------------------------------
+        | PÁGINA INDIVIDUAL
+        |--------------------------------------------------------------------------
+        */
+
+        .pagina {
+            position: relative;
+
+            width: 25mm;
+            height: 50mm;
+
+            margin: 0;
+            padding: 0;
+
+            overflow: hidden;
+
+            page-break-after: always;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | EVITAR PÁGINA VACÍA AL FINAL
+        |--------------------------------------------------------------------------
+        */
+
+        .pagina:last-child {
+            page-break-after: auto;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
         | CONTENEDOR ROTADO
         |--------------------------------------------------------------------------
         |
-        | El diseño sigue siendo 50 x 25 mm.
-        | Solamente lo giramos dentro de una página 25 x 50.
+        | El diseño interno continúa siendo de 50 x 25 mm.
+        | La página física es de 25 x 50 mm.
         |
         */
 
@@ -115,27 +145,33 @@
 
 <body>
 
+@foreach ($etiquetas as $item)
 
-<div class="rotacion">
+    <div class="pagina">
 
-    <div class="etiqueta">
+        <div class="rotacion">
 
-        <div class="barcode">
-            {!! $etiqueta !!}
-        </div>
+            <div class="etiqueta">
 
-        <div class="titulo">
-            Etiqueta de equipo
-        </div>
+                <div class="barcode">
+                    {!! $item['etiqueta'] !!}
+                </div>
 
-        <div class="codigo">
-            {{ $codigo }}
+                <div class="titulo">
+                    Etiqueta de equipo
+                </div>
+
+                <div class="codigo">
+                    {{ $item['codigo'] }}
+                </div>
+
+            </div>
+
         </div>
 
     </div>
 
-</div>
-
+@endforeach
 
 </body>
 
