@@ -1,48 +1,90 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
+
     <title>Etiqueta {{ $codigo }}</title>
+
     <style>
+
+        @page {
+            size: 25mm 50mm;
+            margin: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 25mm;
+            height: 50mm;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            font-size: 10px; /* Texto más pequeño */
         }
-        /*
+
         .etiqueta {
-            border: 1px solid #000;
-            padding: 5px;
-            display: inline-block;
-            text-align: center;
-            margin: 5px;
-            width: 150px;  
-            height: auto;
-        }
-            */
-        .etiqueta {
-            border: 1px solid #000;
+            width: 25mm;
+            height: 50mm;
+
             padding: 2mm;
-            display: inline-block;
-            width: 50mm;   /* 👈 ancho real */
-            height: 20mm;  /* 👈 alto real */
+
             text-align: center;
+
+            overflow: hidden;
         }
-        .codigo-texto {
-            font-size: 8px; /* 👈 número pequeño debajo */
-            margin-top: 3px;
+
+        .barcode {
+            width: 100%;
+
+            text-align: center;
+
+            margin-top: 4mm;
+            margin-bottom: 3mm;
         }
-        img, svg {
-            max-width: 100%;
+
+        .titulo {
+            font-size: 7px;
+            font-weight: bold;
+
+            margin-top: 2mm;
         }
+
+        .codigo {
+            font-size: 9px;
+            font-weight: bold;
+
+            margin-top: 2mm;
+        }
+
     </style>
+
 </head>
+
 <body>
-    
-<div class="etiqueta" style="border:1px solid #000; padding:10px; text-align:center; width:160px; margin:10px;">
-    {!! $etiqueta !!}
-    <span>Etiqueta de equipo</span>
-    {!! $codigo !!}
-</div>
+
+    <div class="etiqueta">
+
+        <div class="barcode">
+            {!! $etiqueta !!}
+        </div>
+
+        <div class="titulo">
+            Etiqueta de equipo
+        </div>
+
+        <div class="codigo">
+            {{ $codigo }}
+        </div>
+
+    </div>
 
 </body>
+
 </html>
