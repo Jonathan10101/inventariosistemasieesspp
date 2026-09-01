@@ -1,28 +1,23 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
 
     <title>Etiqueta {{ $codigo }}</title>
 
     <style>
-
         @page {
-            size: 25mm 50mm;
+            size: 50mm 25mm;
             margin: 0;
-        }
-
-        * {
-            box-sizing: border-box;
         }
 
         html,
         body {
-            width: 25mm;
-            height: 50mm;
+            width: 50mm;
+            height: 25mm;
             margin: 0;
             padding: 0;
+            overflow: hidden;
         }
 
         body {
@@ -30,41 +25,40 @@
         }
 
         .etiqueta {
-            width: 25mm;
-            height: 50mm;
-
-            padding: 2mm;
+            width: 48mm;
+            height: 23mm;
+            margin: 0;
+            padding: 1mm;
 
             text-align: center;
-
             overflow: hidden;
         }
 
         .barcode {
-            width: 100%;
-
-            text-align: center;
-
-            margin-top: 4mm;
-            margin-bottom: 3mm;
+            margin: 0;
+            padding: 0;
+            height: 10mm;
+            overflow: hidden;
         }
 
         .titulo {
-            font-size: 7px;
-            font-weight: bold;
+            margin: 0;
+            padding: 0;
 
-            margin-top: 2mm;
+            font-size: 7px;
+            line-height: 8px;
+            font-weight: bold;
         }
 
         .codigo {
+            margin: 0;
+            padding: 0;
+
             font-size: 9px;
+            line-height: 10px;
             font-weight: bold;
-
-            margin-top: 2mm;
         }
-
     </style>
-
 </head>
 
 <body>
@@ -86,5 +80,4 @@
     </div>
 
 </body>
-
 </html>
