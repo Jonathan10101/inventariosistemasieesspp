@@ -11,14 +11,26 @@ class EtiquetaController extends Controller
     {
         $etiqueta = $this->generarEtiquetaBarcode($codigo);
 
-        $pdf = Pdf::loadView('etiquetas.pdf', compact('etiqueta', 'codigo'));
+        $pdf = Pdf::loadView('etiquetas.pdf', [
+            'etiqueta' => $etiqueta,
+            'codigo' => $codigo,
+        ]);
 
-        // 50 mm x 25 mm
+        /*
+        |--------------------------------------------------------------------------
+        | PDF VERTICAL
+        |--------------------------------------------------------------------------
+        |
+        | 25 mm ancho
+        | 50 mm alto
+        |
+        */
+
         $pdf->setPaper([
             0,
             0,
-            70.87,   // 25 mm ancho
-            141.73   // 50 mm alto
+            70.87,   // 25 mm
+            141.73   // 50 mm
         ]);
 
         $codigoArchivo = ltrim($codigo, '0');
@@ -30,22 +42,11 @@ class EtiquetaController extends Controller
 
     private function generarEtiquetaBarcode($codigo)
     {
-        $barcode = DNS1D::getBarcodeHTML(
+        return DNS1D::getBarcodeHTML(
             $codigo,
             'C128',
-            2,
-            40
+            1.7,
+            48
         );
-
-        // Centrado dentro de una etiqueta de 50 mm
-        return "
-            <div style='
-                width: 100%;
-                text-align: center;
-                margin: 0 auto;
-            '>
-                $barcode
-            </div>
-        ";
     }
 }
