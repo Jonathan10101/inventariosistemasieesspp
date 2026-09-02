@@ -303,7 +303,7 @@
     </div>
 
     <div class="row">
-        <div class="col">
+        <div class="col mt-5">
             <a
                 href="{{ route('resguardantes.etiquetas', $resguardante->id) }}"
                 class="btn btn-primary"
@@ -753,6 +753,7 @@
     }
 
     .pagination-wrapper {
+        background: #171C63 !important;
         display: flex;
         justify-content: flex-end;
     }
