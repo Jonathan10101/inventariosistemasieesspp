@@ -4,104 +4,157 @@
 <head>
     <meta charset="UTF-8">
 
-    <style>
-        @page {
-            margin: 0;
-            padding: 0;
-            size: 25mm 50mm;
-        }
+    <title>Etiqueta {{ $codigo }}</title>
 
-        * {
-            box-sizing: border-box;
+    <style>
+
+        @page {
+            size: 25mm 50mm;
+            margin: 0;
         }
 
         html,
         body {
             width: 25mm;
             height: 50mm;
+
             margin: 0;
             padding: 0;
-        }
-
-        body {
-            font-family: DejaVu Sans, sans-serif;
-        }
-
-        .etiqueta {
-            width: 25mm;
-            height: 50mm;
-
-            margin: 0;
-            padding: 2mm 1.5mm;
-
-            text-align: center;
 
             overflow: hidden;
         }
 
-        .titulo {
-            font-size: 7px;
-            font-weight: bold;
-            margin: 0 0 2mm 0;
-            padding: 0;
-            line-height: 1.1;
+        body {
+            font-family: Arial, sans-serif;
         }
 
-        .tipo {
-            font-size: 6px;
-            font-weight: bold;
-            margin-bottom: 2mm;
+        /*
+        |--------------------------------------------------------------------------
+        | CONTENEDOR ROTADO
+        |--------------------------------------------------------------------------
+        |
+        | La página física es 25 x 50 mm.
+        | El diseño interno es 50 x 25 mm.
+        |
+        | Se gira 90 grados para que la impresora
+        | detecte correctamente el PDF como vertical.
+        |
+        */
+
+        .rotacion {
+            position: absolute;
+
+            width: 50mm;
+            height: 25mm;
+
+            top: 0;
+            left: 25mm;
+
+            transform-origin: top left;
+            transform: rotate(90deg);
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | ETIQUETA
+        |--------------------------------------------------------------------------
+        */
+
+        .etiqueta {
+            width: 48mm;
+
+            margin-left: 1mm;
+            margin-right: 1mm;
+
+            padding-top: 5mm;
+
+            text-align: center;
+            overflow: hidden;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | CÓDIGO DE BARRAS
+        |--------------------------------------------------------------------------
+        */
 
         .barcode {
             width: 100%;
+
+            margin: 0;
+            padding: 0;
+
             text-align: center;
-            margin-top: 1mm;
         }
 
         .barcode > div {
-            margin: 0 auto;
+            margin-left: auto !important;
+            margin-right: auto !important;
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | TÍTULO
+        |--------------------------------------------------------------------------
+        */
+
+        .titulo {
+            width: 100%;
+
+            margin: 1mm 0 0 0;
+            padding: 0;
+
+            font-size: 7px;
+            line-height: 7px;
+            font-weight: bold;
+
+            text-align: center;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | CÓDIGO
+        |--------------------------------------------------------------------------
+        */
 
         .codigo {
-            font-size: 8px;
+            width: 100%;
+
+            margin: 0.5mm 0 0 0;
+            padding: 0;
+
+            font-size: 10px;
+            line-height: 10px;
             font-weight: bold;
-            margin-top: 2mm;
-            letter-spacing: 0.5px;
+
+            text-align: center;
         }
 
-        .pie {
-            font-size: 5px;
-            margin-top: 2mm;
-        }
     </style>
+
 </head>
 
 <body>
 
+<div class="rotacion">
+
     <div class="etiqueta">
-
-        <div class="titulo">
-            INTEVI
-        </div>
-
-        <div class="tipo">
-            UBICACIÓN FÍSICA
-        </div>
 
         <div class="barcode">
             {!! $etiqueta !!}
+        </div>
+
+        <div class="titulo">
+            Etiqueta de ubicación
         </div>
 
         <div class="codigo">
             {{ $codigo }}
         </div>
 
-        <div class="pie">
-            Inventario Tecnológico Institucional
-        </div>
-
     </div>
+
+</div>
 
 </body>
 
