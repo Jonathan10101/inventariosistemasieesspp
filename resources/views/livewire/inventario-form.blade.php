@@ -182,7 +182,7 @@
         </div>
     </div>
 
-    <!-- BUSCADOR -->
+        <!-- BUSCADOR -->
     <div
         class="search-panel mb-4"
         data-tour-step
@@ -192,6 +192,7 @@
         data-tour-side="bottom"
     >
         <div class="search-panel-header">
+
             <div>
                 <label for="searchid" class="search-title">
                     Buscar inventario
@@ -202,13 +203,48 @@
                 </p>
             </div>
 
-            <div class="search-status" wire:loading wire:target="searchResguardos">
-                <i class="fas fa-spinner fa-spin"></i>
-                Buscando
+            <div class="d-flex align-items-center gap-3">
+
+                <!-- MODO ESCÁNER -->
+                <div class="scanner-mode">
+                    <span class="scanner-mode-label">
+                        <i class="fas fa-barcode"></i>
+                        Modo escáner
+                    </span>
+
+                    <label class="scanner-switch">
+                        <input
+                            type="checkbox"
+                            id="scannerModeToggle"
+                        >
+
+                        <span class="scanner-slider"></span>
+                    </label>
+
+                    <span
+                        id="scannerModeStatus"
+                        class="scanner-status"
+                    >
+                        Apagado
+                    </span>
+                </div>
+
+                <!-- CARGANDO -->
+                <div
+                    class="search-status"
+                    wire:loading
+                    wire:target="searchResguardos"
+                >
+                    <i class="fas fa-spinner fa-spin"></i>
+                    Buscando
+                </div>
+
             </div>
         </div>
 
+
         <div class="search-box">
+
             <span class="search-icon">
                 <i class="fas fa-search"></i>
             </span>
@@ -234,9 +270,24 @@
                     <i class="fas fa-times"></i>
                 </button>
             @endif
+
         </div>
+
+
+        <!-- AVISO CUANDO ESTÁ ENCENDIDO -->
+        <div
+            id="scannerModeMessage"
+            class="scanner-mode-message"
+            style="display:none;"
+        >
+            <i class="fas fa-circle-check"></i>
+
+            Modo escáner activo. Puede escanear continuamente sin seleccionar nuevamente el buscador.
+        </div>
+
     </div>
 
+    
     <!-- TABLA -->
     <div
         class="table-card"
@@ -630,6 +681,241 @@
                 });
 
             });
+        </script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const STORAGE_KEY = 'intevi_scanner_mode';
+
+            let scannerMode = false;
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | OBTENER ELEMENTOS
+            |--------------------------------------------------------------------------
+            */
+
+            function getElements() {
+
+                return {
+                    input: document.getElementById('searchid'),
+                    toggle: document.getElementById('scannerModeToggle'),
+                    status: document.getElementById('scannerModeStatus'),
+                    message: document.getElementById('scannerModeMessage')
+                };
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | ENFOCAR BUSCADOR
+            |--------------------------------------------------------------------------
+            */
+
+            function focusScanner() {
+
+                if (!scannerMode) {
+                    return;
+                }
+
+                const input = document.getElementById('searchid');
+
+                if (!input) {
+                    return;
+                }
+
+                /*
+                * Pequeño retraso para permitir que Livewire
+                * termine de actualizar el DOM.
+                */
+                setTimeout(() => {
+
+                    const currentInput = document.getElementById('searchid');
+
+                    if (!currentInput) {
+                        return;
+                    }
+
+                    currentInput.focus();
+
+                    /*
+                    * Seleccionamos el contenido actual.
+                    *
+                    * Así el siguiente código leído por el escáner
+                    * reemplaza automáticamente la búsqueda anterior.
+                    */
+                    currentInput.select();
+
+                }, 100);
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | ACTUALIZAR INTERFAZ
+            |--------------------------------------------------------------------------
+            */
+
+            function updateScannerUI() {
+
+                const elements = getElements();
+
+                if (!elements.toggle) {
+                    return;
+                }
+
+                elements.toggle.checked = scannerMode;
+
+                if (scannerMode) {
+
+                    if (elements.status) {
+                        elements.status.innerHTML = 'Encendido';
+                        elements.status.classList.add('active');
+                    }
+
+                    if (elements.message) {
+                        elements.message.style.display = 'block';
+                    }
+
+                } else {
+
+                    if (elements.status) {
+                        elements.status.innerHTML = 'Apagado';
+                        elements.status.classList.remove('active');
+                    }
+
+                    if (elements.message) {
+                        elements.message.style.display = 'none';
+                    }
+                }
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | INICIALIZAR
+            |--------------------------------------------------------------------------
+            */
+
+            function initScannerMode() {
+
+                scannerMode =
+                    localStorage.getItem(STORAGE_KEY) === 'true';
+
+                updateScannerUI();
+
+                if (scannerMode) {
+                    focusScanner();
+                }
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | TOGGLE
+            |--------------------------------------------------------------------------
+            */
+
+            document.addEventListener('change', function (event) {
+
+                if (event.target.id !== 'scannerModeToggle') {
+                    return;
+                }
+
+                scannerMode = event.target.checked;
+
+                localStorage.setItem(
+                    STORAGE_KEY,
+                    scannerMode ? 'true' : 'false'
+                );
+
+                updateScannerUI();
+
+                if (scannerMode) {
+                    focusScanner();
+                }
+            });
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | ESCÁNER ENVÍA ENTER
+            |--------------------------------------------------------------------------
+            |
+            | La mayoría de lectores de códigos de barras envían ENTER
+            | después del código.
+            |
+            */
+
+            document.addEventListener('keydown', function (event) {
+
+                if (!scannerMode) {
+                    return;
+                }
+
+                if (event.target.id !== 'searchid') {
+                    return;
+                }
+
+                if (event.key === 'Enter') {
+
+                    event.preventDefault();
+
+                    /*
+                    * Dejamos seleccionado el valor para que
+                    * el siguiente escaneo lo sustituya.
+                    */
+
+                    setTimeout(() => {
+                        focusScanner();
+                    }, 300);
+                }
+            });
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | LIVEWIRE 3
+            |--------------------------------------------------------------------------
+            |
+            | Cuando Livewire actualice la página debido a la búsqueda,
+            | volvemos automáticamente al buscador.
+            |
+            */
+
+            document.addEventListener('livewire:init', () => {
+
+                Livewire.hook('commit', ({ succeed }) => {
+
+                    succeed(() => {
+
+                        queueMicrotask(() => {
+
+                            updateScannerUI();
+
+                            if (scannerMode) {
+                                focusScanner();
+                            }
+
+                        });
+
+                    });
+
+                });
+
+            });
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | INICIO
+            |--------------------------------------------------------------------------
+            */
+
+            initScannerMode();
+
+        });
         </script>
     @endpush
 
