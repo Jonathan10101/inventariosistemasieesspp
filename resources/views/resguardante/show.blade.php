@@ -321,7 +321,7 @@
             >
                 <i class="fas fa-print mr-1"></i>
                 <span class="btn-text">
-                    Exportar todas las etiquetas del resguardante para imprimir
+                    Generar todas las etiquetas para imprimir
                 </span>
             </a>
         </div>
@@ -766,10 +766,16 @@
     }
 
     /* Paginación INTEVI */
+    .pagination-wrapper {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+    }
+
     .pagination-wrapper .pagination {
         margin-bottom: 0;
     }
-
+    
     .pagination-wrapper .page-link {
         color: #171C63;
         border-color: #dee2e6;
@@ -845,7 +851,7 @@
         }
 
         .pagination-wrapper {
-            justify-content: center;
+            justify-content: end;
         }
     }
 
@@ -1061,24 +1067,89 @@ document.addEventListener('DOMContentLoaded', function () {
     const btnImprimir = document.getElementById('btnImprimirTodasEtiquetas');
     const loadingBar = document.getElementById('etiquetasLoadingBar');
 
-    if (btnImprimir && loadingBar) {
-
-        btnImprimir.addEventListener('click', function () {
-
-            // Mostrar barra de carga hasta arriba
-            loadingBar.style.display = 'block';
-
-            // Evitar doble clic
-            btnImprimir.style.pointerEvents = 'none';
-            btnImprimir.classList.add('disabled');
-
-            // Cambiar contenido del botón
-            btnImprimir.innerHTML = `
-                <i class="fas fa-spinner fa-spin mr-1"></i>
-                Generando etiquetas...
-            `;
-        });
+    if (!btnImprimir || !loadingBar) {
+        return;
     }
+
+    const textoOriginal = btnImprimir.innerHTML;
+
+    btnImprimir.addEventListener('click', async function (event) {
+
+        event.preventDefault();
+
+        const url = btnImprimir.href;
+
+        // Mostrar loading superior
+        loadingBar.style.display = 'block';
+
+        // Bloquear botón
+        btnImprimir.style.pointerEvents = 'none';
+        btnImprimir.classList.add('disabled');
+
+        btnImprimir.innerHTML = `
+            <i class="fas fa-spinner fa-spin mr-1"></i>
+            Generando etiquetas...
+        `;
+
+        try {
+
+            const response = await fetch(url, {
+                method: 'GET',
+                credentials: 'same-origin',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(
+                    `Error al generar el PDF. Código HTTP: ${response.status}`
+                );
+            }
+
+            // Esperamos hasta que Laravel termine de generar todo el PDF
+            const pdfBlob = await response.blob();
+
+            // Crear URL temporal para el PDF
+            const pdfUrl = URL.createObjectURL(pdfBlob);
+
+            // Abrir PDF
+            const nuevaVentana = window.open(pdfUrl, '_blank');
+
+            // Por si el navegador bloquea la nueva pestaña
+            if (!nuevaVentana) {
+                const enlaceTemporal = document.createElement('a');
+
+                enlaceTemporal.href = pdfUrl;
+                enlaceTemporal.target = '_blank';
+                enlaceTemporal.click();
+            }
+
+            // Liberar memoria después
+            setTimeout(function () {
+                URL.revokeObjectURL(pdfUrl);
+            }, 60000);
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                'No fue posible generar las etiquetas. Inténtalo nuevamente.'
+            );
+
+        } finally {
+
+            // QUITAR BARRA DE CARGA
+            loadingBar.style.display = 'none';
+
+            // Restaurar botón
+            btnImprimir.style.pointerEvents = '';
+            btnImprimir.classList.remove('disabled');
+            btnImprimir.innerHTML = textoOriginal;
+        }
+
+    });
 
 });
 </script>
