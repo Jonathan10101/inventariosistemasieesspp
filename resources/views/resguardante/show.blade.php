@@ -17,6 +17,16 @@
 @endphp
 
 <div class="container-fluid mt-4 historial-resguardos-page">
+    {{-- BARRA SUPERIOR DE CARGA --}}
+    <div
+        id="etiquetasLoadingBar"
+        class="ieesspp-loading-bar"
+        style="display: none;"
+    >
+        <div class="progress w-100 h-100 rounded-0">
+            <div class="progress-bar progress-bar-striped progress-bar-animated w-100"></div>
+        </div>
+    </div>
 
     {{-- BARRA MÓVIL --}}
     <div class="mobile-page-nav">
@@ -303,13 +313,16 @@
     </div>
 
     <div class="row">
-        <div class="col mt-5">
+        <div class="col mt-4">
             <a
                 href="{{ route('resguardantes.etiquetas', $resguardante->id) }}"
                 class="btn btn-primary"
+                id="btnImprimirTodasEtiquetas"
             >
                 <i class="fas fa-print mr-1"></i>
-                Imprimir todas las etiquetas
+                <span class="btn-text">
+                    Exportar todas las etiquetas del resguardante para imprimir
+                </span>
             </a>
         </div>
     </div>
@@ -752,10 +765,60 @@
         display: none;
     }
 
-    .pagination-wrapper {
-        background: #171C63 !important;
-        display: flex;
-        justify-content: flex-end;
+    /* Paginación INTEVI */
+    .pagination-wrapper .pagination {
+        margin-bottom: 0;
+    }
+
+    .pagination-wrapper .page-link {
+        color: #171C63;
+        border-color: #dee2e6;
+    }
+
+    .pagination-wrapper .page-link:hover {
+        color: #ffffff;
+        background-color: #171C63;
+        border-color: #171C63;
+    }
+
+    .pagination-wrapper .page-item.active .page-link {
+        color: #ffffff;
+        background-color: #171C63;
+        border-color: #171C63;
+    }
+
+    .pagination-wrapper .page-item.disabled .page-link {
+        color: #6c757d;
+        background-color: #ffffff;
+        border-color: #dee2e6;
+    }
+
+    .pagination-wrapper .page-link:focus {
+        box-shadow: 0 0 0 0.2rem rgba(23, 28, 99, 0.20);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | BARRA DE CARGA
+    |--------------------------------------------------------------------------
+    */
+
+    .ieesspp-loading-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 99999;
+        height: 4px;
+    }
+
+    .ieesspp-loading-bar .progress-bar {
+        background: linear-gradient(
+            90deg,
+            #171C63,
+            #2563eb,
+            #06b6d4
+        );
     }
 
     @media (max-width: 992px) {
@@ -993,6 +1056,30 @@
 
 @section('js')
 <script>
-    console.log("Vista de historial de resguardos cargada correctamente");
+document.addEventListener('DOMContentLoaded', function () {
+
+    const btnImprimir = document.getElementById('btnImprimirTodasEtiquetas');
+    const loadingBar = document.getElementById('etiquetasLoadingBar');
+
+    if (btnImprimir && loadingBar) {
+
+        btnImprimir.addEventListener('click', function () {
+
+            // Mostrar barra de carga hasta arriba
+            loadingBar.style.display = 'block';
+
+            // Evitar doble clic
+            btnImprimir.style.pointerEvents = 'none';
+            btnImprimir.classList.add('disabled');
+
+            // Cambiar contenido del botón
+            btnImprimir.innerHTML = `
+                <i class="fas fa-spinner fa-spin mr-1"></i>
+                Generando etiquetas...
+            `;
+        });
+    }
+
+});
 </script>
 @stop
