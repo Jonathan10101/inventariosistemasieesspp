@@ -687,68 +687,8 @@
 
             const STORAGE_KEY = 'intevi_scanner_mode';
 
-            let scannerMode = false;
-
-
-            /*
-            |--------------------------------------------------------------------------
-            | OBTENER ELEMENTOS
-            |--------------------------------------------------------------------------
-            */
-
-            function getElements() {
-
-                return {
-                    input: document.getElementById('searchid'),
-                    toggle: document.getElementById('scannerModeToggle'),
-                    status: document.getElementById('scannerModeStatus'),
-                    message: document.getElementById('scannerModeMessage')
-                };
-            }
-
-
-            /*
-            |--------------------------------------------------------------------------
-            | ENFOCAR BUSCADOR
-            |--------------------------------------------------------------------------
-            */
-
-            function focusScanner() {
-
-                if (!scannerMode) {
-                    return;
-                }
-
-                const input = document.getElementById('searchid');
-
-                if (!input) {
-                    return;
-                }
-
-                /*
-                * Pequeño retraso para permitir que Livewire
-                * termine de actualizar el DOM.
-                */
-                setTimeout(() => {
-
-                    const currentInput = document.getElementById('searchid');
-
-                    if (!currentInput) {
-                        return;
-                    }
-
-                    currentInput.focus();
-
-                    /*
-                    * Seleccionamos el contenido actual.
-                    *
-                    * Así el siguiente código leído por el escáner
-                    * reemplaza automáticamente la búsqueda anterior.
-                    */
-                    currentInput.select();
-
-                }, 100);
-            }
+            let scannerMode =
+                localStorage.getItem(STORAGE_KEY) === 'true';
 
 
             /*
@@ -759,61 +699,83 @@
 
             function updateScannerUI() {
 
-                const elements = getElements();
+                const toggle = document.getElementById('scannerModeToggle');
+                const status = document.getElementById('scannerModeStatus');
+                const message = document.getElementById('scannerModeMessage');
 
-                if (!elements.toggle) {
-                    return;
+                /*
+                * Siempre volvemos a leer localStorage.
+                * Así Livewire nunca puede desincronizar el estado visual.
+                */
+                scannerMode =
+                    localStorage.getItem(STORAGE_KEY) === 'true';
+
+
+                if (toggle) {
+                    toggle.checked = scannerMode;
                 }
 
-                elements.toggle.checked = scannerMode;
 
-                if (scannerMode) {
+                if (status) {
 
-                    if (elements.status) {
-                        elements.status.innerHTML = 'Encendido';
-                        elements.status.classList.add('active');
+                    if (scannerMode) {
+
+                        status.textContent = 'Encendido';
+                        status.classList.add('active');
+
+                    } else {
+
+                        status.textContent = 'Apagado';
+                        status.classList.remove('active');
                     }
+                }
 
-                    if (elements.message) {
-                        elements.message.style.display = 'block';
-                    }
 
-                } else {
+                if (message) {
 
-                    if (elements.status) {
-                        elements.status.innerHTML = 'Apagado';
-                        elements.status.classList.remove('active');
-                    }
-
-                    if (elements.message) {
-                        elements.message.style.display = 'none';
-                    }
+                    message.style.display =
+                        scannerMode ? 'block' : 'none';
                 }
             }
 
 
+
             /*
             |--------------------------------------------------------------------------
-            | INICIALIZAR
+            | ENFOCAR BUSCADOR
             |--------------------------------------------------------------------------
             */
 
-            function initScannerMode() {
+            function focusScanner() {
 
                 scannerMode =
                     localStorage.getItem(STORAGE_KEY) === 'true';
 
-                updateScannerUI();
-
-                if (scannerMode) {
-                    focusScanner();
+                if (!scannerMode) {
+                    return;
                 }
+
+
+                setTimeout(function () {
+
+                    const input =
+                        document.getElementById('searchid');
+
+                    if (!input) {
+                        return;
+                    }
+
+                    input.focus();
+                    input.select();
+
+                }, 100);
             }
+
 
 
             /*
             |--------------------------------------------------------------------------
-            | TOGGLE
+            | ENCENDER / APAGAR MODO ESCÁNER
             |--------------------------------------------------------------------------
             */
 
@@ -823,69 +785,81 @@
                     return;
                 }
 
+
                 scannerMode = event.target.checked;
+
 
                 localStorage.setItem(
                     STORAGE_KEY,
                     scannerMode ? 'true' : 'false'
                 );
 
+
                 updateScannerUI();
 
+
                 if (scannerMode) {
+
                     focusScanner();
+
+                } else {
+
+                    const input =
+                        document.getElementById('searchid');
+
+                    if (input) {
+                        input.blur();
+                    }
                 }
             });
 
 
+
             /*
             |--------------------------------------------------------------------------
-            | ESCÁNER ENVÍA ENTER
+            | ENTER DEL ESCÁNER
             |--------------------------------------------------------------------------
-            |
-            | La mayoría de lectores de códigos de barras envían ENTER
-            | después del código.
-            |
             */
 
             document.addEventListener('keydown', function (event) {
+
+                scannerMode =
+                    localStorage.getItem(STORAGE_KEY) === 'true';
+
 
                 if (!scannerMode) {
                     return;
                 }
 
+
                 if (event.target.id !== 'searchid') {
                     return;
                 }
+
 
                 if (event.key === 'Enter') {
 
                     event.preventDefault();
 
-                    /*
-                    * Dejamos seleccionado el valor para que
-                    * el siguiente escaneo lo sustituya.
-                    */
-
-                    setTimeout(() => {
+                    setTimeout(function () {
                         focusScanner();
                     }, 300);
                 }
             });
 
 
+
             /*
             |--------------------------------------------------------------------------
-            | LIVEWIRE 3
+            | LIVEWIRE
             |--------------------------------------------------------------------------
-            |
-            | Cuando Livewire actualice la página debido a la búsqueda,
-            | volvemos automáticamente al buscador.
-            |
             */
 
-            document.addEventListener('livewire:init', () => {
+            document.addEventListener('livewire:init', function () {
 
+                /*
+                * Cuando Livewire termina una petición.
+                */
                 Livewire.hook('commit', ({ succeed }) => {
 
                     succeed(() => {
@@ -904,16 +878,52 @@
 
                 });
 
+
+                /*
+                * MUY IMPORTANTE:
+                *
+                * Cada vez que Livewire modifica el DOM,
+                * restauramos el estado visual del switch.
+                */
+                Livewire.hook('morph.updated', ({ el }) => {
+
+                    updateScannerUI();
+
+                });
+
             });
+
 
 
             /*
             |--------------------------------------------------------------------------
-            | INICIO
+            | LIVEWIRE NAVIGATION
             |--------------------------------------------------------------------------
             */
 
-            initScannerMode();
+            document.addEventListener('livewire:navigated', function () {
+
+                updateScannerUI();
+
+                if (scannerMode) {
+                    focusScanner();
+                }
+
+            });
+
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | CARGA INICIAL
+            |--------------------------------------------------------------------------
+            */
+
+            updateScannerUI();
+
+            if (scannerMode) {
+                focusScanner();
+            }
 
         });
         </script>
