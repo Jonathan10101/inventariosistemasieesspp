@@ -108,4 +108,147 @@ body {
 }
 */
 
+/* ============================================================
+   MODO ESCÁNER
+   ============================================================ */
 
+.scanner-mode {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.scanner-mode-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #495057;
+}
+
+.scanner-mode-label i {
+    color: #171C63;
+    margin-right: 3px;
+}
+
+
+/* SWITCH */
+
+.scanner-switch {
+    position: relative;
+    display: inline-block;
+
+    width: 46px;
+    height: 24px;
+
+    margin: 0;
+}
+
+.scanner-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.scanner-slider {
+    position: absolute;
+
+    cursor: pointer;
+
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background-color: #ced4da;
+
+    border-radius: 30px;
+
+    transition: .25s;
+}
+
+.scanner-slider:before {
+    position: absolute;
+
+    content: "";
+
+    height: 18px;
+    width: 18px;
+
+    left: 3px;
+    bottom: 3px;
+
+    background-color: white;
+
+    border-radius: 50%;
+
+    transition: .25s;
+
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .25);
+}
+
+
+/* ENCENDIDO */
+
+.scanner-switch input:checked + .scanner-slider {
+    background-color: #171C63;
+}
+
+.scanner-switch input:checked + .scanner-slider:before {
+    transform: translateX(22px);
+}
+
+
+/* ESTADO */
+
+.scanner-status {
+    min-width: 60px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    color: #6c757d;
+}
+
+.scanner-status.active {
+    color: #198754;
+}
+
+
+/* MENSAJE */
+
+.scanner-mode-message {
+    margin-top: 12px;
+
+    padding: 8px 12px;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    color: #146c43;
+
+    background-color: #d1e7dd;
+
+    border: 1px solid #badbcc;
+
+    border-radius: 7px;
+}
+
+.scanner-mode-message i {
+    margin-right: 5px;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+
+    .search-panel-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .scanner-mode {
+        width: 100%;
+    }
+}
