@@ -640,6 +640,15 @@
                     });
                 });
 
+                Livewire.on('open-etiqueta', (event) => {
+
+                    window.open(
+                        event.url,
+                        '_blank'
+                    );
+
+                });
+
                 Livewire.on('alumno-created2', function ($message) {
                     Swal.fire({
                         title: '¡Éxito!',
@@ -926,20 +935,6 @@
             }
 
         });
-        </script>
-        <script>
-            document.addEventListener('livewire:init', function () {
-
-                Livewire.on('open-etiqueta', (event) => {
-
-                    window.open(
-                        event.url,
-                        '_blank'
-                    );
-
-                });
-
-            });
         </script>
     @endpush
 
