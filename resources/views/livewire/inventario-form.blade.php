@@ -927,6 +927,20 @@
 
         });
         </script>
+        <script>
+            document.addEventListener('livewire:init', function () {
+
+                Livewire.on('open-etiqueta', (event) => {
+
+                    window.open(
+                        event.url,
+                        '_blank'
+                    );
+
+                });
+
+            });
+        </script>
     @endpush
 
     <style>
