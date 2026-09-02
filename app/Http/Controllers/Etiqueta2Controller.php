@@ -2,28 +2,81 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Barryvdh\DomPDF\Facade\Pdf; 
+use Barryvdh\DomPDF\Facade\Pdf;
 use DNS1D;
 
 class Etiqueta2Controller extends Controller
 {
     public function show($codigo)
     {
+        /*
+        |--------------------------------------------------------------------------
+        | GENERAR CÓDIGO DE BARRAS
+        |--------------------------------------------------------------------------
+        */
+
         $etiqueta = $this->generarEtiquetaBarcode($codigo);
-        // Genera el PDF a partir de una vista
-        $pdf = Pdf::loadView('etiquetas.pdf2', compact('etiqueta', 'codigo'));
-        $codigo = ltrim($codigo,'0');
-        // Forzar descarga del archivo
-        return $pdf->download("Etiqueta de la ubicación física con id {$codigo}.pdf");
+
+        /*
+        |--------------------------------------------------------------------------
+        | GENERAR PDF
+        |--------------------------------------------------------------------------
+        */
+
+        $pdf = Pdf::loadView('etiquetas.pdf2', [
+            'etiqueta' => $etiqueta,
+            'codigo' => $codigo,
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | PDF VERTICAL
+        |--------------------------------------------------------------------------
+        |
+        | 25 mm ancho
+        | 50 mm alto
+        |
+        | Exactamente la misma medida que la etiqueta de inventario.
+        |
+        */
+
+        $pdf->setPaper([
+            0,
+            0,
+            70.87,   // 25 mm
+            141.73   // 50 mm
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | NOMBRE DEL ARCHIVO
+        |--------------------------------------------------------------------------
+        */
+
+        $codigoArchivo = ltrim((string) $codigo, '0');
+
+        if ($codigoArchivo === '') {
+            $codigoArchivo = '0';
+        }
+
+        return $pdf->download(
+            "Etiqueta de ubicacion {$codigoArchivo}.pdf"
+        );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | CÓDIGO DE BARRAS
+    |--------------------------------------------------------------------------
+    */
 
     private function generarEtiquetaBarcode($codigo)
     {
-        // Usa C128 para solo números, más compacto y legible
-        $barcode = DNS1D::getBarcodeHTML($codigo, 'C128', 2, 40); // grosor=2, altura=40
-        // Contenedor centrado, sin escalar para no romper legibilidad
-        $html = "<div style='width:160px; text-align:center; overflow:hidden;'>$barcode</div>";
-        return $html;
+        return DNS1D::getBarcodeHTML(
+            $codigo,
+            'C128',
+            1.7,
+            48
+        );
     }
 }
