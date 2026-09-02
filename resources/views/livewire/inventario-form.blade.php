@@ -524,11 +524,12 @@
                                     @hasanyrole('Administrador|Delegacion')
                                         <button
                                             type="button"
+                                            onclick="window.inteviEtiquetaWindow = window.open('about:blank', '_blank');"
                                             wire:click="downloadEtiqueta({{ $resguardo->id }})"
                                             class="btn-action-download"
-                                            title="Descargar etiqueta"
+                                            title="Abrir etiqueta para imprimir"
                                         >
-                                            <i class="fas fa-download"></i>
+                                            <i class="fas fa-print"></i>
                                         </button>
                                     @endhasanyrole
 
@@ -640,12 +641,32 @@
                     });
                 });
 
-                Livewire.on('open-etiqueta', (event) => {
 
-                    window.open(
-                        event.url,
-                        '_blank'
-                    );
+                Livewire.on('open-etiqueta', function (event) {
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | PESTAÑA YA ABIERTA POR EL CLIC DEL USUARIO
+                    |--------------------------------------------------------------------------
+                    */
+
+                    if (
+                        window.inteviEtiquetaWindow &&
+                        !window.inteviEtiquetaWindow.closed
+                    ) {
+
+                        window.inteviEtiquetaWindow.location.href = event.url;
+                        window.inteviEtiquetaWindow.focus();
+
+                    } else {
+
+                        /*
+                        * Fallback por si el navegador cerró o bloqueó
+                        * la ventana previamente creada.
+                        */
+
+                        window.open(event.url, '_blank');
+                    }
 
                 });
 
