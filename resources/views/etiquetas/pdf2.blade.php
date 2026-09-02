@@ -1,37 +1,108 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <title>Etiqueta {{ $codigo }}</title>
+
     <style>
+        @page {
+            margin: 0;
+            padding: 0;
+            size: 25mm 50mm;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
         body {
-            font-family: Arial, sans-serif;
-            font-size: 10px; /* Texto más pequeño */
+            width: 25mm;
+            height: 50mm;
+            margin: 0;
+            padding: 0;
         }
+
+        body {
+            font-family: DejaVu Sans, sans-serif;
+        }
+
         .etiqueta {
-            border: 1px solid #000;
-            padding: 5px;
-            display: inline-block;
+            width: 25mm;
+            height: 50mm;
+
+            margin: 0;
+            padding: 2mm 1.5mm;
+
             text-align: center;
-            margin: 5px;
-            width: 150px;   /* 👈 ancho reducido */
-            height: auto;
+
+            overflow: hidden;
         }
-        .codigo-texto {
-            font-size: 8px; /* 👈 número pequeño debajo */
-            margin-top: 3px;
+
+        .titulo {
+            font-size: 7px;
+            font-weight: bold;
+            margin: 0 0 2mm 0;
+            padding: 0;
+            line-height: 1.1;
         }
-        img, svg {
-            max-width: 100%;
+
+        .tipo {
+            font-size: 6px;
+            font-weight: bold;
+            margin-bottom: 2mm;
+        }
+
+        .barcode {
+            width: 100%;
+            text-align: center;
+            margin-top: 1mm;
+        }
+
+        .barcode > div {
+            margin: 0 auto;
+        }
+
+        .codigo {
+            font-size: 8px;
+            font-weight: bold;
+            margin-top: 2mm;
+            letter-spacing: 0.5px;
+        }
+
+        .pie {
+            font-size: 5px;
+            margin-top: 2mm;
         }
     </style>
 </head>
+
 <body>
-    
-<div class="etiqueta" style="border:1px solid #000; padding:10px; text-align:center; width:160px; margin:10px;">
-    {!! $etiqueta !!}
-    <span>Etiqueta de la ubicación</span>
-</div>
+
+    <div class="etiqueta">
+
+        <div class="titulo">
+            INTEVI
+        </div>
+
+        <div class="tipo">
+            UBICACIÓN FÍSICA
+        </div>
+
+        <div class="barcode">
+            {!! $etiqueta !!}
+        </div>
+
+        <div class="codigo">
+            {{ $codigo }}
+        </div>
+
+        <div class="pie">
+            Inventario Tecnológico Institucional
+        </div>
+
+    </div>
 
 </body>
+
 </html>
