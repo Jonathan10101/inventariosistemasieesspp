@@ -395,11 +395,19 @@ class InventarioForm extends Component
         $this->resetForm();
     }
 
-    public function downloadEtiqueta($id){
-       
-        $codigo = str_pad($id, 8, '0', STR_PAD_LEFT);
-        return redirect()->route('etiquetas.show',$codigo);
+    /*
+    public function downloadEtiqueta($id)
+    {
+        $codigo = str_pad((string) $id, 8, '0', STR_PAD_LEFT);
+
+        $url = route('etiquetas.show', $codigo);
+
+        $this->dispatch(
+            'open-etiqueta',
+            url: $url
+        );
     }
+    */
 
     #[On('saveFromComponentNewHistorialResguardo')]
     public function guardarHistorialResguardo($data){

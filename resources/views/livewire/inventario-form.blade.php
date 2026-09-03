@@ -522,15 +522,24 @@
                                     @endhasanyrole
 
                                     @hasanyrole('Administrador|Delegacion')
-                                        <button
-                                            type="button"
-                                            onclick="window.inteviEtiquetaWindow = window.open('about:blank', '_blank');"
-                                            wire:click="downloadEtiqueta({{ $resguardo->id }})"
+                                        @php
+                                            $codigoEtiqueta = str_pad(
+                                                (string) $resguardo->id,
+                                                8,
+                                                '0',
+                                                STR_PAD_LEFT
+                                            );
+                                        @endphp
+
+                                        <a
+                                            href="{{ route('etiquetas.show', $codigoEtiqueta) }}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
                                             class="btn-action-download"
                                             title="Abrir etiqueta para imprimir"
                                         >
                                             <i class="fas fa-print"></i>
-                                        </button>
+                                        </a>
                                     @endhasanyrole
 
                                 </div>
