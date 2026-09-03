@@ -531,15 +531,14 @@
                                             );
                                         @endphp
 
-                                        <a
-                                            href="{{ route('etiquetas.show', $codigoEtiqueta) }}"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            class="btn-action-download"
-                                            title="Abrir etiqueta para imprimir"
+                                        <button
+                                            type="button"
+                                            class="btn-action-download btn-imprimir-etiqueta"
+                                            data-url="{{ route('etiquetas.show', $codigoEtiqueta) }}"
+                                            title="Generar etiqueta para imprimir"
                                         >
                                             <i class="fas fa-print"></i>
-                                        </a>
+                                        </button>
                                     @endhasanyrole
 
                                 </div>
@@ -651,33 +650,7 @@
                 });
 
 
-                Livewire.on('open-etiqueta', function (event) {
-
-                    /*
-                    |--------------------------------------------------------------------------
-                    | PESTAÑA YA ABIERTA POR EL CLIC DEL USUARIO
-                    |--------------------------------------------------------------------------
-                    */
-
-                    if (
-                        window.inteviEtiquetaWindow &&
-                        !window.inteviEtiquetaWindow.closed
-                    ) {
-
-                        window.inteviEtiquetaWindow.location.href = event.url;
-                        window.inteviEtiquetaWindow.focus();
-
-                    } else {
-
-                        /*
-                        * Fallback por si el navegador cerró o bloqueó
-                        * la ventana previamente creada.
-                        */
-
-                        window.open(event.url, '_blank');
-                    }
-
-                });
+           
 
                 Livewire.on('alumno-created2', function ($message) {
                     Swal.fire({
@@ -966,6 +939,246 @@
 
         });
         </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+
+                /*
+                |--------------------------------------------------------------------------
+                | GENERAR ETIQUETA INDIVIDUAL
+                |--------------------------------------------------------------------------
+                |
+                | Funciona igual que el botón de "Generar todas las etiquetas":
+                |
+                | 1. Laravel genera el PDF.
+                | 2. JavaScript espera a que termine.
+                | 3. Recibe el PDF como Blob.
+                | 4. Crea una URL temporal.
+                | 5. Abre el PDF en otra pestaña.
+                |
+                */
+
+                document.addEventListener('click', async function (event) {
+
+                    const btnImprimir = event.target.closest('.btn-imprimir-etiqueta');
+
+                    if (!btnImprimir) {
+                        return;
+                    }
+
+                    event.preventDefault();
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | EVITAR DOBLE CLIC
+                    |--------------------------------------------------------------------------
+                    */
+
+                    if (btnImprimir.dataset.loading === 'true') {
+                        return;
+                    }
+
+                    const url = btnImprimir.dataset.url;
+
+                    if (!url) {
+                        console.error('No se encontró la URL de la etiqueta.');
+                        return;
+                    }
+
+                    const contenidoOriginal = btnImprimir.innerHTML;
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | ESTADO CARGANDO
+                    |--------------------------------------------------------------------------
+                    */
+
+                    btnImprimir.dataset.loading = 'true';
+
+                    btnImprimir.disabled = true;
+
+                    btnImprimir.innerHTML = `
+                        <i class="fas fa-spinner fa-spin"></i>
+                    `;
+
+
+                    try {
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | SOLICITAR PDF A LARAVEL
+                        |--------------------------------------------------------------------------
+                        */
+
+                        const response = await fetch(url, {
+
+                            method: 'GET',
+
+                            credentials: 'same-origin',
+
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+
+                        });
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | VALIDAR RESPUESTA
+                        |--------------------------------------------------------------------------
+                        */
+
+                        if (!response.ok) {
+
+                            throw new Error(
+                                `Error al generar la etiqueta. Código HTTP: ${response.status}`
+                            );
+
+                        }
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | RECIBIR PDF
+                        |--------------------------------------------------------------------------
+                        */
+
+                        const pdfBlob = await response.blob();
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | VALIDAR QUE REALMENTE RECIBIMOS ALGO
+                        |--------------------------------------------------------------------------
+                        */
+
+                        if (pdfBlob.size === 0) {
+
+                            throw new Error(
+                                'Laravel devolvió un PDF vacío.'
+                            );
+
+                        }
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | CREAR URL TEMPORAL
+                        |--------------------------------------------------------------------------
+                        */
+
+                        const pdfUrl = URL.createObjectURL(pdfBlob);
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | ABRIR PDF
+                        |--------------------------------------------------------------------------
+                        */
+
+                        const nuevaVentana = window.open(
+                            pdfUrl,
+                            '_blank'
+                        );
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | FALLBACK
+                        |--------------------------------------------------------------------------
+                        |
+                        | Si Chrome bloquea window.open(),
+                        | intentamos abrir mediante un enlace.
+                        |
+                        */
+
+                        if (!nuevaVentana) {
+
+                            const enlaceTemporal =
+                                document.createElement('a');
+
+                            enlaceTemporal.href = pdfUrl;
+
+                            enlaceTemporal.target = '_blank';
+
+                            enlaceTemporal.rel = 'noopener noreferrer';
+
+                            document.body.appendChild(
+                                enlaceTemporal
+                            );
+
+                            enlaceTemporal.click();
+
+                            enlaceTemporal.remove();
+                        }
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | LIBERAR MEMORIA
+                        |--------------------------------------------------------------------------
+                        |
+                        | No debemos destruir inmediatamente la URL porque el visor PDF
+                        | todavía puede estar utilizándola.
+                        |
+                        */
+
+                        setTimeout(function () {
+
+                            URL.revokeObjectURL(
+                                pdfUrl
+                            );
+
+                        }, 60000);
+
+
+                    } catch (error) {
+
+                        console.error(
+                            'Error al generar etiqueta:',
+                            error
+                        );
+
+
+                        Swal.fire({
+
+                            title: 'No fue posible generar la etiqueta',
+
+                            text: 'Inténtalo nuevamente.',
+
+                            icon: 'error',
+
+                            confirmButtonText: 'Aceptar',
+
+                            customClass: {
+                                confirmButton: 'btn-ieesspp'
+                            },
+
+                            buttonsStyling: false
+
+                        });
+
+                    } finally {
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | RESTAURAR BOTÓN
+                        |--------------------------------------------------------------------------
+                        */
+
+                        btnImprimir.dataset.loading = 'false';
+
+                        btnImprimir.disabled = false;
+
+                        btnImprimir.innerHTML =
+                            contenidoOriginal;
+
+                    }
+
+                });
+
+            });
+            </script>
     @endpush
 
     <style>
