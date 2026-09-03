@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Resguardo;
+use App\Models\HistorialResguardo;
 
 class AreaDeUso extends Model
 {
@@ -12,6 +13,7 @@ class AreaDeUso extends Model
     protected $table = "area_de_uso";
     protected $fillable = ['nombre'];
 
+    /* ====== MUTADORES PARA MAYÚSCULAS ====== */
     public function setAttribute($key, $value)
     {
         // Si el atributo es fillable y es string, lo convierte en mayúsculas
@@ -23,7 +25,7 @@ class AreaDeUso extends Model
 
     public function resguardos()
     {
-        return $this->hasMany(Resguardo::class);
+        return $this->hasMany(HistorialResguardo::class);
     }
     
 }

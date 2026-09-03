@@ -1,20 +1,13 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Title
     |--------------------------------------------------------------------------
-    |
-    | Here you can change the default title of your admin panel.
-    |
-    | For detailed instructions you can look the title section here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Basic-Configuration
-    |
     */
 
-    'title' => 'Inventario IEESSPP',
+    'title' => 'INTEVI',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -22,12 +15,6 @@ return [
     |--------------------------------------------------------------------------
     | Favicon
     |--------------------------------------------------------------------------
-    |
-    | Here you can activate the favicon.
-    |
-    | For detailed instructions you can look the favicon section here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Basic-Configuration
-    |
     */
 
     'use_ico_only' => true,
@@ -37,14 +24,6 @@ return [
     |--------------------------------------------------------------------------
     | Google Fonts
     |--------------------------------------------------------------------------
-    |
-    | Here you can allow or not the use of external google fonts. Disabling the
-    | google fonts may be useful if your admin panel internet access is
-    | restricted somehow.
-    |
-    | For detailed instructions you can look the google fonts section here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Basic-Configuration
-    |
     */
 
     'google_fonts' => [
@@ -55,41 +34,60 @@ return [
     |--------------------------------------------------------------------------
     | Admin Panel Logo
     |--------------------------------------------------------------------------
-    |
-    | Here you can change the logo of your admin panel.
-    |
-    | For detailed instructions you can look the logo section here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Basic-Configuration
-    |
     */
-    
+    'logo' => '
+        <div style="
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            
+        ">
+            <img
+                src="/images/intevi logo.png"
+                alt="Logo de INTEVI"
+                style="
+                    width: 38px;
+                    height: 38px;
+                    object-fit: contain;
+                    display: block;
+                    margin: 0px !important;
+                    padding: 0px !important;
+                "
+            >
 
+            <strong style="
+                display: block;
+                margin: 0px !important;
+                padding: 0px !important;
+                color: #171C63;
+                font-size: 17px;
+                font-weight: 900;
+                line-height: 1;
+                letter-spacing: 1px;
+            ">
+                INTEVI
+            </strong>
+        </div>
+    ',
 
-    'logo' => '<b>Inventario IEESSPP</b>',
-    //'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',        
-    'logo_img' => 'vendor/adminlte/dist/img/logocircularieesspp.png',    
-    //'logo_img_class' => 'brand-image img-circle elevation-3',
+    'logo_img' => null,
+    'logo_img_class' => '',
     'logo_img_xl' => null,
-    //'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'Admin Logo',
+    'logo_img_xl_class' => '',
+    'logo_img_alt' => '',
 
     /*
     |--------------------------------------------------------------------------
     | Authentication Logo
     |--------------------------------------------------------------------------
-    |
-    | Here you can setup an alternative logo to use on your login and register
-    | screens. When disabled, the admin panel logo will be used instead.
-    |
-    | For detailed instructions you can look the auth logo section here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Basic-Configuration
-    |
     */
 
     'auth_logo' => [
         'enabled' => false,
         'img' => [
-            //'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -101,22 +99,12 @@ return [
     |--------------------------------------------------------------------------
     | Preloader Animation
     |--------------------------------------------------------------------------
-    |
-    | Here you can change the preloader animation configuration. Currently, two
-    | modes are supported: 'fullscreen' for a fullscreen preloader animation
-    | and 'cwrapper' to attach the preloader animation into the content-wrapper
-    | element and avoid overlapping it with the sidebars and the top navbar.
-    |
-    | For detailed instructions you can look the preloader section here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Basic-Configuration
-    |
     */
 
     'preloader' => [
         'enabled' => false,
         'mode' => 'fullscreen',
         'img' => [
-            //'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
             'path' => 'vendor/adminlte/dist/img/logoicono.ico',
             'alt' => 'AdminLTE Preloader Image',
             'effect' => 'animation__shake',
@@ -129,12 +117,6 @@ return [
     |--------------------------------------------------------------------------
     | User Menu
     |--------------------------------------------------------------------------
-    |
-    | Here you can activate and change the user menu.
-    |
-    | For detailed instructions you can look the user menu section here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Basic-Configuration
-    |
     */
 
     'usermenu_enabled' => true,
@@ -148,17 +130,11 @@ return [
     |--------------------------------------------------------------------------
     | Layout
     |--------------------------------------------------------------------------
-    |
-    | Here we change the layout of your admin panel.
-    |
-    | For detailed instructions you can look the layout section here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Layout-and-Styling-Configuration
-    |
     */
 
     'layout_topnav' => null,
     'layout_boxed' => null,
-    'layout_fixed_sidebar' => null,
+    'layout_fixed_sidebar' => true,
     'layout_fixed_navbar' => null,
     'layout_fixed_footer' => null,
     'layout_dark_mode' => null,
@@ -167,65 +143,37 @@ return [
     |--------------------------------------------------------------------------
     | Authentication Views Classes
     |--------------------------------------------------------------------------
-    |
-    | Here you can change the look and behavior of the authentication views.
-    |
-    | For detailed instructions you can look the auth classes section here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Layout-and-Styling-Configuration
-    |
     */
 
     'classes_auth_card' => 'card-outline card-primary',
-    'classes_auth_header' => '',
-    'classes_auth_body' => '',
-    'classes_auth_footer' => '',
-    'classes_auth_icon' => '',
     'classes_auth_btn' => 'btn-flat btn-primary',
 
     /*
     |--------------------------------------------------------------------------
     | Admin Panel Classes
     |--------------------------------------------------------------------------
-    |
-    | Here you can change the look and behavior of the admin panel.
-    |
-    | For detailed instructions you can look the admin panel classes here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Layout-and-Styling-Configuration
-    |
     */
 
-    //'classes_body' => '',
-    //PONER EN BLANCO SI QUIERES QUE APAREZCA ABIERTO EL DASHBOARD
-    //'classes_body' => 'sidebar-mini layout-fixed sidebar-collapse',
-    'classes_body' => '',
+    'classes_body' => 'sidebar-mini layout-fixed layout-navbar-fixed',
     'classes_brand' => '',
     'classes_brand_text' => '',
     'classes_content_wrapper' => '',
     'classes_content_header' => '',
     'classes_content' => '',
-    'classes_sidebar' => 'sidebar-dark-primary elevation-4',
-    'classes_sidebar_nav' => '',
+    'classes_sidebar' => 'sidebar-light-primary elevation-0',
+    'classes_sidebar_nav' => 'nav-flat nav-child-indent',
     'classes_topnav' => 'navbar-white navbar-light',
     'classes_topnav_nav' => 'navbar-expand',
-    'classes_topnav_container' => 'container',
+    'classes_topnav_container' => 'container-fluid',
 
     /*
     |--------------------------------------------------------------------------
-    | Sidebar
+    | Sidebar Config
     |--------------------------------------------------------------------------
-    |
-    | Here we can modify the sidebar of the admin panel.
-    |
-    | For detailed instructions you can look the sidebar section here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Layout-and-Styling-Configuration
-    |
     */
 
     'sidebar_mini' => 'lg',
     'sidebar_collapse' => false,
-    'sidebar_collapse_auto_size' => false,
-    'sidebar_collapse_remember' => false,
-    'sidebar_collapse_remember_no_transition' => true,
     'sidebar_scrollbar_theme' => 'os-theme-light',
     'sidebar_scrollbar_auto_hide' => 'l',
     'sidebar_nav_accordion' => true,
@@ -233,34 +181,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Control Sidebar (Right Sidebar)
+    | Control Sidebar
     |--------------------------------------------------------------------------
-    |
-    | Here we can modify the right sidebar aka control sidebar of the admin panel.
-    |
-    | For detailed instructions you can look the right sidebar section here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Layout-and-Styling-Configuration
-    |
     */
 
     'right_sidebar' => false,
-    'right_sidebar_icon' => 'fas fa-cogs',
-    'right_sidebar_theme' => 'dark',
-    'right_sidebar_slide' => true,
-    'right_sidebar_push' => true,
-    'right_sidebar_scrollbar_theme' => 'os-theme-light',
-    'right_sidebar_scrollbar_auto_hide' => 'l',
 
     /*
     |--------------------------------------------------------------------------
     | URLs
     |--------------------------------------------------------------------------
-    |
-    | Here we can modify the url settings of the admin panel.
-    |
-    | For detailed instructions you can look the urls section here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Basic-Configuration
-    |
     */
 
     'use_route_url' => false,
@@ -270,306 +200,136 @@ return [
     'register_url' => 'register',
     'password_reset_url' => 'password/reset',
     'password_email_url' => 'password/email',
-    'profile_url' => false,
-    'disable_darkmode_routes' => false,
 
     /*
-    |-----by---------------------------------------------------------------------
+    |--------------------------------------------------------------------------
     | Laravel Asset Bundling
     |--------------------------------------------------------------------------
-    |
-    | Here we can enable the Laravel Asset Bundling option for the admin panel.
-    | Currently, the next modes are supported: 'mix', 'vite' and 'vite_js_only'.
-    | When using 'vite_js_only', it's expected that your CSS is imported using
-    | JavaScript. Typically, in your application's 'resources/js/app.js' file.
-    | If you are not using any of these, leave it as 'false'.
-    |
-    | For detailed instructions you can look the asset bundling section here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Other-Configuration
-    |
     */
 
     'laravel_asset_bundling' => false,
-    'laravel_css_path' => 'css/app.css',
-    'laravel_js_path' => 'js/app.js',
+    'laravel_css_path' => '',
+    'laravel_js_path' => '',
 
     /*
     |--------------------------------------------------------------------------
-    | Menu Items
+    | Admin Panel Assets
     |--------------------------------------------------------------------------
-    |
-    | Here we can modify the sidebar/top navigation of the admin panel.
-    |
-    | For detailed instructions you can look here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Menu-Configuration
-    |
+    */
+
+    'css' => [
+        'css/intevi-adminlte.css',
+
+        //'css/intevi-componentes.css',
+    ],
+
+    'js' => [
+
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Menu
+    |--------------------------------------------------------------------------
     */
 
     'menu' => [
-        // Navbar items:
-        /*
         [
-            'type' => 'navbar-search',
-            'text' => 'search',
-            'topnav_right' => false,
+            'text' => 'Panel de Control',
+            'url'  => 'dashboard',
+            'icon' => 'fas fa-tachometer-alt',
         ],
-        */
-        [
-            'type' => 'fullscreen-widget',
-            'topnav_right' => true,
-        ],
+        ['header' => 'GESTIÓN PRINCIPAL'],
 
-        // Sidebar items:
-        /*
-        [
-            'type' => 'sidebar-menu-search',
-            'text' => 'search',
-        ],
-        */
-        [
-            'text' => 'blog',
-            'url' => 'admin/blog',
-            'can' => 'manage-blog',
-        ],
-        /*
-        [
-            'text' => 'pages',
-            'url' => 'admin/pages',
-            'icon' => 'far fa-fw fa-file',
-            'label' => 4,
-            'label_color' => 'success',
-        ],
-        */
-        /*
-        ESTO SIRVE PARA AGREGAR TEXTO EN EL DASHBOARD COMO AL PRINCIPIO EN LA PARTE DE HASTA ARRIBA:
-        AJUSTES DE LA CUENTA
-        ['header' => 'account_settings'],
-        */
-
-        
-        [
-            'text' => 'Dashboard',
-            'url' => 'dashboard',            
-            'icon' => 'fas fa-fw fa-home',
-            //'icon' => 'fas fa-fw fa-user',
-        ],
         [
             'text' => 'Inventario',
-            //'icon' => 'fas fa-fw fa-share',
-            'url' => 'inventario',
-            'icon' => 'fas fa-fw fa-box',
+            'url'  => 'inventario',
+            'icon' => 'fas fa-boxes',
         ],
+        /*
         [
-            'text' => 'Productos',
-            //'icon' => 'fas fa-fw fa-share',
-            //'url' => 'alumnos',
-            'icon' => 'fas fa-fw fa-laptop',
-    
-            'submenu' => [                
-                [
-                    'text' => 'Marca',
-                    'url' => 'marcas',
-                    'icon' => 'fas fa-fw fa-boxsw',
-                ],
-                /*
-                [
-                    'text' => 'Modelo',
-                    'url' => 'modelo',
-                    'icon' => 'fas fa-fw fa-boxsw',
-                ],
-                [
-                    'text' => 'Estado de uso',
-                    'url' => 'estadouso',
-                    'icon' => 'fas fa-fw fa-boxsw',
-                ],
-                */
-            ],
+            'text' => 'Resguardos',
+            'url'  => 'resguardos',
+            'icon' => 'fas fa-file-signature',
         ],
+        */
         [
             'text' => 'Resguardantes',
-            //'icon' => 'fas fa-fw fa-share',
-            //'url' => 'alumnos',
-            'icon' => 'fas fa-fw fa-user',
-    
-            'submenu' => [                
-                [
-                    'text' => 'Nombre usuario',
-                    'url' => 'resguardante',
-                    'icon' => 'fas fa-fw',
-                ],                
-                [
-                    'text' => 'Puesto',
-                    'url' => 'puestos',
-                    'icon' => 'fas fa-fw fa-boxsw',
-                ],                
-            ],
-        ],
-        [
-            'text' => 'Ubicaciones',
-            'url' => 'ubicacionfisica',            
-            'icon' => 'fas fa-fw fa-map',
-                
-            'submenu' => [                
-                [
-                    'text' => 'Ubicación fisica',
-                    'url' => 'ubicacionfisica',
-                    'icon' => 'fas fa-fw',
-                ],                
-                [
-                    'text' => 'Area de asignación',
-                    'url' => 'areadeasignacion',
-                    'icon' => 'fas fa-fw fa-boxsw',
-                ],                
-            ],
-            //'can' => 'cursos.update'
-            //'icon' => 'fas fa-fw fa-user',
-        ],
-/*
-        [
-            'text' => 'Municipios',
-            'url' => 'municipios',            
-            'icon' => 'fas fa-fw fa-globe',
-            //'can' => 'cursos.update'
-            //'icon' => 'fas fa-fw fa-user',
-        ],
-*/
-/*
-        [
-            'text' => 'Sedes',
-            'url' => 'sedes',            
-            'icon' => 'fas fa-fw fa-school',
-            //'can' => 'cursos.update'
-            //'icon' => 'fas fa-fw fa-user',
+            'url'  => 'resguardante',
+            'icon' => 'fas fa-user-shield',
+            'can' => 'resguardante.create'
         ],
 
         [
-            'text' => 'Instituciones',
-            'url' => 'institucioncontrato',            
-            'icon' => 'fas fa-fw fa-building',
-            //'can' => 'cursos.update'
-            //'icon' => 'fas fa-fw fa-user',
+            'header' => 'CATÁLOGOS',
+            'can' => 'marcas.create'
         ],
-*/
+
+        [
+            'text' => 'Marcas',
+            'url'  => 'marcas',
+            'icon' => 'fas fa-tags',
+            'can' => 'marcas.create'
+        ],
+        [
+            'text' => 'Puestos',
+            'url'  => 'puestos',
+            'icon' => 'fas fa-briefcase',
+            'can' => 'puestos.create'
+        ],
+        [
+            'text' => 'Áreas de asignación',
+            'url'  => 'areadeasignacion',
+            'icon' => 'fas fa-sitemap',
+            'can' => 'areadeasignacion.create'
+        ],
+        [
+            'text' => 'Ubicaciones físicas',
+            'url'  => 'ubicacionfisica',
+            'icon' => 'fas fa-map-marker-alt',
+            'can' => 'ubicacionfisica.create'
+        ],
+
+        ['header' => 'SOPORTE TÉCNICO', 'can' => 'viewPulse'],
+        [
+            'text' => 'Tutorial general',
+            'url' => '#tutorial-general',
+            'icon' => 'fas fa-graduation-cap',
+            'can' => 'resguardante.create'
+        ],
+        [
+            'text' => 'Asistente IA',
+            'url' => 'https://chatgpt.com/g/g-6a67750fd8548191a96b005848090887-intevi-asistente',
+            'icon' => 'fas fa-robot',
+            'target' => '_blank',
+        ],
         /*
         [
-            'text' => 'Inscripciones',
-            'url' => 'inscripciones',            
-            'icon' => 'fas fa-fw fa-id-card',
-            'can' => 'requisicionesCocina.index'            
+            'text' => 'Usuarios',
+            'url'  => 'usuarios',
+            'icon' => 'fas fa-users-cog',
+        ],
+        
+        [
+            'text' => 'Roles y permisos',
+            'url'  => 'roles',
+            'icon' => 'fas fa-user-lock',
         ],
         [
-            'text' => 'Cursos',
-            'url' => 'inscripciones',            
-            'icon' => 'fas fa-fw fa-chalkboard',
-            'can' => 'requisicionesCocina.index'            
+            'text' => 'Monitor de sistema',
+            'url' => env('PULSE_PATH', 'pulse'),
+            'icon' => 'fas fa-fw fa-heartbeat',
+            'can' => 'viewPulse',
         ],
         */
-        [
-            'text' => 'By Jonathan V. 1.0.0 Alpha',
-            'url' => '',            
-            'icon' => 'fas',
-        ],
 
 
- 
-        /*
-        [
-            'text' => 'Cursos',
-            'url' => 'cursos',            
-            'icon' => 'fas fa-fw fa-table',     
-            'can' => 'requisicionesCocina.index'            
-        ],
-        [
-            'text' => 'Grupos',
-            'url' => 'grupos',            
-            'icon' => 'fas fa-fw fa-users',
-            'can' => 'requisicionesPapeleria.index'            
-            //'icon' => 'fas fa-fw fa-user',
-        ],
-        [
-            'text' => 'Informativos',
-            //'icon' => 'fas fa-fw fa-share',
-            'icon' => 'fas fa-fw fa-inbox',
-            'submenu' => [                
-                [
-                    'text' => 'Calendario',
-                    'url' => 'informativoscalendario',
-                    'icon' => 'fas fa-fw fa-scree-users',
-                ],
-                [
-                    'text' => 'Noticias',
-                    'url' => 'informativosnoticias',
-                    'icon' => 'fas fa-fw fa-scree-users',
-                ],
-                [
-                    'text' => 'Biblioteca',
-                    'url' => 'informativosbiblioteca',
-                    'icon' => 'fas fa-fw fa-scree-users',
-                ]
-            ],
-        ],
-
-
-
-
-
-
-
-
-        [
-            'text' => 'Chat',
-            'url' => 'chat',            
-            'icon' => 'fas fa-fw fa-envelope',
-            'can' => 'requisicionesCocina.index'            
-        ],  
-        [
-            'text' => 'Calendario',
-            'url' => 'calendario',            
-            'icon' => 'fas fa-fw fa-calendar',
-            'can' => 'requisicionesCocina.index'            
-        ],   
-        [
-            'text' => 'Noticias',
-            'url' => 'noticias',            
-            'icon' => 'fas fa-fw fa-newspaper',
-            'can' => 'requisicionesCocina.index'            
-        ],    
-        [
-            'text' => 'Bibilioteca',
-            'url' => 'biblioteca',            
-            'icon' => 'fas fa-fw fa-book',
-            'can' => 'requisicionesCocina.index'            
-        ],                   
-        /*
-        ['header' => 'labels'],
-        [
-            'text' => 'important',
-            'icon_color' => 'red',
-            'url' => '#',
-        ],
-        [
-            'text' => 'warning',
-            'icon_color' => 'yellow',
-            'url' => '#',
-        ],
-        [
-            'text' => 'information',
-            'icon_color' => 'cyan',
-            'url' => '#',
-        ],
-        */
     ],
 
     /*
     |--------------------------------------------------------------------------
     | Menu Filters
     |--------------------------------------------------------------------------
-    |
-    | Here we can modify the menu filters of the admin panel.
-    |
-    | For detailed instructions you can look the menu filters section here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Menu-Configuration
-    |
     */
 
     'filters' => [
@@ -584,115 +344,81 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Plugins Initialization
+    | Plugins
     |--------------------------------------------------------------------------
-    |
-    | Here we can modify the plugins used inside the admin panel.
-    |
-    | For detailed instructions you can look the plugins section here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Plugins-Configuration
-    |
     */
 
     'plugins' => [
-        'Datatables' => [
-            'active' => false,
-            'files' => [
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
-                ],
-                [
-                    'type' => 'css',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
-                ],
-            ],
-        ],
-        'Select2' => [
-            'active' => false,
-            'files' => [
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js',
-                ],
-                [
-                    'type' => 'css',
-                    'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css',
-                ],
-            ],
-        ],
-        'Chartjs' => [
-            'active' => false,
-            'files' => [
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js',
-                ],
-            ],
-        ],
-        'Sweetalert2' => [
-            'active' => false,
-            'files' => [
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
-                ],
-            ],
-        ],
-        'Pace' => [
-            'active' => false,
+        'Datatables' => ['active' => false],
+        'Select2' => ['active' => false],
+        'Chartjs' => ['active' => false],
+        'Sweetalert2' => ['active' => false],
+        'Pace' => ['active' => false],
+        'DriverJs' => [
+            'active' => true,
+
             'files' => [
                 [
                     'type' => 'css',
                     'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/blue/pace-theme-center-radar.min.css',
+                    'location' => 'https://cdn.jsdelivr.net/npm/driver.js@1.7.0/dist/driver.css',
                 ],
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
+                    'location' => 'https://cdn.jsdelivr.net/npm/driver.js@1.7.0/dist/driver.js.iife.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'js/intevi-tour.js',
+                ],
+                
+            ],
+        ],
+        'InteviOffline' => [
+            'active' => true,
+
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'js/intevi-offline.js',
+                    'defer' => true,
                 ],
             ],
         ],
+        'Clarity' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'js/intevi-clarity.js',
+                ],
+            ],
+        ],
+        'InteviTrial' => [
+        'active' => true,
+        'files' => [
+            [
+                'type' => 'js',
+                'asset' => true,
+                'location' => 'js/intevi-trial.js',
+            ],
+        ],
+    ],
+
     ],
 
     /*
     |--------------------------------------------------------------------------
     | IFrame
     |--------------------------------------------------------------------------
-    |
-    | Here we change the IFrame mode configuration. Note these changes will
-    | only apply to the view that extends and enable the IFrame mode.
-    |
-    | For detailed instructions you can look the iframe mode section here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/IFrame-Mode-Configuration
-    |
     */
 
     'iframe' => [
-        'default_tab' => [
-            'url' => null,
-            'title' => null,
-        ],
-        'buttons' => [
-            'close' => true,
-            'close_all' => true,
-            'close_all_other' => true,
-            'scroll_left' => true,
-            'scroll_right' => true,
-            'fullscreen' => true,
-        ],
+        'default_tab' => ['url' => null, 'title' => null],
         'options' => [
             'loading_screen' => 1000,
             'auto_show_new_tab' => true,
@@ -704,14 +430,7 @@ return [
     |--------------------------------------------------------------------------
     | Livewire
     |--------------------------------------------------------------------------
-    |
-    | Here we can enable the Livewire support.
-    |
-    | For detailed instructions you can look the livewire here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Other-Configuration
-    |
     */
 
     'livewire' => false,
 ];
-

@@ -10,6 +10,9 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Resguardo;
+use App\Models\Resguardante;
+
 
 
 class User extends Authenticatable
@@ -62,4 +65,38 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    /*
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
+        */
+
+    
+    public function resguardos()
+    {
+        return $this->hasMany(Resguardo::class);
+    }
+
+    /*
+    public function resguardante()
+    {
+        return $this->belongsTo(Resguardante::class, 'id');
+    }
+    */
+
+    public function resguardantes()
+    {
+        return $this->hasMany(Resguardante::class, 'user_id');
+    }
+
+
+
+    public function adminlte_desc()
+    {
+        return 'Administrador del sistema';
+    }
+
+
 }

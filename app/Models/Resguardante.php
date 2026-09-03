@@ -5,13 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Resguardo;
+use App\Models\Puesto;
+use App\Models\HistorialResguardo;
+use App\Models\User;
 
 class Resguardante extends Model
 {
     use HasFactory;
     protected $table  = "resguardantes";
-    protected $fillable = ['nombre1','nombre2','apellido1','apellido2'];
+    protected $fillable = ['nombre1','nombre2','apellido1','apellido2','user_id','puesto_id','area_id'];
 
+    
     public function setAttribute($key, $value)
     {
         // Si el atributo es fillable y es string, lo convierte en mayúsculas
@@ -20,11 +24,34 @@ class Resguardante extends Model
         }
         return parent::setAttribute($key, $value);
     }
-
     
     public function resguardos()
     {
         return $this->hasMany(Resguardo::class);
     }
+
+    public function historialResguardos()
+    {
+        return $this->hasMany(HistorialResguardo::class, 'resguardante_id');
+    }
+
+    public function puesto(){
+        return $this->hasOne(Puesto::class);
+    }
+
+/*
+    public function user(){
+        return $this->hasOne(User::class,'id');
+    }
+    */
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+
+
+
 
 }

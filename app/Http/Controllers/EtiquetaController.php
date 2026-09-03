@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Barryvdh\DomPDF\Facade\Pdf; // 
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Resguardante;
 use DNS1D;
-
 
 class EtiquetaController extends Controller
 {
@@ -13,39 +12,96 @@ class EtiquetaController extends Controller
     {
         $etiqueta = $this->generarEtiquetaBarcode($codigo);
 
-        // Genera el PDF a partir de una vista
-        $pdf = Pdf::loadView('etiquetas.pdf', compact('etiqueta', 'codigo'));
-        $codigo = ltrim($codigo,'0');
-        // Forzar descarga del archivo
-        return $pdf->download("No. de inventario {$codigo}.pdf");
+        $pdf = Pdf::loadView('etiquetas.pdf', [
+            'etiqueta' => $etiqueta,
+            'codigo' => $codigo,
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | PDF VERTICAL
+        |--------------------------------------------------------------------------
+        |
+        | 25 mm ancho
+        | 50 mm alto
+        |
+        */
+
+        $pdf->setPaper([
+            0,
+            0,
+            70.87,   // 25 mm
+            141.73   // 50 mm
+        ]);
+
+        $codigoArchivo = ltrim($codigo, '0');
+
+        return $pdf->download(
+            "Etiqueta del equipo con id {$codigoArchivo}.pdf"
+        );
     }
 
+    private function generarEtiquetaBarcode($codigo)
+    {
+        return DNS1D::getBarcodeHTML(
+            $codigo,
+            'C128',
+            1.7,
+            48
+        );
+    }
 
-    /*
-private function generarEtiquetaBarcode($codigo)
-{
-    // Genera el código con número debajo (no agregamos div extra)
-    $barcode = DNS1D::getBarcodeHTML($codigo, 'C39', 1, 30);
+    public function imprimirPorResguardante($resguardanteId)
+    {
+        $resguardante = Resguardante::with([
+            'resguardos' => function ($query) {
+                $query->orderBy('id');
+            }
+        ])->findOrFail($resguardanteId);
 
-    // Encapsular con div que limita ancho y escala
-    $html = "<div style='width:140px; overflow:hidden; text-align:center;'>";
-    $html .= "<div style='transform:scale(0.8); transform-origin: top center; display:inline-block;'>$barcode</div>";
-    $html .= "</div>";
+        if ($resguardante->resguardos->isEmpty()) {
+            return back()->with(
+                'error',
+                'Este resguardante no tiene bienes asignados.'
+            );
+        }
 
-    return $html;
-}
-    */
-private function generarEtiquetaBarcode($codigo)
-{
-    // Usa C128 para solo números, más compacto y legible
-    $barcode = DNS1D::getBarcodeHTML($codigo, 'C128', 2, 40); // grosor=2, altura=40
+        $etiquetas = $resguardante->resguardos->map(function ($resguardo) {
 
-    // Contenedor centrado, sin escalar para no romper legibilidad
-    $html = "<div style='width:160px; text-align:center; overflow:hidden;'>$barcode</div>";
+            $codigo = str_pad(
+                (string) $resguardo->id,
+                6,
+                '0',
+                STR_PAD_LEFT
+            );
 
-    return $html;
-}
+            return [
+                'codigo' => $codigo,
+                'etiqueta' => $this->generarEtiquetaBarcode($codigo),
+                'resguardo' => $resguardo,
+            ];
+        });
 
+        $pdf = Pdf::loadView(
+            'etiquetas.pdf-resguardante',
+            compact('resguardante', 'etiquetas')
+        );
 
+        $nombreCompleto = trim(
+            $resguardante->nombre1 . ' ' .
+            $resguardante->nombre2 . ' ' .
+            $resguardante->apellido1 . ' ' .
+            $resguardante->apellido2
+        );
 
+        $nombreArchivo = preg_replace(
+            '/[^A-Za-z0-9_-]/',
+            '_',
+            $nombreCompleto
+        );
+
+        return $pdf->download(
+            "Etiquetas_{$nombreArchivo}.pdf"
+        );
+    }
 }

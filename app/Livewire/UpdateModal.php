@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-
 use Livewire\Component;
 use App\Models\Cursos;
 use App\Models\Grupos;
@@ -14,9 +13,6 @@ use App\Models\Municipio;
 use App\Models\Estudiante;
 use App\Models\Inscripciones;
 use Livewire\WithPagination;
-
-
-
 
 class UpdateModal extends Component
 {
