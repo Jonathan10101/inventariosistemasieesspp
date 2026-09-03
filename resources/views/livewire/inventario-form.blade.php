@@ -533,9 +533,9 @@
 
                                         <button
                                             type="button"
+                                            class="btn-action-download btn-imprimir-etiqueta"
                                             data-url="{{ route('etiquetas.show', $codigoEtiqueta) }}"
-                                            class="btn-action-download"
-                                            title="Descargar etiqueta"
+                                            title="Generar etiqueta para imprimir"
                                         >
                                             <i class="fas fa-download"></i>
                                         </button>
@@ -1797,15 +1797,15 @@
         }
 
         .btn-action-download {
-            background: #ecfdf5;
-            color: #047857;
+            background: rgba(23, 28, 99, 0.08);
+            color: #171C63;
         }
 
         .btn-action-download:hover {
-            background: #059669;
+            background: #171C63;
             color: #ffffff;
             transform: translateY(-1px);
-            box-shadow: 0 10px 20px rgba(5, 150, 105, 0.24);
+            box-shadow: 0 10px 20px rgba(23, 28, 99, 0.22);
         }
 
         .empty-state {
