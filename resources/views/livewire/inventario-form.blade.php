@@ -533,11 +533,11 @@
 
                                         <button
                                             type="button"
-                                            class="btn-action-download btn-imprimir-etiqueta"
                                             data-url="{{ route('etiquetas.show', $codigoEtiqueta) }}"
-                                            title="Generar etiqueta para imprimir"
+                                            class="btn-action-download"
+                                            title="Descargar etiqueta"
                                         >
-                                            <i class="fas fa-print"></i>
+                                            <i class="fas fa-download"></i>
                                         </button>
                                     @endhasanyrole
 
