@@ -10,55 +10,107 @@ use App\Models\Resguardante;
 use App\Models\Puesto;
 use App\Models\AreaDeUso;
 use App\Models\UbicacionFisica;
+use App\Models\HistorialResguardo;
 
 class Resguardo extends Model
 {
     use HasFactory;
-    protected $table  = "resguardos";
-    protected $fillable = ['id','descripcion','marca_id','modelo','nserie','nresguardo','estado_uso_id','area_de_uso_id','ubicacion_fisicas_id','resguardante_id','puesto_id','imagen','resguardo_pdf'];
+
+    protected $table = 'resguardos';
+
+     protected $fillable = [
+        'descripcion',
+        'cantidad',
+        'marca_id',
+        'modelo',
+        'nserie',
+        'nresguardo',
+        'resguardante_id',
+        'puesto_id',
+        'imagen',
+        'estado_actual',
+        'institucion',
+        'updated_at',
+    ];
+
+    
+
+    
+    /* ====== MUTADORES PARA MAYÚSCULAS ====== */
+    public function setDescripcionAttribute($value)
+    {
+        $this->attributes['descripcion'] = mb_strtoupper($value, 'UTF-8');
+    }
+
+    public function setModeloAttribute($value)
+    {
+        $this->attributes['modelo'] = mb_strtoupper($value, 'UTF-8');
+    }
+
+    public function setNserieAttribute($value)
+    {
+        $this->attributes['nserie'] = mb_strtoupper($value, 'UTF-8');
+    }
+
+    public function setNresguardoAttribute($value)
+    {
+        $this->attributes['nresguardo'] = mb_strtoupper($value, 'UTF-8');
+    }
+
+    public function setEstadoActualAttribute($value)
+    {
+        $this->attributes['estado_actual'] = mb_strtoupper($value, 'UTF-8');
+    }
+
+    /* ================= RELACIONES ================= */
+    public function historial()
+    {
+        return $this->hasMany(HistorialResguardo::class);
+    }
 
     public function marca()
     {
-        return $this->belongsTo(Marca::class,'marca_id','id');        
+        return $this->belongsTo(Marca::class, 'marca_id');
     }
 
-    public function estadouso()
-    {
-        return $this->belongsTo(EstadoUso::class,'estado_uso_id','id');        
-    }
-
-    public function ubicacionFisica(){
-        return $this->belongsTo(UbicacionFisica::class,'ubicacion_fisicas_id','id');
-    }
-
+   
     public function resguardante()
     {
-        return $this->belongsTo(Resguardante::class,'resguardante_id','id');
+        return $this->belongsTo(Resguardante::class, 'resguardante_id');
     }
 
     public function puesto()
     {
-        return $this->belongsTo(Puesto::class,'puesto_id','id');
+        return $this->belongsTo(Puesto::class, 'puesto_id');
     }
 
-    public function areadeasignacion()
-    {
-        return $this->belongsTo(AreaDeUso::class,'area_de_uso_id','id');
-    }
+
+    /* ================= EVENTOS ================= */
 
     protected static function boot()
     {
         parent::boot();
 
         static::created(function ($resguardo) {
-            // Una vez creado, asignamos el mismo valor que el id
-            $resguardo->nresguardo = $resguardo->id;
-            $resguardo->save();
+            $resguardo->update(['nresguardo' => $resguardo->id]);
         });
     }
 
+    /* ================= MÉTODOS DE ESTADO ================= */
 
+    public function marcarComoDisponible()
+    {
+        $this->update(['estado_actual' => 'disponible']);
+    }
 
+    public function marcarComoAsignado()
+    {
+        $this->update(['estado_actual' => 'asignado']);
+    }
 
-
+    public function marcarComoBaja()
+    {
+        $this->update(['estado_actual' => 'baja']);
+    }
+    
 }

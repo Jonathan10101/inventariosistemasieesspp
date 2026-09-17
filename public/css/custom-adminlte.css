@@ -1,0 +1,103 @@
+/* ============================
+   🎖️ Estilo IEESSPP Profesional
+   ============================ */
+
+/* 🔹 Sidebar general */
+.sidebar-ieesspp {
+    background: #ffffff url('../images/fondo-ieesspp.png') no-repeat center bottom;
+    background-size: cover;
+    color: #000 !important;
+}
+
+/* 🔹 Links del menú */
+.sidebar-ieesspp .nav-link {
+    color: #000 !important;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+/* 🔹 Hover de links */
+.sidebar-ieesspp .nav-link:hover {
+    background-color: rgba(23, 28, 99, 0.08);
+    color: #171C63 !important;
+}
+
+/* 🔹 Link activo (seleccionado) */
+.sidebar-ieesspp .nav-link.active {
+    background-color: #171C63 !important;
+    color: #fff !important;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+/* 🔹 Marca (logo IEESSPP) */
+.sidebar-ieesspp .brand-link {
+    background-color: transparent !important;
+    text-align: center;
+}
+
+.sidebar-ieesspp .brand-link img {
+    height: 70px;
+    width: auto;
+    margin-top: 5px;
+}
+
+/* 🔹 Texto de versión (parte inferior del menú) */
+.sidebar-ieesspp .sidebar-footer {
+    text-align: center;
+    font-size: 12px;
+    color: #555;
+    padding: 12px 8px;
+    border-top: 1px solid #ddd;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.sidebar-ieesspp .sidebar-footer strong {
+    color: #171C63;
+}
+
+.sidebar-ieesspp {
+    position: relative;
+    background: #fff; /* Fondo blanco base */
+    overflow: hidden;
+}
+
+/* 🩵 Capa semitransparente con la imagen */
+.sidebar-ieesspp::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url('../images/fondo-ieesspp.png') no-repeat center bottom;
+    background-size: cover;
+    opacity: 0.15; /* <-- Ajusta el nivel de transparencia (0.1 a 0.3 recomendado) */
+    z-index: 0;
+}
+
+/* Asegura que el contenido quede encima */
+/*
+.sidebar-ieesspp * {
+    position: relative;
+    z-index: 1;
+}
+*/
+
+
+.brand-text{
+    color: #171C63 !important;
+    text-decoration: none;
+}
+
+.brand-link{
+    text-decoration: none;
+}
+
+/* 🔹 Alinear las flechas del menú a la derecha */
+.sidebar-ieesspp .nav-sidebar .nav-item > .nav-link .right {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+
+

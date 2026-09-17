@@ -6,6 +6,7 @@
     @else
         @include('adminlte::partials.common.brand-logo-xs')
     @endif
+    
 
     {{-- Sidebar menu --}}
     <div class="sidebar">
@@ -22,6 +23,16 @@
                 @each('adminlte::partials.sidebar.menu-item', $adminlte->menu('sidebar'), 'item')
             </ul>
         </nav>
+        <!-- Sidebar Footer -->
+        <div class="sidebar-footer mt-auto" style="background: transparent !important;">
+            <!--
+            <strong>INTEVI</strong> © {{ date('Y') }}<br>
+            V 1.1.0 alpha
+            -->
+        </div>
     </div>
+
+
+
 
 </aside>

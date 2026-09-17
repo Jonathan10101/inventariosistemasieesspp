@@ -31,4 +31,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'pulse' => [
+        'admin_email' => env('PULSE_ADMIN_EMAIL'),
+    ],
+
 ];

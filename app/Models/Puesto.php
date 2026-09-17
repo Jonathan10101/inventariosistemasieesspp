@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Resguardo;
+use App\Models\Resguardante;
 
 class Puesto extends Model
 {
@@ -20,6 +21,11 @@ class Puesto extends Model
         }
         return parent::setAttribute($key, $value);
     }
+
+    public function resguardante(){
+        return $this->belongsTo(Resguardante::class, 'puesto_id');
+    }
+
 
     public function resguardos()
     {

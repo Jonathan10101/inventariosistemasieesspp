@@ -21,7 +21,6 @@ class Marca extends Model
         }
         return parent::setAttribute($key, $value);
     }
-
     
     public function resguardos()
     {

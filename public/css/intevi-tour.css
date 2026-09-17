@@ -1,0 +1,200 @@
+/* =========================================================
+   INTEVI TOUR - Tutorial local sin dependencias
+   ========================================================= */
+
+:root {
+    --intevi-tour-primary: #171C63;
+    --intevi-tour-primary-dark: #101447;
+    --intevi-tour-overlay: rgba(8, 15, 35, 0.72);
+    --intevi-tour-z-overlay: 2147483000;
+    --intevi-tour-z-popover: 2147483002;
+}
+
+.intevi-tour-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: var(--intevi-tour-z-overlay);
+    display: none;
+    background: var(--intevi-tour-overlay);
+    pointer-events: auto;
+}
+
+.intevi-tour-overlay.is-visible {
+    display: block;
+}
+
+.intevi-tour-highlight {
+    position: fixed;
+    z-index: var(--intevi-tour-z-overlay);
+    display: none;
+    box-sizing: border-box;
+    border: 3px solid #ffffff;
+    border-radius: 12px;
+    background: transparent;
+    box-shadow:
+        0 0 0 9999px var(--intevi-tour-overlay),
+        0 0 0 4px rgba(23, 28, 99, 0.45),
+        0 18px 45px rgba(0, 0, 0, 0.26);
+    pointer-events: none;
+    transition:
+        top 0.22s ease,
+        left 0.22s ease,
+        width 0.22s ease,
+        height 0.22s ease;
+}
+
+.intevi-tour-highlight.is-visible {
+    display: block;
+}
+
+.intevi-tour-popover {
+    position: fixed;
+    z-index: var(--intevi-tour-z-popover);
+    width: min(370px, calc(100vw - 24px));
+    box-sizing: border-box;
+    padding: 22px;
+    border: 1px solid rgba(23, 28, 99, 0.14);
+    border-radius: 16px;
+    background: #ffffff;
+    color: #0f172a;
+    box-shadow:
+        0 24px 65px rgba(15, 23, 42, 0.28),
+        0 5px 18px rgba(15, 23, 42, 0.14);
+    font-family:
+        "Source Sans Pro",
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+.intevi-tour-popover.is-centered {
+    transform: translate(-50%, -50%);
+}
+
+.intevi-tour-close {
+    position: absolute;
+    top: 8px;
+    right: 11px;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: #64748b;
+    font-size: 25px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.intevi-tour-close:hover,
+.intevi-tour-close:focus {
+    background: #f1f5f9;
+    color: var(--intevi-tour-primary);
+    outline: none;
+}
+
+.intevi-tour-progress {
+    margin: 0 34px 8px 0;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.intevi-tour-title {
+    margin: 0 28px 10px 0;
+    color: var(--intevi-tour-primary);
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 1.22;
+}
+
+.intevi-tour-description {
+    color: #475569;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.6;
+}
+
+.intevi-tour-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 9px;
+    margin-top: 20px;
+}
+
+.intevi-tour-button {
+    min-height: 40px;
+    padding: 0 16px;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 850;
+    cursor: pointer;
+    transition: all 0.16s ease;
+}
+
+.intevi-tour-prev {
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #334155;
+}
+
+.intevi-tour-prev:hover,
+.intevi-tour-prev:focus {
+    border-color: #94a3b8;
+    background: #f8fafc;
+    outline: none;
+}
+
+.intevi-tour-next {
+    border: 1px solid var(--intevi-tour-primary);
+    background: var(--intevi-tour-primary);
+    color: #ffffff;
+    box-shadow: 0 10px 22px rgba(23, 28, 99, 0.22);
+}
+
+.intevi-tour-next:hover,
+.intevi-tour-next:focus {
+    border-color: var(--intevi-tour-primary-dark);
+    background: var(--intevi-tour-primary-dark);
+    color: #ffffff;
+    outline: none;
+}
+
+.intevi-tour-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+
+@media (max-width: 680px) {
+    .intevi-tour-highlight {
+        border-radius: 9px;
+    }
+
+    .intevi-tour-popover {
+        width: calc(100vw - 24px);
+        max-height: min(55vh, 430px);
+        overflow-y: auto;
+        padding: 19px;
+        border-radius: 14px;
+    }
+
+    .intevi-tour-title {
+        font-size: 18px;
+    }
+
+    .intevi-tour-description {
+        font-size: 13px;
+    }
+
+    .intevi-tour-footer {
+        position: sticky;
+        bottom: -19px;
+        margin: 18px -19px -19px;
+        padding: 12px 19px 19px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.78), #ffffff 30%);
+    }
+}

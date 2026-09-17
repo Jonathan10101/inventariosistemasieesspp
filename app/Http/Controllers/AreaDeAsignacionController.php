@@ -2,58 +2,60 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\AreaDeUso;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class AreaDeAsignacionController extends Controller
 {
+    private int $perPage = 5;
+
     /**
-     * Display a listing of the resource.
+     * Mostrar el listado de áreas de asignación.
      */
-    public function index()
+    public function index(): View
     {
-        return view("areasasignacion/index");
+        $areasDeAsignacion = AreaDeUso::query()
+            ->orderBy('nombre')
+            ->paginate($this->perPage);
+
+        return view(
+            'areasasignacion.index',
+            compact('areasDeAsignacion')
+        );
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Registrar una nueva área de asignación.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'nombre' => 'required|string|max:100|min:2|unique:area_de_uso,nombre',
+        $datosValidados = $request->validate([
+            'nombre' => [
+                'required',
+                'string',
+                'min:2',
+                'max:100',
+                'unique:area_de_uso,nombre',
+            ],
+        ], [
+            'nombre.required' => 'El nombre del área es obligatorio.',
+            'nombre.string' => 'El nombre del área debe ser texto.',
+            'nombre.min' => 'El nombre debe tener al menos 2 caracteres.',
+            'nombre.max' => 'El nombre no puede superar los 100 caracteres.',
+            'nombre.unique' => 'Esta área de asignación ya está registrada.',
         ]);
 
-        // Guardar en la base de datos
         AreaDeUso::create([
-            'nombre' => $request->nombre
+            'nombre' => trim($datosValidados['nombre']),
         ]);
 
-        // Redirigir con mensaje
-        return redirect()->back()->with('success', 'Área de uso registrada correctamente.');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()
+            ->route('areadeasignacion.index')
+            ->with(
+                'success',
+                'Área de asignación registrada correctamente.'
+            );
     }
 }

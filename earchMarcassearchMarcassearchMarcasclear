@@ -1,0 +1,15 @@
+[33m3cd6c2b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdev[m[33m, [m[1;31morigin/dev[m[33m)[m Se comienza a trabajar MarcaForm (sin terminar)
+[33mce3a44e[m Se comienza a acomodar codigo de mejor forma
+[33m34cdd56[m Mejoras en general
+[33ma7fef80[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m Se agrega Controlador Livewire CreateNewResguardo
+[33mc18bd9c[m Se agrega el mostrar datos de los resguardos asignados a cada resguardante dando clic en la tabla InventarioForm (aun sin terminar)
+[33mbc91bc3[m Se genera funcionalidad de subir imagen del ordenador o tomar foto
+[33m8053740[m Se trabaja funcionalidad de subir imagen del ordenador o tomar foto (aun no terminada)
+[33m1bef2f4[m Se modifica vista para que sea vea mejor de InventarioForm
+[33m35fce8e[m Se permite registrar Resguardos (aun sin terminar)
+[33m48242d0[m Se mejora en general el codigo (aun falta agregar mas validaciones en registrar Inventario)
+[33m1467b2b[m Se mejora funcionalidad de  lector de codigo de barras
+[33m4b0d7d4[m Se agrega lector de codigo de barras
+[33m7dad8c2[m Se agrega funcionalidad de generar codigo de barras (aun sin terminar)
+[33m1d777ac[m Avances en general de los modulos del sistema (falta create resguardo)
+[33m7718243[m Se avanza en generar la estructura del dashboardh del sistema (sin terminar)

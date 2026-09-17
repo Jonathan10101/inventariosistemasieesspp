@@ -17,13 +17,13 @@ class EstadoUsoSeeder extends Seeder
     {
         DB::table('estado_uso')->insert([
             [                
-                'estado' => 'Bueno',                
+                'estado' => 'BUENO',                
             ],
             [                
-                'estado' => 'Regular',                
+                'estado' => 'REGULAR',                
             ],
             [                
-                'estado' => 'Malo',                
+                'estado' => 'MALO',                
             ],
             
         ]);

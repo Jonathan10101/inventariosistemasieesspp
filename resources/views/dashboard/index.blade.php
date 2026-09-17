@@ -3,9 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <!-- Encabezado de la página -->
-    
-            
+    <!-- Encabezado de la página -->            
             {{--
             <livewire:student-stats />
             --}}
@@ -14,8 +12,6 @@
 
 @section('content')
 <div class="container mt-5">
-    
-
     {{--
     @livewire('formulario')
     --}}

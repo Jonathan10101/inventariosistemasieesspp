@@ -1,0 +1,69 @@
+    :root {
+        --ieesspp-primary: #171C63;
+        --ieesspp-primary-light: #2a2f7f;
+        --ieesspp-bg-light: #f8f9fc;
+        --ieesspp-border: #e3e6f0;
+        --text-dark: #2d2d2d;
+    }
+
+    body {
+        background-color: var(--ieesspp-bg-light);
+    }
+
+    /* ====== HEADER ====== */
+    .page-header {
+        background-color: #ffffff;
+        border-bottom: 1px solid var(--ieesspp-border);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        animation: fadeSlideDown 0.5s ease-in-out;
+    }
+
+    .page-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: var(--ieesspp-primary);
+        letter-spacing: 0.4px;
+        margin-bottom: 0.25rem;
+    }
+
+    .page-subtitle {
+        font-size: 0.95rem;
+        color: #6c757d;
+        font-weight: 400;
+        letter-spacing: 0.2px;
+    }
+
+    /* Línea vertical institucional */
+    .title-accent {
+        width: 6px;
+        height: 45px;
+        border-radius: 4px;
+        background: var(--ieesspp-primary);
+        animation: growIn 0.6s ease;
+    }
+
+    /* ====== ANIMACIONES ====== */
+    @keyframes growIn {
+        from { height: 0; opacity: 0; transform: translateY(-10px); }
+        to { height: 45px; opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeSlideDown {
+        from { opacity: 0; transform: translateY(-6px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card, .modal-content {
+        border-radius: 10px !important;
+        border: 1px solid var(--ieesspp-border);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    .fade-in {
+        animation: fadeIn 0.4s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(4px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
