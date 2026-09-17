@@ -297,6 +297,7 @@ return [
             'icon' => 'fas fa-graduation-cap',
             'can' => 'resguardante.create'
         ],
+        /*
         [
             'text' => 'Asistente IA',
             'url' => 'https://chatgpt.com/g/g-6a67750fd8548191a96b005848090887-intevi-asistente',
