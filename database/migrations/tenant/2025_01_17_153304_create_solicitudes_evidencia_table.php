@@ -19,10 +19,7 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->foreign('resguardo_id')
-                ->references('id')
-                ->on('resguardos')
-                ->onDelete('cascade');
+            // The foreign key is added after the resguardos table exists.
         });
     }
 
